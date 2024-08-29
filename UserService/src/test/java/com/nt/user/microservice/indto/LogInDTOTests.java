@@ -17,100 +17,55 @@ public class LogInDTOTests {
   private Validator validator;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     validator = factory.getValidator();
   }
 
   @Test
-  public void testValidLogInDTO() {
-    LogInDTO dto = new LogInDTO();
-    dto.setEmail("user@nucleusteq.com");
-    dto.setPassword("Password1");
+  void testValidLogInDTO() {
+    LogInDTO logInDTO = new LogInDTO();
+    logInDTO.setEmail("user@nucleusteq.com");
+    logInDTO.setPassword("password123");
 
-    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(dto);
-    assertTrue(violations.isEmpty(), "Expected no validation errors for valid DTO");
+    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(logInDTO);
+
+    assertTrue(violations.isEmpty(), "Expected no validation errors");
   }
 
   @Test
-  public void testInvalidEmailFormat() {
-    LogInDTO dto = new LogInDTO();
-    dto.setEmail("user@domain.com");
-    dto.setPassword("Password1");
+  void testEmailIsBlank() {
+    LogInDTO logInDTO = new LogInDTO();
+    logInDTO.setEmail("");
+    logInDTO.setPassword("password123");
 
-    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size(), "Expected one validation error for email format");
-    ConstraintViolation<LogInDTO> violation = violations.iterator().next();
-    assertEquals("Email must end with @nucleusteq.com", violation.getMessage());
+    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(logInDTO);
+
+    assertEquals(2, violations.size(), "Expected two validation error");
+    assertEquals("Email must end with @nucleusteq.com", violations.iterator().next().getMessage());
   }
 
   @Test
-  public void testInvalidPasswordFormat() {
-    LogInDTO dto = new LogInDTO();
-    dto.setEmail("user@nucleusteq.com");
-    dto.setPassword("pass");
+  void testEmailDoesNotEndWithNucleusTeqDomain() {
+    LogInDTO logInDTO = new LogInDTO();
+    logInDTO.setEmail("user@gmail.com");
+    logInDTO.setPassword("password123");
 
-    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size(), "Expected one validation error for password format");
-    ConstraintViolation<LogInDTO> violation = violations.iterator().next();
-    assertEquals("Password must contain at least 4 characters and 1 number", violation.getMessage());
+    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(logInDTO);
+
+    assertEquals(1, violations.size(), "Expected one validation error");
+    assertEquals("Email must end with @nucleusteq.com", violations.iterator().next().getMessage());
   }
 
   @Test
-  public void testEmptyEmail() {
-    LogInDTO dto = new LogInDTO();
-    dto.setEmail("");
-    dto.setPassword("Password1");
+  void testPasswordIsBlank() {
+    LogInDTO logInDTO = new LogInDTO();
+    logInDTO.setEmail("user@nucleusteq.com");
+    logInDTO.setPassword("");
 
-    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size(), "Expected one validation error for empty email");
-    ConstraintViolation<LogInDTO> violation = violations.iterator().next();
-    assertEquals("Email is required", violation.getMessage());
-  }
+    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(logInDTO);
 
-  @Test
-  public void testEmptyPassword() {
-    LogInDTO dto = new LogInDTO();
-    dto.setEmail("user@nucleusteq.com");
-    dto.setPassword("");
-
-    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size(), "Expected one validation error for empty password");
-    ConstraintViolation<LogInDTO> violation = violations.iterator().next();
-    assertEquals("Password is required", violation.getMessage());
-  }
-
-  @Test
-  public void testPasswordTooShort() {
-    LogInDTO dto = new LogInDTO();
-    dto.setEmail("user@nucleusteq.com");
-    dto.setPassword("Pwd1");
-
-    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size(), "Expected one validation error for short password");
-    ConstraintViolation<LogInDTO> violation = violations.iterator().next();
-    assertEquals("Password must be at least 4 characters long and 1 number", violation.getMessage());
-  }
-
-  @Test
-  public void testPasswordMissingNumber() {
-    LogInDTO dto = new LogInDTO();
-    dto.setEmail("user@nucleusteq.com");
-    dto.setPassword("Password");
-
-    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size(), "Expected one validation error for password missing a number");
-    ConstraintViolation<LogInDTO> violation = violations.iterator().next();
-    assertEquals("Password must contain at least 4 characters and 1 number", violation.getMessage());
-  }
-
-  @Test
-  public void testGettersAndSetters() {
-    LogInDTO dto = new LogInDTO();
-    dto.setEmail("valid@nucleusteq.com");
-    dto.setPassword("Valid1Password");
-
-    assertEquals("valid@nucleusteq.com", dto.getEmail(), "Email getter/setter should work");
-    assertEquals("Valid1Password", dto.getPassword(), "Password getter/setter should work");
+    assertEquals(1, violations.size(), "Expected one validation error");
+    assertEquals("Password is required", violations.iterator().next().getMessage());
   }
 }

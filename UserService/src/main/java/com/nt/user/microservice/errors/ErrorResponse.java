@@ -8,26 +8,23 @@ public class ErrorResponse {
   private String message;
   private Map<String, String> errors;
 
-  // Constructor for general errors
+
   public ErrorResponse(int status, String message) {
     this.status = status;
     this.message = message;
     this.errors = new HashMap<>(); // Always initialize errors as an empty map
   }
 
-  // Constructor for validation errors
   public ErrorResponse(int status, String message, Map<String, String> errors) {
     this.status = status;
     this.message = message;
     this.errors = errors != null ? errors : new HashMap<>();
   }
 
-  // Default constructor
   public ErrorResponse() {
     this.errors = new HashMap<>(); // Ensure errors is initialized
   }
 
-  // Getters and Setters
   public int getStatus() {
     return status;
   }

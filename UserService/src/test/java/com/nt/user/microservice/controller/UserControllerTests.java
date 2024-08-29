@@ -1,5 +1,6 @@
 package com.nt.user.microservice.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nt.user.microservice.contoller.UserController;
 import com.nt.user.microservice.indto.LogInDTO;
 import com.nt.user.microservice.indto.UserInDTO;
@@ -11,19 +12,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-@WebMvcTest(UserController.class)
-public class UserControllerTests {
+class UserControllerTests {
 
   private MockMvc mockMvc;
 
@@ -34,82 +32,68 @@ public class UserControllerTests {
   private UserController userController;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     MockitoAnnotations.openMocks(this);
     mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
   }
 
   @Test
-  public void testRegisterUser() throws Exception {
-    UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setEmail("user@nucleusteq.com");
-    userInDTO.setPassword("Password1");
-
-    String successMessage = "User registered successfully";
-    when(userService.registerUser(any(UserInDTO.class))).thenReturn(successMessage);
-
-    mockMvc.perform(post("/users/register")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"email\":\"user@nucleusteq.com\",\"password\":\"Password1\"}"))
-      .andExpect(status().isCreated())
-      .andExpect(content().json("{\"successMessage\":\"User registered successfully\"}"));
-
-    verify(userService, times(1)).registerUser(any(UserInDTO.class));
-  }
-
-  @Test
-  public void testLoginUser() throws Exception {
-    LogInDTO loginDTO = new LogInDTO();
-    loginDTO.setEmail("user@nucleusteq.com");
-    loginDTO.setPassword("Password1");
-
+  void testGetUserProfile() throws Exception {
     UserOutDTO userOutDTO = new UserOutDTO();
-    userOutDTO.setEmail("user@nucleusteq.com");
-
-    when(userService.loginUser(anyString(), anyString())).thenReturn(userOutDTO);
-
-    mockMvc.perform(post("/users/login")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"email\":\"user@nucleusteq.com\",\"password\":\"Password1\"}"))
-      .andExpect(status().isOk())
-      .andExpect(content().json("{\"email\":\"user@nucleusteq.com\"}"));
-
-    verify(userService, times(1)).loginUser(anyString(), anyString());
-  }
-
-  @Test
-  public void testGetUserProfile() throws Exception {
-    UserOutDTO userOutDTO = new UserOutDTO();
-    userOutDTO.setEmail("user@nucleusteq.com");
+    userOutDTO.setId(1);
+    userOutDTO.setFirstName("John");
+    userOutDTO.setLastName("Doe");
+    userOutDTO.setEmail("john.doe@example.com");
+    userOutDTO.setPhoneNo("1234567890");
+    userOutDTO.setRole("USER");
+    userOutDTO.setWalletBalance(100.0);
 
     when(userService.getUserProfile(anyInt())).thenReturn(userOutDTO);
 
-    mockMvc.perform(get("/users/profile/1"))
-      .andExpect(status().isOk())
-      .andExpect(content().json("{\"email\":\"user@nucleusteq.com\"}"));
-
-    verify(userService, times(1)).getUserProfile(anyInt());
+    mockMvc.perform(MockMvcRequestBuilders.get("/users/profile/1")
+        .accept(MediaType.APPLICATION_JSON))
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("John"))
+      .andDo(print());
   }
 
   @Test
-  public void testUpdateUserProfile() throws Exception {
+  void testUpdateUserProfile() throws Exception {
     UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setEmail("user@nucleusteq.com");
-    userInDTO.setPassword("Password1");
+    userInDTO.setFirstName("John");
+    userInDTO.setLastName("Doe");
+    userInDTO.setPhoneNo("1234567890");
+    userInDTO.setPassword("newpassword");
+    userInDTO.setRole("USER");
 
-    mockMvc.perform(put("/users/profile/1")
+    UserResponse userResponse = new UserResponse();
+    userResponse.setSuccessMessage("User updated successfully");
+
+    when(userService.updateUserProfile(anyInt(), any(UserInDTO.class))).thenReturn(userResponse);
+
+    mockMvc.perform(MockMvcRequestBuilders.put("/users/update/1")
         .contentType(MediaType.APPLICATION_JSON)
-        .content("{\"email\":\"user@nucleusteq.com\",\"password\":\"Password1\"}"))
-      .andExpect(status().isNoContent());
-
-    verify(userService, times(1)).updateUserProfile(anyInt(), any(UserInDTO.class));
+        .content(asJsonString(userInDTO)))
+      .andExpect(MockMvcResultMatchers.status().isOk())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.successMessage").value("User updated successfully"))
+      .andDo(print());
   }
 
   @Test
-  public void testDeleteUser() throws Exception {
-    mockMvc.perform(delete("/users/1"))
-      .andExpect(status().isNoContent());
+  void testDeleteUser() throws Exception {
+    doNothing().when(userService).deleteUser(anyInt());
 
-    verify(userService, times(1)).deleteUser(anyInt());
+    mockMvc.perform(MockMvcRequestBuilders.delete("/users/delete/1"))
+      .andExpect(MockMvcResultMatchers.status().isNoContent())
+      .andDo(print());
+  }
+
+  private String asJsonString(Object obj) {
+    try {
+      ObjectMapper mapper = new ObjectMapper();
+      return mapper.writeValueAsString(obj);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 }

@@ -20,8 +20,6 @@ public class UserInDTO {
   private String email;
 
   @NotBlank(message = "Password is required")
-  @Size(min = 4, message = "Password must be at least 4 characters long and 1 number ")
-  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z]).{4,}$", message = "Password must contain at least 4 characters and 1 number")
   private String password;
 
   @NotBlank(message = "Phone number is required")

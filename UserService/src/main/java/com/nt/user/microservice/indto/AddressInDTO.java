@@ -28,8 +28,7 @@ public class AddressInDTO {
   @Pattern(regexp = "^[0-9]{6}$", message = "Pin code must be exactly 6 digits and cannot contain spaces or characters")
   private String pinCode;
 
-  @NotBlank(message = "User ID is required")
-  @Pattern(regexp = "^[0-9]+$", message = "User ID must be a numeric value and cannot contain spaces or characters")
+  @NotNull(message = "User ID is required")
   private Integer userId;
 
   public String getStreet() {

@@ -75,4 +75,3 @@ public class AddressTests {
     assertNull(address.getUserId());
   }
 }
-

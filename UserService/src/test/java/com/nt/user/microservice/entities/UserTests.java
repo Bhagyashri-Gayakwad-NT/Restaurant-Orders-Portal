@@ -5,67 +5,61 @@ import com.nt.user.microservice.util.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class UserTests {
-  private User user;
+class UserTests {
+
+  private User user1;
+  private User user2;
 
   @BeforeEach
   void setUp() {
-    user = new User();
-    user.setId(1);
-    user.setFirstName("Sarita");
-    user.setLastName("Sharma");
-    user.setEmail("sarita.sharma@example.com");
-    user.setPassword("Secret@123");
-    user.setPhoneNo("8765432109");
-    user.setRole(Role.USER);
+    user1 = new User();
+    user1.setId(1);
+    user1.setFirstName("Sarita");
+    user1.setLastName("Sharma");
+    user1.setEmail("sarita.sharma@example.com");
+    user1.setPassword("password123");
+    user1.setPhoneNo("1234567890");
+    user1.setRole(Role.USER);
+
+    user2 = new User();
+    user2.setId(1);
+    user2.setFirstName("Sarita");
+    user2.setLastName("Sharma");
+    user2.setEmail("sarita.sharma@example.com");
+    user2.setPassword("password123");
+    user2.setPhoneNo("1234567890");
+    user2.setRole(Role.USER);
   }
 
   @Test
-  void testGettersSetters() {
-    assertEquals(1, user.getId());
-    assertEquals("Sarita", user.getFirstName());
-    assertEquals("Sharma", user.getLastName());
-    assertEquals("sarita.sharma@example.com", user.getEmail());
-    assertEquals("Secret@123", user.getPassword());
-    assertEquals("8765432109", user.getPhoneNo());
-    assertEquals(Role.USER, user.getRole());
+  void testGettersAndSetters() {
+    assertEquals(1, user1.getId());
+    assertEquals("Sarita", user1.getFirstName());
+    assertEquals("Sharma", user1.getLastName());
+    assertEquals("sarita.sharma@example.com", user1.getEmail());
+    assertEquals("password123", user1.getPassword());
+    assertEquals("1234567890", user1.getPhoneNo());
+    assertEquals(Role.USER, user1.getRole());
   }
 
   @Test
-  void testEquals() {
-    User anotherUser = new User();
-    anotherUser.setId(1);
-    anotherUser.setFirstName("Sarita");
-    anotherUser.setLastName("Sharma");
-    anotherUser.setEmail("sarita.sharma@example.com");
-    anotherUser.setPassword("Secret@123");
-    anotherUser.setPhoneNo("8765432109");
-    anotherUser.setRole(Role.USER);
-
-    assertTrue(user.equals(anotherUser));
+  void testEqualsAndHashCode() {
+    assertEquals(user1, user2);
+    assertEquals(user1.hashCode(), user2.hashCode());
   }
 
   @Test
-  void testHashCode() {
-    User anotherUser = new User();
-    anotherUser.setId(1);
-    anotherUser.setFirstName("Sarita");
-    anotherUser.setLastName("Sharma");
-    anotherUser.setEmail("sarita.sharma@example.com");
-    anotherUser.setPassword("Secret@123");
-    anotherUser.setPhoneNo("8765432109");
-    anotherUser.setRole(Role.USER);
-
-    assertEquals(user.hashCode(), anotherUser.hashCode());
+  void testNotEquals() {
+    user2.setEmail("different.email@example.com");
+    assertNotEquals(user1, user2);
   }
 
   @Test
   void testToString() {
-    String expected = "User{id=1, firstName='Sarita', lastName='Sharma', email='sarita.sharma@example.com', password='Secret@123', phoneNo='8765432109', role=USER}";
-    assertEquals(expected, user.toString());
+    String expected = "User{id=1, firstName='Sarita', lastName='Sharma', email='sarita.sharma@example.com', " +
+      "password='password123', phoneNo='1234567890', role=USER}";
+    assertEquals(expected, user1.toString());
   }
 }
-

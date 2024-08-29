@@ -3,6 +3,7 @@ package com.nt.user.microservice.service.impl;
 import com.nt.user.microservice.exceptions.InvalidCredentialsException;
 import com.nt.user.microservice.exceptions.UserAlreadyExistsException;
 import com.nt.user.microservice.exceptions.UserNotFoundException;
+import com.nt.user.microservice.outdto.UserResponse;
 import com.nt.user.microservice.util.Constants;
 import com.nt.user.microservice.util.Role;
 import com.nt.user.microservice.entites.User;
@@ -42,13 +43,12 @@ public class UserServiceImpl implements UserService {
       throw new UserAlreadyExistsException("User already registered with this email");
     }
 
-    // Proceed to create a new user
     User user = new User();
     user.setFirstName(userInDTO.getFirstName());
     user.setLastName(userInDTO.getLastName());
     user.setEmail(userInDTO.getEmail());
     user.setPhoneNo(userInDTO.getPhoneNo());
-    user.setPassword(Base64Util.encode(userInDTO.getPassword()));
+    user.setPassword(userInDTO.getPassword());
     user.setRole(Role.valueOf(userInDTO.getRole().toUpperCase()));
 
     User savedUser = userRepository.save(user);
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
       User user = userOptional.get();
 
       // Decode the stored password and compare it with the provided one
-      if (Base64Util.decode(user.getPassword()).equals(password)) {
+      if (user.getPassword().equals(password)) {
         logger.info("Login successful for user with email: {}", email);
 
         WalletBalance walletBalance = walletBalanceRepository.findByUserId(user.getId());
@@ -96,14 +96,17 @@ public class UserServiceImpl implements UserService {
         }
 
         return userOutDTO;
-      } else {
+      }
+      else {
         logger.error("Invalid credentials for user with email: {}", email);
         throw new UserNotFoundException("User not found");
       }
-    } else {
-      logger.error("User with email {} not found", email);
-      throw new InvalidCredentialsException("Invalid email or password");
     }
+    else {
+      logger.error("User with email {} not found", email);
+      throw new InvalidCredentialsException("Invalid password");
+    }
+
   }
 
   @Override
@@ -133,7 +136,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public void updateUserProfile(Integer id, UserInDTO userInDTO) {
+  public UserResponse updateUserProfile(Integer id, UserInDTO userInDTO) {
     logger.info("Updating user profile for ID: {}", id);
 
     User user = userRepository.findById(id)
@@ -153,6 +156,9 @@ public class UserServiceImpl implements UserService {
 
     userRepository.save(user);
     logger.info("User profile updated successfully for ID: {}", id);
+    UserResponse userResponse=new UserResponse();
+    userResponse.setSuccessMessage("user updated successfull");
+    return userResponse;
   }
 
   @Override

@@ -34,7 +34,7 @@ public class AddressServiceImpl implements AddressService {
     address.setUserId(addressInDTO.getUserId());
 
     Address savedAddress = addressRepository.save(address);
-    logger.info("Address saved with ID: {}", savedAddress.getId());
+    logger.info("Address saved with UserID: {}", addressInDTO.getUserId());
 
     AddressOutDTO addressOutDTO = new AddressOutDTO();
     addressOutDTO.setId(savedAddress.getId());

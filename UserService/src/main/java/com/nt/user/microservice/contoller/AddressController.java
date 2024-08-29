@@ -5,6 +5,7 @@ import com.nt.user.microservice.outdto.AddressOutDTO;
 import com.nt.user.microservice.service.AddressService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +31,7 @@ public class AddressController {
     this.addressService = addressService;
   }
 
-  @PostMapping
+  @PostMapping("/add")
   public ResponseEntity<AddressOutDTO> addAddress(@Valid @RequestBody AddressInDTO addressInDTO) {
     logger.info("Adding address for user ID: {}", addressInDTO.getUserId());
     AddressOutDTO addressOutDTO = addressService.addAddress(addressInDTO);
