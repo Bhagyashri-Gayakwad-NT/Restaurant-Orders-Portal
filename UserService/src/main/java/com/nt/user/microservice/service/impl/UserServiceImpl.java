@@ -13,12 +13,16 @@ import com.nt.user.microservice.repository.UserRepository;
 import com.nt.user.microservice.repository.WalletBalanceRepository;
 import com.nt.user.microservice.service.UserService;
 import com.nt.user.microservice.util.Base64Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+  private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
   private final UserRepository userRepository;
   private final WalletBalanceRepository walletBalanceRepository;
 
@@ -28,10 +32,13 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public UserOutDTO registerUser(UserInDTO userInDTO) {
+  public String registerUser(UserInDTO userInDTO) {
+    logger.info("Attempting to register user with email: {}", userInDTO.getEmail());
+
     // Check if a user with the same email already exists
     Optional<User> existingUser = userRepository.findByEmail(userInDTO.getEmail());
     if (existingUser.isPresent()) {
+      logger.error("User with email {} already exists", userInDTO.getEmail());
       throw new UserAlreadyExistsException("User already registered with this email");
     }
 
@@ -45,35 +52,26 @@ public class UserServiceImpl implements UserService {
     user.setRole(Role.valueOf(userInDTO.getRole().toUpperCase()));
 
     User savedUser = userRepository.save(user);
+    logger.info("User registered successfully with ID: {}", savedUser.getId());
 
-    Double walletBalance;
     if (Role.USER.equals(user.getRole())) {  // Check if the role is 'USER'
-      walletBalance = Constants.INITIAL_WALLET_BALANCE;  // Set balance to 1000
-    } else {
-      walletBalance = Constants.ZERO_WALLET_BALANCE;  // Set balance to 0
+      logger.info("Assigning initial wallet balance for user with ID: {}", savedUser.getId());
+
+      WalletBalance walletBalanceEntity = new WalletBalance();
+      walletBalanceEntity.setUserId(savedUser.getId());
+      walletBalanceEntity.setBalance(Constants.INITIAL_WALLET_BALANCE);
+      walletBalanceRepository.save(walletBalanceEntity);
+
+      logger.info("Initial wallet balance assigned for user with ID: {}", savedUser.getId());
     }
 
-    // Save the wallet balance
-    WalletBalance walletBalanceEntity = new WalletBalance();
-    walletBalanceEntity.setUserId(savedUser.getId());
-    walletBalanceEntity.setBalance(walletBalance);
-    walletBalanceRepository.save(walletBalanceEntity);
-
-    // Prepare the response DTO
-    UserOutDTO userOutDTO = new UserOutDTO();
-    userOutDTO.setId(savedUser.getId());
-    userOutDTO.setFirstName(savedUser.getFirstName());
-    userOutDTO.setLastName(savedUser.getLastName());
-    userOutDTO.setEmail(savedUser.getEmail());
-    userOutDTO.setPhoneNo(savedUser.getPhoneNo());
-    userOutDTO.setRole(savedUser.getRole().toString());
-
-    return userOutDTO;
+    return Constants.USER_REGISTERED_SUCCESSFULLY;
   }
-
 
   @Override
   public UserOutDTO loginUser(String email, String password) {
+    logger.info("Attempting to log in user with email: {}", email);
+
     Optional<User> userOptional = userRepository.findByEmail(email);
 
     if (userOptional.isPresent()) {
@@ -81,6 +79,8 @@ public class UserServiceImpl implements UserService {
 
       // Decode the stored password and compare it with the provided one
       if (Base64Util.decode(user.getPassword()).equals(password)) {
+        logger.info("Login successful for user with email: {}", email);
+
         WalletBalance walletBalance = walletBalanceRepository.findByUserId(user.getId());
 
         UserOutDTO userOutDTO = new UserOutDTO();
@@ -90,22 +90,26 @@ public class UserServiceImpl implements UserService {
         userOutDTO.setEmail(user.getEmail());
         userOutDTO.setPhoneNo(user.getPhoneNo());
         userOutDTO.setRole(user.getRole().name());
-        // Include wallet balance only if the user has one
+
         if (user.getRole() == Role.USER) {
           userOutDTO.setWalletBalance(walletBalance != null ? walletBalance.getBalance() : 0.0);
         }
 
-
         return userOutDTO;
       } else {
-        throw new UserNotFoundException("User with email " + email + " not found");
+        logger.error("Invalid credentials for user with email: {}", email);
+        throw new UserNotFoundException("User not found");
       }
     } else {
+      logger.error("User with email {} not found", email);
       throw new InvalidCredentialsException("Invalid email or password");
     }
   }
+
   @Override
   public UserOutDTO getUserProfile(Integer id) {
+    logger.info("Fetching user profile for ID: {}", id);
+
     Optional<User> userOptional = userRepository.findById(id);
     if (userOptional.isPresent()) {
       User user = userOptional.get();
@@ -120,16 +124,23 @@ public class UserServiceImpl implements UserService {
       userOutDTO.setRole(user.getRole().name());
       userOutDTO.setWalletBalance(walletBalance != null ? walletBalance.getBalance() : 0.0);
 
+      logger.info("User profile fetched successfully for ID: {}", id);
       return userOutDTO;
     } else {
+      logger.error("User not found with ID: {}", id);
       throw new IllegalArgumentException("User not found");
     }
   }
+
   @Override
   public void updateUserProfile(Integer id, UserInDTO userInDTO) {
-    // Find user by ID
+    logger.info("Updating user profile for ID: {}", id);
+
     User user = userRepository.findById(id)
-      .orElseThrow(() -> new IllegalArgumentException("User not found"));
+      .orElseThrow(() -> {
+        logger.error("User not found with ID: {}", id);
+        return new IllegalArgumentException("User not found");
+      });
 
     // Update user details
     user.setFirstName(userInDTO.getFirstName());
@@ -140,18 +151,22 @@ public class UserServiceImpl implements UserService {
     }
     user.setRole(Role.valueOf(userInDTO.getRole().toUpperCase()));
 
-    // Save updated user
     userRepository.save(user);
+    logger.info("User profile updated successfully for ID: {}", id);
   }
 
   @Override
   public void deleteUser(Integer id) {
-    // Find user by ID
-    User user = userRepository.findById(id)
-      .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    logger.info("Deleting user with ID: {}", id);
 
-    // Delete user and wallet balance
+    User user = userRepository.findById(id)
+      .orElseThrow(() -> {
+        logger.error("User not found with ID: {}", id);
+        return new IllegalArgumentException("User not found");
+      });
+
     userRepository.delete(user);
     walletBalanceRepository.deleteByUserId(id);
+    logger.info("User and associated wallet balance deleted successfully for ID: {}", id);
   }
 }

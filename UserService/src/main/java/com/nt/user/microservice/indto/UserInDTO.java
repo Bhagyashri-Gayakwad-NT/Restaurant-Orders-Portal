@@ -6,22 +6,31 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UserInDTO {
-  @NotBlank(message = "Last name is required")
-  @Size(min = 2, max = 30, message = "First name must be between 2 and 30 characters")
+  @NotBlank(message = "First name is required")
+  @Pattern(regexp = "^[A-Z][a-zA-Z]{2,}$", message = "First name must start with a capital letter, have no spaces, digits, or special characters, and be at least 3 characters long")
   private String firstName;
+
   @NotBlank(message = "Last name is required")
-  @Size(min = 2, max = 30, message = "First name must be between 2 and 30 characters")
+  @Pattern(regexp = "^[A-Z][a-zA-Z]{2,}$", message = "Last name must start with a capital letter, have no spaces, digits, or special characters, and be at least 3 characters long")
   private String lastName;
-  @NotBlank(message = "Email is required")
+
+//  @NotBlank(message = "Email is required")
   @Email(message = "Email should be valid")
+  @Pattern(regexp = "^[A-Za-z0-9._%+-]+@nucleusteq\\.com$", message = "Email is required and Email must end with @nucleusteq.com")
   private String email;
+
   @NotBlank(message = "Password is required")
-  @Size(min = 4, message = "Password must be at least 4 characters long")
+  @Size(min = 4, message = "Password must be at least 4 characters long and 1 number ")
+  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z]).{4,}$", message = "Password must contain at least 4 characters and 1 number")
   private String password;
+
   @NotBlank(message = "Phone number is required")
-  @Pattern(regexp = "^\\d{10}$", message = "Phone number must be 10 digits")
+  @Pattern(regexp = "^[9876]\\d{9}$", message = "Phone number must start with 9, 8, 7, or 6 and contain 10 digits")
   private String phoneNo;
-  @NotBlank(message = "Role is required")
+
+
+//  @NotBlank(message = "Role is required")
+  @Pattern(regexp = "^(USER|RESTAURANT_OWNER)$", message = "Role must be either 'USER' or 'RESTAURANT_OWNER'")
   private String role;
 
   public String getFirstName() {
