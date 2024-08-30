@@ -7,7 +7,6 @@ public class UserOutDTOTests {
 
   @Test
   public void testGettersAndSetters() {
-    // Arrange
     UserOutDTO userOutDTO = new UserOutDTO();
     Integer expectedId = 1;
     String expectedFirstName = "John";
@@ -17,7 +16,6 @@ public class UserOutDTOTests {
     String expectedRole = "USER";
     Double expectedWalletBalance = 1000.0;
 
-    // Act
     userOutDTO.setId(expectedId);
     userOutDTO.setFirstName(expectedFirstName);
     userOutDTO.setLastName(expectedLastName);
@@ -26,7 +24,6 @@ public class UserOutDTOTests {
     userOutDTO.setRole(expectedRole);
     userOutDTO.setWalletBalance(expectedWalletBalance);
 
-    // Assert
     assertEquals(expectedId, userOutDTO.getId());
     assertEquals(expectedFirstName, userOutDTO.getFirstName());
     assertEquals(expectedLastName, userOutDTO.getLastName());
@@ -48,7 +45,6 @@ public class UserOutDTOTests {
     String role = "RESTAURANT_OWNER";
     Double walletBalance = 500.0;
 
-    // Act
     userOutDTO.setId(id);
     userOutDTO.setFirstName(firstName);
     userOutDTO.setLastName(lastName);
@@ -57,7 +53,6 @@ public class UserOutDTOTests {
     userOutDTO.setRole(role);
     userOutDTO.setWalletBalance(walletBalance);
 
-    // Assert
     assertEquals(id, userOutDTO.getId());
     assertEquals(firstName, userOutDTO.getFirstName());
     assertEquals(lastName, userOutDTO.getLastName());

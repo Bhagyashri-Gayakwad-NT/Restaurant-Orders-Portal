@@ -47,7 +47,8 @@ public class UserInDTOTests {
 
     Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
     assertEquals(1, violations.size());
-    assertEquals("First name must start with a capital letter, have no spaces, digits, or special characters, and be at least 3 characters long",
+    assertEquals("First name must start with a capital letter," +
+        " have no spaces, digits, or special characters, and be at least 3 characters long",
       violations.iterator().next().getMessage());
   }
 
@@ -63,7 +64,8 @@ public class UserInDTOTests {
 
     Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
     assertEquals(1, violations.size());
-    assertEquals("Last name must start with a capital letter, have no spaces, digits, or special characters, and be at least 3 characters long",
+    assertEquals("Last name must start with a capital letter," +
+        " have no spaces, digits, or special characters, and be at least 3 characters long",
       violations.iterator().next().getMessage());
   }
 
@@ -128,37 +130,5 @@ public class UserInDTOTests {
     assertEquals("Role must be either 'USER' or 'RESTAURANT_OWNER'",
       violations.iterator().next().getMessage());
   }
-
-//  @Test
-//  public void testEmptyFirstName() {
-//    UserInDTO userInDTO = new UserInDTO();
-//    userInDTO.setFirstName(""); // Empty first name
-//    userInDTO.setLastName("Doe");
-//    userInDTO.setEmail("john.doe@nucleusteq.com");
-//    userInDTO.setPassword("Password1");
-//    userInDTO.setPhoneNo("9876543210");
-//    userInDTO.setRole("USER");
-//
-//    Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
-//    assertEquals(1, violations.size());
-//    assertEquals("First name is required",
-//      violations.iterator().next().getMessage());
-//  }
-
-//  @Test
-//  public void testEmptyLastName() {
-//    UserInDTO userInDTO = new UserInDTO();
-//    userInDTO.setFirstName("John");
-//    userInDTO.setLastName(""); // Empty last name
-//    userInDTO.setEmail("john.doe@nucleusteq.com");
-//    userInDTO.setPassword("Password1");
-//    userInDTO.setPhoneNo("9876543210");
-//    userInDTO.setRole("USER");
-//
-//    Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
-//    assertEquals(1, violations.size());
-//    assertEquals("Last name is required",
-//      violations.iterator().next().getMessage());
- // }
 
 }

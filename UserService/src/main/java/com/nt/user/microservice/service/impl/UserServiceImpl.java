@@ -77,7 +77,6 @@ public class UserServiceImpl implements UserService {
     if (userOptional.isPresent()) {
       User user = userOptional.get();
 
-      // Decode the stored password and compare it with the provided one
       if (user.getPassword().equals(password)) {
         logger.info("Login successful for user with email: {}", email);
 
@@ -156,7 +155,7 @@ public class UserServiceImpl implements UserService {
 
     userRepository.save(user);
     logger.info("User profile updated successfully for ID: {}", id);
-    UserResponse userResponse=new UserResponse();
+    UserResponse userResponse = new UserResponse();
     userResponse.setSuccessMessage("user updated successfull");
     return userResponse;
   }

@@ -5,12 +5,11 @@ import org.junit.jupiter.api.Test;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AddressInDTOTest {
+class AddressesInDTOTest {
 
   private AddressInDTO addressInDTO;
   private Validator validator;
@@ -79,25 +78,4 @@ class AddressInDTOTest {
     assertTrue(violations.isEmpty(), "There should be no validation violations for a valid AddressInDTO");
   }
 
-//  @Test
-//  void testInvalidAddressInDTO() {
-//    addressInDTO.setStreet("123");
-//    addressInDTO.setCity("NY");
-//    addressInDTO.setState("N@wY0rk");
-//    addressInDTO.setCountry("United States of America"); // exceeds max length
-//    addressInDTO.setPinCode("1234"); // not 6 digits
-//    addressInDTO.setUserId(null); // null user ID
-//
-//    Set<javax.validation.ConstraintViolation<AddressInDTO>> violations = validator.validate(addressInDTO);
-//
-//    assertFalse(violations.isEmpty(), "There should be validation violations for an invalid AddressInDTO");
-//
-//    // Check specific violations
-//    assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Street must be between 4 and 100 characters")));
-//    assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("City must be between 3 and 50 characters")));
-//    assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("State must contain only alphabetic characters")));
-//    assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Country cannot be longer than 50 characters")));
-//    assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Pin code must be exactly 6 digits and cannot contain spaces or characters")));
-//    assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("User ID is required")));
-//  }
 }

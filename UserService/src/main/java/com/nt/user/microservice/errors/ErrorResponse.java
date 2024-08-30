@@ -12,7 +12,7 @@ public class ErrorResponse {
   public ErrorResponse(int status, String message) {
     this.status = status;
     this.message = message;
-    this.errors = new HashMap<>(); // Always initialize errors as an empty map
+    this.errors = new HashMap<>();
   }
 
   public ErrorResponse(int status, String message, Map<String, String> errors) {
@@ -22,7 +22,7 @@ public class ErrorResponse {
   }
 
   public ErrorResponse() {
-    this.errors = new HashMap<>(); // Ensure errors is initialized
+    this.errors = new HashMap<>();
   }
 
   public int getStatus() {

@@ -37,7 +37,7 @@ public class UserController {
   @PostMapping("/register")
   public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody UserInDTO userInDTO) {
     logger.info("Registering user with email: {}", userInDTO.getEmail());
-    System.out.println("Password="+userInDTO.getPassword());
+    System.out.println("Password=" + userInDTO.getPassword());
     String userAdded = userService.registerUser(userInDTO);
     UserResponse successMessage = new UserResponse();
     successMessage.setSuccessMessage(userAdded);
@@ -64,9 +64,9 @@ public class UserController {
   @PutMapping("/update/{id}")
   public ResponseEntity<?> updateUserProfile(@PathVariable Integer id, @RequestBody UserInDTO userInDTO) {
     logger.info("Updating profile for user with ID: {}", id);
-    UserResponse result=userService.updateUserProfile(id, userInDTO);
+    UserResponse result = userService.updateUserProfile(id, userInDTO);
     logger.info("Profile updated successfully for user ID: {}", id);
-    return new ResponseEntity<>(result,HttpStatus.OK);
+    return new ResponseEntity<>(result, HttpStatus.OK);
   }
 
   @DeleteMapping("/delete/{id}")
@@ -77,6 +77,7 @@ public class UserController {
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 }
+
 
 
 

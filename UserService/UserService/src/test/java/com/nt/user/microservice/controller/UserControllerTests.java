@@ -2,7 +2,6 @@ package com.nt.user.microservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nt.user.microservice.contoller.UserController;
-import com.nt.user.microservice.indto.LogInDTO;
 import com.nt.user.microservice.indto.UserInDTO;
 import com.nt.user.microservice.outdto.UserOutDTO;
 import com.nt.user.microservice.outdto.UserResponse;
@@ -15,10 +14,16 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 class UserControllerTests {
@@ -50,10 +55,11 @@ class UserControllerTests {
 
     when(userService.getUserProfile(anyInt())).thenReturn(userOutDTO);
 
-    mockMvc.perform(MockMvcRequestBuilders.get("/users/profile/1")
+    mockMvc.perform(get("/api/users/profile/1")
         .accept(MediaType.APPLICATION_JSON))
-      .andExpect(MockMvcResultMatchers.status().isOk())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value("John"))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.firstName").value("John"))
+      .andExpect(jsonPath("$.walletBalance").value(100.0))
       .andDo(print());
   }
 
@@ -71,11 +77,11 @@ class UserControllerTests {
 
     when(userService.updateUserProfile(anyInt(), any(UserInDTO.class))).thenReturn(userResponse);
 
-    mockMvc.perform(MockMvcRequestBuilders.put("/users/update/1")
+    mockMvc.perform(put("/api/users/update/1")
         .contentType(MediaType.APPLICATION_JSON)
         .content(asJsonString(userInDTO)))
-      .andExpect(MockMvcResultMatchers.status().isOk())
-      .andExpect(MockMvcResultMatchers.jsonPath("$.successMessage").value("User updated successfully"))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.successMessage").value("User updated successfully"))
       .andDo(print());
   }
 
@@ -83,8 +89,8 @@ class UserControllerTests {
   void testDeleteUser() throws Exception {
     doNothing().when(userService).deleteUser(anyInt());
 
-    mockMvc.perform(MockMvcRequestBuilders.delete("/users/delete/1"))
-      .andExpect(MockMvcResultMatchers.status().isNoContent())
+    mockMvc.perform(delete("/api/users/delete/1"))
+      .andExpect(status().isNoContent())
       .andDo(print());
   }
 
