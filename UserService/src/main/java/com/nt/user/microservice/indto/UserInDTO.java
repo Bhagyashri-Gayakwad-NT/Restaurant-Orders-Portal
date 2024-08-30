@@ -3,15 +3,18 @@ package com.nt.user.microservice.indto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 public class UserInDTO {
   @NotBlank(message = "First name is required")
-  @Pattern(regexp = "^[A-Z][a-zA-Z]{2,}$", message = "First name must start with a capital letter, have no spaces, digits, or special characters, and be at least 3 characters long")
+  @Pattern(regexp = "^[A-Z][a-zA-Z]{2,}$",
+    message = "First name must start with a capital letter," +
+      " have no spaces, digits, or special characters, and be at least 3 characters long")
   private String firstName;
 
   @NotBlank(message = "Last name is required")
-  @Pattern(regexp = "^[A-Z][a-zA-Z]{2,}$", message = "Last name must start with a capital letter, have no spaces, digits, or special characters, and be at least 3 characters long")
+  @Pattern(regexp = "^[A-Z][a-zA-Z]{2,}$",
+    message = "Last name must start with a capital letter," +
+      " have no spaces, digits, or special characters, and be at least 3 characters long")
   private String lastName;
 
 //  @NotBlank(message = "Email is required")

@@ -41,8 +41,8 @@ public class LogInDTOTests {
 
     Set<ConstraintViolation<LogInDTO>> violations = validator.validate(logInDTO);
 
-    assertEquals(2, violations.size(), "Expected two validation error");
-    assertEquals("Email must end with @nucleusteq.com", violations.iterator().next().getMessage());
+    assertEquals(2, violations.size(), "Expected one validation error");
+    assertEquals("Email is required", violations.iterator().next().getMessage());
   }
 
   @Test

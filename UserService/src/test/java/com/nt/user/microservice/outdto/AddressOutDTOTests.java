@@ -9,7 +9,6 @@ class AddressOutDTOTests {
   void testGettersAndSetters() {
     AddressOutDTO address = new AddressOutDTO();
 
-    // Set values
     address.setId(1);
     address.setStreet("123 Main St");
     address.setCity("Springfield");
@@ -17,7 +16,6 @@ class AddressOutDTOTests {
     address.setCountry("USA");
     address.setPinCode("62701");
 
-    // Assert that the values are correctly retrieved
     assertEquals(1, address.getId());
     assertEquals("123 Main St", address.getStreet());
     assertEquals("Springfield", address.getCity());
@@ -28,7 +26,6 @@ class AddressOutDTOTests {
 
   @Test
   void testAddressOutDTOConstructor() {
-    // Initialize with constructor
     AddressOutDTO address = new AddressOutDTO();
     address.setId(1);
     address.setStreet("123 Main St");
@@ -37,7 +34,6 @@ class AddressOutDTOTests {
     address.setCountry("USA");
     address.setPinCode("62701");
 
-    // Verify the constructor values
     assertNotNull(address.getId());
     assertNotNull(address.getStreet());
     assertNotNull(address.getCity());

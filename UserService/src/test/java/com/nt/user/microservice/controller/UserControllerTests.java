@@ -2,7 +2,6 @@ package com.nt.user.microservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nt.user.microservice.contoller.UserController;
-import com.nt.user.microservice.indto.LogInDTO;
 import com.nt.user.microservice.indto.UserInDTO;
 import com.nt.user.microservice.outdto.UserOutDTO;
 import com.nt.user.microservice.outdto.UserResponse;
@@ -36,6 +35,7 @@ class UserControllerTests {
     MockitoAnnotations.openMocks(this);
     mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
   }
+  
 
   @Test
   void testGetUserProfile() throws Exception {
