@@ -1,6 +1,6 @@
 package com.nt.user.microservice.exceptions;
 
-import com.nt.user.microservice.errors.ErrorResponse;
+import com.nt.user.microservice.outdto.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

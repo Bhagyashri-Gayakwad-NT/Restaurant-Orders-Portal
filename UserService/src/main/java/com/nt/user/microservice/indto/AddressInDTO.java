@@ -4,6 +4,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 public class AddressInDTO {
   @NotBlank(message = "Street is required")
@@ -77,6 +78,33 @@ public class AddressInDTO {
 
   public void setUserId(Integer userId) {
     this.userId = userId;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    AddressInDTO that = (AddressInDTO) o;
+    return Objects.equals(street, that.street) && Objects.equals(city, that.city) &&
+      Objects.equals(state, that.state) && Objects.equals(country, that.country) &&
+      Objects.equals(pinCode, that.pinCode) && Objects.equals(userId, that.userId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(street, city, state, country, pinCode, userId);
+  }
+
+  @Override
+  public String toString() {
+    return "AddressInDTO{" +
+      "street='" + street + '\'' +
+      ", city='" + city + '\'' +
+      ", state='" + state + '\'' +
+      ", country='" + country + '\'' +
+      ", pinCode='" + pinCode + '\'' +
+      ", userId=" + userId +
+      '}';
   }
 }
 

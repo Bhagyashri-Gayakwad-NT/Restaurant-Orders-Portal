@@ -35,14 +35,17 @@ public class LogInDTOTests {
 
   @Test
   void testEmailIsBlank() {
-    LogInDTO logInDTO = new LogInDTO();
-    logInDTO.setEmail("");
-    logInDTO.setPassword("password123");
+    UserInDTO userInDTO = new UserInDTO();
+    userInDTO.setFirstName("John");
+    userInDTO.setLastName("Doe");
+    userInDTO.setEmail("");
+    userInDTO.setPassword("password123");
+    userInDTO.setPhoneNo("9876543210");
+    userInDTO.setRole("USER");
 
-    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(logInDTO);
-
-    assertEquals(2, violations.size(), "Expected one validation error");
-    assertEquals("Email is required", violations.iterator().next().getMessage());
+    Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
+    assertEquals(1, violations.size(), "Expected one validation error");
+    assertEquals("Email is required and Email must end with @nucleusteq.com", violations.iterator().next().getMessage());
   }
 
   @Test

@@ -3,6 +3,7 @@ package com.nt.user.microservice.indto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.Objects;
 
 public class UserInDTO {
   @NotBlank(message = "First name is required")
@@ -80,6 +81,33 @@ public class UserInDTO {
 
   public void setRole(String role) {
     this.role = role;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    UserInDTO userInDTO = (UserInDTO) o;
+    return Objects.equals(firstName, userInDTO.firstName) && Objects.equals(lastName, userInDTO.lastName) &&
+      Objects.equals(email, userInDTO.email) && Objects.equals(password, userInDTO.password) &&
+      Objects.equals(phoneNo, userInDTO.phoneNo) && Objects.equals(role, userInDTO.role);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(firstName, lastName, email, password, phoneNo, role);
+  }
+
+  @Override
+  public String toString() {
+    return "UserInDTO{" +
+      "firstName='" + firstName + '\'' +
+      ", lastName='" + lastName + '\'' +
+      ", email='" + email + '\'' +
+      ", password='" + password + '\'' +
+      ", phoneNo='" + phoneNo + '\'' +
+      ", role='" + role + '\'' +
+      '}';
   }
 }
 

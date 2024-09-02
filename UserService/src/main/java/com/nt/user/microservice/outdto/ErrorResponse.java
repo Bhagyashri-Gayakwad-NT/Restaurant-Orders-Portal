@@ -1,4 +1,4 @@
-package com.nt.user.microservice.errors;
+package com.nt.user.microservice.outdto;
 
 import java.util.HashMap;
 import java.util.Map;
