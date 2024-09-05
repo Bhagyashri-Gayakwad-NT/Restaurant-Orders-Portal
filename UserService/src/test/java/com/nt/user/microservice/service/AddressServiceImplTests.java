@@ -1,10 +1,16 @@
 package com.nt.user.microservice.service;
 
 import com.nt.user.microservice.entites.Address;
+import com.nt.user.microservice.entites.User;
+import com.nt.user.microservice.exceptions.AddressNotFoundException;
+import com.nt.user.microservice.exceptions.UserNotFoundException;
 import com.nt.user.microservice.indto.AddressInDTO;
 import com.nt.user.microservice.outdto.AddressOutDTO;
+import com.nt.user.microservice.outdto.UserResponse;
 import com.nt.user.microservice.repository.AddressRepository;
+import com.nt.user.microservice.repository.UserRepository;
 import com.nt.user.microservice.service.impl.AddressServiceImpl;
+import com.nt.user.microservice.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -24,6 +31,9 @@ class AddressServiceImplTests {
 
   @Mock
   private AddressRepository addressRepository;
+
+  @Mock
+  private UserRepository userRepository;
 
   @BeforeEach
   void setUp() {
@@ -40,6 +50,9 @@ class AddressServiceImplTests {
     addressInDTO.setPinCode("62704");
     addressInDTO.setUserId(1);
 
+    User user = new User(); // Assume User entity is initialized appropriately
+    user.setId(addressInDTO.getUserId());
+
     Address address = new Address();
     address.setId(1);
     address.setStreet(addressInDTO.getStreet());
@@ -49,19 +62,30 @@ class AddressServiceImplTests {
     address.setPinCode(addressInDTO.getPinCode());
     address.setUserId(addressInDTO.getUserId());
 
+    when(userRepository.findById(addressInDTO.getUserId())).thenReturn(Optional.of(user));
     when(addressRepository.save(any(Address.class))).thenReturn(address);
 
-    AddressOutDTO addressOutDTO = addressService.addAddress(addressInDTO);
+    UserResponse response = addressService.addAddress(addressInDTO);
 
-    assertNotNull(addressOutDTO);
-    assertEquals(address.getId(), addressOutDTO.getId());
-    assertEquals(address.getStreet(), addressOutDTO.getStreet());
-    assertEquals(address.getCity(), addressOutDTO.getCity());
-    assertEquals(address.getState(), addressOutDTO.getState());
-    assertEquals(address.getCountry(), addressOutDTO.getCountry());
-    assertEquals(address.getPinCode(), addressOutDTO.getPinCode());
+    assertNotNull(response);
+    assertEquals(Constants.ADDRESS_ADDED_SUCCESSFULLY, response.getSuccessMessage());
 
+    verify(userRepository).findById(addressInDTO.getUserId());
     verify(addressRepository).save(any(Address.class));
+  }
+
+  @Test
+  void testAddAddress_UserNotFound() {
+    AddressInDTO addressInDTO = new AddressInDTO();
+    addressInDTO.setUserId(1);
+
+    when(userRepository.findById(addressInDTO.getUserId())).thenReturn(Optional.empty());
+
+    UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> addressService.addAddress(addressInDTO));
+    assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
+
+    verify(userRepository).findById(addressInDTO.getUserId());
+    verify(addressRepository, never()).save(any(Address.class));
   }
 
   @Test
@@ -80,7 +104,8 @@ class AddressServiceImplTests {
 
     addresses.add(address1);
 
-    when(addressRepository.findByUserId(userId)).thenReturn(addresses);
+    when(userRepository.findById(userId)).thenReturn(Optional.of(new User())); // Mock user retrieval
+    when(addressRepository.findAllByUserId(userId)).thenReturn(addresses);
 
     List<AddressOutDTO> addressOutDTOList = addressService.getUserAddresses(userId);
 
@@ -88,7 +113,21 @@ class AddressServiceImplTests {
     assertEquals(1, addressOutDTOList.size());
     assertEquals(address1.getId(), addressOutDTOList.get(0).getId());
 
-    verify(addressRepository).findByUserId(userId);
+    verify(userRepository).findById(userId);
+    verify(addressRepository).findAllByUserId(userId);
+  }
+
+  @Test
+  void testGetUserAddresses_UserNotFound() {
+    Integer userId = 1;
+
+    when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+    UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> addressService.getUserAddresses(userId));
+    assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
+
+    verify(userRepository).findById(userId);
+    verify(addressRepository, never()).findAllByUserId(userId);
   }
 
   @Test
@@ -108,7 +147,7 @@ class AddressServiceImplTests {
 
     when(addressRepository.existsById(addressId)).thenReturn(false);
 
-    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> addressService.deleteAddress(addressId));
+    AddressNotFoundException exception = assertThrows(AddressNotFoundException.class, () -> addressService.deleteAddress(addressId));
     assertEquals("Address not found", exception.getMessage());
 
     verify(addressRepository, never()).deleteById(addressId);

@@ -1,5 +1,6 @@
 package com.nt.user.microservice.outdto;
 
+import com.nt.user.microservice.exceptions.ErrorResponse;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

@@ -8,7 +8,7 @@ public class WalletBalanceDTOTests {
 
   @Test
   void testGettersAndSetters() {
-    WalletBalanceDTO walletBalanceDTO = new WalletBalanceDTO();
+    WalletBalanceInDTO walletBalanceDTO = new WalletBalanceInDTO();
 
     // Test setting and getting ID
     walletBalanceDTO.setId(1);
@@ -21,7 +21,7 @@ public class WalletBalanceDTOTests {
 
   @Test
   void testNegativeBalance() {
-    WalletBalanceDTO walletBalanceDTO = new WalletBalanceDTO();
+    WalletBalanceInDTO walletBalanceDTO = new WalletBalanceInDTO();
 
     // Test setting and getting a negative balance
     walletBalanceDTO.setBalance(-500.00);
@@ -30,7 +30,7 @@ public class WalletBalanceDTOTests {
 
   @Test
   void testZeroBalance() {
-    WalletBalanceDTO walletBalanceDTO = new WalletBalanceDTO();
+    WalletBalanceInDTO walletBalanceDTO = new WalletBalanceInDTO();
 
     // Test setting and getting a zero balance
     walletBalanceDTO.setBalance(0.00);
@@ -39,7 +39,7 @@ public class WalletBalanceDTOTests {
 
   @Test
   void testLargeBalance() {
-    WalletBalanceDTO walletBalanceDTO = new WalletBalanceDTO();
+    WalletBalanceInDTO walletBalanceDTO = new WalletBalanceInDTO();
 
     // Test setting and getting a large balance
     walletBalanceDTO.setBalance(1000000000.00);

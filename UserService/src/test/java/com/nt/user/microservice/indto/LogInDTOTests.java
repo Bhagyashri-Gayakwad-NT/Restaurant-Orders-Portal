@@ -34,19 +34,21 @@ public class LogInDTOTests {
   }
 
   @Test
-  void testEmailIsBlank() {
+  public void testInvalidEmail() {
     UserInDTO userInDTO = new UserInDTO();
     userInDTO.setFirstName("John");
     userInDTO.setLastName("Doe");
-    userInDTO.setEmail("");
-    userInDTO.setPassword("password123");
+    userInDTO.setEmail("john.doe@gmail.com");
+    userInDTO.setPassword("Password1");
     userInDTO.setPhoneNo("9876543210");
     userInDTO.setRole("USER");
 
     Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
-    assertEquals(1, violations.size(), "Expected one validation error");
-    assertEquals("Email is required and Email must end with @nucleusteq.com", violations.iterator().next().getMessage());
+    assertEquals(1, violations.size());
+    assertEquals("Email must be valid, must end with @nucleusteq.com, and contain at least one alphabet before the '@' symbol.",
+      violations.iterator().next().getMessage());
   }
+
 
   @Test
   void testEmailDoesNotEndWithNucleusTeqDomain() {
@@ -57,8 +59,10 @@ public class LogInDTOTests {
     Set<ConstraintViolation<LogInDTO>> violations = validator.validate(logInDTO);
 
     assertEquals(1, violations.size(), "Expected one validation error");
-    assertEquals("Email must end with @nucleusteq.com", violations.iterator().next().getMessage());
+    assertEquals("Email must be valid, must end with @nucleusteq.com, and contain at " +
+      "least one alphabet before the '@' symbol.", violations.iterator().next().getMessage());
   }
+
 
   @Test
   void testPasswordIsBlank() {
