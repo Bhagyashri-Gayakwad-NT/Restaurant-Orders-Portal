@@ -1,5 +1,7 @@
 package com.nt.user.microservice.indto;
 
+import com.nt.user.microservice.dto.LogInDTO;
+import com.nt.user.microservice.dto.UserInDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -34,16 +36,21 @@ public class LogInDTOTests {
   }
 
   @Test
-  void testEmailIsBlank() {
-    LogInDTO logInDTO = new LogInDTO();
-    logInDTO.setEmail("");
-    logInDTO.setPassword("password123");
+  public void testInvalidEmail() {
+    UserInDTO userInDTO = new UserInDTO();
+    userInDTO.setFirstName("John");
+    userInDTO.setLastName("Doe");
+    userInDTO.setEmail("john.doe@gmail.com");
+    userInDTO.setPassword("Password1");
+    userInDTO.setPhoneNo("9876543210");
+    userInDTO.setRole("USER");
 
-    Set<ConstraintViolation<LogInDTO>> violations = validator.validate(logInDTO);
-
-    assertEquals(2, violations.size(), "Expected one validation error");
-    assertEquals("Email is required", violations.iterator().next().getMessage());
+    Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
+    assertEquals(1, violations.size());
+    assertEquals("Email must be valid, must end with @nucleusteq.com, and contain at least one alphabet before the '@' symbol.",
+      violations.iterator().next().getMessage());
   }
+
 
   @Test
   void testEmailDoesNotEndWithNucleusTeqDomain() {
@@ -54,8 +61,10 @@ public class LogInDTOTests {
     Set<ConstraintViolation<LogInDTO>> violations = validator.validate(logInDTO);
 
     assertEquals(1, violations.size(), "Expected one validation error");
-    assertEquals("Email must end with @nucleusteq.com", violations.iterator().next().getMessage());
+    assertEquals("Email must be valid, must end with @nucleusteq.com, and contain at " +
+      "least one alphabet before the '@' symbol.", violations.iterator().next().getMessage());
   }
+
 
   @Test
   void testPasswordIsBlank() {

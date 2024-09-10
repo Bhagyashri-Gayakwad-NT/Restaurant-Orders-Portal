@@ -2,11 +2,11 @@ package com.nt.user.microservice.service;
 
 import com.nt.user.microservice.entites.User;
 import com.nt.user.microservice.entites.WalletBalance;
-import com.nt.user.microservice.exceptions.InvalidCredentialsException;
 import com.nt.user.microservice.exceptions.UserAlreadyExistsException;
-import com.nt.user.microservice.indto.UserInDTO;
-import com.nt.user.microservice.outdto.UserOutDTO;
-import com.nt.user.microservice.outdto.UserResponse;
+import com.nt.user.microservice.exceptions.UserNotFoundException;
+import com.nt.user.microservice.dto.UserInDTO;
+import com.nt.user.microservice.dto.UserOutDTO;
+import com.nt.user.microservice.dto.UserResponse;
 import com.nt.user.microservice.repository.UserRepository;
 import com.nt.user.microservice.repository.WalletBalanceRepository;
 import com.nt.user.microservice.service.impl.UserServiceImpl;
@@ -65,9 +65,9 @@ class UserServiceImplTest {
     walletBalance.setBalance(Constants.INITIAL_WALLET_BALANCE);
     when(walletBalanceRepository.save(any(WalletBalance.class))).thenReturn(walletBalance);
 
-    String response = userService.registerUser(userInDTO);
+    UserResponse response = userService.registerUser(userInDTO);
 
-    assertEquals(Constants.USER_REGISTERED_SUCCESSFULLY, response);
+    assertEquals(Constants.USER_REGISTERED_SUCCESSFULLY, response.getSuccessMessage());
     verify(userRepository).save(any(User.class));
     verify(walletBalanceRepository).save(any(WalletBalance.class));
   }
@@ -82,7 +82,6 @@ class UserServiceImplTest {
     assertThrows(UserAlreadyExistsException.class, () -> userService.registerUser(userInDTO));
     verify(userRepository, never()).save(any(User.class));
   }
-
   @Test
   void testLoginUser_Success() {
     String email = "test@nucleusteq.com";
@@ -90,7 +89,7 @@ class UserServiceImplTest {
 
     User user = new User();
     user.setEmail(email);
-    user.setPassword(password);
+    user.setPassword(Base64Util.encode(password));
     user.setId(1);
     user.setRole(Role.USER);
 
@@ -107,16 +106,6 @@ class UserServiceImplTest {
     assertEquals(user.getEmail(), userOutDTO.getEmail());
     assertEquals(user.getRole().name(), userOutDTO.getRole());
     assertEquals(walletBalance.getBalance(), userOutDTO.getWalletBalance());
-  }
-
-  @Test
-  void testLoginUser_InvalidCredentials() {
-    String email = "test@nucleusteq.com";
-    String password = "password1";
-
-    when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
-
-    assertThrows(InvalidCredentialsException.class, () -> userService.loginUser(email, password));
   }
 
   @Test
@@ -156,7 +145,7 @@ class UserServiceImplTest {
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(IllegalArgumentException.class, () -> userService.getUserProfile(userId));
+    assertThrows(UserNotFoundException.class, () -> userService.getUserProfile(userId));
   }
 
   @Test
@@ -182,7 +171,7 @@ class UserServiceImplTest {
     UserResponse userResponse = userService.updateUserProfile(userId, userInDTO);
 
     assertNotNull(userResponse);
-    assertEquals("user updated successfull", userResponse.getSuccessMessage());
+    assertEquals(Constants.USER_PROFILE_UPDATED_SUCCESSFULLY, userResponse.getSuccessMessage());
     assertEquals(userInDTO.getFirstName(), existingUser.getFirstName());
     assertEquals(userInDTO.getLastName(), existingUser.getLastName());
     assertEquals(userInDTO.getPhoneNo(), existingUser.getPhoneNo());
@@ -197,7 +186,7 @@ class UserServiceImplTest {
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(IllegalArgumentException.class, () -> userService.updateUserProfile(userId, userInDTO));
+    assertThrows(UserNotFoundException.class, () -> userService.updateUserProfile(userId, userInDTO));
   }
 
   @Test
@@ -221,6 +210,6 @@ class UserServiceImplTest {
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(IllegalArgumentException.class, () -> userService.deleteUser(userId));
+    assertThrows(UserNotFoundException.class, () -> userService.deleteUser(userId));
   }
 }

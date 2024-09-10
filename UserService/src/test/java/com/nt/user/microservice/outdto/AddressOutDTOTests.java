@@ -1,5 +1,6 @@
 package com.nt.user.microservice.outdto;
 
+import com.nt.user.microservice.dto.AddressOutDTO;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

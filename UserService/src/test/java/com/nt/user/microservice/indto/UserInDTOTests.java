@@ -1,5 +1,6 @@
 package com.nt.user.microservice.indto;
 
+import com.nt.user.microservice.dto.UserInDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -47,8 +48,7 @@ public class UserInDTOTests {
 
     Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
     assertEquals(1, violations.size());
-    assertEquals("First name must start with a capital letter," +
-        " have no spaces, digits, or special characters, and be at least 3 characters long",
+    assertEquals("First name must start with a capital letter and contain only letters",
       violations.iterator().next().getMessage());
   }
 
@@ -64,8 +64,7 @@ public class UserInDTOTests {
 
     Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
     assertEquals(1, violations.size());
-    assertEquals("Last name must start with a capital letter," +
-        " have no spaces, digits, or special characters, and be at least 3 characters long",
+    assertEquals("Last name must start with a capital letter and contain only letters",
       violations.iterator().next().getMessage());
   }
 
@@ -81,8 +80,9 @@ public class UserInDTOTests {
 
     Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
     assertEquals(1, violations.size());
-    assertEquals("Email is required and Email must end with @nucleusteq.com",
+    assertEquals("Email must be valid, must end with @nucleusteq.com, and contain at least one alphabet before the '@' symbol.",
       violations.iterator().next().getMessage());
+
   }
 
   @Test
@@ -98,6 +98,7 @@ public class UserInDTOTests {
     Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
     assertEquals(0, violations.size());
   }
+
 
   @Test
   public void testInvalidPhoneNo() {
@@ -130,5 +131,4 @@ public class UserInDTOTests {
     assertEquals("Role must be either 'USER' or 'RESTAURANT_OWNER'",
       violations.iterator().next().getMessage());
   }
-
 }
