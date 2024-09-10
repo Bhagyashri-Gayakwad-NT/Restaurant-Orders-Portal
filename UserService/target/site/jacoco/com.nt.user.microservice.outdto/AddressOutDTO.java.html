@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddressOutDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.outdto</a> &gt; <span class="el_source">AddressOutDTO.java</span></div><h1>AddressOutDTO.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.outdto;
+
+/**
+ * Data Transfer Object (DTO) for transferring address details in API responses.
+ * This class encapsulates information such as street, city, state, country, and pin code.
+ */
+<span class="fc" id="L7">public class AddressOutDTO {</span>
+
+  /**
+   * The unique identifier for the address.
+   */
+  private Integer id;
+
+  /**
+   * The street name of the address.
+   */
+  private String street;
+
+  /**
+   * The city where the address is located.
+   */
+  private String city;
+
+  /**
+   * The state or province where the address is located.
+   */
+  private String state;
+
+  /**
+   * The country where the address is located.
+   */
+  private String country;
+
+  /**
+   * The postal pin code for the address.
+   */
+  private String pinCode;
+
+  /**
+   * Retrieves the unique identifier for the address.
+   *
+   * @return the address ID
+   */
+  public Integer getId() {
+<span class="fc" id="L45">    return id;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the address.
+   *
+   * @param id the address ID to set
+   */
+  public void setId(Integer id) {
+<span class="fc" id="L54">    this.id = id;</span>
+<span class="fc" id="L55">  }</span>
+
+  /**
+   * Retrieves the street name of the address.
+   *
+   * @return the street name
+   */
+  public String getStreet() {
+<span class="fc" id="L63">    return street;</span>
+  }
+
+  /**
+   * Sets the street name of the address.
+   *
+   * @param street the street name to set
+   */
+  public void setStreet(String street) {
+<span class="fc" id="L72">    this.street = street;</span>
+<span class="fc" id="L73">  }</span>
+
+  /**
+   * Retrieves the city where the address is located.
+   *
+   * @return the city name
+   */
+  public String getCity() {
+<span class="fc" id="L81">    return city;</span>
+  }
+
+  /**
+   * Sets the city where the address is located.
+   *
+   * @param city the city name to set
+   */
+  public void setCity(String city) {
+<span class="fc" id="L90">    this.city = city;</span>
+<span class="fc" id="L91">  }</span>
+
+  /**
+   * Retrieves the state or province where the address is located.
+   *
+   * @return the state or province name
+   */
+  public String getState() {
+<span class="fc" id="L99">    return state;</span>
+  }
+
+  /**
+   * Sets the state or province where the address is located.
+   *
+   * @param state the state name to set
+   */
+  public void setState(String state) {
+<span class="fc" id="L108">    this.state = state;</span>
+<span class="fc" id="L109">  }</span>
+
+  /**
+   * Retrieves the country where the address is located.
+   *
+   * @return the country name
+   */
+  public String getCountry() {
+<span class="fc" id="L117">    return country;</span>
+  }
+
+  /**
+   * Sets the country where the address is located.
+   *
+   * @param country the country name to set
+   */
+  public void setCountry(String country) {
+<span class="fc" id="L126">    this.country = country;</span>
+<span class="fc" id="L127">  }</span>
+
+  /**
+   * Retrieves the postal pin code for the address.
+   *
+   * @return the postal pin code
+   */
+  public String getPinCode() {
+<span class="fc" id="L135">    return pinCode;</span>
+  }
+
+  /**
+   * Sets the postal pin code for the address.
+   *
+   * @param pinCode the postal pin code to set
+   */
+  public void setPinCode(String pinCode) {
+<span class="fc" id="L144">    this.pinCode = pinCode;</span>
+<span class="fc" id="L145">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

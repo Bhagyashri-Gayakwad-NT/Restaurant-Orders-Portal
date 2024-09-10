@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.exceptions</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * GlobalExceptionHandler handles all exceptions across the application.
+ * It provides specific handling for custom exceptions as well as built-in validation and method exceptions.
+ */
+@ControllerAdvice
+<span class="fc" id="L19">public class GlobalExceptionHandler {</span>
+
+  /**
+   * Handles UserAlreadyExistsException, which occurs when a user tries to register with an email that is already taken.
+   *
+   * @param ex the exception to handle
+   * @return a ResponseEntity containing the error message and HTTP status CONFLICT (409)
+   */
+  @ExceptionHandler(UserAlreadyExistsException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+<span class="nc" id="L29">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());</span>
+<span class="nc" id="L30">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.CONFLICT);</span>
+  }
+
+  /**
+   * Handles UserNotFoundException, which occurs when a user is not found in the database.
+   *
+   * @param ex the exception to handle
+   * @return a ResponseEntity containing the error message and HTTP status NOT FOUND (404)
+   */
+  @ExceptionHandler(UserNotFoundException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleUserNotFoundException(UserNotFoundException ex) {
+<span class="nc" id="L41">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());</span>
+<span class="nc" id="L42">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.NOT_FOUND);</span>
+  }
+
+  /**
+   * Handles InvalidCredentialsException, which occurs when the user's login credentials are invalid.
+   *
+   * @param ex the exception to handle
+   * @return a ResponseEntity containing the error message and HTTP status UNAUTHORIZED (401)
+   */
+  @ExceptionHandler(InvalidCredentialsException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleInvalidCredentialsException(InvalidCredentialsException ex) {
+<span class="nc" id="L53">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());</span>
+<span class="nc" id="L54">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.UNAUTHORIZED);</span>
+  }
+
+  /**
+   * Handles MethodArgumentNotValidException, which occurs when validation on a method argument fails.
+   * Returns detailed field-specific error messages.
+   *
+   * @param ex the exception to handle
+   * @return a ResponseEntity containing validation errors and HTTP status BAD REQUEST (400)
+   */
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleValidationExceptions(MethodArgumentNotValidException ex) {
+<span class="nc" id="L66">    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">    for (FieldError error : ex.getBindingResult().getFieldErrors()) {</span>
+<span class="nc" id="L68">      errors.put(error.getField(), error.getDefaultMessage());</span>
+<span class="nc" id="L69">    }</span>
+<span class="nc" id="L70">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), &quot;Validation failed&quot;, errors);</span>
+<span class="nc" id="L71">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  /**
+   * Handles IllegalArgumentException, which occurs when an illegal argument is passed to a method.
+   *
+   * @param ex the exception to handle
+   * @return a ResponseEntity containing the error message and HTTP status BAD REQUEST (400)
+   */
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleIllegalArgumentException(IllegalArgumentException ex) {
+<span class="nc" id="L82">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());</span>
+<span class="nc" id="L83">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  /**
+   * Handles HttpRequestMethodNotSupportedException, which occurs when a request is made with an unsupported HTTP method.
+   *
+   * @param ex the exception to handle
+   * @return a ResponseEntity containing the error message and HTTP status METHOD NOT ALLOWED (405)
+   */
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+<span class="nc" id="L94">    String errorMessage = &quot;Method not allowed&quot;;</span>
+<span class="nc" id="L95">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), errorMessage);</span>
+<span class="nc" id="L96">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);</span>
+  }
+
+  /**
+   * Handles all other exceptions that are not explicitly handled by the above exception handlers.
+   *
+   * @param ex the exception to handle
+   * @return a ResponseEntity containing a generic error message and HTTP status INTERNAL SERVER ERROR (500)
+   */
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleGlobalException(Exception ex) {
+<span class="nc" id="L107">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), &quot;An unexpected error occurred&quot;);</span>
+<span class="nc" id="L108">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
