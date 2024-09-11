@@ -39,8 +39,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     UserOutDTO userOutDto;
     try {
       userOutDto = userFClient.getUserProfile(restaurantInDTO.getUserId());
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       throw new UserNotFoundException();
     }
     if (userOutDto.getRole().equals(Role.USER.name())) {

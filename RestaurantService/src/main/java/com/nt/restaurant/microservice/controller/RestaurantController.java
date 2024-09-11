@@ -10,7 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,7 +34,7 @@ public class RestaurantController {
   @PostMapping(value = "/addRestaurant", consumes = "multipart/form-data")
   public ResponseEntity<CommonResponse> addRestaurant(@Valid @ModelAttribute RestaurantInDTO restaurantInDTO) {
     logger.info("Received request to add a restaurant: {}", restaurantInDTO);
- CommonResponse response = restaurantService.addRestaurant(restaurantInDTO);
+    CommonResponse response = restaurantService.addRestaurant(restaurantInDTO);
     logger.info("Successfully added restaurant: {}", response.getMessage());
     return new ResponseEntity<>(response, HttpStatus.CREATED);
   }

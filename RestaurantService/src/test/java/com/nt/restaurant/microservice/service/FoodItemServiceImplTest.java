@@ -1,6 +1,5 @@
 package com.nt.restaurant.microservice.service;
 
-import com.nt.restaurant.microservice.dtoconvertion.FoodItemDtoConverter;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.FoodItem;
 import com.nt.restaurant.microservice.entities.Restaurant;
@@ -8,14 +7,11 @@ import com.nt.restaurant.microservice.exception.AlreadyExistException;
 import com.nt.restaurant.microservice.exception.NotFoundException;
 import com.nt.restaurant.microservice.indto.FoodItemInDTO;
 import com.nt.restaurant.microservice.outdto.CommonResponse;
-import com.nt.restaurant.microservice.outdto.FoodItemOutDTO;
 import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
 import com.nt.restaurant.microservice.repository.FoodItemRepository;
 import com.nt.restaurant.microservice.repository.RestaurantRepository;
 import com.nt.restaurant.microservice.serviceimpl.FoodItemServiceImpl;
 import com.nt.restaurant.microservice.util.Constants;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,12 +22,16 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -191,13 +191,13 @@ public class FoodItemServiceImplTest {
   @Test
   public void testGetFoodItemImage_Success() {
     FoodItem foodItem = new FoodItem();
-    foodItem.setFoodItemImage(new byte[]{1, 2, 3});
+    foodItem.setFoodItemImage(new byte[] {1, 2, 3});
 
     when(foodItemRepository.findById(anyInt())).thenReturn(Optional.of(foodItem));
 
     byte[] image = foodItemServiceImpl.getFoodItemImage(1);
 
-    assertArrayEquals(new byte[]{1, 2, 3}, image);
+    assertArrayEquals(new byte[] {1, 2, 3}, image);
   }
 
   @Test

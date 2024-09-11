@@ -1,8 +1,10 @@
 package com.nt.restaurant.microservice.entites;
+
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class FoodCategoryTest {
 
@@ -52,4 +54,5 @@ class FoodCategoryTest {
 
     String expected = "FoodCategory{foodCategoryId=1, restaurantId=101, foodCategoryName='Appetizers'}";
     assertEquals(expected, foodCategory.toString());
-  }}
+  }
+}

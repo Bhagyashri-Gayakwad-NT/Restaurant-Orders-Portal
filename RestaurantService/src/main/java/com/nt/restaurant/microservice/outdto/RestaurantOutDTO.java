@@ -95,8 +95,12 @@ public class RestaurantOutDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) { return true; }
-    if (o == null || getClass() != o.getClass()) { return false; }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     RestaurantOutDTO that = (RestaurantOutDTO) o;
     return isOpen == that.isOpen && Objects.equals(restaurantId, that.restaurantId) &&
       Objects.equals(restaurantName, that.restaurantName) &&

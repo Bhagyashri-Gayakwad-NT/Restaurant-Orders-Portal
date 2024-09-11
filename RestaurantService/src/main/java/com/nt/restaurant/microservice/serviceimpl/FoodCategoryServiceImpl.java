@@ -47,7 +47,8 @@ public class FoodCategoryServiceImpl implements FoodCategoryservice {
       foodCategoryInDTO.getFoodCategoryName().toUpperCase()
     );
     if (existingCategoryWithName.isPresent()) {
-      logger.error("Food category with name {} already exists in restaurant ID {}", foodCategoryInDTO.getFoodCategoryName(), foodCategoryInDTO.getRestaurantId());
+      logger.error("Food category with name {} already exists in restaurant ID {}", foodCategoryInDTO.getFoodCategoryName(),
+        foodCategoryInDTO.getRestaurantId());
       throw new AlreadyExistException("Food category already exists");
     }
 
@@ -94,7 +95,8 @@ public class FoodCategoryServiceImpl implements FoodCategoryservice {
       foodCategoryInDTO.getFoodCategoryName().toUpperCase()
     );
     if (existingCategoryWithName.isPresent() && !existingCategoryWithName.get().getFoodCategoryId().equals(foodCategoryId)) {
-      logger.error("Food category with name {} already exists for restaurant ID {}", foodCategoryInDTO.getFoodCategoryName(), foodCategoryInDTO.getRestaurantId());
+      logger.error("Food category with name {} already exists for restaurant ID {}", foodCategoryInDTO.getFoodCategoryName(),
+        foodCategoryInDTO.getRestaurantId());
       throw new AlreadyExistException("Food category already exists for this restaurant");
     }
 

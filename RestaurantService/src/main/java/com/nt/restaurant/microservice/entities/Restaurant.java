@@ -1,7 +1,5 @@
 package com.nt.restaurant.microservice.entities;
 
-import net.bytebuddy.dynamic.loading.InjectionClassLoader;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -124,8 +122,12 @@ public class Restaurant {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) { return true; }
-    if (o == null || getClass() != o.getClass()) { return false; }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     Restaurant that = (Restaurant) o;
     return isOpen == that.isOpen && Objects.equals(restaurantId, that.restaurantId) &&
       Objects.equals(userId, that.userId) && Objects.equals(restaurantName, that.restaurantName) &&

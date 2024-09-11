@@ -103,8 +103,12 @@ public class FoodItem {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) { return true; }
-    if (o == null || getClass() != o.getClass()) { return false; }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     FoodItem foodItem = (FoodItem) o;
     return isAvailable == foodItem.isAvailable && Objects.equals(foodItemId, foodItem.foodItemId) &&
       Objects.equals(categoryId, foodItem.categoryId) && Objects.equals(restaurantId, foodItem.restaurantId) &&

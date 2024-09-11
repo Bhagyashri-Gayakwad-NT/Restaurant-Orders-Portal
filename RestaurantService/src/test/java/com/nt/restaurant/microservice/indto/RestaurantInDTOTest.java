@@ -1,9 +1,17 @@
 package com.nt.restaurant.microservice.indto;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
-import javax.validation.*;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.util.Set;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RestaurantInDTOTest {
 
@@ -12,7 +20,7 @@ class RestaurantInDTOTest {
 
   @Test
   void testConstructorAndGetters() {
-    MockMultipartFile image = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[]{1, 2, 3});
+    MockMultipartFile image = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[] {1, 2, 3});
     RestaurantInDTO dto = new RestaurantInDTO(1, "My Restaurant", "123 Street", "9876543210", "Great restaurant", image);
 
     assertEquals(1, dto.getUserId());
@@ -25,7 +33,7 @@ class RestaurantInDTOTest {
 
   @Test
   void testSetters() {
-    MockMultipartFile image = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[]{1, 2, 3});
+    MockMultipartFile image = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[] {1, 2, 3});
     RestaurantInDTO dto = new RestaurantInDTO();
 
     dto.setUserId(2);
@@ -58,8 +66,8 @@ class RestaurantInDTOTest {
 
   @Test
   void testNotEquals() {
-    MockMultipartFile image1 = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[]{1, 2, 3});
-    MockMultipartFile image2 = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[]{4, 5, 6});
+    MockMultipartFile image1 = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[] {1, 2, 3});
+    MockMultipartFile image2 = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[] {4, 5, 6});
 
     RestaurantInDTO dto1 = new RestaurantInDTO(1, "Restaurant A", "123 Street", "9876543210", "Good place", image1);
     RestaurantInDTO dto2 = new RestaurantInDTO(2, "Restaurant B", "456 Avenue", "8765432109", "Nice place", image2);
@@ -70,16 +78,18 @@ class RestaurantInDTOTest {
 
   @Test
   void testToString() {
-    MockMultipartFile image = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[]{1, 2, 3});
+    MockMultipartFile image = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[] {1, 2, 3});
     RestaurantInDTO dto = new RestaurantInDTO(1, "Restaurant A", "123 Street", "9876543210", "Good place", image);
 
-    String expected = "RestaurantInDto{userId=1, restaurantName='Restaurant A', restaurantAddress='123 Street', contactNumber='9876543210', description='Good place', restaurantImage=" + image + "}";
+    String expected =
+      "RestaurantInDto{userId=1, restaurantName='Restaurant A', restaurantAddress='123 Street', contactNumber='9876543210', description='Good place', restaurantImage=" +
+        image + "}";
     assertEquals(expected, dto.toString());
   }
 
   @Test
   void testValidation_Success() {
-    MockMultipartFile image = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[]{1, 2, 3});
+    MockMultipartFile image = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[] {1, 2, 3});
     RestaurantInDTO dto = new RestaurantInDTO(1, "Restaurant", "123 Street", "9876543210", "Good restaurant", image);
 
     Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
@@ -88,9 +98,11 @@ class RestaurantInDTOTest {
 
   @Test
   void testValidation_Failure() {
-    MockMultipartFile image = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[]{1, 2, 3});
-    RestaurantInDTO dto = new RestaurantInDTO(null, "", "", "123", "Description that is way too long.........................................." +
-      ".................................................................................................................................", image);
+    MockMultipartFile image = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[] {1, 2, 3});
+    RestaurantInDTO dto =
+      new RestaurantInDTO(null, "", "", "123", "Description that is way too long.........................................." +
+        ".................................................................................................................................",
+        image);
 
     Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
     assertEquals(4, violations.size());

@@ -41,8 +41,12 @@ public class FoodCategoryInDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) { return true; }
-    if (o == null || getClass() != o.getClass()) { return false; }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     FoodCategoryInDTO that = (FoodCategoryInDTO) o;
     return Objects.equals(restaurantId, that.restaurantId) && Objects.equals(foodCategoryName, that.foodCategoryName);
   }

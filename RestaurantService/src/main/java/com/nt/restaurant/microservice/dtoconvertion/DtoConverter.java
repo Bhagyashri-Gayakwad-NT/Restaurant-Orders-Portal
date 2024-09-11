@@ -29,6 +29,7 @@ public class DtoConverter {
 
     return restaurant;
   }
+
   public static RestaurantOutDTO fromEntityToOutDTO(Restaurant restaurant) {
     RestaurantOutDTO restaurantOutDTO = new RestaurantOutDTO();
     restaurantOutDTO.setRestaurantId(restaurant.getRestaurantId());

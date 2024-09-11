@@ -2,20 +2,20 @@ package com.nt.restaurant.microservice.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalException {
-//  @ExceptionHandler(MethodArgumentNotValidException.class)
+  //  @ExceptionHandler(MethodArgumentNotValidException.class)
 //  @ResponseStatus(HttpStatus.BAD_REQUEST)
 //  @ResponseBody
 //  public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -33,31 +33,31 @@ public class GlobalException {
 //    );
 //    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
 //  }
-@ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
-@ResponseStatus(HttpStatus.BAD_REQUEST)
-@ResponseBody
-public ErrorResponse handleValidationExceptions(Exception ex) {
-  List<String> errorMessages = null;
+  @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public ErrorResponse handleValidationExceptions(Exception ex) {
+    List<String> errorMessages = null;
 
-  if (ex instanceof MethodArgumentNotValidException) {
-    errorMessages = ((MethodArgumentNotValidException) ex)
-      .getBindingResult()
-      .getFieldErrors()
-      .stream()
-      .map(FieldError::getDefaultMessage)
-      .collect(Collectors.toList());
-  } else if (ex instanceof BindException) {
-    errorMessages = ((BindException) ex)
-      .getBindingResult()
-      .getFieldErrors()
-      .stream()
-      .map(FieldError::getDefaultMessage)
-      .collect(Collectors.toList());
+    if (ex instanceof MethodArgumentNotValidException) {
+      errorMessages = ((MethodArgumentNotValidException) ex)
+        .getBindingResult()
+        .getFieldErrors()
+        .stream()
+        .map(FieldError::getDefaultMessage)
+        .collect(Collectors.toList());
+    } else if (ex instanceof BindException) {
+      errorMessages = ((BindException) ex)
+        .getBindingResult()
+        .getFieldErrors()
+        .stream()
+        .map(FieldError::getDefaultMessage)
+        .collect(Collectors.toList());
+    }
+
+    String errorMessage = errorMessages != null ? String.join(", ", errorMessages) : "Validation error";
+    return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), errorMessage);
   }
-
-  String errorMessage = errorMessages != null ? String.join(", ", errorMessages) : "Validation error";
-  return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), errorMessage);
-}
 
   @ExceptionHandler(AlreadyExistException.class)
   @ResponseStatus(HttpStatus.CONFLICT)
@@ -80,6 +80,7 @@ public ErrorResponse handleValidationExceptions(Exception ex) {
     );
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
+
   @ExceptionHandler(UserNotFoundException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ResponseBody
@@ -90,6 +91,7 @@ public ErrorResponse handleValidationExceptions(Exception ex) {
     );
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
+
   @ExceptionHandler(UserNotRestaurantOwnerException.class)
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ResponseBody

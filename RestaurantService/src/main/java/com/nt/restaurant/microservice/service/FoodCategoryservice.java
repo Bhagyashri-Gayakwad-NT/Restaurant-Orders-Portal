@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface FoodCategoryservice {
   CommonResponse addFoodCategory(FoodCategoryInDTO foodCategoryInDTO);
+
   List<FoodCategoryOutDTO> getFoodCategoryByRestaurantId(Integer restaurantId);
+
   CommonResponse updateFoodCategory(Integer foodCategoryId, FoodCategoryInDTO foodCategoryInDTO);
 }

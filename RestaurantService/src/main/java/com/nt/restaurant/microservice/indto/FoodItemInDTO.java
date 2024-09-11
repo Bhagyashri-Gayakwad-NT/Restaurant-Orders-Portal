@@ -107,8 +107,12 @@ public class FoodItemInDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) { return true; }
-    if (o == null || getClass() != o.getClass()) { return false; }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     FoodItemInDTO that = (FoodItemInDTO) o;
     return isAvailable == that.isAvailable && Objects.equals(foodCategoryId, that.foodCategoryId) &&
       Objects.equals(restaurantId, that.restaurantId) && Objects.equals(foodItemName, that.foodItemName) &&

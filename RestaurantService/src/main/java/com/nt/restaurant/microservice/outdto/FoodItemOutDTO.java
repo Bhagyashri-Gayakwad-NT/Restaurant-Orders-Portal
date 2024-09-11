@@ -96,8 +96,12 @@ public class FoodItemOutDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) { return true; }
-    if (o == null || getClass() != o.getClass()) { return false; }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     FoodItemOutDTO that = (FoodItemOutDTO) o;
     return isAvailable == that.isAvailable && Objects.equals(foodItemId, that.foodItemId) &&
       Objects.equals(categoryId, that.categoryId) && Objects.equals(restaurantId, that.restaurantId) &&

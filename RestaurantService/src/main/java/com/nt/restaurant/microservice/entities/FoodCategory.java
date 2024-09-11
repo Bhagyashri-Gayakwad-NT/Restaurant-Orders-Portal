@@ -49,8 +49,12 @@ public class FoodCategory {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) { return true; }
-    if (o == null || getClass() != o.getClass()) { return false; }
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     FoodCategory that = (FoodCategory) o;
     return Objects.equals(foodCategoryId, that.foodCategoryId) && Objects.equals(restaurantId, that.restaurantId) &&
       Objects.equals(foodCategoryName, that.foodCategoryName);

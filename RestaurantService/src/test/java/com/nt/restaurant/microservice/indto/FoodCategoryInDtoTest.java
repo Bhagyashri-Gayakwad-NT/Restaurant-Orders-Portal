@@ -2,12 +2,17 @@ package com.nt.restaurant.microservice.indto;
 
 import org.junit.jupiter.api.Test;
 
-import javax.validation.*;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FoodCategoryInDTOTest {
 
@@ -79,6 +84,7 @@ class FoodCategoryInDTOTest {
         message.equals("Category name must contain only alphabets"));
     }
   }
+
   @Test
   void testValidation_FoodCategoryNameBlank() {
     FoodCategoryInDTO dto = new FoodCategoryInDTO(1, "");
@@ -97,7 +103,8 @@ class FoodCategoryInDTOTest {
 
   @Test
   void testValidation_FoodCategoryNameTooLong() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(1, "ThisNameIsWayTooLongForAFoodCategoryNameAndShouldFailTheValidationBecauseItExceedsOneHundredCharacters");
+    FoodCategoryInDTO dto = new FoodCategoryInDTO(1,
+      "ThisNameIsWayTooLongForAFoodCategoryNameAndShouldFailTheValidationBecauseItExceedsOneHundredCharacters");
 
     Set<ConstraintViolation<FoodCategoryInDTO>> violations = validator.validate(dto);
     assertEquals(1, violations.size());

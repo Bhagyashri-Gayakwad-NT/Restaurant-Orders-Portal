@@ -1,5 +1,5 @@
 package com.nt.restaurant.microservice.service;
-import com.nt.restaurant.microservice.dtoconvertion.FoodCategoryDtoConverter;
+
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.exception.AlreadyExistException;
@@ -9,7 +9,6 @@ import com.nt.restaurant.microservice.outdto.CommonResponse;
 import com.nt.restaurant.microservice.outdto.FoodCategoryOutDTO;
 import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
 import com.nt.restaurant.microservice.repository.RestaurantRepository;
-import com.nt.restaurant.microservice.service.FoodCategoryservice;
 import com.nt.restaurant.microservice.serviceimpl.FoodCategoryServiceImpl;
 import com.nt.restaurant.microservice.util.Constants;
 import org.apache.logging.log4j.LogManager;
@@ -25,9 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class FoodCategoryServiceImplTest {
@@ -140,7 +142,8 @@ public class FoodCategoryServiceImplTest {
     existingCategoryWithName.setFoodCategoryName("MAIN COURSE");
 
     when(foodCategoryRepository.findById(1)).thenReturn(Optional.of(existingCategory));
-    when(foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(1, "MAIN COURSE")).thenReturn(Optional.of(existingCategoryWithName));
+    when(foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(1, "MAIN COURSE")).thenReturn(
+      Optional.of(existingCategoryWithName));
 
     AlreadyExistException exception = assertThrows(AlreadyExistException.class, () -> {
       foodCategoryService.updateFoodCategory(1, foodCategoryInDTO);
