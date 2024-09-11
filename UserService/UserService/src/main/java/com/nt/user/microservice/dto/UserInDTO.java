@@ -177,6 +177,12 @@ public class UserInDTO {
 
   // Override methods
 
+  /**
+   * Checks equality between this object and another object.
+   *
+   * @param o the object to compare with.
+   * @return true if the objects are equal, false otherwise.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -186,16 +192,29 @@ public class UserInDTO {
       return false;
     }
     UserInDTO userInDTO = (UserInDTO) o;
-    return Objects.equals(firstName, userInDTO.firstName) && Objects.equals(lastName, userInDTO.lastName) &&
-      Objects.equals(email, userInDTO.email) && Objects.equals(password, userInDTO.password) &&
-      Objects.equals(phoneNo, userInDTO.phoneNo) && Objects.equals(role, userInDTO.role);
+    return Objects.equals(firstName, userInDTO.firstName) &&
+      Objects.equals(lastName, userInDTO.lastName) &&
+      Objects.equals(email, userInDTO.email) &&
+      Objects.equals(password, userInDTO.password) &&
+      Objects.equals(phoneNo, userInDTO.phoneNo) &&
+      Objects.equals(role, userInDTO.role);
   }
 
+  /**
+   * Computes the hash code for this object.
+   *
+   * @return the hash code value for this object.
+   */
   @Override
   public int hashCode() {
     return Objects.hash(firstName, lastName, email, password, phoneNo, role);
   }
 
+  /**
+   * Returns the string representation of this object.
+   *
+   * @return the string representation of this object.
+   */
   @Override
   public String toString() {
     return "UserInDTO{" +

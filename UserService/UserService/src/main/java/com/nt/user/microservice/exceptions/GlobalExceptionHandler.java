@@ -12,41 +12,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * GlobalExceptionHandler handles all exceptions across the application.
+ * GlobalExceptionHandler handles exceptions across the entire application.
  * It provides specific handling for custom exceptions as well as built-in validation and method exceptions.
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
   /**
-   * Handles UserAlreadyExistsException, which occurs when a user tries to register with an email that is already taken.
+   * Handles {@link NotFoundException} thrown when a requested resource is not found.
+   * <p>
+   * This method returns an {@link ErrorResponse} with an HTTP status code of
+   * {@code CONFLICT} (409) and the exception message.
    *
-   * @param ex the exception to handle
-   * @return a ResponseEntity containing the error message and HTTP status CONFLICT (409)
+   * @param ex the {@link NotFoundException} exception to handle.
+   * @return a {@link ResponseEntity} containing the {@link ErrorResponse}
+   *         with HTTP status code {@code CONFLICT} (409).
    */
-  @ExceptionHandler(UserAlreadyExistsException.class)
-  public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
     return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
   }
 
   /**
-   * Handles UserNotFoundException, which occurs when a user is not found in the database.
+   * Handles {@link InvalidCredentialsException} thrown when login credentials are invalid.
+   * <p>
+   * This method returns an {@link ErrorResponse} with an HTTP status code of
+   * {@code UNAUTHORIZED} (401) and the exception message.
    *
-   * @param ex the exception to handle
-   * @return a ResponseEntity containing the error message and HTTP status NOT FOUND (404)
-   */
-  @ExceptionHandler(UserNotFoundException.class)
-  public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex) {
-    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
-    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-  }
-
-  /**
-   * Handles InvalidCredentialsException, which occurs when the user's login credentials are invalid.
-   *
-   * @param ex the exception to handle
-   * @return a ResponseEntity containing the error message and HTTP status UNAUTHORIZED (401)
+   * @param ex the {@link InvalidCredentialsException} exception to handle.
+   * @return a {@link ResponseEntity} containing the {@link ErrorResponse}
+   *         with HTTP status code {@code UNAUTHORIZED} (401).
    */
   @ExceptionHandler(InvalidCredentialsException.class)
   public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(InvalidCredentialsException ex) {
@@ -55,11 +51,14 @@ public class GlobalExceptionHandler {
   }
 
   /**
-   * Handles MethodArgumentNotValidException, which occurs when validation on a method argument fails.
-   * Returns detailed field-specific error messages.
+   * Handles {@link MethodArgumentNotValidException} which occurs when validation on a method argument fails.
+   * <p>
+   * This method returns detailed field-specific error messages and an HTTP status code of
+   * {@code BAD_REQUEST} (400).
    *
-   * @param ex the exception to handle
-   * @return a ResponseEntity containing validation errors and HTTP status BAD REQUEST (400)
+   * @param ex the {@link MethodArgumentNotValidException} exception to handle.
+   * @return a {@link ResponseEntity} containing the {@link ErrorResponse}
+   *         with HTTP status code {@code BAD_REQUEST} (400) and validation errors.
    */
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -72,22 +71,14 @@ public class GlobalExceptionHandler {
   }
 
   /**
-   * Handles IllegalArgumentException, which occurs when an illegal argument is passed to a method.
+   * Handles {@link HttpRequestMethodNotSupportedException} which occurs when a request is made with an unsupported HTTP method.
+   * <p>
+   * This method returns an {@link ErrorResponse} with an HTTP status code of
+   * {@code METHOD_NOT_ALLOWED} (405) and a generic error message.
    *
-   * @param ex the exception to handle
-   * @return a ResponseEntity containing the error message and HTTP status BAD REQUEST (400)
-   */
-  @ExceptionHandler(IllegalArgumentException.class)
-  public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
-    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
-    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-  }
-
-  /**
-   * Handles HttpRequestMethodNotSupportedException, which occurs when a request is made with an unsupported HTTP method.
-   *
-   * @param ex the exception to handle
-   * @return a ResponseEntity containing the error message and HTTP status METHOD NOT ALLOWED (405)
+   * @param ex the {@link HttpRequestMethodNotSupportedException} exception to handle.
+   * @return a {@link ResponseEntity} containing the {@link ErrorResponse}
+   *         with HTTP status code {@code METHOD_NOT_ALLOWED} (405).
    */
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseEntity<ErrorResponse> handleMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
@@ -98,9 +89,13 @@ public class GlobalExceptionHandler {
 
   /**
    * Handles all other exceptions that are not explicitly handled by the above exception handlers.
+   * <p>
+   * This method returns a generic error message and an HTTP status code of
+   * {@code INTERNAL_SERVER_ERROR} (500).
    *
-   * @param ex the exception to handle
-   * @return a ResponseEntity containing a generic error message and HTTP status INTERNAL SERVER ERROR (500)
+   * @param ex the {@link Exception} to handle.
+   * @return a {@link ResponseEntity} containing the {@link ErrorResponse}
+   *         with HTTP status code {@code INTERNAL_SERVER_ERROR} (500).
    */
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {

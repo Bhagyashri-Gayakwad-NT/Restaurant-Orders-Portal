@@ -1,9 +1,8 @@
-package com.nt.user.microservice.service.impl;
+package com.nt.user.microservice.serviceimpl;
 
 import com.nt.user.microservice.entites.Address;
 import com.nt.user.microservice.entites.User;
-import com.nt.user.microservice.exceptions.AddressNotFoundException;
-import com.nt.user.microservice.exceptions.UserNotFoundException;
+import com.nt.user.microservice.exceptions.NotFoundException;
 import com.nt.user.microservice.dto.AddressInDTO;
 import com.nt.user.microservice.dto.AddressOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
@@ -40,7 +39,7 @@ public class AddressServiceImpl implements AddressService {
    *
    * @param addressInDTO the address details to be added.
    * @return a response indicating the success or failure of the operation.
-   * @throws UserNotFoundException if the user with the specified ID is not found.
+   * @throws NotFoundException if the user with the specified ID is not found.
    */
   @Override
   public UserResponse addAddress(AddressInDTO addressInDTO) {
@@ -50,7 +49,7 @@ public class AddressServiceImpl implements AddressService {
     Optional<User> userOptional = userRepository.findById(addressInDTO.getUserId());
     if (!userOptional.isPresent()) {
       logger.error("User with ID {} not found", addressInDTO.getUserId());
-      throw new UserNotFoundException(Constants.USER_NOT_FOUND);
+      throw new NotFoundException(Constants.USER_NOT_FOUND);
     }
 
     // Create and populate the Address entity
@@ -75,8 +74,8 @@ public class AddressServiceImpl implements AddressService {
    *
    * @param userId the ID of the user whose addresses are to be retrieved.
    * @return a list of AddressOutDTO objects representing the user's addresses.
-   * @throws UserNotFoundException if the user with the specified ID is not found.
-   * @throws AddressNotFoundException if no addresses are found for the specified user.
+   * @throws NotFoundException if the user with the specified ID is not found.
+   * @throws NotFoundException if no addresses are found for the specified user.
    */
   @Override
   public List<AddressOutDTO> getUserAddresses(Integer userId) {
@@ -85,14 +84,14 @@ public class AddressServiceImpl implements AddressService {
     Optional<User> optionalUser = userRepository.findById(userId);
     if (!optionalUser.isPresent()) {
       logger.error("User with ID {} not found", userId);
-      throw new UserNotFoundException(Constants.USER_NOT_FOUND);
+      throw new NotFoundException(Constants.USER_NOT_FOUND);
     }
 
     List<Address> addresses = addressRepository.findAllByUserId(userId);
 
     if (addresses.isEmpty()) {
       logger.error("No addresses found for userId: {}", userId);
-      throw new AddressNotFoundException("No addresses found for this user.");
+      throw new NotFoundException(Constants.ADDRESS_NOT_FOUND);
     }
 
     logger.info("Found {} addresses for userId: {}", addresses.size(), userId);
@@ -114,7 +113,7 @@ public class AddressServiceImpl implements AddressService {
    * Deletes an address by its ID.
    *
    * @param id the ID of the address to be deleted.
-   * @throws AddressNotFoundException if the address with the specified ID is not found.
+   * @throws NotFoundException if the address with the specified ID is not found.
    */
   @Override
   public void deleteAddress(Integer id) {
@@ -125,7 +124,7 @@ public class AddressServiceImpl implements AddressService {
       logger.info("Address deleted successfully with ID: {}", id);
     } else {
       logger.warn("Address with ID: {} not found, cannot delete", id);
-      throw new AddressNotFoundException("Address not found");
+      throw new NotFoundException(Constants.USER_NOT_FOUND);
     }
   }
 }

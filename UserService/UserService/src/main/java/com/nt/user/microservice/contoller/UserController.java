@@ -46,14 +46,9 @@ public class UserController {
   @PostMapping("/register")
   public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody UserInDTO userInDTO) {
     logger.info("Registering user with email: {}", userInDTO.getEmail());
-    try {
-      UserResponse userResponse = userService.registerUser(userInDTO);
-      logger.info("User registered successfully: {}", userInDTO.getEmail());
-      return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
-    } catch (Exception e) {
-      logger.error("Error registering user with email: {}. Error: {}", userInDTO.getEmail(), e.getMessage());
-      throw e;
-    }
+    UserResponse userResponse = userService.registerUser(userInDTO);
+    logger.info("User registered successfully: {}", userInDTO.getEmail());
+    return new ResponseEntity<UserResponse>(userResponse, HttpStatus.CREATED);
   }
 
   /**
@@ -65,14 +60,9 @@ public class UserController {
   @PostMapping("/login")
   public ResponseEntity<UserOutDTO> loginUser(@Valid @RequestBody LogInDTO loginDTO) {
     logger.info("Attempting to login user with email: {}", loginDTO.getEmail());
-    try {
-      UserOutDTO userOutDTO = userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword());
-      logger.info("User logged in successfully: {}", loginDTO.getEmail());
-      return ResponseEntity.ok(userOutDTO);
-    } catch (Exception e) {
-      logger.error("Error logging in user with email: {}. Error: {}", loginDTO.getEmail(), e.getMessage());
-      throw e;
-    }
+    UserOutDTO userOutDTO = userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword());
+    logger.info("User logged in successfully: {}", loginDTO.getEmail());
+    return ResponseEntity.ok(userOutDTO);
   }
 
   /**
@@ -84,14 +74,9 @@ public class UserController {
   @GetMapping("/profile/{id}")
   public ResponseEntity<UserOutDTO> getUserProfile(@PathVariable Integer id) {
     logger.info("Fetching profile for user with ID: {}", id);
-    try {
-      UserOutDTO userOutDTO = userService.getUserProfile(id);
-      logger.info("Profile fetched successfully for user ID: {}", id);
-      return new ResponseEntity<>(userOutDTO, HttpStatus.OK);
-    } catch (Exception e) {
-      logger.error("Error fetching profile for user ID: {}. Error: {}", id, e.getMessage());
-      throw e;
-    }
+    UserOutDTO userOutDTO = userService.getUserProfile(id);
+    logger.info("Profile fetched successfully for user ID: {}", id);
+    return new ResponseEntity<UserOutDTO>(userOutDTO, HttpStatus.OK);
   }
 
   /**
@@ -102,16 +87,11 @@ public class UserController {
    * @return a response entity with a success message if the update is successful.
    */
   @PutMapping("/update/{id}")
-  public ResponseEntity<?> updateUserProfile(@Valid @PathVariable Integer id, @RequestBody UserInDTO userInDTO) {
+  public ResponseEntity<UserResponse> updateUserProfile(@Valid @PathVariable Integer id, @RequestBody UserInDTO userInDTO) {
     logger.info("Updating profile for user with ID: {}", id);
-    try {
-      UserResponse result = userService.updateUserProfile(id, userInDTO);
-      logger.info("Profile updated successfully for user ID: {}", id);
-      return new ResponseEntity<>(result, HttpStatus.OK);
-    } catch (Exception e) {
-      logger.error("Error updating profile for user ID: {}. Error: {}", id, e.getMessage());
-      throw e;
-    }
+    UserResponse result = userService.updateUserProfile(id, userInDTO);
+    logger.info("Profile updated successfully for user ID: {}", id);
+    return new ResponseEntity<UserResponse>(result, HttpStatus.OK);
   }
 
   /**
@@ -123,13 +103,8 @@ public class UserController {
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<UserResponse> deleteUser(@PathVariable Integer id) {
     logger.info("Request received to delete user with ID: {}", id);
-    try {
-      UserResponse userResponse = userService.deleteUser(id);
-      logger.info("User deleted successfully with ID: {}", id);
-      return new ResponseEntity<>(userResponse, HttpStatus.OK);
-    } catch (Exception e) {
-      logger.error("Error deleting user with ID: {}. Error: {}", id, e.getMessage());
-      throw e;
-    }
+    UserResponse userResponse = userService.deleteUser(id);
+    logger.info("User deleted successfully with ID: {}", id);
+    return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
   }
 }

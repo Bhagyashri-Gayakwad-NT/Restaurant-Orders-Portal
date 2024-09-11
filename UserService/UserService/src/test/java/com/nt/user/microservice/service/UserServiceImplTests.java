@@ -2,14 +2,13 @@ package com.nt.user.microservice.service;
 
 import com.nt.user.microservice.entites.User;
 import com.nt.user.microservice.entites.WalletBalance;
-import com.nt.user.microservice.exceptions.UserAlreadyExistsException;
-import com.nt.user.microservice.exceptions.UserNotFoundException;
+import com.nt.user.microservice.exceptions.NotFoundException;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
 import com.nt.user.microservice.repository.UserRepository;
 import com.nt.user.microservice.repository.WalletBalanceRepository;
-import com.nt.user.microservice.service.impl.UserServiceImpl;
+import com.nt.user.microservice.serviceimpl.UserServiceImpl;
 import com.nt.user.microservice.util.Base64Util;
 import com.nt.user.microservice.util.Constants;
 import com.nt.user.microservice.util.Role;
@@ -79,7 +78,7 @@ class UserServiceImplTest {
 
     when(userRepository.findByEmail(userInDTO.getEmail())).thenReturn(Optional.of(new User()));
 
-    assertThrows(UserAlreadyExistsException.class, () -> userService.registerUser(userInDTO));
+    assertThrows(NotFoundException.class, () -> userService.registerUser(userInDTO));
     verify(userRepository, never()).save(any(User.class));
   }
   @Test
@@ -145,7 +144,7 @@ class UserServiceImplTest {
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(UserNotFoundException.class, () -> userService.getUserProfile(userId));
+    assertThrows(NotFoundException.class, () -> userService.getUserProfile(userId));
   }
 
   @Test
@@ -186,7 +185,7 @@ class UserServiceImplTest {
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(UserNotFoundException.class, () -> userService.updateUserProfile(userId, userInDTO));
+    assertThrows(NotFoundException.class, () -> userService.updateUserProfile(userId, userInDTO));
   }
 
   @Test
@@ -210,6 +209,6 @@ class UserServiceImplTest {
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(UserNotFoundException.class, () -> userService.deleteUser(userId));
+    assertThrows(NotFoundException.class, () -> userService.deleteUser(userId));
   }
 }

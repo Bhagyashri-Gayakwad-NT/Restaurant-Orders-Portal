@@ -2,14 +2,13 @@ package com.nt.user.microservice.service;
 
 import com.nt.user.microservice.entites.Address;
 import com.nt.user.microservice.entites.User;
-import com.nt.user.microservice.exceptions.AddressNotFoundException;
-import com.nt.user.microservice.exceptions.UserNotFoundException;
+import com.nt.user.microservice.exceptions.NotFoundException;
 import com.nt.user.microservice.dto.AddressInDTO;
 import com.nt.user.microservice.dto.AddressOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
 import com.nt.user.microservice.repository.AddressRepository;
 import com.nt.user.microservice.repository.UserRepository;
-import com.nt.user.microservice.service.impl.AddressServiceImpl;
+import com.nt.user.microservice.serviceimpl.AddressServiceImpl;
 import com.nt.user.microservice.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -81,7 +80,7 @@ class AddressServiceImplTests {
 
     when(userRepository.findById(addressInDTO.getUserId())).thenReturn(Optional.empty());
 
-    UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> addressService.addAddress(addressInDTO));
+    NotFoundException exception = assertThrows(NotFoundException.class, () -> addressService.addAddress(addressInDTO));
     assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
 
     verify(userRepository).findById(addressInDTO.getUserId());
@@ -123,7 +122,7 @@ class AddressServiceImplTests {
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> addressService.getUserAddresses(userId));
+    NotFoundException exception = assertThrows(NotFoundException.class, () -> addressService.getUserAddresses(userId));
     assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
 
     verify(userRepository).findById(userId);
@@ -147,8 +146,8 @@ class AddressServiceImplTests {
 
     when(addressRepository.existsById(addressId)).thenReturn(false);
 
-    AddressNotFoundException exception = assertThrows(AddressNotFoundException.class, () -> addressService.deleteAddress(addressId));
-    assertEquals("Address not found", exception.getMessage());
+    NotFoundException exception = assertThrows(NotFoundException.class, () -> addressService.deleteAddress(addressId));
+    assertEquals("User not found", exception.getMessage());
 
     verify(addressRepository, never()).deleteById(addressId);
   }

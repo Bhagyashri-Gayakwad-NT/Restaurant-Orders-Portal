@@ -50,4 +50,10 @@ public class Constants {
    * Message indicating failure to add an address.
    */
   public static final String ADDRESS_ADD_FAILURE = "Failed to add address";
+
+  public static final String USER_ALREADY_REGISTERED = "User already registered with this email";
+
+  public static final String INVALID_CREDENTIALS = "Invalid password";
+
+  public static final String ADDRESS_NOT_FOUND = "No addresses found for this user.";
 }

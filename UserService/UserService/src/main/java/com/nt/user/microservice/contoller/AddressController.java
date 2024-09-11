@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
-
 /**
  * Controller for managing address-related operations such as adding, fetching, and deleting addresses.
  */
@@ -42,14 +41,9 @@ public class AddressController {
   @PostMapping("/add")
   public ResponseEntity<UserResponse> addAddress(@Valid @RequestBody AddressInDTO addressInDTO) {
     logger.info("Request received to add address for user ID: {}", addressInDTO.getUserId());
-    try {
-      UserResponse userResponse = addressService.addAddress(addressInDTO);
-      logger.info("Address added successfully for user ID: {}", addressInDTO.getUserId());
-      return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
-    } catch (Exception e) {
-      logger.error("Error adding address for user ID: {}. Error: {}", addressInDTO.getUserId(), e.getMessage());
-      throw e;
-    }
+    UserResponse userResponse = addressService.addAddress(addressInDTO);
+    logger.info("Address added successfully for user ID: {}", addressInDTO.getUserId());
+    return new ResponseEntity<UserResponse>(userResponse, HttpStatus.CREATED);
   }
 
   /**
@@ -61,14 +55,9 @@ public class AddressController {
   @GetMapping("/user/{userId}")
   public ResponseEntity<List<AddressOutDTO>> getUserAddresses(@PathVariable Integer userId) {
     logger.info("Request received to fetch addresses for user ID: {}", userId);
-    try {
-      List<AddressOutDTO> addresses = addressService.getUserAddresses(userId);
-      logger.info("Addresses fetched successfully for user ID: {}", userId);
-      return new ResponseEntity<>(addresses, HttpStatus.OK);
-    } catch (Exception e) {
-      logger.error("Error fetching addresses for user ID: {}. Error: {}", userId, e.getMessage());
-      throw e;
-    }
+    List<AddressOutDTO> addresses = addressService.getUserAddresses(userId);
+    logger.info("Addresses fetched successfully for user ID: {}", userId);
+    return new ResponseEntity<List<AddressOutDTO>>(addresses, HttpStatus.OK);
   }
 
   /**
@@ -80,15 +69,10 @@ public class AddressController {
   @DeleteMapping("/{id}")
   public ResponseEntity<UserResponse> deleteAddress(@PathVariable Integer id) {
     logger.info("Request received to delete address with ID: {}", id);
-    try {
-      addressService.deleteAddress(id);
-      logger.info("Address deleted successfully with ID: {}", id);
-      UserResponse response = new UserResponse();
-      response.setSuccessMessage(Constants.ADDRESS_ADDED_SUCCESSFULLY); // Assuming a constant for successful deletion
-      return new ResponseEntity<>(response, HttpStatus.OK);
-    } catch (Exception e) {
-      logger.error("Error deleting address with ID: {}. Error: {}", id, e.getMessage());
-      throw e;
-    }
+    addressService.deleteAddress(id);
+    logger.info("Address deleted successfully with ID: {}", id);
+    UserResponse response = new UserResponse();
+    response.setSuccessMessage(Constants.ADDRESS_ADDED_SUCCESSFULLY); // Assuming a constant for successful deletion
+    return new ResponseEntity<UserResponse>(response, HttpStatus.OK);
   }
 }

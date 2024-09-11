@@ -1,8 +1,7 @@
-package com.nt.user.microservice.service.impl;
+package com.nt.user.microservice.serviceimpl;
 
 import com.nt.user.microservice.exceptions.InvalidCredentialsException;
-import com.nt.user.microservice.exceptions.UserAlreadyExistsException;
-import com.nt.user.microservice.exceptions.UserNotFoundException;
+import com.nt.user.microservice.exceptions.NotFoundException;
 import com.nt.user.microservice.dto.UserResponse;
 import com.nt.user.microservice.util.Constants;
 import com.nt.user.microservice.util.Role;
@@ -54,11 +53,10 @@ public class UserServiceImpl implements UserService {
   public UserResponse registerUser(UserInDTO userInDTO) {
     logger.info("Attempting to register user with email: {}", userInDTO.getEmail());
 
-    // Check if a user with the same email already exists
     Optional<User> existingUser = userRepository.findByEmail(userInDTO.getEmail());
     if (existingUser.isPresent()) {
       logger.error("User with email {} already exists", userInDTO.getEmail());
-      throw new UserAlreadyExistsException("User already registered with this email");
+      throw new NotFoundException(Constants.USER_ALREADY_REGISTERED);
     }
 
     User user = new User();
@@ -99,20 +97,18 @@ public class UserServiceImpl implements UserService {
   public UserOutDTO loginUser(String email, String password) {
     logger.info("Attempting to log in user with email: {}", email);
 
-    // Fetch user by email
     Optional<User> userOptional = userRepository.findByEmail(email);
 
     if (!userOptional.isPresent()) {
       logger.error("User with email {} not found", email);
-      throw new UserNotFoundException("User not found");
+      throw new NotFoundException(Constants.USER_NOT_FOUND);
     }
 
     User user = userOptional.get();
 
-    // Check if the password matches
-    if (!Base64Util.encode(password).equals(user.getPassword())) { // Ensure password comparison is encoded
+    if (!Base64Util.encode(password).equals(user.getPassword())) {
       logger.error("Invalid credentials for user with email: {}", email);
-      throw new InvalidCredentialsException("Invalid password");
+      throw new InvalidCredentialsException(Constants.INVALID_CREDENTIALS);
     }
 
     logger.info("Login successful for user with email: {}", email);
@@ -162,7 +158,7 @@ public class UserServiceImpl implements UserService {
       return userOutDTO;
     } else {
       logger.error("User not found with ID: {}", id);
-      throw new UserNotFoundException(Constants.USER_NOT_FOUND);
+      throw new NotFoundException(Constants.USER_NOT_FOUND);
     }
   }
 
@@ -180,10 +176,9 @@ public class UserServiceImpl implements UserService {
     User user = userRepository.findById(id)
       .orElseThrow(() -> {
         logger.error("User not found with ID: {}", id);
-        return new UserNotFoundException(Constants.USER_NOT_FOUND);
+        return new NotFoundException(Constants.USER_NOT_FOUND);
       });
 
-    // Update user details
     user.setFirstName(userInDTO.getFirstName());
     user.setLastName(userInDTO.getLastName());
     user.setPhoneNo(userInDTO.getPhoneNo());
@@ -209,18 +204,15 @@ public class UserServiceImpl implements UserService {
   public UserResponse deleteUser(Integer id) {
     logger.info("Attempting to delete user with ID: {}", id);
 
-    // Fetch the user, or throw UserNotFoundException if not found
     User user = userRepository.findById(id)
       .orElseThrow(() -> {
         logger.error("User not found with ID: {}", id);
-        return new UserNotFoundException(Constants.USER_NOT_FOUND);
+        return new NotFoundException(Constants.USER_NOT_FOUND);
       });
 
-    // Delete the user and wallet balance
     userRepository.delete(user);
     walletBalanceRepository.deleteByUserId(id);
 
-    // Log success and return response
     logger.info("User and associated wallet balance deleted successfully for ID: {}", id);
     UserResponse userResponse = new UserResponse();
     userResponse.setSuccessMessage(Constants.USER_DELETED_SUCCESSFULLY);

@@ -17,7 +17,6 @@ class AddressesInDTOTest {
 
   @BeforeEach
   void setUp() {
-    // Set up the AddressInDTO object and validator before each test
     addressInDTO = new AddressInDTO();
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
