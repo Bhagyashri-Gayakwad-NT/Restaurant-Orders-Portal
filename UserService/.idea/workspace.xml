@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="da0cc01a-05e7-4511-b208-7b4666b1f86e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/FoodCategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/FoodCategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/FoodItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/FoodItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/RestaurantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/RestaurantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/dtoconvertion/DtoConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/dtoconvertion/DtoConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/entities/FoodCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/entities/FoodCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/entities/FoodItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/entities/FoodItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/entities/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/entities/Restaurant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/AlreadyExistException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/AlreadyExistException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/ErrorResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/GlobalException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/GlobalException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/NotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/NotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/UserNotRestaurantOwnerException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/UserNotRestaurantOwnerException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/indto/FoodCategoryInDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/indto/FoodCategoryInDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/indto/FoodItemInDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/indto/FoodItemInDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/indto/RestaurantInDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/indto/RestaurantInDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/outdto/FoodCategoryOutDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/outdto/FoodCategoryOutDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/outdto/FoodItemOutDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/outdto/FoodItemOutDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/outdto/RestaurantOutDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/outdto/RestaurantOutDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/repository/FoodCategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/repository/FoodCategoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/repository/FoodItemRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/repository/FoodItemRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/repository/RestaurantRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/repository/RestaurantRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/service/FoodCategoryservice.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/service/FoodCategoryservice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/service/FoodItemService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/service/FoodItemService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/service/RestaurantService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/service/RestaurantService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/serviceimpl/FoodCategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/serviceimpl/FoodCategoryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/serviceimpl/RestaurantServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/serviceimpl/RestaurantServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/util/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/util/Role.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/RestaurantServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/RestaurantServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/entites/FoodCategoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/entites/FoodCategoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/entites/FoodItemTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/entites/FoodItemTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/entites/RestaurantTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/entites/RestaurantTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/indto/FoodCategoryInDtoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/indto/FoodCategoryInDtoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/indto/RestaurantInDTOTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/indto/RestaurantInDTOTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/CommonResponseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/CommonResponseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/FoodCategoryOutDtoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/FoodCategoryOutDtoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/FoodItemOutDtoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/FoodItemOutDtoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/RestaurantOutDtoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/RestaurantOutDtoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/UserOutDTOTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/UserOutDTOTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/FoodCategoryServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/FoodCategoryServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/FoodItemServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/FoodItemServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/RestaurantServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/RestaurantServiceImplTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="firstSprint" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2kyyo5Jjm8YBKS9ITvR7XeTvZhh" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.UserServiceApplication.executor": "Run",
+    "JUnit.AddressControllerTests.executor": "Run",
+    "JUnit.AddressControllerTests.testAddAddress.executor": "Run",
+    "JUnit.AddressInDTOTest.executor": "Run",
+    "JUnit.AddressInDTOTests.executor": "Run",
+    "JUnit.AddressOutDTOTests.executor": "Run",
+    "JUnit.AddressServiceImplTests (1).executor": "Run",
+    "JUnit.AddressServiceImplTests.executor": "Run",
+    "JUnit.AddressServiceImplTests.testAddAddress (1).executor": "Run",
+    "JUnit.AddressServiceImplTests.testAddAddress.executor": "Debug",
+    "JUnit.AddressServiceImplTests.testAddAddress_Success.executor": "Run",
+    "JUnit.AddressServiceImplTests.testGetUserAddresses.executor": "Run",
+    "JUnit.AddressTests.executor": "Run",
+    "JUnit.AddressTests.testToString.executor": "Run",
+    "JUnit.AddressesInDTOTest.executor": "Run",
+    "JUnit.ErrorResponseTest.executor": "Run",
+    "JUnit.GlobalExceptionHandlerTest.executor": "Run",
+    "JUnit.LogInDTOTests.executor": "Run",
+    "JUnit.LogInDTOTests.testEmailDoesNotEndWithNucleusTeqDomain.executor": "Run",
+    "JUnit.LogInDTOTests.testEmailIsBlank.executor": "Run",
+    "JUnit.LogInDTOTests.testEmailIsInvalid.executor": "Run",
+    "JUnit.LogInDTOTests.testInvalidEmail.executor": "Run",
+    "JUnit.UserControllerTest.executor": "Run",
+    "JUnit.UserControllerTests.executor": "Run",
+    "JUnit.UserControllerTests.testDeleteUser.executor": "Run",
+    "JUnit.UserControllerTests.testGetUserProfile.executor": "Run",
+    "JUnit.UserControllerTests.testLoginUser.executor": "Run",
+    "JUnit.UserControllerTests.testUpdateUserProfile_Success.executor": "Run",
+    "JUnit.UserInDTOTests.executor": "Run",
+    "JUnit.UserInDTOTests.testInvalidEmail.executor": "Run",
+    "JUnit.UserInDTOTests.testInvalidPassword.executor": "Run",
+    "JUnit.UserOutDTOTests.executor": "Run",
+    "JUnit.UserResponseTests.executor": "Debug",
+    "JUnit.UserServiceApplicationTests.executor": "Run",
+    "JUnit.UserServiceImplTest.executor": "Run",
+    "JUnit.UserServiceImplTest.testLoginUser_InvalidCredentials.executor": "Run",
+    "JUnit.UserServiceImplTest.testLoginUser_Success.executor": "Run",
+    "JUnit.UserServiceImplTest.testRegisterUser_Success.executor": "Run",
+    "JUnit.UserTests.executor": "Run",
+    "JUnit.UserTests.testToString.executor": "Run",
+    "JUnit.WalletBalanceDTOTests.executor": "Run",
+    "JUnit.WalletBalanceTests.executor": "Run",
+    "JUnit.controller in UserService.executor": "Run",
+    "JUnit.microservice in UserService.executor": "Run",
+    "Maven.Unknown [clean].executor": "Run",
+    "Maven.Unknown [install].executor": "Run",
+    "Maven.UserService [clean].executor": "Run",
+    "Maven.UserService [deploy].executor": "Run",
+    "Maven.UserService [install].executor": "Run",
+    "Maven.UserService [org.apache.maven.plugins:maven-checkstyle-plugin:3.2.0:check].executor": "Run",
+    "Maven.UserService [org.apache.maven.plugins:maven-checkstyle-plugin:3.2.0:checkstyle].executor": "Run",
+    "Maven.UserService [org.apache.maven.plugins:maven-pmd-plugin:3.15.0:aggregate-cpd].executor": "Run",
+    "Maven.UserService [org.apache.maven.plugins:maven-pmd-plugin:3.15.0:aggregate-pmd-check].executor": "Run",
+    "Maven.UserService [org.apache.maven.plugins:maven-pmd-plugin:3.15.0:check].executor": "Run",
+    "Maven.UserService [test].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Sprint-02",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Restaurant Orders Portal/UserService",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.sourceCode"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.nt.user.microservice.outdto" />
+      <recent name="com.nt.user.microservice.service" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.UserServiceApplication">
+    <configuration name="UserServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.nt.user.microservice.UserServiceApplication" />
+      <module name="UserService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nt.user.microservice.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LogInDTOTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="UserService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nt.user.microservice.dto.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nt.user.microservice.indto" />
+      <option name="MAIN_CLASS_NAME" value="com.nt.user.microservice.indto.LogInDTOTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LogInDTOTests.testEmailDoesNotEndWithNucleusTeqDomain" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="UserService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nt.user.microservice.dto.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nt.user.microservice.indto" />
+      <option name="MAIN_CLASS_NAME" value="com.nt.user.microservice.indto.LogInDTOTests" />
+      <option name="METHOD_NAME" value="testEmailDoesNotEndWithNucleusTeqDomain" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="LogInDTOTests.testInvalidEmail" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="UserService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nt.user.microservice.dto.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nt.user.microservice.indto" />
+      <option name="MAIN_CLASS_NAME" value="com.nt.user.microservice.indto.LogInDTOTests" />
+      <option name="METHOD_NAME" value="testInvalidEmail" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="microservice in UserService" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="UserService" />
+      <option name="TEST_OBJECT" value="directory" />
+      <dir value="$PROJECT_DIR$/src/test/java/com/nt/user/microservice" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.UserServiceApplication" />
+        <item itemvalue="JUnit.microservice in UserService" />
+        <item itemvalue="JUnit.LogInDTOTests" />
+        <item itemvalue="JUnit.LogInDTOTests.testInvalidEmail" />
+        <item itemvalue="JUnit.LogInDTOTests.testEmailDoesNotEndWithNucleusTeqDomain" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="da0cc01a-05e7-4511-b208-7b4666b1f86e" name="Changes" comment="" />
+      <created>1724270282801</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1724270282801</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/UserService$UserTests.ic" NAME="UserTests Coverage Results" MODIFIED="1724872717339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>com.nt.user.microservice.entities.*</FILTER>
+    </SUITE>
+  </component>
+</project>
