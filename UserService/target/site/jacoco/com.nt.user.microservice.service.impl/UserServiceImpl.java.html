@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.service.impl</a> &gt; <span class="el_source">UserServiceImpl.java</span></div><h1>UserServiceImpl.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.service.impl;
+
+import com.nt.user.microservice.exceptions.InvalidCredentialsException;
+import com.nt.user.microservice.exceptions.UserAlreadyExistsException;
+import com.nt.user.microservice.exceptions.UserNotFoundException;
+import com.nt.user.microservice.outdto.UserResponse;
+import com.nt.user.microservice.util.Constants;
+import com.nt.user.microservice.util.Role;
+import com.nt.user.microservice.entites.User;
+import com.nt.user.microservice.entites.WalletBalance;
+import com.nt.user.microservice.indto.UserInDTO;
+import com.nt.user.microservice.outdto.UserOutDTO;
+import com.nt.user.microservice.repository.UserRepository;
+import com.nt.user.microservice.repository.WalletBalanceRepository;
+import com.nt.user.microservice.service.UserService;
+import com.nt.user.microservice.util.Base64Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+/**
+ * Implementation of the UserService interface providing user-related operations.
+ */
+@Service
+public class UserServiceImpl implements UserService {
+
+<span class="fc" id="L30">  private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);</span>
+
+  private final UserRepository userRepository;
+  private final WalletBalanceRepository walletBalanceRepository;
+
+  /**
+   * Constructor for UserServiceImpl.
+   *
+   * @param userRepository           the UserRepository to be injected
+   * @param walletBalanceRepository  the WalletBalanceRepository to be injected
+   */
+  @Autowired
+<span class="fc" id="L42">  public UserServiceImpl(UserRepository userRepository, WalletBalanceRepository walletBalanceRepository) {</span>
+<span class="fc" id="L43">    this.userRepository = userRepository;</span>
+<span class="fc" id="L44">    this.walletBalanceRepository = walletBalanceRepository;</span>
+<span class="fc" id="L45">  }</span>
+
+  /**
+   * Registers a new user.
+   *
+   * @param userInDTO the user information to register
+   * @return a UserResponse indicating the result of the registration
+   */
+  @Override
+  public UserResponse registerUser(UserInDTO userInDTO) {
+<span class="fc" id="L55">    logger.info(&quot;Attempting to register user with email: {}&quot;, userInDTO.getEmail());</span>
+
+    // Check if a user with the same email already exists
+<span class="fc" id="L58">    Optional&lt;User&gt; existingUser = userRepository.findByEmail(userInDTO.getEmail());</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">    if (existingUser.isPresent()) {</span>
+<span class="fc" id="L60">      logger.error(&quot;User with email {} already exists&quot;, userInDTO.getEmail());</span>
+<span class="fc" id="L61">      throw new UserAlreadyExistsException(&quot;User already registered with this email&quot;);</span>
+    }
+
+<span class="fc" id="L64">    User user = new User();</span>
+<span class="fc" id="L65">    user.setFirstName(userInDTO.getFirstName());</span>
+<span class="fc" id="L66">    user.setLastName(userInDTO.getLastName());</span>
+<span class="fc" id="L67">    user.setEmail(userInDTO.getEmail());</span>
+<span class="fc" id="L68">    user.setPhoneNo(userInDTO.getPhoneNo());</span>
+<span class="fc" id="L69">    user.setPassword(Base64Util.encode(userInDTO.getPassword())); // Ensure password is encoded</span>
+<span class="fc" id="L70">    user.setRole(Role.valueOf(userInDTO.getRole().toUpperCase()));</span>
+
+<span class="fc" id="L72">    User savedUser = userRepository.save(user);</span>
+<span class="fc" id="L73">    logger.info(&quot;User registered successfully with ID: {}&quot;, savedUser.getId());</span>
+
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">    if (Role.USER.equals(user.getRole())) {</span>
+<span class="fc" id="L76">      logger.info(&quot;Assigning initial wallet balance for user with ID: {}&quot;, savedUser.getId());</span>
+
+<span class="fc" id="L78">      WalletBalance walletBalanceEntity = new WalletBalance();</span>
+<span class="fc" id="L79">      walletBalanceEntity.setUserId(savedUser.getId());</span>
+<span class="fc" id="L80">      walletBalanceEntity.setBalance(Constants.INITIAL_WALLET_BALANCE);</span>
+<span class="fc" id="L81">      walletBalanceRepository.save(walletBalanceEntity);</span>
+
+<span class="fc" id="L83">      logger.info(&quot;Initial wallet balance assigned for user with ID: {}&quot;, savedUser.getId());</span>
+    }
+
+<span class="fc" id="L86">    UserResponse response = new UserResponse();</span>
+<span class="fc" id="L87">    response.setSuccessMessage(Constants.USER_REGISTERED_SUCCESSFULLY);</span>
+<span class="fc" id="L88">    return response;</span>
+  }
+
+  /**
+   * Logs in a user by verifying their email and password.
+   *
+   * @param email    the user's email
+   * @param password the user's password
+   * @return a UserOutDTO with user details if login is successful
+   */
+  @Override
+  public UserOutDTO loginUser(String email, String password) {
+<span class="fc" id="L100">    logger.info(&quot;Attempting to log in user with email: {}&quot;, email);</span>
+
+    // Fetch user by email
+<span class="fc" id="L103">    Optional&lt;User&gt; userOptional = userRepository.findByEmail(email);</span>
+
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">    if (!userOptional.isPresent()) {</span>
+<span class="nc" id="L106">      logger.error(&quot;User with email {} not found&quot;, email);</span>
+<span class="nc" id="L107">      throw new UserNotFoundException(&quot;User not found&quot;);</span>
+    }
+
+<span class="fc" id="L110">    User user = userOptional.get();</span>
+
+    // Check if the password matches
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">    if (!Base64Util.encode(password).equals(user.getPassword())) { // Ensure password comparison is encoded</span>
+<span class="nc" id="L114">      logger.error(&quot;Invalid credentials for user with email: {}&quot;, email);</span>
+<span class="nc" id="L115">      throw new InvalidCredentialsException(&quot;Invalid password&quot;);</span>
+    }
+
+<span class="fc" id="L118">    logger.info(&quot;Login successful for user with email: {}&quot;, email);</span>
+
+<span class="fc" id="L120">    WalletBalance walletBalance = walletBalanceRepository.findByUserId(user.getId());</span>
+
+<span class="fc" id="L122">    UserOutDTO userOutDTO = new UserOutDTO();</span>
+<span class="fc" id="L123">    userOutDTO.setId(user.getId());</span>
+<span class="fc" id="L124">    userOutDTO.setFirstName(user.getFirstName());</span>
+<span class="fc" id="L125">    userOutDTO.setLastName(user.getLastName());</span>
+<span class="fc" id="L126">    userOutDTO.setEmail(user.getEmail());</span>
+<span class="fc" id="L127">    userOutDTO.setPhoneNo(user.getPhoneNo());</span>
+<span class="fc" id="L128">    userOutDTO.setRole(user.getRole().name());</span>
+
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">    if (user.getRole() == Role.USER) {</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">      userOutDTO.setWalletBalance(walletBalance != null ? walletBalance.getBalance() : 0.0);</span>
+    }
+
+<span class="fc" id="L134">    return userOutDTO;</span>
+  }
+
+  /**
+   * Retrieves the profile of a user by their ID.
+   *
+   * @param id the user's ID
+   * @return a UserOutDTO with the user's profile information
+   */
+  @Override
+  public UserOutDTO getUserProfile(Integer id) {
+<span class="fc" id="L145">    logger.info(&quot;Fetching user profile for ID: {}&quot;, id);</span>
+
+<span class="fc" id="L147">    Optional&lt;User&gt; userOptional = userRepository.findById(id);</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">    if (userOptional.isPresent()) {</span>
+<span class="fc" id="L149">      User user = userOptional.get();</span>
+<span class="fc" id="L150">      WalletBalance walletBalance = walletBalanceRepository.findByUserId(user.getId());</span>
+
+<span class="fc" id="L152">      UserOutDTO userOutDTO = new UserOutDTO();</span>
+<span class="fc" id="L153">      userOutDTO.setId(user.getId());</span>
+<span class="fc" id="L154">      userOutDTO.setFirstName(user.getFirstName());</span>
+<span class="fc" id="L155">      userOutDTO.setLastName(user.getLastName());</span>
+<span class="fc" id="L156">      userOutDTO.setEmail(user.getEmail());</span>
+<span class="fc" id="L157">      userOutDTO.setPhoneNo(user.getPhoneNo());</span>
+<span class="fc" id="L158">      userOutDTO.setRole(user.getRole().name());</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">      userOutDTO.setWalletBalance(walletBalance != null ? walletBalance.getBalance() : 0.0);</span>
+
+<span class="fc" id="L161">      logger.info(&quot;User profile fetched successfully for ID: {}&quot;, id);</span>
+<span class="fc" id="L162">      return userOutDTO;</span>
+    } else {
+<span class="fc" id="L164">      logger.error(&quot;User not found with ID: {}&quot;, id);</span>
+<span class="fc" id="L165">      throw new UserNotFoundException(Constants.USER_NOT_FOUND);</span>
+    }
+  }
+
+  /**
+   * Updates the profile of an existing user.
+   *
+   * @param id        the user's ID
+   * @param userInDTO the updated user information
+   * @return a UserResponse indicating the result of the update
+   */
+  @Override
+  public UserResponse updateUserProfile(Integer id, UserInDTO userInDTO) {
+<span class="fc" id="L178">    logger.info(&quot;Updating user profile for ID: {}&quot;, id);</span>
+
+<span class="fc" id="L180">    User user = userRepository.findById(id)</span>
+<span class="fc" id="L181">      .orElseThrow(() -&gt; {</span>
+<span class="fc" id="L182">        logger.error(&quot;User not found with ID: {}&quot;, id);</span>
+<span class="fc" id="L183">        return new UserNotFoundException(Constants.USER_NOT_FOUND);</span>
+      });
+
+    // Update user details
+<span class="fc" id="L187">    user.setFirstName(userInDTO.getFirstName());</span>
+<span class="fc" id="L188">    user.setLastName(userInDTO.getLastName());</span>
+<span class="fc" id="L189">    user.setPhoneNo(userInDTO.getPhoneNo());</span>
+<span class="pc bpc" id="L190" title="2 of 4 branches missed.">    if (userInDTO.getPassword() != null &amp;&amp; !userInDTO.getPassword().isEmpty()) {</span>
+<span class="fc" id="L191">      user.setPassword(Base64Util.encode(userInDTO.getPassword())); // Ensure password is encoded</span>
+    }
+<span class="fc" id="L193">    user.setRole(Role.valueOf(userInDTO.getRole().toUpperCase()));</span>
+
+<span class="fc" id="L195">    userRepository.save(user);</span>
+<span class="fc" id="L196">    logger.info(&quot;User profile updated successfully for ID: {}&quot;, id);</span>
+<span class="fc" id="L197">    UserResponse userResponse = new UserResponse();</span>
+<span class="fc" id="L198">    userResponse.setSuccessMessage(Constants.USER_PROFILE_UPDATED_SUCCESSFULLY);</span>
+<span class="fc" id="L199">    return userResponse;</span>
+  }
+
+  /**
+   * Deletes a user and their associated wallet balance.
+   *
+   * @param id the user's ID
+   * @return a UserResponse indicating the result of the deletion
+   */
+  @Override
+  public UserResponse deleteUser(Integer id) {
+<span class="fc" id="L210">    logger.info(&quot;Attempting to delete user with ID: {}&quot;, id);</span>
+
+    // Fetch the user, or throw UserNotFoundException if not found
+<span class="fc" id="L213">    User user = userRepository.findById(id)</span>
+<span class="fc" id="L214">      .orElseThrow(() -&gt; {</span>
+<span class="fc" id="L215">        logger.error(&quot;User not found with ID: {}&quot;, id);</span>
+<span class="fc" id="L216">        return new UserNotFoundException(Constants.USER_NOT_FOUND);</span>
+      });
+
+    // Delete the user and wallet balance
+<span class="fc" id="L220">    userRepository.delete(user);</span>
+<span class="fc" id="L221">    walletBalanceRepository.deleteByUserId(id);</span>
+
+    // Log success and return response
+<span class="fc" id="L224">    logger.info(&quot;User and associated wallet balance deleted successfully for ID: {}&quot;, id);</span>
+<span class="fc" id="L225">    UserResponse userResponse = new UserResponse();</span>
+<span class="fc" id="L226">    userResponse.setSuccessMessage(Constants.USER_DELETED_SUCCESSFULLY);</span>
+<span class="fc" id="L227">    return userResponse;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
