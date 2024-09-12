@@ -25,14 +25,37 @@ import java.util.Optional;
  */
 @Service
 public class AddressServiceImpl implements AddressService {
-
+  /**
+   * Logger for the AddressServiceImpl class, used for logging important information
+   * such as operations performed, success messages, and any issues encountered during address management.
+   * <p>
+   * The {@link Logger} instance helps in tracking the execution flow, capturing detailed logs
+   * for debugging, and auditing purposes, including logging operations like adding, retrieving,
+   * and deleting addresses.
+   * </p>
+   */
   private static final Logger logger = LogManager.getLogger(AddressServiceImpl.class);
 
+  /**
+   * Repository for performing CRUD operations on {@link Address} entities.
+   * <p>
+   * The {@link AddressRepository} is used to interact with the database for address-related data operations.
+   * It provides methods for saving, retrieving, updating, and deleting address records.
+   * </p>
+   */
   @Autowired
   private AddressRepository addressRepository;
 
+  /**
+   * Repository for performing CRUD operations on {@link User} entities.
+   * <p>
+   * The {@link UserRepository} is used to interact with the database for user-related data operations.
+   * It provides methods for finding users by their IDs, among other user-related queries.
+   * </p>
+   */
   @Autowired
   private UserRepository userRepository;
+
 
   /**
    * Adds a new address for a user.

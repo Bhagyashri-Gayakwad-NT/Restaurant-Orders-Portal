@@ -28,11 +28,28 @@ import javax.validation.Valid;
 @CrossOrigin
 @RequestMapping("/users")
 public class UserController {
-
+  /**
+   * Logger for the UserController class, used for logging important information
+   * such as requests, success, and error messages during execution.
+   */
   private static final Logger logger = LogManager.getLogger(UserController.class);
 
+  /**
+   * Service layer responsible for handling user-related operations.
+   * <p>
+   * The {@link UserService} is injected via the constructor and provides methods for user
+   * registration, login, profile management, and deletion. It encapsulates the business logic
+   * related to user operations and interacts with the underlying data layer to perform these tasks.
+   * </p>
+   */
   private final UserService userService;
 
+
+  /**
+   * Constructor for UserController, initializes the UserService.
+   *
+   * @param userService the service layer that handles user-related operations
+   */
   public UserController(UserService userService) {
     this.userService = userService;
   }

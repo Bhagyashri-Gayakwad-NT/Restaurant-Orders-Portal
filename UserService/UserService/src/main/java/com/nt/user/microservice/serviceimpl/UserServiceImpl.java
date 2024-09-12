@@ -25,11 +25,34 @@ import java.util.Optional;
  */
 @Service
 public class UserServiceImpl implements UserService {
-
+  /**
+   * Logger for the UserServiceImpl class, used for logging important information
+   * such as user registration attempts, login attempts, profile updates, and deletions.
+   * <p>
+   * The {@link Logger} instance helps in tracking execution flow, capturing success and error messages,
+   * and facilitating debugging and auditing of user-related operations.
+   * </p>
+   */
   private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
+  /**
+   * Repository for performing CRUD operations on {@link User} entities.
+   * <p>
+   * The {@link UserRepository} is used to interact with the database for user-related data operations.
+   * It provides methods for saving, retrieving, updating, and deleting user records.
+   * </p>
+   */
   private final UserRepository userRepository;
+
+  /**
+   * Repository for performing CRUD operations on {@link WalletBalance} entities.
+   * <p>
+   * The {@link WalletBalanceRepository} is used to interact with the database for wallet balance-related operations.
+   * It provides methods for saving, retrieving, and deleting wallet balance records associated with users.
+   * </p>
+   */
   private final WalletBalanceRepository walletBalanceRepository;
+
 
   /**
    * Constructor for UserServiceImpl.

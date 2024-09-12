@@ -26,9 +26,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/addresses")
 public class AddressController {
-
+  /**
+   * Logger for this class, used to log important information, request details, and any issues encountered.
+   * <p>
+   * The {@link Logger} instance allows tracking of incoming requests, responses, and events such as
+   * adding, fetching, or deleting addresses. It helps monitor the application flow and provides
+   * detailed logs for debugging and auditing purposes.
+   */
   private static final Logger logger = LogManager.getLogger(AddressController.class);
-
+  /**
+   * Service layer to handle address-related business logic.
+   * <p>
+   * The {@link AddressService} is injected automatically by Spring using {@code @Autowired},
+   * and it is responsible for performing various operations such as adding, fetching,
+   * and deleting addresses. It communicates with the data layer (repository) and ensures
+   * proper validation and processing of address data.
+   * </p>
+   */
   @Autowired
   private AddressService addressService;
 
