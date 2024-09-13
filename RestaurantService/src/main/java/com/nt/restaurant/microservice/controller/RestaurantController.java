@@ -16,42 +16,77 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Controller for managing restaurant-related operations such as adding, fetching, and retrieving images of restaurants.
+ */
 @RestController
 @CrossOrigin
 @RequestMapping("/restaurant")
 public class RestaurantController {
 
+  /**
+   * Logger for this class, used to log important information, request details, and any issues encountered.
+   * <p>
+   * The {@link Logger} instance tracks events such as adding, fetching, and retrieving restaurants or their images.
+   * It helps with application flow monitoring, debugging, and auditing purposes.
+   */
   private static final Logger logger = LogManager.getLogger(RestaurantController.class);
 
+  /**
+   * Service responsible for handling the business logic related to restaurant operations.
+   * This service is used for operations such as adding, fetching, and managing restaurant details.
+   * <p>
+   * The {@code restaurantService} is injected by Spring's dependency injection mechanism.
+   * It provides access to methods that interact with restaurants, including adding new restaurants
+   * and handling related data such as restaurant images.
+   */
   @Autowired
   private RestaurantService restaurantService;
 
+
+  /**
+   * Adds a new restaurant based on the provided {@link RestaurantInDTO} data.
+   *
+   * @param restaurantInDTO the restaurant information to add.
+   * @return a response entity with a success message if the restaurant is added successfully.
+   */
   @PostMapping(value = "/addRestaurant", consumes = "multipart/form-data")
-  public ResponseEntity<CommonResponse> addRestaurant(@Valid @ModelAttribute RestaurantInDTO restaurantInDTO) {
+  public ResponseEntity<CommonResponse> addRestaurant(@Valid @ModelAttribute RestaurantInDTO restaurantInDTO,
+                                                      @RequestParam("restaurantImage")
+                                                      MultipartFile image) {
     logger.info("Received request to add a restaurant: {}", restaurantInDTO);
-    CommonResponse response = restaurantService.addRestaurant(restaurantInDTO);
+    CommonResponse response = restaurantService.addRestaurant(restaurantInDTO, image);
     logger.info("Successfully added restaurant: {}", response.getMessage());
-    return new ResponseEntity<>(response, HttpStatus.CREATED);
+    return new ResponseEntity<CommonResponse>(response, HttpStatus.CREATED);
   }
 
+  /**
+   * Fetches restaurant details by restaurant ID.
+   *
+   * @param restaurantId the ID of the restaurant to be fetched.
+   * @return a response entity containing restaurant details or a 404 status if the restaurant is not found.
+   */
   @GetMapping("/getRestaurant/{restaurantId}")
   public ResponseEntity<RestaurantOutDTO> getRestaurantById(@PathVariable Integer restaurantId) {
     logger.info("Fetching restaurant details for ID: {}", restaurantId);
     RestaurantOutDTO restaurantOutDTO = restaurantService.getRestaurantById(restaurantId);
-    if (restaurantOutDTO != null) {
-      logger.info("Successfully retrieved restaurant details for ID: {}", restaurantId);
-      return ResponseEntity.ok(restaurantOutDTO);
-    } else {
-      logger.warn("Restaurant with ID {} not found", restaurantId);
-      return ResponseEntity.notFound().build();
-    }
+    logger.info("Successfully retrieved restaurant details for ID: {}", restaurantId);
+    return ResponseEntity.ok(restaurantOutDTO);
   }
 
+  /**
+   * Fetches all restaurants for a given user ID.
+   *
+   * @param userId the ID of the user whose restaurants are to be fetched.
+   * @return a response entity containing a list of restaurants for the specified user.
+   */
   @GetMapping("/restaurants/{userId}")
   public ResponseEntity<List<RestaurantOutDTO>> getRestaurantsByUserId(@PathVariable Integer userId) {
     logger.info("Fetching restaurants for user ID: {}", userId);
@@ -60,6 +95,12 @@ public class RestaurantController {
     return ResponseEntity.ok(restaurants);
   }
 
+  /**
+   * Fetches the image of a restaurant by its ID.
+   *
+   * @param id the ID of the restaurant whose image is to be fetched.
+   * @return a response entity containing the restaurant image in JPEG format.
+   */
   @GetMapping("/{id}/image")
   public ResponseEntity<byte[]> getRestaurantImage(@PathVariable Integer id) {
     logger.info("Fetching image for restaurant ID: {}", id);
@@ -68,6 +109,11 @@ public class RestaurantController {
     return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageData);
   }
 
+  /**
+   * Fetches all available restaurants.
+   *
+   * @return a response entity containing a list of all restaurants.
+   */
   @GetMapping()
   public ResponseEntity<List<RestaurantOutDTO>> getAllRestaurants() {
     logger.info("Fetching all restaurants");
@@ -76,3 +122,4 @@ public class RestaurantController {
     return ResponseEntity.ok(restaurantOutDTOs);
   }
 }
+

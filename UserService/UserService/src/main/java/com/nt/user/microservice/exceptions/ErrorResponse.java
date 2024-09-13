@@ -10,7 +10,7 @@ import java.util.Map;
  * It contains an HTTP status code, a message describing the error, and optional validation errors.
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class ErrorResponse {
+public class  ErrorResponse {
 
   /**
    * The HTTP status code associated with the error.

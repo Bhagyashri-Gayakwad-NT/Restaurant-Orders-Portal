@@ -1,5 +1,10 @@
 package com.nt.restaurant.microservice.outdto;
 
+
+/**
+ * Data Transfer Object (DTO) for representing user information in the response.
+ * This class is used to convey user details from the server to the client.
+ */
 public class UserOutDTO {
 
   /**
@@ -37,9 +42,23 @@ public class UserOutDTO {
    */
   private Double walletBalance;
 
+  /**
+   * Default constructor for creating an empty {@code UserOutDTO} instance.
+   */
   public UserOutDTO() {
   }
 
+  /**
+   * Constructor for creating a {@code UserOutDTO} instance with specified values.
+   *
+   * @param id            the unique identifier for the user.
+   * @param firstName     the first name of the user.
+   * @param lastName      the last name of the user.
+   * @param email         the email address of the user.
+   * @param phoneNo       the phone number of the user.
+   * @param role          the role of the user (e.g., "user" or "restaurant_owner").
+   * @param walletBalance the current wallet balance of the user.
+   */
   public UserOutDTO(Integer id, String firstName, String lastName, String email, String phoneNo, String role, Double walletBalance) {
     this.id = id;
     this.firstName = firstName;
@@ -53,7 +72,7 @@ public class UserOutDTO {
   /**
    * Retrieves the unique identifier for the user.
    *
-   * @return the user's ID as an Integer.
+   * @return the user's ID as an {@code Integer}.
    */
   public Integer getId() {
     return id;
@@ -71,7 +90,7 @@ public class UserOutDTO {
   /**
    * Retrieves the first name of the user.
    *
-   * @return the user's first name as a String.
+   * @return the user's first name as a {@code String}.
    */
   public String getFirstName() {
     return firstName;
@@ -89,7 +108,7 @@ public class UserOutDTO {
   /**
    * Retrieves the last name of the user.
    *
-   * @return the user's last name as a String.
+   * @return the user's last name as a {@code String}.
    */
   public String getLastName() {
     return lastName;
@@ -107,7 +126,7 @@ public class UserOutDTO {
   /**
    * Retrieves the email address of the user.
    *
-   * @return the user's email as a String.
+   * @return the user's email as a {@code String}.
    */
   public String getEmail() {
     return email;
@@ -125,7 +144,7 @@ public class UserOutDTO {
   /**
    * Retrieves the phone number of the user.
    *
-   * @return the user's phone number as a String.
+   * @return the user's phone number as a {@code String}.
    */
   public String getPhoneNo() {
     return phoneNo;
@@ -143,7 +162,7 @@ public class UserOutDTO {
   /**
    * Retrieves the role of the user (e.g., "user" or "restaurant_owner").
    *
-   * @return the user's role as a String.
+   * @return the user's role as a {@code String}.
    */
   public String getRole() {
     return role;
@@ -161,7 +180,7 @@ public class UserOutDTO {
   /**
    * Retrieves the current wallet balance of the user.
    *
-   * @return the user's wallet balance as a Double.
+   * @return the user's wallet balance as a {@code Double}.
    */
   public Double getWalletBalance() {
     return walletBalance;

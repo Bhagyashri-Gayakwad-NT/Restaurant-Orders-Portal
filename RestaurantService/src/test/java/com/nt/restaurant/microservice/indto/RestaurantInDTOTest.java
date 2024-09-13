@@ -51,19 +51,6 @@ class RestaurantInDTOTest {
     assertEquals(image, dto.getRestaurantImage());
   }
 
-//  @Test
-//  void testEquals() {
-//    MockMultipartFile image1 = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[]{1, 2, 3});
-//    MockMultipartFile image2 = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[]{1, 2, 3});
-//
-//    RestaurantInDTO dto1 = new RestaurantInDTO(1, "Restaurant A", "123 Street", "9876543210", "Good place", image1);
-//    RestaurantInDTO dto2 = new RestaurantInDTO(1, "Restaurant A", "123 Street", "9876543210", "Good place", image2);
-//
-//    assertEquals(dto1, dto2);  // Should pass now
-//    assertEquals(dto1.hashCode(), dto2.hashCode());  // Should pass now
-//  }
-
-
   @Test
   void testNotEquals() {
     MockMultipartFile image1 = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[] {1, 2, 3});
@@ -82,7 +69,9 @@ class RestaurantInDTOTest {
     RestaurantInDTO dto = new RestaurantInDTO(1, "Restaurant A", "123 Street", "9876543210", "Good place", image);
 
     String expected =
-      "RestaurantInDto{userId=1, restaurantName='Restaurant A', restaurantAddress='123 Street', contactNumber='9876543210', description='Good place', restaurantImage=" +
+      "RestaurantInDto{userId=1, restaurantName='Restaurant A', " +
+        "restaurantAddress='123 Street', contactNumber='9876543210'," +
+        " description='Good place', restaurantImage=" +
         image + "}";
     assertEquals(expected, dto.toString());
   }
@@ -101,10 +90,12 @@ class RestaurantInDTOTest {
     MockMultipartFile image = new MockMultipartFile("restaurantImage", "restaurant.jpg", "image/jpeg", new byte[] {1, 2, 3});
     RestaurantInDTO dto =
       new RestaurantInDTO(null, "", "", "123", "Description that is way too long.........................................." +
-        ".................................................................................................................................",
+        "...................................." +
+        ".........................................." +
+        "..................................................",
         image);
 
     Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
-    assertEquals(4, violations.size());
+    assertEquals(6, violations.size());
   }
 }

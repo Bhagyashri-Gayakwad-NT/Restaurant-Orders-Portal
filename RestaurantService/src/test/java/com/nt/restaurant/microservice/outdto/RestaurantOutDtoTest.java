@@ -40,12 +40,14 @@ class RestaurantOutDTOTest {
       LocalDate.of(2024, 9, 10), "Description", true, "imageData");
 
     // Expected string representation
-    String expected = "RestaurantOutDto{restaurantId=1, restaurantName='Restaurant Name', " +
+    String expected = "RestaurantOutDTO{restaurantId=1, restaurantName='Restaurant Name', " +
       "restaurantAddress='Address', contactNumber='9876543210', " +
       "registrationDate=2024-09-10, description='Description', isOpen=true, " +
       "restaurantImage='imageData'}";
+
     assertEquals(expected, dto.toString());
   }
+
 
   @Test
   void testRestaurantOutDTOSettersAndGetters() {

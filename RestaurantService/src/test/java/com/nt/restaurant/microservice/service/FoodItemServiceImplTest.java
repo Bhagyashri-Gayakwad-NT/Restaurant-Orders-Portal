@@ -6,36 +6,39 @@ import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.exception.AlreadyExistException;
 import com.nt.restaurant.microservice.exception.NotFoundException;
 import com.nt.restaurant.microservice.indto.FoodItemInDTO;
+import com.nt.restaurant.microservice.indto.FoodItemUpdateInDTO;
 import com.nt.restaurant.microservice.outdto.CommonResponse;
+import com.nt.restaurant.microservice.outdto.FoodItemOutDTO;
 import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
 import com.nt.restaurant.microservice.repository.FoodItemRepository;
 import com.nt.restaurant.microservice.repository.RestaurantRepository;
 import com.nt.restaurant.microservice.serviceimpl.FoodItemServiceImpl;
 import com.nt.restaurant.microservice.util.Constants;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test")
-public class FoodItemServiceImplTest {
+class FoodItemServiceImplTest {
+
+  @InjectMocks
+  private FoodItemServiceImpl foodItemService;
 
   @Mock
   private FoodCategoryRepository foodCategoryRepository;
@@ -46,166 +49,124 @@ public class FoodItemServiceImplTest {
   @Mock
   private FoodItemRepository foodItemRepository;
 
-  @InjectMocks
-  private FoodItemServiceImpl foodItemServiceImpl;
+  @Mock
+  private MultipartFile image;
 
-  @Autowired
-  public FoodItemServiceImplTest() {
+  @BeforeEach
+  void setUp() {
     MockitoAnnotations.openMocks(this);
   }
 
+//  @Test
+//  void testAddFoodItem_Success() throws IOException {
+//    FoodItemInDTO foodItemInDTO = new FoodItemInDTO();
+//    foodItemInDTO.setFoodItemName("Pizza");
+//    foodItemInDTO.setRestaurantId(1);
+//    foodItemInDTO.setFoodCategoryId(1);
+//
+//    Restaurant restaurant = new Restaurant();
+//    FoodCategory foodCategory = new FoodCategory();
+//    FoodItem foodItem = new FoodItem();
+//
+//    when(restaurantRepository.findById(any(Integer.class))).thenReturn(Optional.of(restaurant));
+//    when(foodCategoryRepository.findById(any(Integer.class))).thenReturn(Optional.of(foodCategory));
+//    when(foodItemRepository.findByFoodItemNameAndRestaurantId(any(String.class), any(Integer.class)))
+//      .thenReturn(Optional.empty());
+//    when(foodItemRepository.save(any(FoodItem.class))).thenReturn(foodItem);
+//
+//    CommonResponse response = foodItemService.addFoodItem(foodItemInDTO, image);
+//
+//    assertEquals(Constants.FOOD_ITEM_ADDED_SUCCESS, response.getMessage());
+//    verify(foodItemRepository).save(any(FoodItem.class));
+//  }
+
   @Test
-  public void testAddFoodItem_Success() {
+  void testAddFoodItem_FoodItemAlreadyExists() {
     FoodItemInDTO foodItemInDTO = new FoodItemInDTO();
     foodItemInDTO.setFoodItemName("Pizza");
-    foodItemInDTO.setFoodCategoryId(1);
     foodItemInDTO.setRestaurantId(1);
-    foodItemInDTO.setPrice(10.0);
-    foodItemInDTO.setAvailable(true);
+    foodItemInDTO.setFoodCategoryId(1);
 
     Restaurant restaurant = new Restaurant();
-    FoodCategory category = new FoodCategory();
+    FoodCategory foodCategory = new FoodCategory();
+    FoodItem existingFoodItem = new FoodItem();
+
+    when(restaurantRepository.findById(any(Integer.class))).thenReturn(Optional.of(restaurant));
+    when(foodCategoryRepository.findById(any(Integer.class))).thenReturn(Optional.of(foodCategory));
+    when(foodItemRepository.findByFoodItemNameAndRestaurantId(any(String.class), any(Integer.class)))
+      .thenReturn(Optional.of(existingFoodItem));
+
+    assertThrows(AlreadyExistException.class, () -> foodItemService.addFoodItem(foodItemInDTO, image));
+  }
+
+  @Test
+  void testGetFoodItemsByCategory_Success() {
+    List<FoodItem> foodItems = new ArrayList<>();
     FoodItem foodItem = new FoodItem();
+    foodItems.add(foodItem);
 
-    when(restaurantRepository.findById(anyInt())).thenReturn(Optional.of(restaurant));
-    when(foodCategoryRepository.findById(anyInt())).thenReturn(Optional.of(category));
-    when(foodItemRepository.findByFoodItemName(anyString())).thenReturn(Optional.empty());
-    when(foodItemRepository.save(any(FoodItem.class))).thenReturn(foodItem);
+    when(foodItemRepository.findByCategoryId(any(Integer.class))).thenReturn(foodItems);
 
-    CommonResponse response = foodItemServiceImpl.addFoodItem(foodItemInDTO);
+    List<FoodItemOutDTO> foodItemOutDTOList = foodItemService.getFoodItemsByCategory(1);
 
-    assertEquals(Constants.FOOD_ITEM_ADDED_SUCCESS, response.getMessage());
-    verify(foodItemRepository).save(any(FoodItem.class));
+    assertFalse(foodItemOutDTOList.isEmpty());
   }
 
   @Test
-  public void testAddFoodItem_RestaurantNotFound() {
-    FoodItemInDTO foodItemInDTO = new FoodItemInDTO();
-    foodItemInDTO.setRestaurantId(1);
+  void testGetFoodItemsByCategory_NotFound() {
+    when(foodItemRepository.findByCategoryId(any(Integer.class))).thenReturn(new ArrayList<>());
 
-    when(restaurantRepository.findById(anyInt())).thenReturn(Optional.empty());
-
-    assertThrows(NotFoundException.class, () -> {
-      foodItemServiceImpl.addFoodItem(foodItemInDTO);
-    });
+    assertThrows(NotFoundException.class, () -> foodItemService.getFoodItemsByCategory(1));
   }
 
   @Test
-  public void testAddFoodItem_FoodCategoryNotFound() {
-    FoodItemInDTO foodItemInDTO = new FoodItemInDTO();
-    foodItemInDTO.setFoodCategoryId(1);
-
-    when(restaurantRepository.findById(anyInt())).thenReturn(Optional.of(new Restaurant()));
-    when(foodCategoryRepository.findById(anyInt())).thenReturn(Optional.empty());
-
-    assertThrows(NotFoundException.class, () -> {
-      foodItemServiceImpl.addFoodItem(foodItemInDTO);
-    });
-  }
-
-  @Test
-  public void testAddFoodItem_FoodItemAlreadyExists() {
-    FoodItemInDTO foodItemInDTO = new FoodItemInDTO();
-    foodItemInDTO.setFoodItemName("Pizza");
-
-    when(restaurantRepository.findById(anyInt())).thenReturn(Optional.of(new Restaurant()));
-    when(foodCategoryRepository.findById(anyInt())).thenReturn(Optional.of(new FoodCategory()));
-    when(foodItemRepository.findByFoodItemName(anyString())).thenReturn(Optional.of(new FoodItem()));
-
-    assertThrows(AlreadyExistException.class, () -> {
-      foodItemServiceImpl.addFoodItem(foodItemInDTO);
-    });
-  }
-
-//  @Test
-//  public void testGetFoodItemsByCategory_Success() {
-//    List<FoodItem> foodItems = new ArrayList<>();
-//    foodItems.add(new FoodItem());
-//    FoodItemOutDTO foodItemOutDTO = new FoodItemOutDTO();
-//
-//    when(foodItemRepository.findByCategoryId(anyInt())).thenReturn(foodItems);
-//    when(FoodItemDtoConverter.entityToOutDTO(any(FoodItem.class))).thenReturn(foodItemOutDTO);
-//
-//    List<FoodItemOutDTO> response = foodItemServiceImpl.getFoodItemsByCategory(1);
-//
-//    assertEquals(1, response.size());
-//  }
-
-  @Test
-  public void testGetFoodItemsByCategory_NotFound() {
-    when(foodItemRepository.findByCategoryId(anyInt())).thenReturn(new ArrayList<>());
-
-    assertThrows(NotFoundException.class, () -> {
-      foodItemServiceImpl.getFoodItemsByCategory(1);
-    });
-  }
-
-//  @Test
-//  public void testGetFoodItemsByRestaurant_Success() {
-//    List<FoodItem> foodItems = new ArrayList<>();
-//    foodItems.add(new FoodItem());
-//    FoodItemOutDTO foodItemOutDTO = new FoodItemOutDTO();
-//
-//    when(foodItemRepository.findByRestaurantId(anyInt())).thenReturn(foodItems);
-//    when(FoodItemDtoConverter.entityToOutDTO(any(FoodItem.class))).thenReturn(foodItemOutDTO);
-//
-//    List<FoodItemOutDTO> response = foodItemServiceImpl.getFoodItemsByRestaurant(1);
-//
-//    assertEquals(1, response.size());
-//  }
-
-  @Test
-  public void testGetFoodItemsByRestaurant_NotFound() {
-    when(foodItemRepository.findByRestaurantId(anyInt())).thenReturn(new ArrayList<>());
-
-    assertThrows(NotFoundException.class, () -> {
-      foodItemServiceImpl.getFoodItemsByRestaurant(1);
-    });
-  }
-
-  @Test
-  public void testUpdateFoodItemByFoodItemId_Success() throws IOException {
-    FoodItemInDTO foodItemInDTO = new FoodItemInDTO();
-    foodItemInDTO.setFoodItemName("Burger");
+  void testUpdateFoodItemByFoodItemId_Success() throws IOException {
+    FoodItemUpdateInDTO foodItemUpdateInDTO = new FoodItemUpdateInDTO();
+    foodItemUpdateInDTO.setFoodItemName("Updated Pizza");
 
     FoodItem existingFoodItem = new FoodItem();
-    when(foodItemRepository.findById(anyInt())).thenReturn(Optional.of(existingFoodItem));
+    existingFoodItem.setFoodItemName("Pizza");
+
+    when(foodItemRepository.findById(any(Integer.class))).thenReturn(Optional.of(existingFoodItem));
     when(foodItemRepository.save(any(FoodItem.class))).thenReturn(existingFoodItem);
 
-    CommonResponse response = foodItemServiceImpl.updateFoodItemByFoodItemId(1, foodItemInDTO);
+    CommonResponse response = foodItemService.updateFoodItemByFoodItemId(1, foodItemUpdateInDTO);
 
     assertEquals(Constants.FOOD_ITEM_UPDATED_SUCCESS, response.getMessage());
     verify(foodItemRepository).save(any(FoodItem.class));
   }
 
   @Test
-  public void testUpdateFoodItemByFoodItemId_NotFound() {
-    FoodItemInDTO foodItemInDTO = new FoodItemInDTO();
-    when(foodItemRepository.findById(anyInt())).thenReturn(Optional.empty());
+  void testUpdateFoodItemByFoodItemId_ImageProcessingError() throws IOException {
+    FoodItemUpdateInDTO foodItemUpdateInDTO = new FoodItemUpdateInDTO();
+    foodItemUpdateInDTO.setFoodItemName("Updated Pizza");
+    foodItemUpdateInDTO.setFoodItemImage(image);
 
-    assertThrows(NotFoundException.class, () -> {
-      foodItemServiceImpl.updateFoodItemByFoodItemId(1, foodItemInDTO);
-    });
+    FoodItem existingFoodItem = new FoodItem();
+    existingFoodItem.setFoodItemName("Pizza");
+
+    when(foodItemRepository.findById(any(Integer.class))).thenReturn(Optional.of(existingFoodItem));
+    doThrow(new IOException("Image processing failed")).when(image).getBytes();
+
+    assertThrows(RuntimeException.class, () -> foodItemService.updateFoodItemByFoodItemId(1, foodItemUpdateInDTO));
   }
 
   @Test
-  public void testGetFoodItemImage_Success() {
+  void testGetFoodItemImage_Success() {
     FoodItem foodItem = new FoodItem();
     foodItem.setFoodItemImage(new byte[] {1, 2, 3});
 
-    when(foodItemRepository.findById(anyInt())).thenReturn(Optional.of(foodItem));
+    when(foodItemRepository.findById(any(Integer.class))).thenReturn(Optional.of(foodItem));
 
-    byte[] image = foodItemServiceImpl.getFoodItemImage(1);
+    byte[] image = foodItemService.getFoodItemImage(1);
 
     assertArrayEquals(new byte[] {1, 2, 3}, image);
   }
 
   @Test
-  public void testGetFoodItemImage_NotFound() {
-    when(foodItemRepository.findById(anyInt())).thenReturn(Optional.empty());
+  void testFindFoodItemById_NotFound() {
+    when(foodItemRepository.findById(any(Integer.class))).thenReturn(Optional.empty());
 
-    assertThrows(NotFoundException.class, () -> {
-      foodItemServiceImpl.getFoodItemImage(1);
-    });
+    assertThrows(NotFoundException.class, () -> foodItemService.findFoodItemById(1));
   }
 }

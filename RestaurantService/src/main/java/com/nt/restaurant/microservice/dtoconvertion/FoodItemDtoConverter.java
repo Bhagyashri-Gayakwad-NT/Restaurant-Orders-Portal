@@ -6,7 +6,18 @@ import com.nt.restaurant.microservice.outdto.FoodItemOutDTO;
 
 import java.io.IOException;
 
+/**
+ * Utility class to convert between {@link FoodItemInDTO} and {@link FoodItem} entities,
+ * and between {@link FoodItem} entities and {@link FoodItemOutDTO}.
+ */
 public class FoodItemDtoConverter {
+
+  /**
+   * Converts a {@link FoodItemInDTO} to a {@link FoodItem} entity.
+   *
+   * @param foodItemInDTO the DTO containing food item input data.
+   * @return the {@link FoodItem} entity populated with input data.
+   */
   public static FoodItem inDtoToEntity(FoodItemInDTO foodItemInDTO) {
     FoodItem foodItem = new FoodItem();
     foodItem.setCategoryId(foodItemInDTO.getFoodCategoryId());
@@ -25,6 +36,12 @@ public class FoodItemDtoConverter {
     return foodItem;
   }
 
+  /**
+   * Converts a {@link FoodItem} entity to a {@link FoodItemOutDTO}.
+   *
+   * @param foodItem the entity representing the food item.
+   * @return a {@link FoodItemOutDTO} populated with food item data.
+   */
   public static FoodItemOutDTO entityToOutDTO(FoodItem foodItem) {
     return new FoodItemOutDTO(
       foodItem.getFoodItemId(),
@@ -38,3 +55,4 @@ public class FoodItemDtoConverter {
     );
   }
 }
+

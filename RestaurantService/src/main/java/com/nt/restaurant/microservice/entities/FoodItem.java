@@ -8,25 +8,77 @@ import javax.persistence.Lob;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * Entity class representing a food item in the restaurant system.
+ * This class is mapped to a table in the database where each record represents a food item.
+ */
 @Entity
 public class FoodItem {
+
+  /**
+   * The unique identifier for the food item.
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer foodItemId;
+
+  /**
+   * The ID of the food category this food item belongs to.
+   */
   private Integer categoryId;
+
+  /**
+   * The ID of the restaurant this food item belongs to.
+   */
   private Integer restaurantId;
+
+  /**
+   * The name of the food item.
+   */
   private String foodItemName;
+
+  /**
+   * A description of the food item.
+   */
   private String description;
+
+  /**
+   * The price of the food item.
+   */
   private Double Price;
+
+  /**
+   * Availability status of the food item.
+   */
   private boolean isAvailable;
+
+  /**
+   * The image of the food item stored as a byte array.
+   */
   @Lob
   private byte[] foodItemImage;
 
+  /**
+   * Default constructor.
+   * Required by JPA for entity creation.
+   */
   public FoodItem() {
   }
 
-  public FoodItem(Integer foodItemId, Integer categoryId, Integer restaurantId, String foodItemName, String description, Double price,
-                  boolean isAvailable, byte[] foodItemImage) {
+  /**
+   * Parameterized constructor for creating a FoodItem entity.
+   *
+   * @param foodItemId    the unique ID of the food item
+   * @param categoryId    the ID of the associated category
+   * @param restaurantId  the ID of the associated restaurant
+   * @param foodItemName  the name of the food item
+   * @param description   the description of the food item
+   * @param price         the price of the food item
+   * @param isAvailable   availability status of the food item
+   * @param foodItemImage the image of the food item as a byte array
+   */
+  public FoodItem(Integer foodItemId, Integer categoryId, Integer restaurantId, String foodItemName,
+                  String description, Double price, boolean isAvailable, byte[] foodItemImage) {
     this.foodItemId = foodItemId;
     this.categoryId = categoryId;
     this.restaurantId = restaurantId;
@@ -37,70 +89,160 @@ public class FoodItem {
     this.foodItemImage = foodItemImage;
   }
 
+  // Getters and Setters
+
+  /**
+   * Gets the food item ID.
+   *
+   * @return the unique ID of the food item.
+   */
   public Integer getFoodItemId() {
     return foodItemId;
   }
 
+  /**
+   * Sets the food item ID.
+   *
+   * @param foodItemId the unique ID of the food item.
+   */
   public void setFoodItemId(Integer foodItemId) {
     this.foodItemId = foodItemId;
   }
 
+  /**
+   * Gets the category ID associated with this food item.
+   *
+   * @return the category ID.
+   */
   public Integer getCategoryId() {
     return categoryId;
   }
 
+  /**
+   * Sets the category ID associated with this food item.
+   *
+   * @param categoryId the category ID.
+   */
   public void setCategoryId(Integer categoryId) {
     this.categoryId = categoryId;
   }
 
+  /**
+   * Gets the restaurant ID associated with this food item.
+   *
+   * @return the restaurant ID.
+   */
   public Integer getRestaurantId() {
     return restaurantId;
   }
 
+  /**
+   * Sets the restaurant ID associated with this food item.
+   *
+   * @param restaurantId the restaurant ID.
+   */
   public void setRestaurantId(Integer restaurantId) {
     this.restaurantId = restaurantId;
   }
 
+  /**
+   * Gets the name of the food item.
+   *
+   * @return the food item's name.
+   */
   public String getFoodItemName() {
     return foodItemName;
   }
 
+  /**
+   * Sets the name of the food item.
+   *
+   * @param foodItemName the name of the food item.
+   */
   public void setFoodItemName(String foodItemName) {
     this.foodItemName = foodItemName;
   }
 
+  /**
+   * Gets the description of the food item.
+   *
+   * @return the food item's description.
+   */
   public String getDescription() {
     return description;
   }
 
+  /**
+   * Sets the description of the food item.
+   *
+   * @param description the description of the food item.
+   */
   public void setDescription(String description) {
     this.description = description;
   }
 
+  /**
+   * Gets the price of the food item.
+   *
+   * @return the price of the food item.
+   */
   public Double getPrice() {
     return Price;
   }
 
+  /**
+   * Sets the price of the food item.
+   *
+   * @param price the price of the food item.
+   */
   public void setPrice(Double price) {
     Price = price;
   }
 
+  /**
+   * Checks if the food item is available.
+   *
+   * @return true if the food item is available, false otherwise.
+   */
   public boolean isAvailable() {
     return isAvailable;
   }
 
+  /**
+   * Sets the availability of the food item.
+   *
+   * @param available the availability status.
+   */
   public void setAvailable(boolean available) {
     isAvailable = available;
   }
 
+  /**
+   * Gets the food item image as a byte array.
+   *
+   * @return the food item's image.
+   */
   public byte[] getFoodItemImage() {
     return foodItemImage;
   }
 
+  /**
+   * Sets the food item image as a byte array.
+   *
+   * @param foodItemImage the food item's image.
+   */
   public void setFoodItemImage(byte[] foodItemImage) {
     this.foodItemImage = foodItemImage;
   }
 
+  // Overrides for equality checks and representation
+
+  /**
+   * Compares this food item to another object for equality.
+   *
+   * @param o the object to compare.
+   * @return true if the objects are equal, false otherwise.
+   */
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -110,18 +252,32 @@ public class FoodItem {
       return false;
     }
     FoodItem foodItem = (FoodItem) o;
-    return isAvailable == foodItem.isAvailable && Objects.equals(foodItemId, foodItem.foodItemId) &&
-      Objects.equals(categoryId, foodItem.categoryId) && Objects.equals(restaurantId, foodItem.restaurantId) &&
-      Objects.equals(foodItemName, foodItem.foodItemName) && Objects.equals(description, foodItem.description) &&
-      Objects.equals(Price, foodItem.Price) && Objects.deepEquals(foodItemImage, foodItem.foodItemImage);
+    return isAvailable == foodItem.isAvailable &&
+      Objects.equals(foodItemId, foodItem.foodItemId) &&
+      Objects.equals(categoryId, foodItem.categoryId) &&
+      Objects.equals(restaurantId, foodItem.restaurantId) &&
+      Objects.equals(foodItemName, foodItem.foodItemName) &&
+      Objects.equals(description, foodItem.description) &&
+      Objects.equals(Price, foodItem.Price) &&
+      Arrays.equals(foodItemImage, foodItem.foodItemImage);
   }
 
+  /**
+   * Returns a hash code for this food item.
+   *
+   * @return a hash code based on the fields of the food item.
+   */
   @Override
   public int hashCode() {
-    return Objects.hash(foodItemId, categoryId, restaurantId, foodItemName, description, Price, isAvailable,
-      Arrays.hashCode(foodItemImage));
+    return Objects.hash(foodItemId, categoryId, restaurantId, foodItemName, description, Price, isAvailable) +
+      Arrays.hashCode(foodItemImage);
   }
 
+  /**
+   * Returns a string representation of this food item.
+   *
+   * @return a string representing the food item.
+   */
   @Override
   public String toString() {
     return "FoodItem{" +
@@ -136,4 +292,3 @@ public class FoodItem {
       '}';
   }
 }
-
