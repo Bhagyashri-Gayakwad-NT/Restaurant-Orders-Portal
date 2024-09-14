@@ -1,9 +1,9 @@
 package com.nt.restaurant.microservice.controller;
 
-import com.nt.restaurant.microservice.indto.FoodItemInDTO;
-import com.nt.restaurant.microservice.indto.FoodItemUpdateInDTO;
-import com.nt.restaurant.microservice.outdto.CommonResponse;
-import com.nt.restaurant.microservice.outdto.FoodItemOutDTO;
+import com.nt.restaurant.microservice.dto.FoodItemInDTO;
+import com.nt.restaurant.microservice.dto.FoodItemUpdateInDTO;
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
 import com.nt.restaurant.microservice.service.FoodItemService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

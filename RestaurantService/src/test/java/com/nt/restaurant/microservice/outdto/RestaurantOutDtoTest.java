@@ -1,5 +1,6 @@
 package com.nt.restaurant.microservice.outdto;
 
+import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

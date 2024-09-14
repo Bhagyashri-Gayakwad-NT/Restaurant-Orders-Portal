@@ -268,4 +268,22 @@ public class Restaurant {
       ", restaurantImage=" + Arrays.toString(restaurantImage) +
       '}';
   }
+  /**
+   * Returns a string representation of this restaurant.
+   *
+   * @return a string representing the restaurant.
+   */
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true; }
+    if (!(o instanceof Restaurant)) {
+      return false; }
+    Restaurant that = (Restaurant) o;
+    return isOpen == that.isOpen && Objects.equals(restaurantId, that.restaurantId) &&
+      Objects.equals(userId, that.userId) && Objects.equals(restaurantName, that.restaurantName) &&
+      Objects.equals(restaurantAddress, that.restaurantAddress) &&
+      Objects.equals(contactNumber, that.contactNumber) && Objects.equals(registrationDate, that.registrationDate) &&
+      Objects.equals(description, that.description) && Objects.deepEquals(restaurantImage, that.restaurantImage);
+  }
 }

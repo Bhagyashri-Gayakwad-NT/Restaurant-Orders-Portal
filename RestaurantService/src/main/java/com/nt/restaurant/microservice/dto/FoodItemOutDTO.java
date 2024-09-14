@@ -1,4 +1,4 @@
-package com.nt.restaurant.microservice.outdto;
+package com.nt.restaurant.microservice.dto;
 
 import javax.persistence.Lob;
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package com.nt.restaurant.microservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nt.restaurant.microservice.outdto.FoodItemOutDTO;
+import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
 import com.nt.restaurant.microservice.service.FoodItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,25 +39,6 @@ public class FoodItemControllerTest {
     objectMapper = new ObjectMapper();
   }
 
-//  @Test
-//  void addFoodItemTest() throws Exception {
-//    FoodItemInDTO foodItemInDTO = new FoodItemInDTO();
-//    // Set foodItemInDTO properties
-//    MockMultipartFile image = new MockMultipartFile("foodItemImage", "test.png", "image/png", new byte[1]);
-//
-//    when(foodItemService.addFoodItem(any(FoodItemInDTO.class), any(MultipartFile.class)))
-//      .thenReturn(new CommonResponse("Food item added successfully"));
-//
-//    mockMvc.perform(MockMvcRequestBuilders.multipart("/foodItems/addFoodItem")
-//        .file(image)
-//        .param("foodItemInDTO", objectMapper.writeValueAsString(foodItemInDTO))
-//        .contentType(MediaType.MULTIPART_FORM_DATA))
-//      .andExpect(status().isCreated())
-//      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Food item added successfully"));
-//
-//    verify(foodItemService, times(1)).addFoodItem(any(FoodItemInDTO.class), any(MultipartFile.class));
-//  }
-
   @Test
   void getFoodItemsByCategoryTest() throws Exception {
     FoodItemOutDTO foodItemOutDTO = new FoodItemOutDTO();
@@ -87,23 +68,6 @@ public class FoodItemControllerTest {
 
     verify(foodItemService, times(1)).getFoodItemsByRestaurant(1);
   }
-
-//  @Test
-//  void updateFoodItemByFoodItemIdTest() throws Exception {
-//    FoodItemUpdateInDTO foodItemUpdateInDTO = new FoodItemUpdateInDTO();
-//    // Set foodItemUpdateInDTO properties
-//
-//    when(foodItemService.updateFoodItemByFoodItemId(1, foodItemUpdateInDTO))
-//      .thenReturn(new CommonResponse("Food item updated successfully"));
-//
-//    mockMvc.perform(MockMvcRequestBuilders.put("/foodItems/updateFoodItem/{foodItemId}", 1)
-//        .param("foodItemUpdateInDTO", objectMapper.writeValueAsString(foodItemUpdateInDTO))
-//        .contentType(MediaType.APPLICATION_JSON))
-//      .andExpect(status().isOk())
-//      .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("Food item updated successfully"));
-//
-//    verify(foodItemService, times(1)).updateFoodItemByFoodItemId(1, foodItemUpdateInDTO);
-//  }
 
   @Test
   void getFoodItemImageTest() throws Exception {

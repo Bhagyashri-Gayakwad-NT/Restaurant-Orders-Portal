@@ -1,5 +1,6 @@
 package com.nt.restaurant.microservice.indto;
 
+import com.nt.restaurant.microservice.dto.FoodItemUpdateInDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,5 +1,6 @@
 package com.nt.restaurant.microservice.outdto;
 
+import com.nt.restaurant.microservice.dto.UserOutDTO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,32 +28,8 @@ class UserOutDTOTest {
     dto2.setRole("restaurant_owner");
     dto2.setWalletBalance(200.0);
 
-    // Check inequality
     assertNotEquals(dto1, dto2);
   }
-
-//  @Test
-//  void testUserOutDTOToString() {
-//    UserOutDTO dto = new UserOutDTO();
-//    dto.setId(1);
-//    dto.setFirstName("John");
-//    dto.setLastName("Doe");
-//    dto.setEmail("john.doe@example.com");
-//    dto.setPhoneNo("1234567890");
-//    dto.setRole("user");
-//    dto.setWalletBalance(100.0);
-//
-//    String expected = "UserOutDTO{" +
-//      "id=" + 1 +
-//      ", firstName='John'" +
-//      ", lastName='Doe'" +
-//      ", email='john.doe@example.com'" +
-//      ", phoneNo='1234567890'" +
-//      ", role='user'" +
-//      ", walletBalance=" + 100.0 +
-//      '}';
-//    assertEquals(expected, dto.toString());
-//  }
 
   @Test
   void testUserOutDTOSettersAndGetters() {

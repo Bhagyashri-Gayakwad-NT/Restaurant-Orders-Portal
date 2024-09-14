@@ -5,10 +5,10 @@ import com.nt.restaurant.microservice.entities.FoodItem;
 import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.exception.AlreadyExistException;
 import com.nt.restaurant.microservice.exception.NotFoundException;
-import com.nt.restaurant.microservice.indto.FoodItemInDTO;
-import com.nt.restaurant.microservice.indto.FoodItemUpdateInDTO;
-import com.nt.restaurant.microservice.outdto.CommonResponse;
-import com.nt.restaurant.microservice.outdto.FoodItemOutDTO;
+import com.nt.restaurant.microservice.dto.FoodItemInDTO;
+import com.nt.restaurant.microservice.dto.FoodItemUpdateInDTO;
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
 import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
 import com.nt.restaurant.microservice.repository.FoodItemRepository;
 import com.nt.restaurant.microservice.repository.RestaurantRepository;
@@ -57,28 +57,6 @@ class FoodItemServiceImplTest {
     MockitoAnnotations.openMocks(this);
   }
 
-//  @Test
-//  void testAddFoodItem_Success() throws IOException {
-//    FoodItemInDTO foodItemInDTO = new FoodItemInDTO();
-//    foodItemInDTO.setFoodItemName("Pizza");
-//    foodItemInDTO.setRestaurantId(1);
-//    foodItemInDTO.setFoodCategoryId(1);
-//
-//    Restaurant restaurant = new Restaurant();
-//    FoodCategory foodCategory = new FoodCategory();
-//    FoodItem foodItem = new FoodItem();
-//
-//    when(restaurantRepository.findById(any(Integer.class))).thenReturn(Optional.of(restaurant));
-//    when(foodCategoryRepository.findById(any(Integer.class))).thenReturn(Optional.of(foodCategory));
-//    when(foodItemRepository.findByFoodItemNameAndRestaurantId(any(String.class), any(Integer.class)))
-//      .thenReturn(Optional.empty());
-//    when(foodItemRepository.save(any(FoodItem.class))).thenReturn(foodItem);
-//
-//    CommonResponse response = foodItemService.addFoodItem(foodItemInDTO, image);
-//
-//    assertEquals(Constants.FOOD_ITEM_ADDED_SUCCESS, response.getMessage());
-//    verify(foodItemRepository).save(any(FoodItem.class));
-//  }
 
   @Test
   void testAddFoodItem_FoodItemAlreadyExists() {
@@ -100,6 +78,7 @@ class FoodItemServiceImplTest {
   }
 
   @Test
+
   void testGetFoodItemsByCategory_Success() {
     List<FoodItem> foodItems = new ArrayList<>();
     FoodItem foodItem = new FoodItem();

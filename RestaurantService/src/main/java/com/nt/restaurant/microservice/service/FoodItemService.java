@@ -1,10 +1,10 @@
 package com.nt.restaurant.microservice.service;
 
 import com.nt.restaurant.microservice.entities.FoodItem;
-import com.nt.restaurant.microservice.indto.FoodItemInDTO;
-import com.nt.restaurant.microservice.indto.FoodItemUpdateInDTO;
-import com.nt.restaurant.microservice.outdto.CommonResponse;
-import com.nt.restaurant.microservice.outdto.FoodItemOutDTO;
+import com.nt.restaurant.microservice.dto.FoodItemInDTO;
+import com.nt.restaurant.microservice.dto.FoodItemUpdateInDTO;
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

@@ -1,5 +1,6 @@
 package com.nt.restaurant.microservice.indto;
 
+import com.nt.restaurant.microservice.controller.RestaurantController;
 import org.junit.jupiter.api.Test;
 
 import javax.validation.ConstraintViolation;
@@ -21,7 +22,7 @@ class FoodCategoryInDTOTest {
 
   @Test
   void testConstructorAndGetters() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(1, "Indian");
+    RestaurantController.FoodCategoryInDTO dto = new RestaurantController.FoodCategoryInDTO(1, "Indian");
 
     assertEquals(1, dto.getRestaurantId());
     assertEquals("Indian", dto.getFoodCategoryName());
@@ -29,7 +30,7 @@ class FoodCategoryInDTOTest {
 
   @Test
   void testSetters() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO();
+    RestaurantController.FoodCategoryInDTO dto = new RestaurantController.FoodCategoryInDTO();
     dto.setRestaurantId(2);
     dto.setFoodCategoryName("Chinese");
 
@@ -39,8 +40,8 @@ class FoodCategoryInDTOTest {
 
   @Test
   void testEquals() {
-    FoodCategoryInDTO dto1 = new FoodCategoryInDTO(1, "Italian");
-    FoodCategoryInDTO dto2 = new FoodCategoryInDTO(1, "Italian");
+    RestaurantController.FoodCategoryInDTO dto1 = new RestaurantController.FoodCategoryInDTO(1, "Italian");
+    RestaurantController.FoodCategoryInDTO dto2 = new RestaurantController.FoodCategoryInDTO(1, "Italian");
 
     assertEquals(dto1, dto2);
     assertEquals(dto1.hashCode(), dto2.hashCode());
@@ -48,8 +49,8 @@ class FoodCategoryInDTOTest {
 
   @Test
   void testNotEquals() {
-    FoodCategoryInDTO dto1 = new FoodCategoryInDTO(1, "Italian");
-    FoodCategoryInDTO dto2 = new FoodCategoryInDTO(2, "Mexican");
+    RestaurantController.FoodCategoryInDTO dto1 = new RestaurantController.FoodCategoryInDTO(1, "Italian");
+    RestaurantController.FoodCategoryInDTO dto2 = new RestaurantController.FoodCategoryInDTO(2, "Mexican");
 
     assertNotEquals(dto1, dto2);
     assertNotEquals(dto1.hashCode(), dto2.hashCode());
@@ -57,7 +58,7 @@ class FoodCategoryInDTOTest {
 
   @Test
   void testToString() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(1, "Italian");
+    RestaurantController.FoodCategoryInDTO dto = new RestaurantController.FoodCategoryInDTO(1, "Italian");
 
     String expected = "FoodCategoryInDTO{restaurantId=1, foodCategoryName='Italian'}";
     assertEquals(expected, dto.toString());
@@ -65,20 +66,20 @@ class FoodCategoryInDTOTest {
 
   @Test
   void testValidation_Success() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(1, "Mexican");
+    RestaurantController.FoodCategoryInDTO dto = new RestaurantController.FoodCategoryInDTO(1, "Mexican");
 
-    Set<ConstraintViolation<FoodCategoryInDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<RestaurantController.FoodCategoryInDTO>> violations = validator.validate(dto);
     assertTrue(violations.isEmpty());
   }
 
   @Test
   void testValidation_Failure() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(null, "InvalidName123");
+    RestaurantController.FoodCategoryInDTO dto = new RestaurantController.FoodCategoryInDTO(null, "InvalidName123");
 
-    Set<ConstraintViolation<FoodCategoryInDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<RestaurantController.FoodCategoryInDTO>> violations = validator.validate(dto);
     assertEquals(2, violations.size());
 
-    for (ConstraintViolation<FoodCategoryInDTO> violation : violations) {
+    for (ConstraintViolation<RestaurantController.FoodCategoryInDTO> violation : violations) {
       String message = violation.getMessage();
       assertTrue(message.equals("Restaurant ID cannot be null") ||
         message.equals("Category name must contain only alphabets"));
@@ -87,9 +88,9 @@ class FoodCategoryInDTOTest {
 
   @Test
   void testValidation_FoodCategoryNameBlank() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(1, "");
+    RestaurantController.FoodCategoryInDTO dto = new RestaurantController.FoodCategoryInDTO(1, "");
 
-    Set<ConstraintViolation<FoodCategoryInDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<RestaurantController.FoodCategoryInDTO>> violations = validator.validate(dto);
     assertEquals(2, violations.size());
 
     List<String> errorMessages = violations.stream()
@@ -103,10 +104,10 @@ class FoodCategoryInDTOTest {
 
   @Test
   void testValidation_FoodCategoryNameTooLong() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(1,
+    RestaurantController.FoodCategoryInDTO dto = new RestaurantController.FoodCategoryInDTO(1,
       "ThisNameIsWayTooLongForAFoodCategoryNameAndShouldFailTheValidationBecauseItExceedsOneHundredCharacters");
 
-    Set<ConstraintViolation<FoodCategoryInDTO>> violations = validator.validate(dto);
+    Set<ConstraintViolation<RestaurantController.FoodCategoryInDTO>> violations = validator.validate(dto);
     assertEquals(1, violations.size());
 
     String message = violations.iterator().next().getMessage();

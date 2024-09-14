@@ -1,5 +1,6 @@
 package com.nt.restaurant.microservice.outdto;
 
+import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -19,9 +20,8 @@ class FoodItemOutDTOTest {
     FoodItemOutDTO dto1 = new FoodItemOutDTO(1, 2, 3, "Pizza", "Delicious", 10.0, true, image1);
     FoodItemOutDTO dto2 = new FoodItemOutDTO(1, 2, 3, "Pizza", "Delicious", 10.0, true, image2);
 
-    // Check equality
     assertEquals(dto1, dto2);
-    // Check hash codes
+
     assertEquals(dto1.hashCode(), dto2.hashCode());
   }
 
@@ -33,7 +33,6 @@ class FoodItemOutDTOTest {
     FoodItemOutDTO dto1 = new FoodItemOutDTO(1, 2, 3, "Pizza", "Delicious", 10.0, true, image1);
     FoodItemOutDTO dto2 = new FoodItemOutDTO(2, 3, 4, "Burger", "Tasty", 12.0, false, image2);
 
-    // Check inequality
     assertNotEquals(dto1, dto2);
   }
 

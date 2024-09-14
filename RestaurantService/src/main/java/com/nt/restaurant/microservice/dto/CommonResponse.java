@@ -1,4 +1,4 @@
-package com.nt.restaurant.microservice.outdto;
+package com.nt.restaurant.microservice.dto;
 
 /**
  * A generic response DTO for conveying simple messages in the application.

@@ -1,8 +1,7 @@
 package com.nt.restaurant.microservice.controller;
 
-import com.nt.restaurant.microservice.indto.FoodCategoryInDTO;
-import com.nt.restaurant.microservice.outdto.CommonResponse;
-import com.nt.restaurant.microservice.outdto.FoodCategoryOutDTO;
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.FoodCategoryOutDTO;
 import com.nt.restaurant.microservice.service.FoodCategoryService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,13 +44,13 @@ public class FoodCategoryController {
   private FoodCategoryService foodCategoryService;
 
   /**
-   * Adds a new food category based on the provided {@link FoodCategoryInDTO} data.
+   * Adds a new food category based on the provided {@link RestaurantController.FoodCategoryInDTO} data.
    *
    * @param foodCategoryInDTO the food category details to be added.
    * @return a response entity with a success message if the food category is added successfully.
    */
   @PostMapping("/addFoodCategory")
-  public ResponseEntity<CommonResponse> addFoodCategory(@Valid @RequestBody FoodCategoryInDTO foodCategoryInDTO) {
+  public ResponseEntity<CommonResponse> addFoodCategory(@Valid @RequestBody RestaurantController.FoodCategoryInDTO foodCategoryInDTO) {
     logger.info("Received request to add food category: {}", foodCategoryInDTO);
     CommonResponse response = foodCategoryService.addFoodCategory(foodCategoryInDTO);
     logger.info("Successfully added food category with ID: {}", response.getMessage());
@@ -73,15 +72,15 @@ public class FoodCategoryController {
   }
 
   /**
-   * Updates an existing food category based on its ID and the provided {@link FoodCategoryInDTO} data.
+   * Updates an existing food category based on its ID and the provided {@link RestaurantController.FoodCategoryInDTO} data.
    *
    * @param id                the ID of the food category to update.
    * @param foodCategoryInDTO the updated food category details.
    * @return a response entity with a success message if the food category is updated successfully.
    */
   @PutMapping("/updateFoodCategory/{id}")
-  public ResponseEntity<CommonResponse> updateFoodCategory(@PathVariable("id") Integer id,
-                                                           @Valid @RequestBody FoodCategoryInDTO foodCategoryInDTO) {
+  public ResponseEntity<CommonResponse> updateFoodCategory(@PathVariable("id") Integer id, @Valid @RequestBody
+    RestaurantController.FoodCategoryInDTO foodCategoryInDTO) {
     logger.info("Received request to update food category with ID: {} with details: {}", id, foodCategoryInDTO);
     CommonResponse updatedCategory = foodCategoryService.updateFoodCategory(id, foodCategoryInDTO);
     logger.info("Successfully updated food category with ID: {}", id);

@@ -1,13 +1,13 @@
 package com.nt.restaurant.microservice.serviceimpl;
 
+import com.nt.restaurant.microservice.controller.RestaurantController;
 import com.nt.restaurant.microservice.dtoconvertion.FoodCategoryDtoConverter;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.exception.AlreadyExistException;
 import com.nt.restaurant.microservice.exception.NotFoundException;
-import com.nt.restaurant.microservice.indto.FoodCategoryInDTO;
-import com.nt.restaurant.microservice.outdto.CommonResponse;
-import com.nt.restaurant.microservice.outdto.FoodCategoryOutDTO;
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.FoodCategoryOutDTO;
 import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
 import com.nt.restaurant.microservice.repository.RestaurantRepository;
 import com.nt.restaurant.microservice.service.FoodCategoryService;
@@ -53,7 +53,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
    * @throws AlreadyExistException If a food category with the same name already exists in the restaurant.
    */
   @Override
-  public CommonResponse addFoodCategory(FoodCategoryInDTO foodCategoryInDTO) {
+  public CommonResponse addFoodCategory(RestaurantController.FoodCategoryInDTO foodCategoryInDTO) {
     logger.info("Adding food category: {}", foodCategoryInDTO);
 
     Optional<Restaurant> restaurant = restaurantRepository.findById(foodCategoryInDTO.getRestaurantId());
@@ -117,7 +117,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
    * @throws AlreadyExistException If a food category with the same name already exists in the restaurant, excluding the current one.
    */
   @Override
-  public CommonResponse updateFoodCategory(Integer foodCategoryId, FoodCategoryInDTO foodCategoryInDTO) {
+  public CommonResponse updateFoodCategory(Integer foodCategoryId, RestaurantController.FoodCategoryInDTO foodCategoryInDTO) {
     logger.info("Updating food category with ID: {}", foodCategoryId);
 
     Optional<FoodCategory> existingCategory = foodCategoryRepository.findById(foodCategoryId);

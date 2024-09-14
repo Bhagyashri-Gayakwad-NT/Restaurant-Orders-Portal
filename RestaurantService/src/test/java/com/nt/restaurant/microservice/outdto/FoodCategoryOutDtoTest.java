@@ -1,5 +1,6 @@
 package com.nt.restaurant.microservice.outdto;
 
+import com.nt.restaurant.microservice.dto.FoodCategoryOutDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

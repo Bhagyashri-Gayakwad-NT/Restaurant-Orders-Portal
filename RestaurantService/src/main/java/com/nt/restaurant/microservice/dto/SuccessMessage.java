@@ -1,4 +1,4 @@
-package com.nt.restaurant.microservice.outdto;
+package com.nt.restaurant.microservice.dto;
 
 /**
  * Data Transfer Object (DTO) for representing a success message in the response.

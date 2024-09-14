@@ -1,8 +1,8 @@
 package com.nt.restaurant.microservice.controller;
 
-import com.nt.restaurant.microservice.indto.RestaurantInDTO;
-import com.nt.restaurant.microservice.outdto.CommonResponse;
-import com.nt.restaurant.microservice.outdto.RestaurantOutDTO;
+import com.nt.restaurant.microservice.dto.RestaurantInDTO;
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
 import com.nt.restaurant.microservice.service.RestaurantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,9 @@
 package com.nt.restaurant.microservice.service;
 
 import com.nt.restaurant.microservice.entities.Restaurant;
-import com.nt.restaurant.microservice.indto.RestaurantInDTO;
-import com.nt.restaurant.microservice.outdto.CommonResponse;
-import com.nt.restaurant.microservice.outdto.RestaurantOutDTO;
+import com.nt.restaurant.microservice.dto.RestaurantInDTO;
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

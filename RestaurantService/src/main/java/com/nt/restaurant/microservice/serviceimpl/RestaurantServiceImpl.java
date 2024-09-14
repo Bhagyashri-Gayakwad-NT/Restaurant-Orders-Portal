@@ -4,10 +4,10 @@ import com.nt.restaurant.microservice.dtoconvertion.DtoConverter;
 import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.exception.InvalidImageFileException;
 import com.nt.restaurant.microservice.exception.NotFoundException;
-import com.nt.restaurant.microservice.indto.RestaurantInDTO;
-import com.nt.restaurant.microservice.outdto.CommonResponse;
-import com.nt.restaurant.microservice.outdto.RestaurantOutDTO;
-import com.nt.restaurant.microservice.outdto.UserOutDTO;
+import com.nt.restaurant.microservice.dto.RestaurantInDTO;
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
+import com.nt.restaurant.microservice.dto.UserOutDTO;
 import com.nt.restaurant.microservice.repository.RestaurantRepository;
 import com.nt.restaurant.microservice.service.RestaurantService;
 import com.nt.restaurant.microservice.util.Constants;
@@ -45,6 +45,8 @@ public class RestaurantServiceImpl implements RestaurantService {
    */
   @Autowired
   private UserFClient userFClient;
+
+  private static final long MAX_FILE_SIZE = 5 * 1024 * 1024;
 
   /**
    * Adds a new restaurant to the system.
@@ -144,6 +146,11 @@ public class RestaurantServiceImpl implements RestaurantService {
   public List<RestaurantOutDTO> getRestaurantsByUserId(Integer userId) {
     logger.info("Fetching restaurants for user ID: {}", userId);
 
+//    boolean userExists = restaurantRepository.existsById(userId);
+//    if (!userExists) {
+//      logger.error("User with ID: {} not found", userId);
+//      throw new NotFoundException(Constants.USER_NOT_FOUND);
+//    }
     List<Restaurant> restaurants = restaurantRepository.findByUserId(userId);
     List<RestaurantOutDTO> restaurantOutDTOList = new ArrayList<>();
 

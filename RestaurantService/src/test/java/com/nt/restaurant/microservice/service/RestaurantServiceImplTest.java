@@ -3,10 +3,10 @@ package com.nt.restaurant.microservice.service;
 import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.exception.InvalidImageFileException;
 import com.nt.restaurant.microservice.exception.NotFoundException;
-import com.nt.restaurant.microservice.indto.RestaurantInDTO;
-import com.nt.restaurant.microservice.outdto.CommonResponse;
-import com.nt.restaurant.microservice.outdto.RestaurantOutDTO;
-import com.nt.restaurant.microservice.outdto.UserOutDTO;
+import com.nt.restaurant.microservice.dto.RestaurantInDTO;
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
+import com.nt.restaurant.microservice.dto.UserOutDTO;
 import com.nt.restaurant.microservice.repository.RestaurantRepository;
 import com.nt.restaurant.microservice.serviceimpl.RestaurantServiceImpl;
 import com.nt.restaurant.microservice.serviceimpl.UserFClient;
@@ -50,7 +50,6 @@ public class RestaurantServiceImplTest {
 
   @Test
   void testAddRestaurant_Success() throws Exception {
-    // Setup
     RestaurantInDTO restaurantInDTO = new RestaurantInDTO(1, "Test Restaurant", "123 Test St", "9876543210", "Best restaurant",
       new MockMultipartFile("image", "image.jpg", "image/jpeg", new byte[0]));
     MultipartFile image = mock(MultipartFile.class);
@@ -74,10 +73,8 @@ public class RestaurantServiceImplTest {
 
     when(restaurantRepository.save(any(Restaurant.class))).thenReturn(restaurant);
 
-    // Execute
     CommonResponse response = restaurantService.addRestaurant(restaurantInDTO, image);
 
-    // Verify
     assertEquals(Constants.RESTAURANT_ADDED_SUCCESS, response.getMessage());
     verify(restaurantRepository, times(1)).save(any(Restaurant.class));
   }
@@ -85,32 +82,26 @@ public class RestaurantServiceImplTest {
 
   @Test
   public void testAddRestaurant_InvalidImageType() throws Exception {
-    // Setup input DTO
+
     RestaurantInDTO restaurantInDTO = new RestaurantInDTO();
     restaurantInDTO.setUserId(1);
     restaurantInDTO.setRestaurantName("Test Restaurant");
     restaurantInDTO.setRestaurantAddress("123 Test St");
     restaurantInDTO.setContactNumber("1234567890");
     restaurantInDTO.setDescription("A test restaurant");
-    restaurantInDTO.setRestaurantImage(mock(MultipartFile.class)); // Mock image as MultipartFile
-
-    // Setup mock MultipartFile with invalid image type
+    restaurantInDTO.setRestaurantImage(mock(MultipartFile.class));
     MultipartFile image = mock(MultipartFile.class);
     when(image.getBytes()).thenReturn("testImage".getBytes());
-    when(image.getContentType()).thenReturn("image/gif"); // Invalid image type
-
-    // Mock user profile
+    when(image.getContentType()).thenReturn("image/gif");
     UserOutDTO userOutDTO = new UserOutDTO();
     userOutDTO.setRole(Role.RESTAURANT_OWNER.name());
     when(userFClient.getUserProfile(1)).thenReturn(userOutDTO);
 
-    // Perform the test
     InvalidImageFileException exception = assertThrows(
       InvalidImageFileException.class,
       () -> restaurantService.addRestaurant(restaurantInDTO, image)
     );
 
-    // Validate exception message
     assertEquals(Constants.INVALID_FILE_TYPE, exception.getMessage());
   }
 

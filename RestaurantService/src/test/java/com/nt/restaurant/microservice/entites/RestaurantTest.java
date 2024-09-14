@@ -6,11 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class RestaurantTest {
 
@@ -59,33 +55,29 @@ class RestaurantTest {
     assertArrayEquals(image, restaurant.getRestaurantImage());
   }
 
-//  @Test
-//  void testEquals() {
-//    byte[] image = {1, 2, 3};
-//    LocalDate registrationDate = LocalDate.of(2023, 9, 10);
-//    Restaurant restaurant1 = new Restaurant(1, 101, "Test Restaurant", "123 Test St", "1234567890",
-//      registrationDate, "Test description", true, image);
-//    Restaurant restaurant2 = new Restaurant(1, 101, "Test Restaurant", "123 Test St", "1234567890",
-//      registrationDate, "Test description", true, image);
-//
-//    // Assert that both restaurants are considered equal
-//    assertEquals(restaurant1, restaurant2, "The restaurants should be equal");
-//    // Assert that their hash codes are also equal
-//    assertEquals(restaurant1.hashCode(), restaurant2.hashCode(), "The hash codes should be equal");
-//  }
-
   @Test
-  void testNotEquals() {
+  void testEqualsAndHashCode() {
     byte[] image1 = {1, 2, 3};
     byte[] image2 = {4, 5, 6};
     LocalDate registrationDate = LocalDate.of(2023, 9, 10);
+
     Restaurant restaurant1 = new Restaurant(1, 101, "Test Restaurant", "123 Test St", "1234567890",
       registrationDate, "Test description", true, image1);
-    Restaurant restaurant2 = new Restaurant(2, 102, "Different Restaurant", "456 Different St", "0987654321",
+    Restaurant restaurant2 = new Restaurant(1, 101, "Test Restaurant", "123 Test St", "1234567890",
+      registrationDate, "Test description", true, image1);
+
+    assertEquals(restaurant1, restaurant2);
+    assertEquals(restaurant1.hashCode(), restaurant2.hashCode());
+
+    Restaurant restaurant3 = new Restaurant(2, 102, "Different Restaurant", "456 Different St", "0987654321",
       registrationDate, "Different description", false, image2);
 
-    assertNotEquals(restaurant1, restaurant2);
-    assertNotEquals(restaurant1.hashCode(), restaurant2.hashCode());
+    assertNotEquals(restaurant1, restaurant3);
+    assertNotEquals(restaurant1.hashCode(), restaurant3.hashCode());
+
+    assertNotEquals(restaurant1, null);
+
+    assertNotEquals(restaurant1, "A string");
   }
 
   @Test

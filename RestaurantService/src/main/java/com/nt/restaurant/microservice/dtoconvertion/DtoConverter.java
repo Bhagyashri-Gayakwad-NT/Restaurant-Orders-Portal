@@ -1,8 +1,8 @@
 package com.nt.restaurant.microservice.dtoconvertion;
 
 import com.nt.restaurant.microservice.entities.Restaurant;
-import com.nt.restaurant.microservice.indto.RestaurantInDTO;
-import com.nt.restaurant.microservice.outdto.RestaurantOutDTO;
+import com.nt.restaurant.microservice.dto.RestaurantInDTO;
+import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
 
 import java.io.IOException;
 import java.time.LocalDate;

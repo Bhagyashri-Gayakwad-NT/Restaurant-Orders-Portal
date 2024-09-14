@@ -1,4 +1,4 @@
-package com.nt.restaurant.microservice.indto;
+package com.nt.restaurant.microservice.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
