@@ -1,6 +1,8 @@
 package com.nt.user.microservice.service;
 
-import com.nt.user.microservice.dto.WalletBalanceInDTO;
+import com.nt.user.microservice.dto.UserOutDTO;
+import com.nt.user.microservice.exceptions.InsufficientBalanceException;
+import com.nt.user.microservice.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,18 +13,13 @@ import org.springframework.stereotype.Service;
 public interface WalletBalanceService {
 
   /**
-   * Retrieves the current wallet balance for a specific user.
-   *
-   * @param userId the ID of the user whose wallet balance is to be retrieved
-   * @return a data transfer object containing the wallet balance of the specified user
-   */
-  WalletBalanceInDTO getBalance(Long userId);
-
-  /**
-   * Adds a specified amount to the wallet balance of a user.
+   * Updates the wallet balance for a specified user by deducting the given amount.
    *
    * @param userId the ID of the user whose wallet balance is to be updated
-   * @param amount the amount to be added to the user's wallet balance
+   * @param amount the amount to deduct from the user's wallet balance
+   * @return {@link UserOutDTO} containing the updated user information and new wallet balance
+   * @throws NotFoundException if the user or their wallet is not found
+   * @throws InsufficientBalanceException if the user's wallet does not have enough balance
    */
-  void addBalance(Long userId, double amount);
+  UserOutDTO updateWalletBalance(Integer userId,  Double amount);
 }

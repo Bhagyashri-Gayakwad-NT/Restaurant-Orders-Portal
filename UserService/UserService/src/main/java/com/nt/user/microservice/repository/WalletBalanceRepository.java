@@ -25,4 +25,5 @@ public interface WalletBalanceRepository extends JpaRepository<WalletBalance, In
    * @param userId the ID of the user whose wallet balance is to be deleted.
    */
   void deleteByUserId(Integer userId);
+
 }

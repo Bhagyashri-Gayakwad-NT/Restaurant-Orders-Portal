@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,8 +46,6 @@ public class RestaurantServiceImpl implements RestaurantService {
    */
   @Autowired
   private UserFClient userFClient;
-
-  private static final long MAX_FILE_SIZE = 5 * 1024 * 1024;
 
   /**
    * Adds a new restaurant to the system.
@@ -166,9 +165,13 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   public byte[] getRestaurantImage(Integer id) {
     logger.info("Fetching image for restaurant with ID: {}", id);
-
-    Restaurant restaurant = findRestaurantById(id);
-    return restaurant.getRestaurantImage();
+    RestaurantOutDTO restaurant = getRestaurantById(id);
+    // Assuming the image is Base64-encoded string
+    String base64Image = restaurant.getRestaurantImage();
+    // Decode Base64 string to byte[]
+    byte[] imageData = Base64.getDecoder().decode(base64Image);
+    logger.info("Image byte length for restaurant with ID {}: {}", id, imageData.length);
+    return imageData;
   }
 
   /**
@@ -178,15 +181,6 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @return The Restaurant entity corresponding to the given ID.
    * @throws NotFoundException If the restaurant is not found.
    */
-  public Restaurant findRestaurantById(Integer id) {
-    logger.info("Finding restaurant with ID: {}", id);
-
-    return restaurantRepository.findById(id)
-      .orElseThrow(() -> {
-        logger.error("Restaurant not found with ID: {}", id);
-        return new NotFoundException(Constants.RESTAURANT_NOT_FOUND);
-      });
-  }
 
   /**
    * Retrieves a list of all restaurants in the system.

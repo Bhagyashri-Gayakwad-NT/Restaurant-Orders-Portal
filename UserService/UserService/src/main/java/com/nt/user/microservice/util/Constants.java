@@ -17,7 +17,7 @@ public class Constants {
    * when they are first registered in the system.
    * </p>
    */
-  public static final double INITIAL_WALLET_BALANCE = 1000.0;
+  public static final Double INITIAL_WALLET_BALANCE = 1000.0;
 
   /**
    * Message indicating that a user has been successfully registered.
@@ -115,4 +115,12 @@ public class Constants {
    * </p>
    */
   public static final String ADDRESS_NOT_FOUND = "No addresses found for this user.";
+
+  /**
+   * Message indicating insufficient balance in the user's wallet.
+   * <p>
+   * This constant is used when an operation fails due to the user not having enough funds in their wallet.
+   * </p>
+   */
+  public static final String INSUFFICIENT_BALANCE = "Insufficient balance in wallet.";
 }

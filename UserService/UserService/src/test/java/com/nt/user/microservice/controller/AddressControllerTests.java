@@ -49,9 +49,7 @@ class AddressControllerTests {
 
     UserResponse userResponse = new UserResponse();
     userResponse.setSuccessMessage(Constants.ADDRESS_ADDED_SUCCESSFULLY);
-
     when(addressService.addAddress(addressInDTO)).thenReturn(userResponse);
-
     ResponseEntity<UserResponse> response = addressController.addAddress(addressInDTO);
 
     assertNotNull(response);

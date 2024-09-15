@@ -28,7 +28,7 @@ public class WalletBalance {
   /**
    * The current balance of the user's wallet.
    */
-  private double balance;
+  private Double balance;
 
   /**
    * Gets the unique identifier for the wallet balance.
@@ -80,7 +80,7 @@ public class WalletBalance {
    *
    * @param balance the wallet balance to set.
    */
-  public void setBalance(double balance) {
+  public void setBalance(Double balance) {
     this.balance = balance;
   }
 

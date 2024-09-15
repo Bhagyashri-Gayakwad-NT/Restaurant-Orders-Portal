@@ -1,5 +1,6 @@
 package com.nt.user.microservice.exceptions;
 
+import com.nt.user.microservice.util.Constants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -87,6 +88,23 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);
   }
 
+  /**
+   * Handles {@link InsufficientBalanceException} which occurs when
+   * a user tries to make a transaction without sufficient balance in their wallet.
+   * <p>
+   * This method returns an {@link ErrorResponse} with an HTTP status code of {@code BAD_REQUEST} (400) and an error message
+   * indicating that there is insufficient balance to complete the transaction.
+   *
+   * @param ex the {@link InsufficientBalanceException} exception to handle.
+   * @return a {@link ResponseEntity} containing the {@link ErrorResponse}
+   *         with HTTP status code {@code BAD_REQUEST} (400).
+   */
+  @ExceptionHandler(InsufficientBalanceException.class)
+  public ResponseEntity<ErrorResponse> handleInsufficientBalanceException(InsufficientBalanceException ex) {
+    String errorMessage = Constants.INSUFFICIENT_BALANCE;
+    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), errorMessage);
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+  }
   /**
    * Handles all other exceptions that are not explicitly handled by the above exception handlers.
    * <p>

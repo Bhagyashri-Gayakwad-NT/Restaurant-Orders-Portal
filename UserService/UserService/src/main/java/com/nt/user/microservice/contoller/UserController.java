@@ -1,12 +1,15 @@
 package com.nt.user.microservice.contoller;
 
+import com.nt.user.microservice.dto.AmountInDTO;
 import com.nt.user.microservice.dto.LogInDTO;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
 import com.nt.user.microservice.service.UserService;
+import com.nt.user.microservice.service.WalletBalanceService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,6 +46,9 @@ public class UserController {
    * </p>
    */
   private final UserService userService;
+
+  @Autowired
+  private WalletBalanceService walletBalanceService;
 
 
   /**
@@ -123,5 +129,23 @@ public class UserController {
     UserResponse userResponse = userService.deleteUser(id);
     logger.info("User deleted successfully with ID: {}", id);
     return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
+  }
+
+  /**
+   * Updates the wallet balance for a user.
+   * <p>
+   * This method handles HTTP PUT requests to deduct a specific amount from a user's wallet balance.
+   * The amount to be deducted is provided in the request body.
+   * </p>
+   *
+   * @param id the ID of the user whose wallet balance will be updated.
+   * @param amountInDTO the amount to be deducted from the user's wallet balance.
+   * @return a {@link ResponseEntity} containing the updated {@link UserOutDTO} with the new wallet balance and HTTP status 200.
+   */
+  @PutMapping("/walletBalance/{id}")
+  public ResponseEntity<UserOutDTO> updateWalletBalance(@PathVariable Integer id, @RequestBody AmountInDTO amountInDTO) {
+    //logger.info("Deducting {} from user ID: {}", amount, id);
+    UserOutDTO userResponse = walletBalanceService.updateWalletBalance(id, amountInDTO.getBalance());
+    return new ResponseEntity<>(userResponse, HttpStatus.OK);
   }
 }

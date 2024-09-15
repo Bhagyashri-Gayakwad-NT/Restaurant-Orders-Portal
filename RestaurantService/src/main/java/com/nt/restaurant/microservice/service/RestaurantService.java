@@ -1,6 +1,5 @@
 package com.nt.restaurant.microservice.service;
 
-import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.dto.RestaurantInDTO;
 import com.nt.restaurant.microservice.dto.CommonResponse;
 import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
@@ -44,14 +43,6 @@ public interface RestaurantService {
    * @return A byte array representing the image of the restaurant.
    */
   byte[] getRestaurantImage(Integer id);
-
-  /**
-   * Finds a restaurant entity by its ID.
-   *
-   * @param id The ID of the restaurant to find.
-   * @return A {@link Restaurant} entity representing the restaurant.
-   */
-  Restaurant findRestaurantById(Integer id);
 
   /**
    * Retrieves all restaurants.

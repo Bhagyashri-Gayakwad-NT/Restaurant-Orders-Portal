@@ -18,7 +18,6 @@ class AddressesInDTOTest {
   @BeforeEach
   void setUp() {
     addressInDTO = new AddressInDTO();
-
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     validator = factory.getValidator();
   }
