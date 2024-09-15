@@ -1,6 +1,7 @@
 package com.nt.restaurant.microservice.controller;
 
 import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.FoodCategoryInDTO;
 import com.nt.restaurant.microservice.dto.FoodCategoryOutDTO;
 import com.nt.restaurant.microservice.service.FoodCategoryService;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,14 +39,14 @@ class FoodCategoryControllerTest {
 
   @Test
   void testAddFoodCategory_Success() {
-    RestaurantController.FoodCategoryInDTO foodCategoryInDTO = new RestaurantController.FoodCategoryInDTO();
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
     foodCategoryInDTO.setFoodCategoryName("Appetizers");
 
     CommonResponse commonResponse = new CommonResponse();
     commonResponse.setMessage("Food category added successfully");
 
-    when(foodCategoryService.addFoodCategory(any(RestaurantController.FoodCategoryInDTO.class))).thenReturn(commonResponse);
+    when(foodCategoryService.addFoodCategory(any(FoodCategoryInDTO.class))).thenReturn(commonResponse);
 
 
     ResponseEntity<CommonResponse> response = foodCategoryController.addFoodCategory(foodCategoryInDTO);
@@ -54,7 +55,7 @@ class FoodCategoryControllerTest {
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertNotNull(response.getBody());
     assertEquals("Food category added successfully", response.getBody().getMessage());
-    verify(foodCategoryService, times(1)).addFoodCategory(any(RestaurantController.FoodCategoryInDTO.class));
+    verify(foodCategoryService, times(1)).addFoodCategory(any(FoodCategoryInDTO.class));
   }
 
   @Test
@@ -81,7 +82,7 @@ class FoodCategoryControllerTest {
   @Test
   void testUpdateFoodCategory_Success() {
     Integer id = 1;
-    RestaurantController.FoodCategoryInDTO foodCategoryInDTO = new RestaurantController.FoodCategoryInDTO();
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
     foodCategoryInDTO.setFoodCategoryName("Main Course");
 
@@ -89,13 +90,13 @@ class FoodCategoryControllerTest {
     commonResponse.setMessage("Food category updated successfully");
 
     when(foodCategoryService.updateFoodCategory(anyInt(),
-      any(RestaurantController.FoodCategoryInDTO.class))).thenReturn(commonResponse);
+      any(FoodCategoryInDTO.class))).thenReturn(commonResponse);
 
     ResponseEntity<CommonResponse> response = foodCategoryController.updateFoodCategory(id, foodCategoryInDTO);
     assertEquals(HttpStatus.OK, response.getStatusCode());
     assertNotNull(response.getBody());
     assertEquals("Food category updated successfully", response.getBody().getMessage());
-    verify(foodCategoryService, times(1)).updateFoodCategory(anyInt(), any(RestaurantController.FoodCategoryInDTO.class));
+    verify(foodCategoryService, times(1)).updateFoodCategory(anyInt(), any(FoodCategoryInDTO.class));
   }
 }
 

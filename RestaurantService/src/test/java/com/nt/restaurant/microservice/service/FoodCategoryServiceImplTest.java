@@ -1,6 +1,6 @@
 package com.nt.restaurant.microservice.service;
 
-import com.nt.restaurant.microservice.controller.RestaurantController;
+import com.nt.restaurant.microservice.dto.FoodCategoryInDTO;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.exception.AlreadyExistException;
@@ -50,7 +50,7 @@ public class FoodCategoryServiceImplTest {
 
   @Test
   public void testAddFoodCategory_Success() {
-    RestaurantController.FoodCategoryInDTO foodCategoryInDTO = new RestaurantController.FoodCategoryInDTO();
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
     foodCategoryInDTO.setFoodCategoryName("Appetizers");
 
@@ -73,7 +73,7 @@ public class FoodCategoryServiceImplTest {
 
   @Test
   public void testAddFoodCategory_RestaurantNotFound() {
-    RestaurantController.FoodCategoryInDTO foodCategoryInDTO = new RestaurantController.FoodCategoryInDTO();
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
     foodCategoryInDTO.setFoodCategoryName("Appetizers");
 
@@ -88,7 +88,7 @@ public class FoodCategoryServiceImplTest {
 
   @Test
   public void testUpdateFoodCategory_Success() {
-    RestaurantController.FoodCategoryInDTO foodCategoryInDTO = new RestaurantController.FoodCategoryInDTO();
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
     foodCategoryInDTO.setFoodCategoryName("Main Course");
 
@@ -112,7 +112,7 @@ public class FoodCategoryServiceImplTest {
 
   @Test
   public void testUpdateFoodCategory_NotFound() {
-    RestaurantController.FoodCategoryInDTO foodCategoryInDTO = new RestaurantController.FoodCategoryInDTO();
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
     foodCategoryInDTO.setFoodCategoryName("Main Course");
 
@@ -127,7 +127,7 @@ public class FoodCategoryServiceImplTest {
 
   @Test
   public void testUpdateFoodCategory_AlreadyExists() {
-    RestaurantController.FoodCategoryInDTO foodCategoryInDTO = new RestaurantController.FoodCategoryInDTO();
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
     foodCategoryInDTO.setFoodCategoryName("Main Course");
 

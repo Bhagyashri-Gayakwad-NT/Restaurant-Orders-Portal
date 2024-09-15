@@ -145,12 +145,6 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   public List<RestaurantOutDTO> getRestaurantsByUserId(Integer userId) {
     logger.info("Fetching restaurants for user ID: {}", userId);
-
-//    boolean userExists = restaurantRepository.existsById(userId);
-//    if (!userExists) {
-//      logger.error("User with ID: {} not found", userId);
-//      throw new NotFoundException(Constants.USER_NOT_FOUND);
-//    }
     List<Restaurant> restaurants = restaurantRepository.findByUserId(userId);
     List<RestaurantOutDTO> restaurantOutDTOList = new ArrayList<>();
 

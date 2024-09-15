@@ -1,6 +1,7 @@
 package com.nt.restaurant.microservice.serviceimpl;
 
-import com.nt.restaurant.microservice.controller.RestaurantController;
+
+import com.nt.restaurant.microservice.dto.FoodCategoryInDTO;
 import com.nt.restaurant.microservice.dtoconvertion.FoodCategoryDtoConverter;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.Restaurant;
@@ -52,8 +53,16 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
    * @throws NotFoundException     If the associated restaurant is not found.
    * @throws AlreadyExistException If a food category with the same name already exists in the restaurant.
    */
+  /**
+   * Adds a new food category.
+   *
+   * @param foodCategoryInDTO The details of the food category to be added.
+   * @return A {@link CommonResponse} indicating the result of the operation.
+   * @throws NotFoundException     If the associated restaurant is not found.
+   * @throws AlreadyExistException If a food category with the same name already exists in the restaurant.
+   */
   @Override
-  public CommonResponse addFoodCategory(RestaurantController.FoodCategoryInDTO foodCategoryInDTO) {
+  public CommonResponse addFoodCategory(FoodCategoryInDTO foodCategoryInDTO) {
     logger.info("Adding food category: {}", foodCategoryInDTO);
 
     Optional<Restaurant> restaurant = restaurantRepository.findById(foodCategoryInDTO.getRestaurantId());
@@ -117,7 +126,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
    * @throws AlreadyExistException If a food category with the same name already exists in the restaurant, excluding the current one.
    */
   @Override
-  public CommonResponse updateFoodCategory(Integer foodCategoryId, RestaurantController.FoodCategoryInDTO foodCategoryInDTO) {
+  public CommonResponse updateFoodCategory(Integer foodCategoryId, FoodCategoryInDTO foodCategoryInDTO) {
     logger.info("Updating food category with ID: {}", foodCategoryId);
 
     Optional<FoodCategory> existingCategory = foodCategoryRepository.findById(foodCategoryId);
@@ -146,3 +155,4 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     return new CommonResponse(Constants.FOOD_CATEGORY_UPDATED_SUCCESS);
   }
 }
+
