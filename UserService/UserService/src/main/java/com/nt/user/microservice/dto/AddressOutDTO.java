@@ -1,5 +1,7 @@
 package com.nt.user.microservice.dto;
 
+import java.util.Objects;
+
 /**
  * Data Transfer Object (DTO) for transferring address details in API responses.
  * This class encapsulates information such as street, city, state, country, and pin code.
@@ -142,5 +144,32 @@ public class AddressOutDTO {
    */
   public void setPinCode(String pinCode) {
     this.pinCode = pinCode;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof AddressOutDTO)) return false;
+    AddressOutDTO that = (AddressOutDTO) o;
+    return Objects.equals(id, that.id) && Objects.equals(street, that.street) &&
+      Objects.equals(city, that.city) && Objects.equals(state, that.state) &&
+      Objects.equals(country, that.country) && Objects.equals(pinCode, that.pinCode);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, street, city, state, country, pinCode);
+  }
+
+  @Override
+  public String toString() {
+    return "AddressOutDTO{" +
+      "id=" + id +
+      ", street='" + street + '\'' +
+      ", city='" + city + '\'' +
+      ", state='" + state + '\'' +
+      ", country='" + country + '\'' +
+      ", pinCode='" + pinCode + '\'' +
+      '}';
   }
 }

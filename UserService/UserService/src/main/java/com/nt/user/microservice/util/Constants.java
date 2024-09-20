@@ -126,7 +126,15 @@ public class Constants {
 
   public static final String METHODE_NOT_ALLOWED = "Method not allowed";
 
-  public static final String SENDED_SUCCESS = "email sended successfull";
+  public static final String SUBJECT_EMPTY_ERROR = "Subject cannot be null or empty.";
+  public static final String RECIPIENT_LIST_EMPTY_ERROR = "Recipient list cannot be null or empty.";
+  public static final String RECIPIENT_EMAIL_EMPTY_ERROR = "Recipient email cannot be null or empty: ";
+  public static final String INVALID_EMAIL_FORMAT_ERROR = "Invalid email format: ";
+  public static final String EMAIL_BODY_EMPTY_ERROR = "Email body cannot be null or empty.";
+
+  public static final String EMAIL_SENT_SUCCESSFULLY = "Email sent successfully.";
 
   public static final String SENDER = "bhagyashrigayakwad23@gmail.com";
+  public static final String INVALID_REQUEST_BODY_ERROR = "Invalid request body";
+  public static final String EMPTY_CONTENT_ERROR = "No content was provided in the request body or the format is invalid";
 }

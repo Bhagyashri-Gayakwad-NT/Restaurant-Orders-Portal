@@ -3,6 +3,7 @@ package com.nt.user.microservice.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.Objects;
 
 /**
  * Data Transfer Object (DTO) for login input.
@@ -64,4 +65,24 @@ public class LogInDTO {
     this.password = password;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof LogInDTO)) return false;
+    LogInDTO logInDTO = (LogInDTO) o;
+    return Objects.equals(email, logInDTO.email) && Objects.equals(password, logInDTO.password);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(email, password);
+  }
+
+  @Override
+  public String toString() {
+    return "LogInDTO{" +
+      "email='" + email + '\'' +
+      ", password='" + password + '\'' +
+      '}';
+  }
 }

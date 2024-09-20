@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,6 +96,12 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);
   }
 
+  @ExceptionHandler(InvalidRequestException.class)
+  public ResponseEntity<ErrorResponse> handleInvalidRequestException(InvalidRequestException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+  }
+
   /**
    * Handles {@link InsufficientBalanceException} which occurs when
    * a user tries to make a transaction without sufficient balance in their wallet.
@@ -119,8 +124,8 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
     Map<String, Object> body = new HashMap<>();
     body.put("status", HttpStatus.BAD_REQUEST.value());
-    body.put("error", "Invalid request body");
-    body.put("message", "No content was provided in the request body or the format is invalid");
+    body.put("error", Constants.INVALID_REQUEST_BODY_ERROR);
+    body.put("message", Constants.EMPTY_CONTENT_ERROR);
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 

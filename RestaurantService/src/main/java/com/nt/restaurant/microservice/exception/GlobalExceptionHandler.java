@@ -1,11 +1,13 @@
 package com.nt.restaurant.microservice.exception;
 
+import com.nt.restaurant.microservice.util.Constants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,12 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-
-import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Global exception handler for handling various types of exceptions throughout the application.
@@ -89,7 +87,8 @@ public class GlobalExceptionHandler {
     String fieldName = ex.getName();
     String requiredType = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "unknown";
     String providedValue = ex.getValue() != null ? ex.getValue().toString() : "null";
-    String errorMessage = String.format("Invalid value '%s' for field '%s'. Expected a value of type %s.", providedValue, fieldName, requiredType);
+    String errorMessage = String.format("Invalid value '%s' for field '%s'. Expected a value of type %s.",
+      providedValue, fieldName, requiredType);
 
     Map<String, String> errors = new HashMap<>();
     errors.put(fieldName, errorMessage);
@@ -171,13 +170,21 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
   }
 
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  public ResponseEntity<ErrorResponse> handleMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+    String errorMessage = Constants.METHODE_NOT_ALLOWED;
+    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), errorMessage);
+    return new ResponseEntity<>(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);
+  }
+
+
+
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
-    String errorMessage = "Invalid request body or format. Please ensure that the request contains valid data.";
     Map<String, Object> body = new HashMap<>();
     body.put("status", HttpStatus.BAD_REQUEST.value());
-    body.put("error", "Invalid request body");
-    body.put("message", errorMessage);
+    body.put("error", Constants.INVALID_REQUEST_BODY_ERROR);
+    body.put("message", Constants.EMPTY_CONTENT_ERROR);
     return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
 

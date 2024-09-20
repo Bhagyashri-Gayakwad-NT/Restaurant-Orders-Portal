@@ -4,85 +4,118 @@ import com.nt.restaurant.microservice.entities.FoodItem;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-class FoodItemTest {
+public class FoodItemTest {
+
+  private static final Integer FOOD_ITEM_ID = 1;
+  private static final Integer CATEGORY_ID = 2;
+  private static final Integer RESTAURANT_ID = 3;
+  private static final String FOOD_ITEM_NAME = "Sample Food";
+  private static final String DESCRIPTION = "Delicious food item.";
+  private static final Double PRICE = 9.99;
+  private static final boolean IS_AVAILABLE = true;
+  private static final byte[] IMAGE = new byte[]{1, 2, 3};
 
   @Test
-  void testConstructorAndGetters() {
-    byte[] image = new byte[] {1, 2, 3, 4, 5};
-    FoodItem foodItem = new FoodItem(1, 101, 1001, "Burger", "Delicious chicken burger", 5.99, true, image);
-
-    assertEquals(1, foodItem.getFoodItemId());
-    assertEquals(101, foodItem.getCategoryId());
-    assertEquals(1001, foodItem.getRestaurantId());
-    assertEquals("Burger", foodItem.getFoodItemName());
-    assertEquals("Delicious chicken burger", foodItem.getDescription());
-    assertEquals(5.99, foodItem.getPrice());
-    assertTrue(foodItem.isAvailable());
-    assertArrayEquals(image, foodItem.getFoodItemImage());
+  public void testDefaultConstructor() {
+    FoodItem foodItem = new FoodItem();
+    assertNull(foodItem.getFoodItemId());
+    assertNull(foodItem.getCategoryId());
+    assertNull(foodItem.getRestaurantId());
+    assertNull(foodItem.getFoodItemName());
+    assertNull(foodItem.getDescription());
+    assertNull(foodItem.getPrice());
+    assertFalse(foodItem.isAvailable());
+    assertNull(foodItem.getFoodItemImage());
   }
 
   @Test
-  void testSetters() {
-    byte[] image = new byte[] {1, 2, 3, 4, 5};
+  public void testParameterizedConstructor() {
+    FoodItem foodItem = new FoodItem(FOOD_ITEM_ID, CATEGORY_ID, RESTAURANT_ID, FOOD_ITEM_NAME,
+      DESCRIPTION, PRICE, IS_AVAILABLE, IMAGE);
+    assertEquals(FOOD_ITEM_ID, foodItem.getFoodItemId());
+    assertEquals(CATEGORY_ID, foodItem.getCategoryId());
+    assertEquals(RESTAURANT_ID, foodItem.getRestaurantId());
+    assertEquals(FOOD_ITEM_NAME, foodItem.getFoodItemName());
+    assertEquals(DESCRIPTION, foodItem.getDescription());
+    assertEquals(PRICE, foodItem.getPrice());
+    assertTrue(foodItem.isAvailable());
+    assertArrayEquals(IMAGE, foodItem.getFoodItemImage());
+  }
+
+  @Test
+  public void testEquals() {
+    FoodItem foodItem1 = new FoodItem(FOOD_ITEM_ID, CATEGORY_ID, RESTAURANT_ID, FOOD_ITEM_NAME,
+      DESCRIPTION, PRICE, IS_AVAILABLE, IMAGE);
+    FoodItem foodItem2 = new FoodItem(FOOD_ITEM_ID, CATEGORY_ID, RESTAURANT_ID, FOOD_ITEM_NAME,
+      DESCRIPTION, PRICE, IS_AVAILABLE, IMAGE);
+    assertEquals(foodItem1, foodItem2);
+  }
+
+  @Test
+  public void testNotEqualsDifferentId() {
+    FoodItem foodItem1 = new FoodItem(FOOD_ITEM_ID, CATEGORY_ID, RESTAURANT_ID, FOOD_ITEM_NAME,
+      DESCRIPTION, PRICE, IS_AVAILABLE, IMAGE);
+    FoodItem foodItem2 = new FoodItem(2, CATEGORY_ID, RESTAURANT_ID, FOOD_ITEM_NAME,
+      DESCRIPTION, PRICE, IS_AVAILABLE, IMAGE);
+    assertNotEquals(foodItem1, foodItem2);
+  }
+
+  @Test
+  public void testHashCode() {
+    FoodItem foodItem = new FoodItem(FOOD_ITEM_ID, CATEGORY_ID, RESTAURANT_ID, FOOD_ITEM_NAME,
+      DESCRIPTION, PRICE, IS_AVAILABLE, IMAGE);
+    int expectedHashCode = Objects.hash(FOOD_ITEM_ID, CATEGORY_ID, RESTAURANT_ID, FOOD_ITEM_NAME,
+      DESCRIPTION, PRICE, IS_AVAILABLE) + Arrays.hashCode(IMAGE);
+    assertEquals(expectedHashCode, foodItem.hashCode());
+  }
+
+  @Test
+  public void testToString() {
+    FoodItem foodItem = new FoodItem(FOOD_ITEM_ID, CATEGORY_ID, RESTAURANT_ID, FOOD_ITEM_NAME,
+      DESCRIPTION, PRICE, IS_AVAILABLE, IMAGE);
+    String expectedString = "FoodItem{" +
+      "foodItemId=" + FOOD_ITEM_ID +
+      ", categoryId=" + CATEGORY_ID +
+      ", restaurantId=" + RESTAURANT_ID +
+      ", foodItemName='" + FOOD_ITEM_NAME + '\'' +
+      ", description='" + DESCRIPTION + '\'' +
+      ", Price=" + PRICE +
+      ", isAvailable=" + IS_AVAILABLE +
+      ", foodItemImage=" + Arrays.toString(IMAGE) +
+      '}';
+    assertEquals(expectedString, foodItem.toString());
+  }
+
+  @Test
+  public void testSettersAndGetters() {
     FoodItem foodItem = new FoodItem();
 
-    foodItem.setFoodItemId(2);
-    foodItem.setCategoryId(102);
-    foodItem.setRestaurantId(1002);
-    foodItem.setFoodItemName("Pizza");
-    foodItem.setDescription("Tasty pepperoni pizza");
-    foodItem.setPrice(8.99);
-    foodItem.setAvailable(false);
-    foodItem.setFoodItemImage(image);
+    foodItem.setFoodItemId(FOOD_ITEM_ID);
+    assertEquals(FOOD_ITEM_ID, foodItem.getFoodItemId());
 
-    assertEquals(2, foodItem.getFoodItemId());
-    assertEquals(102, foodItem.getCategoryId());
-    assertEquals(1002, foodItem.getRestaurantId());
-    assertEquals("Pizza", foodItem.getFoodItemName());
-    assertEquals("Tasty pepperoni pizza", foodItem.getDescription());
-    assertEquals(8.99, foodItem.getPrice());
-    assertFalse(foodItem.isAvailable());
-    assertArrayEquals(image, foodItem.getFoodItemImage());
-  }
+    foodItem.setCategoryId(CATEGORY_ID);
+    assertEquals(CATEGORY_ID, foodItem.getCategoryId());
 
-  @Test
-  void testEquals() {
-    byte[] image1 = new byte[] {1, 2, 3, 4, 5};
-    byte[] image2 = new byte[] {1, 2, 3, 4, 5};
+    foodItem.setRestaurantId(RESTAURANT_ID);
+    assertEquals(RESTAURANT_ID, foodItem.getRestaurantId());
 
-    FoodItem foodItem1 = new FoodItem(1, 101, 1001, "Burger", "Delicious chicken burger", 5.99, true, image1);
-    FoodItem foodItem2 = new FoodItem(1, 101, 1001, "Burger", "Delicious chicken burger", 5.99, true, image2);
+    foodItem.setFoodItemName(FOOD_ITEM_NAME);
+    assertEquals(FOOD_ITEM_NAME, foodItem.getFoodItemName());
 
-    assertEquals(foodItem1, foodItem2);
-    assertEquals(foodItem1.hashCode(), foodItem2.hashCode());
-  }
+    foodItem.setDescription(DESCRIPTION);
+    assertEquals(DESCRIPTION, foodItem.getDescription());
 
-  @Test
-  void testNotEquals() {
-    byte[] image1 = new byte[] {1, 2, 3, 4, 5};
-    byte[] image2 = new byte[] {6, 7, 8, 9, 10};
+    foodItem.setPrice(PRICE);
+    assertEquals(PRICE, foodItem.getPrice());
 
-    FoodItem foodItem1 = new FoodItem(1, 101, 1001, "Burger", "Delicious chicken burger", 5.99, true, image1);
-    FoodItem foodItem2 = new FoodItem(2, 102, 1002, "Pizza", "Tasty pepperoni pizza", 8.99, false, image2);
+    foodItem.setAvailable(IS_AVAILABLE);
+    assertTrue(foodItem.isAvailable());
 
-    assertNotEquals(foodItem1, foodItem2);
-    assertNotEquals(foodItem1.hashCode(), foodItem2.hashCode());
-  }
-
-  @Test
-  void testToString() {
-    byte[] image = new byte[] {1, 2, 3, 4, 5};
-    FoodItem foodItem = new FoodItem(1, 101, 1001, "Burger", "Delicious chicken burger", 5.99, true, image);
-
-    String expected = "FoodItem{foodItemId=1, categoryId=101, restaurantId=1001, foodItemName='Burger', " +
-      "description='Delicious chicken burger', Price=5.99, isAvailable=true, foodItemImage=" + Arrays.toString(image) + "}";
-    assertEquals(expected, foodItem.toString());
+    foodItem.setFoodItemImage(IMAGE);
+    assertArrayEquals(IMAGE, foodItem.getFoodItemImage());
   }
 }

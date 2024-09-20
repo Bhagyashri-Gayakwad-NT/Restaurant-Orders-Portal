@@ -40,10 +40,10 @@ class AddressControllerTests {
   @Test
   void testAddAddress_Success() {
     AddressInDTO addressInDTO = new AddressInDTO();
-    addressInDTO.setStreet("123 Main St");
-    addressInDTO.setCity("Springfield");
-    addressInDTO.setState("IL");
-    addressInDTO.setCountry("USA");
+    addressInDTO.setStreet("Test Street");
+    addressInDTO.setCity("TestCity");
+    addressInDTO.setState("Test State");
+    addressInDTO.setCountry("TestCountry");
     addressInDTO.setPinCode("62704");
     addressInDTO.setUserId(1);
 
@@ -79,10 +79,10 @@ class AddressControllerTests {
     List<AddressOutDTO> addressOutDTOList = new ArrayList<>();
     AddressOutDTO addressOutDTO = new AddressOutDTO();
     addressOutDTO.setId(1);
-    addressOutDTO.setStreet("123 Main St");
-    addressOutDTO.setCity("Springfield");
-    addressOutDTO.setState("IL");
-    addressOutDTO.setCountry("USA");
+    addressOutDTO.setStreet("Test Street");
+    addressOutDTO.setCity("TestCity");
+    addressOutDTO.setState("TestState");
+    addressOutDTO.setCountry("TestCountry");
     addressOutDTO.setPinCode("62704");
 
     addressOutDTOList.add(addressOutDTO);

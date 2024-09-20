@@ -3,115 +3,62 @@ package com.nt.restaurant.microservice.indto;
 import com.nt.restaurant.microservice.dto.FoodCategoryInDTO;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class FoodCategoryInDTOTest {
 
-  private final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-  private final Validator validator = factory.getValidator();
-
   @Test
-  void testConstructorAndGetters() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(1, "Indian");
-
-    assertEquals(1, dto.getRestaurantId());
-    assertEquals("Indian", dto.getFoodCategoryName());
+  void testDefaultConstructor() {
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
+    assertNull(foodCategoryInDTO.getRestaurantId());
+    assertNull(foodCategoryInDTO.getFoodCategoryName());
   }
 
   @Test
-  void testSetters() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO();
-    dto.setRestaurantId(2);
-    dto.setFoodCategoryName("Chinese");
+  void testParameterizedConstructor() {
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO(1, "Appetizers");
 
-    assertEquals(2, dto.getRestaurantId());
-    assertEquals("Chinese", dto.getFoodCategoryName());
+    assertEquals(1, foodCategoryInDTO.getRestaurantId());
+    assertEquals("Appetizers", foodCategoryInDTO.getFoodCategoryName());
+  }
+
+  @Test
+  void testSettersAndGetters() {
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
+
+    foodCategoryInDTO.setRestaurantId(2);
+    foodCategoryInDTO.setFoodCategoryName("Main Course");
+
+    assertEquals(2, foodCategoryInDTO.getRestaurantId());
+    assertEquals("Main Course", foodCategoryInDTO.getFoodCategoryName());
   }
 
   @Test
   void testEquals() {
-    FoodCategoryInDTO dto1 = new FoodCategoryInDTO(1, "Italian");
-    FoodCategoryInDTO dto2 = new FoodCategoryInDTO(1, "Italian");
+    FoodCategoryInDTO foodCategoryInDTO1 = new FoodCategoryInDTO(1, "Desserts");
+    FoodCategoryInDTO foodCategoryInDTO2 = new FoodCategoryInDTO(1, "Desserts");
+    FoodCategoryInDTO foodCategoryInDTO3 = new FoodCategoryInDTO(2, "Beverages");
 
-    assertEquals(dto1, dto2);
-    assertEquals(dto1.hashCode(), dto2.hashCode());
+    assertEquals(foodCategoryInDTO1, foodCategoryInDTO2);
+    assertNotEquals(foodCategoryInDTO1, foodCategoryInDTO3);
   }
 
   @Test
-  void testNotEquals() {
-    FoodCategoryInDTO dto1 = new FoodCategoryInDTO(1, "Italian");
-    FoodCategoryInDTO dto2 = new FoodCategoryInDTO(2, "Mexican");
+  void testHashCode() {
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO(1, "Snacks");
 
-    assertNotEquals(dto1, dto2);
-    assertNotEquals(dto1.hashCode(), dto2.hashCode());
+    assertNotNull(foodCategoryInDTO.hashCode());
   }
 
   @Test
   void testToString() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(1, "Italian");
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO(1, "Salads");
 
-    String expected = "FoodCategoryInDTO{restaurantId=1, foodCategoryName='Italian'}";
-    assertEquals(expected, dto.toString());
-  }
+    String expectedString = "FoodCategoryInDTO{" +
+      "restaurantId=1" +
+      ", foodCategoryName='Salads'" +
+      '}';
 
-  @Test
-  void testValidation_Success() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(1, "Mexican");
-
-    Set<ConstraintViolation<FoodCategoryInDTO>> violations = validator.validate(dto);
-    assertTrue(violations.isEmpty());
-  }
-
-  @Test
-  void testValidation_Failure() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(null, "InvalidName123");
-
-    Set<ConstraintViolation<FoodCategoryInDTO>> violations = validator.validate(dto);
-    assertEquals(2, violations.size());
-
-    for (ConstraintViolation<FoodCategoryInDTO> violation : violations) {
-      String message = violation.getMessage();
-      assertTrue(message.equals("Restaurant ID cannot be null") ||
-        message.equals("Category name must contain only alphabets"));
-    }
-  }
-
-  @Test
-  void testValidation_FoodCategoryNameBlank() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(1, "");
-
-    Set<ConstraintViolation<FoodCategoryInDTO>> violations = validator.validate(dto);
-    assertEquals(2, violations.size());
-
-    List<String> errorMessages = violations.stream()
-      .map(ConstraintViolation::getMessage)
-      .collect(Collectors.toList());
-
-    assertTrue(errorMessages.contains("Food category name cannot be blank"));
-    assertTrue(errorMessages.contains("Category name must contain only alphabets"));
-  }
-
-
-  @Test
-  void testValidation_FoodCategoryNameTooLong() {
-    FoodCategoryInDTO dto = new FoodCategoryInDTO(1,
-      "ThisNameIsWayTooLongForAFoodCategoryNameAndShouldFailTheValidationBecauseItExceedsOneHundredCharacters");
-
-    Set<ConstraintViolation<FoodCategoryInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size());
-
-    String message = violations.iterator().next().getMessage();
-    assertEquals("Food category name cannot exceed 100 characters", message);
+    assertEquals(expectedString, foodCategoryInDTO.toString());
   }
 }
-

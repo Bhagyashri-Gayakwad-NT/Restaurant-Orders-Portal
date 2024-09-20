@@ -243,19 +243,11 @@ public class UserServiceImpl implements UserService {
   }
 
   public void sendMail(String text, String subject) {
-    try {
-      // Define the list of recipients
-      List<String> recipients = Arrays.asList(
-        "bhagyashrigayakwad23@gmail.com",
-        "bhagyashrigayakwad26@gmail.com",
-        "rajkumargayakwad222@gmail.com"
-
-      );
-      // Send email to all recipients
-      emailService.sendMail(Constants.SENDER, subject, recipients, text);
-    } catch (Exception e) {
-      e.printStackTrace();
-      throw new ResourceNotFoundException(Constants.ADDRESS_NOT_FOUND);
-    }
+    List<String> recipients = Arrays.asList(
+      "bhagyashrigayakwad23@gmail.com",
+      "bhagyashrigayakwad26@gmail.com",
+      "rajkumargayakwad222@gmail.com"
+    );
+    emailService.sendMail(Constants.SENDER, subject, recipients, text);
   }
 }

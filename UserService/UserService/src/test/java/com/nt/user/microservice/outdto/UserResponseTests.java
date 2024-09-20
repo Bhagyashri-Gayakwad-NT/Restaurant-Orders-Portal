@@ -2,28 +2,58 @@ package com.nt.user.microservice.outdto;
 
 import com.nt.user.microservice.dto.UserResponse;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserResponseTests {
+import static org.junit.jupiter.api.Assertions.*;
+
+class UserResponseTests {
 
   @Test
-  public void testGettersAndSetters() {
-    UserResponse userResponse = new UserResponse();
-    String expectedMessage = "Operation successful";
+  void testGettersAndSetters() {
+    UserResponse response = new UserResponse();
 
-    userResponse.setSuccessMessage(expectedMessage);
+    response.setSuccessMessage("Operation successful"); // Placeholder for message
 
-    assertEquals(expectedMessage, userResponse.getSuccessMessage());
+    assertEquals("Operation successful", response.getSuccessMessage());
   }
 
   @Test
-  public void testSettersAndGettersWithDifferentValues() {
+  void testEquals() {
+    UserResponse response1 = new UserResponse();
+    response1.setSuccessMessage("Operation successful"); // Placeholder for message
 
-    UserResponse userResponse = new UserResponse();
-    String message = "User registered successfully";
+    UserResponse response2 = new UserResponse();
+    response2.setSuccessMessage("Operation successful"); // Same message
 
-    userResponse.setSuccessMessage(message);
+    UserResponse response3 = new UserResponse();
+    response3.setSuccessMessage("Another operation successful"); // Different message
 
-    assertEquals(message, userResponse.getSuccessMessage());
+    assertEquals(response1, response2, "Same messages should be equal.");
+    assertNotEquals(response1, response3, "Different messages should not be equal.");
+    assertNotEquals(response1, null, "Should not be equal to null.");
+    assertNotEquals(response1, new Object(), "Should not be equal to an object of a different class.");
+  }
+
+  @Test
+  void testHashCode() {
+    UserResponse response1 = new UserResponse();
+    response1.setSuccessMessage("Operation successful"); // Placeholder for message
+
+    UserResponse response2 = new UserResponse();
+    response2.setSuccessMessage("Operation successful"); // Same message
+
+    UserResponse response3 = new UserResponse();
+    response3.setSuccessMessage("Another operation successful"); // Different message
+
+    assertEquals(response1.hashCode(), response2.hashCode(), "Equal objects should have the same hash code.");
+    assertNotEquals(response1.hashCode(), response3.hashCode(), "Different objects should have different hash codes.");
+  }
+
+  @Test
+  void testToString() {
+    UserResponse response = new UserResponse();
+    response.setSuccessMessage("Operation successful"); // Placeholder for message
+
+    String expectedString = "UserResponse{successMessage='Operation successful'}";
+    assertEquals(expectedString, response.toString(), "toString() should return the correct string representation.");
   }
 }

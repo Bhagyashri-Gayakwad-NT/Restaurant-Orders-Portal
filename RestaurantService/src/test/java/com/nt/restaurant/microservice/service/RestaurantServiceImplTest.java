@@ -1,11 +1,13 @@
 package com.nt.restaurant.microservice.service;
 
-import com.nt.restaurant.microservice.entities.Restaurant;
-import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
-import com.nt.restaurant.microservice.dto.RestaurantInDTO;
 import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.RestaurantInDTO;
 import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
 import com.nt.restaurant.microservice.dto.UserOutDTO;
+import com.nt.restaurant.microservice.exception.InvalidRequestException;
+import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
+import com.nt.restaurant.microservice.exception.UnauthorizedException;
+import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.repository.RestaurantRepository;
 import com.nt.restaurant.microservice.serviceimpl.RestaurantServiceImpl;
 import com.nt.restaurant.microservice.serviceimpl.UserFClient;
@@ -13,25 +15,21 @@ import com.nt.restaurant.microservice.util.Constants;
 import com.nt.restaurant.microservice.util.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.mock.web.MockMultipartFile;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-public class RestaurantServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+class RestaurantServiceImplTest {
 
   @InjectMocks
   private RestaurantServiceImpl restaurantService;
@@ -42,35 +40,27 @@ public class RestaurantServiceImplTest {
   @Mock
   private UserFClient userFClient;
 
+  private RestaurantInDTO restaurantInDTO;
+  private MultipartFile image;
+  private UserOutDTO userOutDTO;
+
   @BeforeEach
-  public void setUp() {
-    MockitoAnnotations.openMocks(this);
+  void setUp() {
+    restaurantInDTO = new RestaurantInDTO();
+    restaurantInDTO.setUserId(1);
+    restaurantInDTO.setRestaurantName("Test Restaurant");
+    image = mock(MultipartFile.class);
+    userOutDTO = new UserOutDTO();
+    userOutDTO.setRole(Role.RESTAURANT_OWNER.name());
   }
 
   @Test
   void testAddRestaurant_Success() throws Exception {
-    RestaurantInDTO restaurantInDTO = new RestaurantInDTO(1, "Test Restaurant", "123 Test St", "9876543210", "Best restaurant",
-      new MockMultipartFile("image", "image.jpg", "image/jpeg", new byte[0]));
-    MultipartFile image = mock(MultipartFile.class);
-    when(image.getContentType()).thenReturn("image/jpeg");
-    when(image.getBytes()).thenReturn(new byte[0]); // Ensure this is not null
-
-    UserOutDTO userOutDTO = new UserOutDTO();
-    userOutDTO.setRole(Role.RESTAURANT_OWNER.name());
-
     when(userFClient.getUserProfile(1)).thenReturn(userOutDTO);
-
-    Restaurant restaurant = new Restaurant();
-    restaurant.setUserId(1);
-    restaurant.setRestaurantName("Test Restaurant");
-    restaurant.setRestaurantAddress("123 Test St");
-    restaurant.setContactNumber("9876543210");
-    restaurant.setDescription("Best restaurant");
-    restaurant.setRegistrationDate(LocalDate.now());
-    restaurant.setOpen(true);
-    restaurant.setRestaurantImage(new byte[0]);
-
-    when(restaurantRepository.save(any(Restaurant.class))).thenReturn(restaurant);
+    when(restaurantRepository.existsByRestaurantNameIgnoreCase("test restaurant")).thenReturn(false);
+    when(image.getContentType()).thenReturn("image/jpeg");
+    when(image.isEmpty()).thenReturn(false);
+    when(image.getBytes()).thenReturn(new byte[]{1, 2, 3});
 
     CommonResponse response = restaurantService.addRestaurant(restaurantInDTO, image);
 
@@ -78,86 +68,92 @@ public class RestaurantServiceImplTest {
     verify(restaurantRepository, times(1)).save(any(Restaurant.class));
   }
 
+  @Test
+  void testAddRestaurant_UserNotFound() throws Exception {
+    when(userFClient.getUserProfile(1)).thenThrow(new RuntimeException());
+
+    Exception exception = assertThrows(ResourceNotFoundException.class, () ->
+      restaurantService.addRestaurant(restaurantInDTO, image));
+
+    assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
+  }
 
   @Test
-  public void testAddRestaurant_InvalidImageType() throws Exception {
-
-    RestaurantInDTO restaurantInDTO = new RestaurantInDTO();
-    restaurantInDTO.setUserId(1);
-    restaurantInDTO.setRestaurantName("Test Restaurant");
-    restaurantInDTO.setRestaurantAddress("123 Test St");
-    restaurantInDTO.setContactNumber("1234567890");
-    restaurantInDTO.setDescription("A test restaurant");
-    restaurantInDTO.setRestaurantImage(mock(MultipartFile.class));
-    MultipartFile image = mock(MultipartFile.class);
-    when(image.getBytes()).thenReturn("testImage".getBytes());
-    when(image.getContentType()).thenReturn("image/gif");
-    UserOutDTO userOutDTO = new UserOutDTO();
-    userOutDTO.setRole(Role.RESTAURANT_OWNER.name());
+  void testAddRestaurant_UserNotRestaurantOwner() throws Exception {
+    userOutDTO.setRole(Role.USER.name());
     when(userFClient.getUserProfile(1)).thenReturn(userOutDTO);
 
-    InvalidImageFileException exception = assertThrows(
-      InvalidImageFileException.class,
-      () -> restaurantService.addRestaurant(restaurantInDTO, image)
-    );
+    Exception exception = assertThrows(UnauthorizedException.class, () ->
+      restaurantService.addRestaurant(restaurantInDTO, image));
+
+    assertEquals(Constants.USER_NOT_RESTAURANT_OWNER, exception.getMessage());
+  }
+
+  @Test
+  void testAddRestaurant_RestaurantNameExists() throws Exception {
+    when(userFClient.getUserProfile(1)).thenReturn(userOutDTO);
+    when(restaurantRepository.existsByRestaurantNameIgnoreCase("test restaurant")).thenReturn(true);
+
+    Exception exception = assertThrows(InvalidRequestException.class, () ->
+      restaurantService.addRestaurant(restaurantInDTO, image));
+
+    assertEquals(Constants.RESTAURANT_NAME_EXISTS, exception.getMessage());
+  }
+
+  @Test
+  void testAddRestaurant_InvalidImageType() throws Exception {
+    when(userFClient.getUserProfile(1)).thenReturn(userOutDTO);
+    when(restaurantRepository.existsByRestaurantNameIgnoreCase("test restaurant")).thenReturn(false);
+    when(image.getContentType()).thenReturn("text/plain");
+    when(image.isEmpty()).thenReturn(false);
+
+    Exception exception = assertThrows(ResourceNotFoundException.class, () ->
+      restaurantService.addRestaurant(restaurantInDTO, image));
 
     assertEquals(Constants.INVALID_FILE_TYPE, exception.getMessage());
   }
 
   @Test
-  public void testAddRestaurant_UserNotRestaurantOwner() throws Exception {
-    RestaurantInDTO restaurantInDTO = new RestaurantInDTO();
-    restaurantInDTO.setUserId(1);
-
-    UserOutDTO userOutDTO = new UserOutDTO();
-    userOutDTO.setRole(Role.USER.name());
-
-    when(userFClient.getUserProfile(1)).thenReturn(userOutDTO);
-
-    ResourceNotFoundException exception = assertThrows(
-      ResourceNotFoundException.class,
-      () -> restaurantService.addRestaurant(restaurantInDTO, null)
-    );
-    assertEquals(Constants.USER_NOT_RESTAURANT_OWNER, exception.getMessage());
-  }
-
-  @Test
-  public void testAddRestaurant_UserNotFound() throws Exception {
-    RestaurantInDTO restaurantInDTO = new RestaurantInDTO();
-    restaurantInDTO.setUserId(1);
-
-    when(userFClient.getUserProfile(1)).thenThrow(new RuntimeException("User not found"));
-
-    ResourceNotFoundException exception = assertThrows(
-      ResourceNotFoundException.class,
-      () -> restaurantService.addRestaurant(restaurantInDTO, null)
-    );
-    assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
-  }
-
-  @Test
-  public void testGetRestaurantById_Success() {
+  void testGetRestaurantById_Success() {
     Restaurant restaurant = new Restaurant();
     restaurant.setRestaurantId(1);
-    restaurant.setRestaurantName("Test Restaurant");
-
     when(restaurantRepository.findById(1)).thenReturn(Optional.of(restaurant));
 
-    RestaurantOutDTO restaurantOutDTO = restaurantService.getRestaurantById(1);
+    RestaurantOutDTO result = restaurantService.getRestaurantById(1);
 
-    assertNotNull(restaurantOutDTO);
-    assertEquals(1, restaurantOutDTO.getRestaurantId());
-    assertEquals("Test Restaurant", restaurantOutDTO.getRestaurantName());
+    assertNotNull(result);
+    assertEquals(1, result.getRestaurantId());
   }
 
   @Test
-  public void testGetRestaurantById_NotFound() {
+  void testGetRestaurantById_NotFound() {
     when(restaurantRepository.findById(1)).thenReturn(Optional.empty());
 
-    ResourceNotFoundException exception = assertThrows(
-      ResourceNotFoundException.class,
-      () -> restaurantService.getRestaurantById(1)
-    );
+    Exception exception = assertThrows(ResourceNotFoundException.class, () ->
+      restaurantService.getRestaurantById(1));
+
     assertEquals(Constants.RESTAURANT_NOT_FOUND, exception.getMessage());
   }
+
+  @Test
+  void testGetRestaurantsByUserId_Success() {
+    when(restaurantRepository.findByUserId(1)).thenReturn(new ArrayList<>());
+
+    List<RestaurantOutDTO> restaurants = restaurantService.getRestaurantsByUserId(1);
+
+    assertNotNull(restaurants);
+    assertTrue(restaurants.isEmpty());
+  }
+
+  @Test
+  void testGetAllRestaurants_Success() {
+    when(restaurantRepository.findAll()).thenReturn(new ArrayList<>());
+
+    List<RestaurantOutDTO> restaurants = restaurantService.getAllRestaurants();
+
+    assertNotNull(restaurants);
+    assertTrue(restaurants.isEmpty());
+  }
+
+  // Add additional test cases for edge cases as needed.
 }

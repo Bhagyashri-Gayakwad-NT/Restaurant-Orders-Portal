@@ -1,5 +1,7 @@
 package com.nt.user.microservice.dto;
 
+import java.util.Objects;
+
 /**
  * UserOutDTO is a Data Transfer Object used to send user information as a response from the server.
  * It includes user details such as ID, name, email, phone number, role, and wallet balance.
@@ -165,5 +167,34 @@ public class UserOutDTO {
    */
   public void setWalletBalance(Double walletBalance) {
     this.walletBalance = walletBalance;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof UserOutDTO)) return false;
+    UserOutDTO that = (UserOutDTO) o;
+    return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) &&
+      Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) &&
+      Objects.equals(phoneNo, that.phoneNo) && Objects.equals(role, that.role) &&
+      Objects.equals(walletBalance, that.walletBalance);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, firstName, lastName, email, phoneNo, role, walletBalance);
+  }
+
+  @Override
+  public String toString() {
+    return "UserOutDTO{" +
+      "id=" + id +
+      ", firstName='" + firstName + '\'' +
+      ", lastName='" + lastName + '\'' +
+      ", email='" + email + '\'' +
+      ", phoneNo='" + phoneNo + '\'' +
+      ", role='" + role + '\'' +
+      ", walletBalance=" + walletBalance +
+      '}';
   }
 }

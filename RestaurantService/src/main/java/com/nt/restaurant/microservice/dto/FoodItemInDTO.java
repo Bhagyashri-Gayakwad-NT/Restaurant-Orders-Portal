@@ -37,7 +37,8 @@ public class FoodItemInDTO {
    */
   @NotBlank(message = "Food item name cannot be blank")
   @Size(max = 100, message = "Food item name cannot exceed 100 characters")
-  @Pattern(regexp = "^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$", message = "Food Item name must contain at least two alphabets and only alphabets")
+  @Pattern(regexp = "^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$",
+    message = "Food Item name must contain at least two alphabets")
   private String foodItemName;
 
   /**

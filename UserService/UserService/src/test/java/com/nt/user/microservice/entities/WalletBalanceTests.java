@@ -8,68 +8,107 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WalletBalanceTests {
 
-  private WalletBalance walletBalance;
+  private WalletBalance walletBalance1;
+  private WalletBalance walletBalance2;
 
   @BeforeEach
-  public void setUp() {
-    walletBalance = new WalletBalance();
+  void setUp() {
+    walletBalance1 = new WalletBalance();
+    walletBalance2 = new WalletBalance();
   }
 
   @Test
-  public void testSetAndGetId() {
+  void testGettersAndSetters() {
+    // Test ID
     Integer id = 1;
-    walletBalance.setId(id);
-    assertEquals(id, walletBalance.getId(), "The ID should be correctly set and retrieved");
+    walletBalance1.setId(id);
+    assertEquals(id, walletBalance1.getId());
+
+    // Test UserId
+    Integer userId = 101;
+    walletBalance1.setUserId(userId);
+    assertEquals(userId, walletBalance1.getUserId());
+
+    // Test Balance
+    Double balance = 500.0;
+    walletBalance1.setBalance(balance);
+    assertEquals(balance, walletBalance1.getBalance());
   }
 
   @Test
-  public void testSetAndGetUserId() {
-    Integer userId = 1001;
-    walletBalance.setUserId(userId);
-    assertEquals(userId, walletBalance.getUserId(), "The User ID should be correctly set and retrieved");
+  void testEquals_SameObject() {
+    assertEquals(walletBalance1, walletBalance1);
   }
 
   @Test
-  public void testSetAndGetBalance() {
-    double balance = 1000.0;
-    walletBalance.setBalance(balance);
-    assertEquals(balance, walletBalance.getBalance(), "The balance should be correctly set and retrieved");
+  void testEquals_NullObject() {
+    assertNotEquals(walletBalance1, null);
   }
 
   @Test
-  public void testEqualsAndHashCode() {
-    WalletBalance walletBalance1 = new WalletBalance();
+  void testEquals_DifferentClass() {
+    assertNotEquals(walletBalance1, new Object());
+  }
+
+  @Test
+  void testEquals_DifferentFields() {
     walletBalance1.setId(1);
-    walletBalance1.setUserId(1001);
-    walletBalance1.setBalance(1000.0);
+    walletBalance1.setUserId(101);
+    walletBalance1.setBalance(500.0);
 
-    WalletBalance walletBalance2 = new WalletBalance();
-    walletBalance2.setId(1);
-    walletBalance2.setUserId(1001);
-    walletBalance2.setBalance(1000.0);
+    walletBalance2.setId(2);
+    walletBalance2.setUserId(102);
+    walletBalance2.setBalance(600.0);
 
-    WalletBalance walletBalance3 = new WalletBalance();
-    walletBalance3.setId(2);
-    walletBalance3.setUserId(1002);
-    walletBalance3.setBalance(500.0);
-
-    assertTrue(walletBalance1.equals(walletBalance2), "walletBalance1 should be equal to walletBalance2");
-    assertFalse(walletBalance1.equals(walletBalance3), "walletBalance1 should not be equal to walletBalance3");
-    assertFalse(walletBalance2.equals(walletBalance3), "walletBalance2 should not be equal to walletBalance3");
-
-    assertEquals(walletBalance1.hashCode(), walletBalance2.hashCode(), "hashCode of walletBalance1 should be" +
-      " equal to hashCode of walletBalance2");
-    assertNotEquals(walletBalance1.hashCode(), walletBalance3.hashCode(), "hashCode of walletBalance1 should not be equal to h" +
-      "ashCode of walletBalance3");
+    assertNotEquals(walletBalance1, walletBalance2);
   }
 
   @Test
-  public void testToString() {
-    walletBalance.setId(1);
-    walletBalance.setUserId(1001);
-    walletBalance.setBalance(1000.0);
+  void testEquals_SameFields() {
+    walletBalance1.setId(1);
+    walletBalance1.setUserId(101);
+    walletBalance1.setBalance(500.0);
 
-    String expectedString = "WalletBalance{id=1, userId=1001, balance=1000.0}";
-    assertEquals(expectedString, walletBalance.toString(), "The toString method should return the expected string representation");
+    walletBalance2.setId(1);
+    walletBalance2.setUserId(101);
+    walletBalance2.setBalance(500.0);
+
+    assertEquals(walletBalance1, walletBalance2);
+  }
+
+  @Test
+  void testHashCode_SameObject() {
+    walletBalance1.setId(1);
+    walletBalance1.setUserId(101);
+    walletBalance1.setBalance(500.0);
+
+    walletBalance2.setId(1);
+    walletBalance2.setUserId(101);
+    walletBalance2.setBalance(500.0);
+
+    assertEquals(walletBalance1.hashCode(), walletBalance2.hashCode());
+  }
+
+  @Test
+  void testHashCode_DifferentObject() {
+    walletBalance1.setId(1);
+    walletBalance1.setUserId(101);
+    walletBalance1.setBalance(500.0);
+
+    walletBalance2.setId(2);
+    walletBalance2.setUserId(102);
+    walletBalance2.setBalance(600.0);
+
+    assertNotEquals(walletBalance1.hashCode(), walletBalance2.hashCode());
+  }
+
+  @Test
+  void testToString() {
+    walletBalance1.setId(1);
+    walletBalance1.setUserId(101);
+    walletBalance1.setBalance(500.0);
+
+    String expected = "WalletBalance{id=1, userId=101, balance=500.0}";
+    assertEquals(expected, walletBalance1.toString());
   }
 }

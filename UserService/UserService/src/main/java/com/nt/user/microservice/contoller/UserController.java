@@ -163,9 +163,7 @@ public class UserController {
   public ResponseEntity<UserResponse> sendEmail(@RequestParam String text, @RequestParam String subject) {
     userService.sendMail(text, subject);
     UserResponse response = new UserResponse();
-    response.setSuccessMessage(Constants.SENDED_SUCCESS);
+    response.setSuccessMessage(Constants.EMAIL_SENT_SUCCESSFULLY);
     return new ResponseEntity<>(response, HttpStatus.OK);
-    //return new ResponseEntity<>(new ApiResponse(Constants.SENDED_SUCCESS), HttpStatus.OK);
   }
-
 }

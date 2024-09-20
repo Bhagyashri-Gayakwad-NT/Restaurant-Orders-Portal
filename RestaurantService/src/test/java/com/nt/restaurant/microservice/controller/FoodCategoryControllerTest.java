@@ -84,7 +84,7 @@ class FoodCategoryControllerTest {
     Integer id = 1;
     FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
-    foodCategoryInDTO.setFoodCategoryName("Main Course");
+    foodCategoryInDTO.setFoodCategoryName("Test Category");
 
     CommonResponse commonResponse = new CommonResponse();
     commonResponse.setMessage("Food category updated successfully");

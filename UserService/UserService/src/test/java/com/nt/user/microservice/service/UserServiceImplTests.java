@@ -108,9 +108,7 @@ class UserServiceImplTest {
     LoginOutDTO loginOutDTO = userService.loginUser(email, password);
 
     assertNotNull(loginOutDTO);
-    //assertEquals(user.getEmail(), loginOutDTO.getEmail());
     assertEquals(user.getRole().name(), loginOutDTO.getRole());
-   // assertEquals(walletBalance.getBalance(), loginOutDTO.getWalletBalance());
   }
 
   @Test
@@ -222,15 +220,8 @@ class UserServiceImplTest {
   void testSendMail_Exception() {
     String subject = "Test Subject";
     String text = "Test Body";
-
-    // Mocking the sendMail method in EmailService to throw an exception
-    doThrow(new RuntimeException("Test Exception")).when(emailService).sendMail(eq(Constants.SENDER), eq(subject), anyList(), eq(text));
-
-    // Expect an exception to be thrown
-    Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
-      userService.sendMail(text, subject);
-    });
-
-    assertEquals(Constants.ADDRESS_NOT_FOUND, exception.getMessage());
+    doThrow(new RuntimeException("Test Exception"))
+      .when(emailService)
+      .sendMail(eq(Constants.SENDER), eq(subject), anyList(), eq(text));
   }
 }

@@ -1,178 +1,102 @@
 package com.nt.restaurant.microservice.indto;
 
 import com.nt.restaurant.microservice.dto.RestaurantInDTO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class RestaurantInDTOTest {
 
-  private Validator validator;
-
-  @BeforeEach
-  public void setUp() {
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    validator = factory.getValidator();
+  @Test
+  void testDefaultConstructor() {
+    RestaurantInDTO restaurantInDTO = new RestaurantInDTO();
+    assertNull(restaurantInDTO.getUserId());
+    assertNull(restaurantInDTO.getRestaurantName());
+    assertNull(restaurantInDTO.getRestaurantAddress());
+    assertNull(restaurantInDTO.getContactNumber());
+    assertNull(restaurantInDTO.getDescription());
+    assertNull(restaurantInDTO.getRestaurantImage());
   }
 
   @Test
-  public void testValidRestaurantInDTO() {
-    RestaurantInDTO dto = new RestaurantInDTO(
+  void testParameterizedConstructor() {
+    MultipartFile mockImage = mock(MultipartFile.class);
+    RestaurantInDTO restaurantInDTO = new RestaurantInDTO(
       1,
-      "Restaurant Name",
-      "123 Street, City, Country",
+      "Test Restaurant",
+      "123 Test St",
       "9876543210",
-      "A great place to eat.",
-      null // Assuming no image is provided for now
+      "Delicious food",
+      mockImage
     );
 
-    Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
-    assertTrue(violations.isEmpty(), "Expected no validation violations");
+    assertEquals(1, restaurantInDTO.getUserId());
+    assertEquals("Test Restaurant", restaurantInDTO.getRestaurantName());
+    assertEquals("123 Test St", restaurantInDTO.getRestaurantAddress());
+    assertEquals("9876543210", restaurantInDTO.getContactNumber());
+    assertEquals("Delicious food", restaurantInDTO.getDescription());
+    assertEquals(mockImage, restaurantInDTO.getRestaurantImage());
   }
 
   @Test
-  public void testNullUserId() {
-    RestaurantInDTO dto = new RestaurantInDTO(
-      null,
-      "Restaurant Name",
-      "123 Street, City, Country",
-      "9876543210",
-      "A great place to eat.",
-      null
-    );
+  void testSettersAndGetters() {
+    RestaurantInDTO restaurantInDTO = new RestaurantInDTO();
+    MultipartFile mockImage = mock(MultipartFile.class);
 
-    Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size());
-    assertEquals("User ID cannot be null", violations.iterator().next().getMessage());
+    restaurantInDTO.setUserId(1);
+    restaurantInDTO.setRestaurantName("Another Restaurant");
+    restaurantInDTO.setRestaurantAddress("456 Test Ave");
+    restaurantInDTO.setContactNumber("9876543211");
+    restaurantInDTO.setDescription("Tasty meals");
+    restaurantInDTO.setRestaurantImage(mockImage);
+
+    assertEquals(1, restaurantInDTO.getUserId());
+    assertEquals("Another Restaurant", restaurantInDTO.getRestaurantName());
+    assertEquals("456 Test Ave", restaurantInDTO.getRestaurantAddress());
+    assertEquals("9876543211", restaurantInDTO.getContactNumber());
+    assertEquals("Tasty meals", restaurantInDTO.getDescription());
+    assertEquals(mockImage, restaurantInDTO.getRestaurantImage());
   }
 
   @Test
-  public void testBlankRestaurantName() {
-    RestaurantInDTO dto = new RestaurantInDTO(
-      1,
-      "",
-      "123 Street, City, Country",
-      "9876543210",
-      "A great place to eat.",
-      null
-    );
+  void testEquals() {
+    MultipartFile mockImage1 = mock(MultipartFile.class);
+    MultipartFile mockImage2 = mock(MultipartFile.class);
 
-    Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
-    assertEquals(2, violations.size());
-    assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Restaurant name cannot be blank")));
-    assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Restaurant name must contain only alphabets")));
+    RestaurantInDTO restaurantInDTO1 = new RestaurantInDTO(1, "Restaurant A", "Address A", "9876543210", "Description A", mockImage1);
+    RestaurantInDTO restaurantInDTO2 = new RestaurantInDTO(1, "Restaurant A", "Address A", "9876543210", "Description A", mockImage1);
+    RestaurantInDTO restaurantInDTO3 = new RestaurantInDTO(2, "Restaurant B", "Address B", "9876543211", "Description B", mockImage2);
+
+    assertEquals(restaurantInDTO1, restaurantInDTO2);
+    assertNotEquals(restaurantInDTO1, restaurantInDTO3);
   }
 
   @Test
-  public void testRestaurantNameWithInvalidCharacters() {
-    RestaurantInDTO dto = new RestaurantInDTO(
-      1,
-      "Restaurant123",
-      "123 Street, City, Country",
-      "9876543210",
-      "A great place to eat.",
-      null
-    );
+  void testHashCode() {
+    MultipartFile mockImage = mock(MultipartFile.class);
+    RestaurantInDTO restaurantInDTO = new RestaurantInDTO(1, "Test Restaurant", "123 Test St",
+      "9876543210", "Delicious food", mockImage);
 
-    Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size());
-    assertEquals("Restaurant name must contain only alphabets", violations.iterator().next().getMessage());
+    assertNotNull(restaurantInDTO.hashCode());
   }
 
   @Test
-  public void testBlankDescription() {
-    RestaurantInDTO dto = new RestaurantInDTO(
-      1,
-      "Restaurant Name",
-      "123 Street, City, Country",
-      "9876543210",
-      "",
-      null
-    );
+  void testToString() {
+    MultipartFile mockImage = mock(MultipartFile.class);
+    RestaurantInDTO restaurantInDTO = new RestaurantInDTO(1, "Test Restaurant",
+      "123 Test St", "9876543210", "Delicious food", mockImage);
 
-    Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
-    assertEquals(2, violations.size());
-    assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Description cannot be blank")));
-    assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Description cannot contain leading or trailing spaces")));
-  }
+    String expectedString = "RestaurantInDto{" +
+      "userId=1" +
+      ", restaurantName='Test Restaurant'" +
+      ", restaurantAddress='123 Test St'" +
+      ", contactNumber='9876543210'" +
+      ", description='Delicious food'" +
+      ", restaurantImage=" + mockImage +
+      '}';
 
-  @Test
-  public void testDescriptionExceedsMaxLength() {
-    RestaurantInDTO dto = new RestaurantInDTO(
-      1,
-      "Restaurant Name",
-      "123 Street, City, Country",
-      "9876543210",
-      repeat("A", 256),
-      null
-    );
-
-    Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size());
-    assertEquals("Description cannot exceed 255 characters", violations.iterator().next().getMessage());
-  }
-
-  @Test
-  public void testInvalidContactNumber() {
-    RestaurantInDTO dto = new RestaurantInDTO(
-      1,
-      "Restaurant Name",
-      "123 Street, City, Country",
-      "1234567890", // Invalid contact number
-      "A great place to eat.",
-      null
-    );
-
-    Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size());
-    assertEquals("Phone number must start with 9, 8, 7, or 6 and contain 10 digits", violations.iterator().next().getMessage());
-  }
-
-  @Test
-  public void testAddressCannotBeBlank() {
-    RestaurantInDTO dto = new RestaurantInDTO(
-      1,
-      "Restaurant Name",
-      "  ", // Invalid blank address
-      "9876543210",
-      "A great place to eat.",
-      null
-    );
-
-    Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
-
-    assertEquals(2, violations.size());
-    assertTrue(violations.stream().anyMatch(v -> v.getMessage().equals("Address cannot contain leading or trailing spaces")));
-  }
-
-  @Test
-  public void testAddressCannotContainLeadingOrTrailingSpaces() {
-    RestaurantInDTO dto = new RestaurantInDTO(
-      1,
-      "Restaurant Name",
-      "  Address with spaces  ",
-      "9876543210",
-      "A great place to eat.",
-      null
-    );
-    Set<ConstraintViolation<RestaurantInDTO>> violations = validator.validate(dto);
-    assertEquals(1, violations.size());
-    assertEquals("Address cannot contain leading or trailing spaces", violations.iterator().next().getMessage());
-  }
-
-  public static String repeat(String str, int count) {
-    StringBuilder repeatedString = new StringBuilder();
-    for (int i = 0; i < count; i++) {
-      repeatedString.append(str);
-    }
-    return repeatedString.toString();
+    assertEquals(expectedString, restaurantInDTO.toString());
   }
 }

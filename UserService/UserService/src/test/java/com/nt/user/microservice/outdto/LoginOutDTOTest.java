@@ -1,47 +1,94 @@
 package com.nt.user.microservice.outdto;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import com.nt.user.microservice.dto.LoginOutDTO;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginOutDTOTest {
 
+  private LoginOutDTO loginOutDTO;
+
+  @BeforeEach
+  void setUp() {
+    loginOutDTO = new LoginOutDTO();
+  }
+
   @Test
   void testGettersAndSetters() {
-    // Create an instance of LoginOutDTO
-    LoginOutDTO loginOutDTO = new LoginOutDTO();
-
-    // Set values
     loginOutDTO.setId(1);
     loginOutDTO.setRole("USER");
 
-    // Verify the values are set correctly
-    assertEquals(1, loginOutDTO.getId(), "ID should be 1");
-    assertEquals("USER", loginOutDTO.getRole(), "Role should be 'USER'");
+    assertEquals(1, loginOutDTO.getId(), "Expected ID to be 1");
+    assertEquals("USER", loginOutDTO.getRole(), "Expected role to be USER");
   }
 
   @Test
-  void testSetId() {
-    // Create an instance of LoginOutDTO
-    LoginOutDTO loginOutDTO = new LoginOutDTO();
-
-    // Set ID
-    loginOutDTO.setId(10);
-
-    // Verify ID
-    assertEquals(10, loginOutDTO.getId(), "ID should be 10");
+  void testEqualsSameObject() {
+    assertEquals(loginOutDTO, loginOutDTO, "Same object should be equal");
   }
 
   @Test
-  void testSetRole() {
-    // Create an instance of LoginOutDTO
-    LoginOutDTO loginOutDTO = new LoginOutDTO();
+  void testEqualsDifferentObjectSameValues() {
+    LoginOutDTO anotherDTO = new LoginOutDTO();
+    anotherDTO.setId(1);
+    anotherDTO.setRole("USER");
 
-    // Set Role
-    loginOutDTO.setRole("ADMIN");
+    loginOutDTO.setId(1);
+    loginOutDTO.setRole("USER");
 
-    // Verify Role
-    assertEquals("ADMIN", loginOutDTO.getRole(), "Role should be 'ADMIN'");
+    assertEquals(loginOutDTO, anotherDTO, "Objects with the same values should be equal");
+  }
+
+  @Test
+  void testEqualsDifferentObjectDifferentValues() {
+    LoginOutDTO anotherDTO = new LoginOutDTO();
+    anotherDTO.setId(2);
+    anotherDTO.setRole("ADMIN");
+
+    loginOutDTO.setId(1);
+    loginOutDTO.setRole("USER");
+
+    assertNotEquals(loginOutDTO, anotherDTO, "Objects with different values should not be equal");
+  }
+
+  @Test
+  void testEqualsNull() {
+    assertNotEquals(loginOutDTO, null, "Object should not be equal to null");
+  }
+
+  @Test
+  void testHashCodeSameValues() {
+    LoginOutDTO anotherDTO = new LoginOutDTO();
+    anotherDTO.setId(1);
+    anotherDTO.setRole("USER");
+
+    loginOutDTO.setId(1);
+    loginOutDTO.setRole("USER");
+
+    assertEquals(loginOutDTO.hashCode(), anotherDTO.hashCode(), "Hash codes should be equal for the same values");
+  }
+
+  @Test
+  void testHashCodeDifferentValues() {
+    LoginOutDTO anotherDTO = new LoginOutDTO();
+    anotherDTO.setId(2);
+    anotherDTO.setRole("ADMIN");
+
+    loginOutDTO.setId(1);
+    loginOutDTO.setRole("USER");
+
+    assertNotEquals(loginOutDTO.hashCode(), anotherDTO.hashCode(), "Hash codes should be different for different values");
+  }
+
+  @Test
+  void testToString() {
+    loginOutDTO.setId(1);
+    loginOutDTO.setRole("USER");
+
+    String expectedString = "LoginOutDTO{id=1, role='USER'}";
+    assertEquals(expectedString, loginOutDTO.toString(), "Expected toString output to match the format");
   }
 }

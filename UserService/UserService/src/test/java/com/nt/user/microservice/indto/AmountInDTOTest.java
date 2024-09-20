@@ -33,4 +33,34 @@ class AmountInDTOTest {
     amountInDTO.setBalance(newBalance);
     assertEquals(newBalance, amountInDTO.getBalance(), "setBalance() should update the balance.");
   }
+
+  @Test
+  void testEquals() {
+    AmountInDTO amountInDTO1 = new AmountInDTO(150.0);
+    AmountInDTO amountInDTO2 = new AmountInDTO(150.0);
+    AmountInDTO amountInDTO3 = new AmountInDTO(200.0);
+
+    assertEquals(amountInDTO1, amountInDTO2, "Equal amounts should be considered equal.");
+    assertNotEquals(amountInDTO1, amountInDTO3, "Different amounts should not be considered equal.");
+    assertNotEquals(amountInDTO1, null, "Object should not be equal to null.");
+    assertNotEquals(amountInDTO1, new Object(), "Object should not be equal to a different class.");
+  }
+
+  @Test
+  void testHashCode() {
+    AmountInDTO amountInDTO1 = new AmountInDTO(100.0);
+    AmountInDTO amountInDTO2 = new AmountInDTO(100.0);
+    AmountInDTO amountInDTO3 = new AmountInDTO(200.0);
+
+    assertEquals(amountInDTO1.hashCode(), amountInDTO2.hashCode(), "Equal objects should have the same hash code.");
+    assertNotEquals(amountInDTO1.hashCode(), amountInDTO3.hashCode(), "Different objects should have different hash codes.");
+  }
+
+  @Test
+  void testToString() {
+    AmountInDTO amountInDTO = new AmountInDTO(500.0);
+    String expectedString = "AmountInDTO{balance=500.0}";
+
+    assertEquals(expectedString, amountInDTO.toString(), "toString() should return the correct string representation.");
+  }
 }

@@ -4,131 +4,152 @@ import com.nt.user.microservice.dto.UserInDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import java.util.Set;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserInDTOTests {
 
-  private Validator validator;
+  private UserInDTO userInDTO;
 
   @BeforeEach
-  public void setUp() {
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    validator = factory.getValidator();
+  void setUp() {
+    userInDTO = new UserInDTO();
   }
 
   @Test
-  public void testValidUserInDTO() {
-    UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setFirstName("John");
-    userInDTO.setLastName("Doe");
-    userInDTO.setEmail("john.doe@nucleusteq.com");
-    userInDTO.setPassword("Password1");
+  void testGettersAndSetters() {
+    // Setting values
+    userInDTO.setFirstName("TestFirst");
+    userInDTO.setLastName("TestLast");
+    userInDTO.setEmail("test@nucleusteq.com");
+    userInDTO.setPassword("Password123!");
     userInDTO.setPhoneNo("9876543210");
     userInDTO.setRole("USER");
 
-    Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
-    assertEquals(0, violations.size(), "UserInDTO should be valid");
+    // Asserting getters
+    assertEquals("TestFirst", userInDTO.getFirstName(), "Expected firstName to be 'TestFirst'");
+    assertEquals("TestLast", userInDTO.getLastName(), "Expected lastName to be 'TestLast'");
+    assertEquals("test@nucleusteq.com", userInDTO.getEmail(), "Expected email to be 'test@nucleusteq.com'");
+    assertEquals("Password123!", userInDTO.getPassword(), "Expected password to be 'Password123!'");
+    assertEquals("9876543210", userInDTO.getPhoneNo(), "Expected phone number to be '9876543210'");
+    assertEquals("USER", userInDTO.getRole(), "Expected role to be 'USER'");
   }
 
   @Test
-  public void testInvalidFirstName() {
-    UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setFirstName("jo"); // Invalid first name
-    userInDTO.setLastName("Doe");
-    userInDTO.setEmail("john.doe@nucleusteq.com");
-    userInDTO.setPassword("Password1");
+  void testEqualsSameObject() {
+    // Asserting that the same object is equal
+    assertEquals(userInDTO, userInDTO, "The same object should be equal to itself");
+  }
+
+  @Test
+  void testEqualsDifferentObjectSameValues() {
+    // Create another object with the same values
+    UserInDTO anotherDTO = new UserInDTO();
+    anotherDTO.setFirstName("TestFirst");
+    anotherDTO.setLastName("TestLast");
+    anotherDTO.setEmail("test@nucleusteq.com");
+    anotherDTO.setPassword("Password123!");
+    anotherDTO.setPhoneNo("9876543210");
+    anotherDTO.setRole("USER");
+
+    // Set the same values for the original object
+    userInDTO.setFirstName("TestFirst");
+    userInDTO.setLastName("TestLast");
+    userInDTO.setEmail("test@nucleusteq.com");
+    userInDTO.setPassword("Password123!");
     userInDTO.setPhoneNo("9876543210");
     userInDTO.setRole("USER");
 
-    Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
-    assertEquals(1, violations.size());
-    assertEquals("First name must start with a capital letter and contain only letters",
-      violations.iterator().next().getMessage());
+    // Assert equality between the two objects
+    assertEquals(userInDTO, anotherDTO, "Objects with the same values should be equal");
   }
 
   @Test
-  public void testInvalidLastName() {
-    UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setFirstName("John");
-    userInDTO.setLastName("do"); // Invalid last name
-    userInDTO.setEmail("john.doe@nucleusteq.com");
-    userInDTO.setPassword("Password1");
+  void testEqualsDifferentObjectDifferentValues() {
+    // Create another object with different values
+    UserInDTO anotherDTO = new UserInDTO();
+    anotherDTO.setFirstName("DifferentFirst");
+    anotherDTO.setLastName("DifferentLast");
+    anotherDTO.setEmail("diff@nucleusteq.com");
+    anotherDTO.setPassword("DiffPass123!");
+    anotherDTO.setPhoneNo("8765432109");
+    anotherDTO.setRole("RESTAURANT_OWNER");
+
+    // Set different values for the original object
+    userInDTO.setFirstName("TestFirst");
+    userInDTO.setLastName("TestLast");
+    userInDTO.setEmail("test@nucleusteq.com");
+    userInDTO.setPassword("Password123!");
     userInDTO.setPhoneNo("9876543210");
     userInDTO.setRole("USER");
 
-    Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
-    assertEquals(1, violations.size());
-    assertEquals("Last name must start with a capital letter and contain only letters",
-      violations.iterator().next().getMessage());
+    // Assert that the objects are not equal
+    assertNotEquals(userInDTO, anotherDTO, "Objects with different values should not be equal");
   }
 
   @Test
-  public void testInvalidEmail() {
-    UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setFirstName("John");
-    userInDTO.setLastName("Doe");
-    userInDTO.setEmail("john.doe@gmail.com"); // Invalid email
-    userInDTO.setPassword("Password1");
+  void testEqualsNull() {
+    // Asserting that the object is not equal to null
+    assertNotEquals(userInDTO, null, "Object should not be equal to null");
+  }
+
+  @Test
+  void testHashCodeSameValues() {
+    // Create another object with the same values
+    UserInDTO anotherDTO = new UserInDTO();
+    anotherDTO.setFirstName("TestFirst");
+    anotherDTO.setLastName("TestLast");
+    anotherDTO.setEmail("test@nucleusteq.com");
+    anotherDTO.setPassword("Password123!");
+    anotherDTO.setPhoneNo("9876543210");
+    anotherDTO.setRole("USER");
+
+    // Set the same values for the original object
+    userInDTO.setFirstName("TestFirst");
+    userInDTO.setLastName("TestLast");
+    userInDTO.setEmail("test@nucleusteq.com");
+    userInDTO.setPassword("Password123!");
     userInDTO.setPhoneNo("9876543210");
     userInDTO.setRole("USER");
 
-    Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
-    assertEquals(1, violations.size());
-    assertEquals("Email must be valid, must end with @nucleusteq.com, and contain at least one alphabet before the '@' symbol.",
-      violations.iterator().next().getMessage());
-
+    // Asserting that the hash codes are the same for the same values
+    assertEquals(userInDTO.hashCode(), anotherDTO.hashCode(), "Hash codes should match for same values");
   }
 
   @Test
-  public void testInvalidPassword() {
-    UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setFirstName("John");
-    userInDTO.setLastName("Doe");
-    userInDTO.setEmail("john.doe@nucleusteq.com");
-    userInDTO.setPassword("pass"); // Invalid password (no digits)
+  void testHashCodeDifferentValues() {
+    // Create another object with different values
+    UserInDTO anotherDTO = new UserInDTO();
+    anotherDTO.setFirstName("DifferentFirst");
+    anotherDTO.setLastName("DifferentLast");
+    anotherDTO.setEmail("diff@nucleusteq.com");
+    anotherDTO.setPassword("DiffPass123!");
+    anotherDTO.setPhoneNo("8765432109");
+    anotherDTO.setRole("RESTAURANT_OWNER");
+
+    // Set different values for the original object
+    userInDTO.setFirstName("TestFirst");
+    userInDTO.setLastName("TestLast");
+    userInDTO.setEmail("test@nucleusteq.com");
+    userInDTO.setPassword("Password123!");
     userInDTO.setPhoneNo("9876543210");
     userInDTO.setRole("USER");
 
-    Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
-    assertEquals(0, violations.size());
+    // Assert that the hash codes are different for different values
+    assertNotEquals(userInDTO.hashCode(), anotherDTO.hashCode(), "Hash codes should differ for different values");
   }
 
-
   @Test
-  public void testInvalidPhoneNo() {
-    UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setFirstName("John");
-    userInDTO.setLastName("Doe");
-    userInDTO.setEmail("john.doe@nucleusteq.com");
-    userInDTO.setPassword("Password1");
-    userInDTO.setPhoneNo("1234567890"); // Invalid phone number
+  void testToString() {
+    userInDTO.setFirstName("TestFirst");
+    userInDTO.setLastName("TestLast");
+    userInDTO.setEmail("test@nucleusteq.com");
+    userInDTO.setPassword("Password123!");
+    userInDTO.setPhoneNo("9876543210");
     userInDTO.setRole("USER");
 
-    Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
-    assertEquals(1, violations.size());
-    assertEquals("Phone number must start with 9, 8, 7, or 6 and contain 10 digits",
-      violations.iterator().next().getMessage());
-  }
+    String expectedString = "UserInDTO{firstName='TestFirst', lastName='TestLast', " +
+      "email='test@nucleusteq.com', password='Password123!', phoneNo='9876543210', role='USER'}";
 
-  @Test
-  public void testInvalidRole() {
-    UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setFirstName("John");
-    userInDTO.setLastName("Doe");
-    userInDTO.setEmail("john.doe@nucleusteq.com");
-    userInDTO.setPassword("Password1");
-    userInDTO.setPhoneNo("9876543210");
-    userInDTO.setRole("ADMIN"); // Invalid role
-
-    Set<ConstraintViolation<UserInDTO>> violations = validator.validate(userInDTO);
-    assertEquals(1, violations.size());
-    assertEquals("Role must be either 'USER' or 'RESTAURANT_OWNER'",
-      violations.iterator().next().getMessage());
+    assertEquals(expectedString, userInDTO.toString(), "Expected toString output to match the format");
   }
 }

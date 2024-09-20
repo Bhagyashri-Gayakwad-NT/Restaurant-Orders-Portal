@@ -66,12 +66,12 @@ class AddressesInDTOTest {
 
   @Test
   void testValidAddressInDTO() {
-    addressInDTO.setStreet("123 Elm Street");
-    addressInDTO.setCity("Metropolis");
-    addressInDTO.setState("NewYork");
-    addressInDTO.setCountry("USA");
-    addressInDTO.setPinCode("123456");
-    addressInDTO.setUserId(101);
+    addressInDTO.setStreet("TestStreet 123");
+    addressInDTO.setCity("SampleCity");
+    addressInDTO.setState("TestState");
+    addressInDTO.setCountry("Testland");
+    addressInDTO.setPinCode("654321");
+    addressInDTO.setUserId(999);
 
     Set<javax.validation.ConstraintViolation<AddressInDTO>> violations = validator.validate(addressInDTO);
     assertTrue(violations.isEmpty(), "There should be no validation violations for a valid AddressInDTO");
@@ -79,37 +79,38 @@ class AddressesInDTOTest {
   @Test
   void testEqualsAndHashCode() {
     AddressInDTO address1 = new AddressInDTO();
-    address1.setStreet("123 Main Street");
-    address1.setCity("Springfield");
-    address1.setState("California");
-    address1.setCountry("USA");
-    address1.setPinCode("123456");
-    address1.setUserId(1);
+    address1.setStreet("TestStreet 1");
+    address1.setCity("SampleCity");
+    address1.setState("TestState");
+    address1.setCountry("Testland");
+    address1.setPinCode("654321");
+    address1.setUserId(111);
 
     AddressInDTO address2 = new AddressInDTO();
-    address2.setStreet("123 Main Street");
-    address2.setCity("Springfield");
-    address2.setState("California");
-    address2.setCountry("USA");
-    address2.setPinCode("123456");
-    address2.setUserId(1);
+    address2.setStreet("TestStreet 1");
+    address2.setCity("SampleCity");
+    address2.setState("TestState");
+    address2.setCountry("Testland");
+    address2.setPinCode("654321");
+    address2.setUserId(111);
 
     assertEquals(address1, address2, "Expected both addresses to be equal");
     assertEquals(address1.hashCode(), address2.hashCode(), "Expected hash codes to be equal");
   }
 
+
   @Test
   void testToString() {
     AddressInDTO address = new AddressInDTO();
-    address.setStreet("123 Main Street");
-    address.setCity("Springfield");
-    address.setState("California");
-    address.setCountry("USA");
-    address.setPinCode("123456");
-    address.setUserId(1);
+    address.setStreet("TestStreet 1");
+    address.setCity("TestCity");
+    address.setState("TestState");
+    address.setCountry("Testland");
+    address.setPinCode("654321");
+    address.setUserId(111);
 
-    String expectedString = "AddressInDTO{street='123 Main Street', city='Springfield', state='California'," +
-      " country='USA', pinCode='123456', userId=1}";
+    String expectedString = "AddressInDTO{street='TestStreet 1', city='TestCity', state='TestState'," +
+      " country='Testland', pinCode='654321', userId=111}";
     assertEquals(expectedString, address.toString(), "Expected toString() to match the expected format");
   }
 }

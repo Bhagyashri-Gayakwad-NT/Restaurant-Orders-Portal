@@ -36,8 +36,8 @@ class UserControllerTests {
     UserInDTO userInDTO = new UserInDTO();
     userInDTO.setEmail("test@nucleusteq.com");
     userInDTO.setPassword("password1");
-    userInDTO.setFirstName("John");
-    userInDTO.setLastName("Doe");
+    userInDTO.setFirstName("FirstName");
+    userInDTO.setLastName("LastName");
     userInDTO.setPhoneNo("9876543210");
     userInDTO.setRole("USER");
 
@@ -97,9 +97,9 @@ class UserControllerTests {
 
     UserOutDTO userOutDTO = new UserOutDTO();
     userOutDTO.setId(userId);
-    userOutDTO.setFirstName("John");
-    userOutDTO.setLastName("Doe");
-    userOutDTO.setEmail("john.doe@nucleusteq.com");
+    userOutDTO.setFirstName("FirstName");
+    userOutDTO.setLastName("LastName");
+    userOutDTO.setEmail("test@nucleusteq.com");
     userOutDTO.setPhoneNo("9876543210");
     userOutDTO.setRole("USER");
     userOutDTO.setWalletBalance(100.0);

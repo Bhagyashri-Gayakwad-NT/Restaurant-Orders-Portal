@@ -1,6 +1,7 @@
 package com.nt.user.microservice.dto;
 
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * Data Transfer Object for handling wallet balance input.
@@ -54,5 +55,26 @@ public class WalletBalanceInDTO {
    */
   public void setBalance(double balance) {
     this.balance = balance;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof WalletBalanceInDTO)) return false;
+    WalletBalanceInDTO that = (WalletBalanceInDTO) o;
+    return Double.compare(balance, that.balance) == 0 && Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, balance);
+  }
+
+  @Override
+  public String toString() {
+    return "WalletBalanceInDTO{" +
+      "id=" + id +
+      ", balance=" + balance +
+      '}';
   }
 }

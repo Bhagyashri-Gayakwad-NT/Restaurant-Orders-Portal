@@ -83,5 +83,8 @@ public class Constants {
 
   public static final String RESTAURANT_NAME_EXISTS = "Restaurant name already exists. Please choose a different name.";
 
+  public static final String METHODE_NOT_ALLOWED = "Method not allowed";
 
+  public static final String INVALID_REQUEST_BODY_ERROR = "Invalid request body";
+  public static final String EMPTY_CONTENT_ERROR = "No content was provided in the request body or the format is invalid";
 }

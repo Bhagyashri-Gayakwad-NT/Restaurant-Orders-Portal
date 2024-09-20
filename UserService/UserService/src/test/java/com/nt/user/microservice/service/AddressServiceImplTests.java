@@ -42,10 +42,10 @@ class AddressServiceImplTests {
   @Test
   void testAddAddress_Success() {
     AddressInDTO addressInDTO = new AddressInDTO();
-    addressInDTO.setStreet("123 Main St");
-    addressInDTO.setCity("Springfield");
-    addressInDTO.setState("IL");
-    addressInDTO.setCountry("USA");
+    addressInDTO.setStreet("Test Street");
+    addressInDTO.setCity("TestCity");
+    addressInDTO.setState("Test State");
+    addressInDTO.setCountry("TestCountry");
     addressInDTO.setPinCode("62704");
     addressInDTO.setUserId(1);
 
@@ -94,10 +94,10 @@ class AddressServiceImplTests {
     List<Address> addresses = new ArrayList<>();
     Address address1 = new Address();
     address1.setId(1);
-    address1.setStreet("123 Main St");
-    address1.setCity("Springfield");
-    address1.setState("IL");
-    address1.setCountry("USA");
+    address1.setStreet("Test Street");
+    address1.setCity("TestCity");
+    address1.setState("Test State");
+    address1.setCountry("TestCountry");
     address1.setPinCode("62704");
     address1.setUserId(userId);
 

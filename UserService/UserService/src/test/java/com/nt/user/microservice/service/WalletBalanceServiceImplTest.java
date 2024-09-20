@@ -19,10 +19,12 @@ import org.mockito.MockitoAnnotations;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
-class WalletBalanceServiceImplTest {
+public class WalletBalanceServiceImplTest {
+
+  @InjectMocks
+  private WalletBalanceServiceImpl walletBalanceService;
 
   @Mock
   private WalletBalanceRepository walletBalanceRepository;
@@ -30,71 +32,146 @@ class WalletBalanceServiceImplTest {
   @Mock
   private UserRepository userRepository;
 
-  @InjectMocks
-  private WalletBalanceServiceImpl walletBalanceService;
-
-  private User user;
-  private WalletBalance walletBalance;
-
   @BeforeEach
-  void setUp() {
-    MockitoAnnotations.openMocks(this);
-
-    user = new User();
-    user.setId(1);
-    user.setFirstName("John");
-    user.setLastName("Doe");
-    user.setEmail("john.doe@example.com");
-    user.setPhoneNo("1234567890");
-    user.setRole(Role.USER);
-
-    walletBalance = new WalletBalance();
-    walletBalance.setUserId(user.getId());
-    walletBalance.setBalance(1000.0);
+  public void setUp() {
+    MockitoAnnotations.initMocks(this);
   }
 
   @Test
-  void testUpdateWalletBalance_Success() {
-    when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
-    when(walletBalanceRepository.findByUserId(anyInt())).thenReturn(walletBalance);
+  public void testUpdateWalletBalance_Success() {
+    Integer userId = 1;
+    Double amountToDeduct = 100.0;
 
-    UserOutDTO userOutDTO = walletBalanceService.updateWalletBalance(1, 500.0);
+    User user = new User();
+    user.setId(userId);
+    user.setFirstName("FirstName");
+    user.setLastName("LastName");
+    user.setEmail("test@example.com");
+    user.setRole(Role.USER); // Set the role here
 
-    assertNotNull(userOutDTO);
-    assertEquals(500.0, walletBalance.getBalance());
-    assertEquals(user.getFirstName(), userOutDTO.getFirstName());
-    assertEquals(user.getLastName(), userOutDTO.getLastName());
-    assertEquals(user.getEmail(), userOutDTO.getEmail());
-    assertEquals(walletBalance.getBalance(), userOutDTO.getWalletBalance());
+    WalletBalance walletBalance = new WalletBalance();
+    walletBalance.setUserId(userId);
+    walletBalance.setBalance(500.0);
+
+    when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+    when(walletBalanceRepository.findByUserId(userId)).thenReturn(walletBalance);
+
+    UserOutDTO result = walletBalanceService.updateWalletBalance(userId, amountToDeduct);
+
+    assertNotNull(result);
+    assertEquals(400.0, walletBalance.getBalance());
     verify(walletBalanceRepository, times(1)).save(walletBalance);
   }
 
+
   @Test
-  void testUpdateWalletBalance_UserNotFound() {
-    when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
+  public void testUpdateWalletBalance_UserNotFound() {
+    Integer userId = 1;
+    Double amountToDeduct = 100.0;
+
+    when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-      () -> walletBalanceService.updateWalletBalance(1, 500.0));
+      () -> walletBalanceService.updateWalletBalance(userId, amountToDeduct));
+
     assertEquals("User not found with ID: 1", exception.getMessage());
-    verify(walletBalanceRepository, never()).findByUserId(anyInt());
+    verify(walletBalanceRepository, never()).save(any(WalletBalance.class));
   }
 
   @Test
-  void testUpdateWalletBalance_WalletNotFound() {
-    when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
-    when(walletBalanceRepository.findByUserId(anyInt())).thenReturn(null);
+  public void testUpdateWalletBalance_WalletNotFound() {
+    Integer userId = 1;
+    Double amountToDeduct = 100.0;
+
+    User user = new User();
+    user.setId(userId);
+
+    when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+    when(walletBalanceRepository.findByUserId(userId)).thenReturn(null);
+
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
-      () -> walletBalanceService.updateWalletBalance(1, 500.0));
+      () -> walletBalanceService.updateWalletBalance(userId, amountToDeduct));
+
     assertEquals("Wallet not found for user ID: 1", exception.getMessage());
-    verify(walletBalanceRepository, never()).save(walletBalance);
   }
 
   @Test
-  void testUpdateWalletBalance_InsufficientBalance() {
-    when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
-    when(walletBalanceRepository.findByUserId(anyInt())).thenReturn(walletBalance);
+  public void testUpdateWalletBalance_InsufficientBalance() {
+    Integer userId = 1;
+    Double amountToDeduct = 600.0;
+
+    User user = new User();
+    user.setId(userId);
+
+    WalletBalance walletBalance = new WalletBalance();
+    walletBalance.setUserId(userId);
+    walletBalance.setBalance(500.0);
+
+    when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+    when(walletBalanceRepository.findByUserId(userId)).thenReturn(walletBalance);
+
     InsufficientBalanceException exception = assertThrows(InsufficientBalanceException.class,
-      () -> walletBalanceService.updateWalletBalance(1, 1500.0));
+      () -> walletBalanceService.updateWalletBalance(userId, amountToDeduct));
+
     assertEquals(Constants.INSUFFICIENT_BALANCE, exception.getMessage());
-    verify(walletBalanceRepository, never()).save(walletBalance);
+    verify(walletBalanceRepository, never()).save(any(WalletBalance.class));
+  }
+
+  @Test
+  public void testAddMoney_Success() {
+    Integer userId = 1;
+    Double amountToAdd = 200.0;
+
+    User user = new User();
+    user.setId(userId);
+    user.setFirstName("FirstName");
+    user.setLastName("LastName");
+    user.setEmail("test@example.com");
+    user.setRole(Role.USER); // Set the role here
+
+    WalletBalance walletBalance = new WalletBalance();
+    walletBalance.setUserId(userId);
+    walletBalance.setBalance(500.0);
+
+    when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+    when(walletBalanceRepository.findByUserId(userId)).thenReturn(walletBalance);
+
+    UserOutDTO result = walletBalanceService.addMoney(userId, amountToAdd);
+
+    assertNotNull(result);
+    assertEquals(700.0, walletBalance.getBalance());
+    verify(walletBalanceRepository, times(1)).save(walletBalance);
+  }
+
+
+  @Test
+  public void testAddMoney_UserNotFound() {
+    Integer userId = 1;
+    Double amountToAdd = 200.0;
+
+    when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
+      () -> walletBalanceService.addMoney(userId, amountToAdd));
+
+    assertEquals("User not found with ID: 1", exception.getMessage());
+    verify(walletBalanceRepository, never()).save(any(WalletBalance.class));
+  }
+
+  @Test
+  public void testAddMoney_WalletNotFound() {
+    Integer userId = 1;
+    Double amountToAdd = 200.0;
+
+    User user = new User();
+    user.setId(userId);
+
+    when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+    when(walletBalanceRepository.findByUserId(userId)).thenReturn(null);
+
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
+      () -> walletBalanceService.addMoney(userId, amountToAdd));
+
+    assertEquals("Wallet not found for user ID: 1", exception.getMessage());
   }
 }

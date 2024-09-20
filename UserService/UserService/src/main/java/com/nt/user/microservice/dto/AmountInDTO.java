@@ -1,6 +1,7 @@
 package com.nt.user.microservice.dto;
 
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * Data Transfer Object (DTO) for representing the amount to be deducted from the wallet balance.
@@ -48,5 +49,25 @@ public class AmountInDTO {
    */
   public void setBalance(Double balance) {
     this.balance = balance;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof AmountInDTO)) return false;
+    AmountInDTO that = (AmountInDTO) o;
+    return Objects.equals(balance, that.balance);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(balance);
+  }
+
+  @Override
+  public String toString() {
+    return "AmountInDTO{" +
+      "balance=" + balance +
+      '}';
   }
 }

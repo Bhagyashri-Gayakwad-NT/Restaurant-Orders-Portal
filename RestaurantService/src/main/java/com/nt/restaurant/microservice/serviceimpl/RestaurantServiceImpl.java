@@ -13,7 +13,6 @@ import com.nt.restaurant.microservice.repository.RestaurantRepository;
 import com.nt.restaurant.microservice.service.RestaurantService;
 import com.nt.restaurant.microservice.util.Constants;
 import com.nt.restaurant.microservice.util.Role;
-import feign.FeignException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
