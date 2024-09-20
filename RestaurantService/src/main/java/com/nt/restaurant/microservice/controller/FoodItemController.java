@@ -4,6 +4,7 @@ import com.nt.restaurant.microservice.dto.FoodItemInDTO;
 import com.nt.restaurant.microservice.dto.FoodItemUpdateInDTO;
 import com.nt.restaurant.microservice.dto.CommonResponse;
 import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
+import com.nt.restaurant.microservice.entities.FoodItem;
 import com.nt.restaurant.microservice.service.FoodItemService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -125,6 +126,13 @@ public class FoodItemController {
     byte[] imageData = foodItemService.getFoodItemImage(id);
     logger.info("Successfully retrieved image for food item with ID: {}", id);
     return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageData);
+  }
+  @GetMapping("/{foodItemId}")
+  public ResponseEntity<FoodItem> getFoodItemById(@PathVariable Integer foodItemId) {
+    logger.info("Fetching food item details for ID: {}", foodItemId);
+    FoodItem foodItem = foodItemService.findFoodItemById(foodItemId);
+    logger.info("Successfully retrieved food item details for ID: {}", foodItemId);
+    return ResponseEntity.ok(foodItem);
   }
 }
 

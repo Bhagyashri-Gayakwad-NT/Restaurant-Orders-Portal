@@ -29,4 +29,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
    * @return an {@link Optional} containing the {@link Restaurant} if found, or {@link Optional#empty()} if not.
    */
   Optional<Restaurant> findById(Integer restaurantId);
+
+  boolean existsByRestaurantNameIgnoreCase(String normalizedRestaurantName);
 }

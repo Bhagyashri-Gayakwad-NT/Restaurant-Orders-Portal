@@ -2,7 +2,7 @@ package com.nt.user.microservice.service;
 
 import com.nt.user.microservice.entites.Address;
 import com.nt.user.microservice.entites.User;
-import com.nt.user.microservice.exceptions.NotFoundException;
+import com.nt.user.microservice.exceptions.ResourceNotFoundException;
 import com.nt.user.microservice.dto.AddressInDTO;
 import com.nt.user.microservice.dto.AddressOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
@@ -80,7 +80,7 @@ class AddressServiceImplTests {
 
     when(userRepository.findById(addressInDTO.getUserId())).thenReturn(Optional.empty());
 
-    NotFoundException exception = assertThrows(NotFoundException.class, () -> addressService.addAddress(addressInDTO));
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> addressService.addAddress(addressInDTO));
     assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
 
     verify(userRepository).findById(addressInDTO.getUserId());
@@ -122,7 +122,7 @@ class AddressServiceImplTests {
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    NotFoundException exception = assertThrows(NotFoundException.class, () -> addressService.getUserAddresses(userId));
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> addressService.getUserAddresses(userId));
     assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
 
     verify(userRepository).findById(userId);
@@ -146,7 +146,7 @@ class AddressServiceImplTests {
 
     when(addressRepository.existsById(addressId)).thenReturn(false);
 
-    NotFoundException exception = assertThrows(NotFoundException.class, () -> addressService.deleteAddress(addressId));
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> addressService.deleteAddress(addressId));
     assertEquals("User not found", exception.getMessage());
 
     verify(addressRepository, never()).deleteById(addressId);

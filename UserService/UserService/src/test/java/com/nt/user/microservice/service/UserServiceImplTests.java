@@ -1,8 +1,10 @@
 package com.nt.user.microservice.service;
 
+import com.nt.user.microservice.dto.LoginOutDTO;
 import com.nt.user.microservice.entites.User;
 import com.nt.user.microservice.entites.WalletBalance;
-import com.nt.user.microservice.exceptions.NotFoundException;
+import com.nt.user.microservice.exceptions.ResourceAlreadyExistException;
+import com.nt.user.microservice.exceptions.ResourceNotFoundException;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
@@ -30,6 +32,10 @@ class UserServiceImplTest {
 
   @Mock
   private UserRepository userRepository;
+
+  @Mock
+  private EmailService emailService;
+
 
   @Mock
   private WalletBalanceRepository walletBalanceRepository;
@@ -78,7 +84,7 @@ class UserServiceImplTest {
 
     when(userRepository.findByEmail(userInDTO.getEmail())).thenReturn(Optional.of(new User()));
 
-    assertThrows(NotFoundException.class, () -> userService.registerUser(userInDTO));
+    assertThrows(ResourceAlreadyExistException.class, () -> userService.registerUser(userInDTO));
     verify(userRepository, never()).save(any(User.class));
   }
   @Test
@@ -99,12 +105,12 @@ class UserServiceImplTest {
     walletBalance.setUserId(user.getId());
     when(walletBalanceRepository.findByUserId(user.getId())).thenReturn(walletBalance);
 
-    UserOutDTO userOutDTO = userService.loginUser(email, password);
+    LoginOutDTO loginOutDTO = userService.loginUser(email, password);
 
-    assertNotNull(userOutDTO);
-    assertEquals(user.getEmail(), userOutDTO.getEmail());
-    assertEquals(user.getRole().name(), userOutDTO.getRole());
-    assertEquals(walletBalance.getBalance(), userOutDTO.getWalletBalance());
+    assertNotNull(loginOutDTO);
+    //assertEquals(user.getEmail(), loginOutDTO.getEmail());
+    assertEquals(user.getRole().name(), loginOutDTO.getRole());
+   // assertEquals(walletBalance.getBalance(), loginOutDTO.getWalletBalance());
   }
 
   @Test
@@ -144,7 +150,7 @@ class UserServiceImplTest {
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(NotFoundException.class, () -> userService.getUserProfile(userId));
+    assertThrows(ResourceNotFoundException.class, () -> userService.getUserProfile(userId));
   }
 
   @Test
@@ -185,7 +191,7 @@ class UserServiceImplTest {
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(NotFoundException.class, () -> userService.updateUserProfile(userId, userInDTO));
+    assertThrows(ResourceNotFoundException.class, () -> userService.updateUserProfile(userId, userInDTO));
   }
 
   @Test
@@ -209,6 +215,22 @@ class UserServiceImplTest {
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(NotFoundException.class, () -> userService.deleteUser(userId));
+    assertThrows(ResourceNotFoundException.class, () -> userService.deleteUser(userId));
+  }
+
+  @Test
+  void testSendMail_Exception() {
+    String subject = "Test Subject";
+    String text = "Test Body";
+
+    // Mocking the sendMail method in EmailService to throw an exception
+    doThrow(new RuntimeException("Test Exception")).when(emailService).sendMail(eq(Constants.SENDER), eq(subject), anyList(), eq(text));
+
+    // Expect an exception to be thrown
+    Exception exception = assertThrows(ResourceNotFoundException.class, () -> {
+      userService.sendMail(text, subject);
+    });
+
+    assertEquals(Constants.ADDRESS_NOT_FOUND, exception.getMessage());
   }
 }

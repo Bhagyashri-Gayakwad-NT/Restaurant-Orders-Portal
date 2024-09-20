@@ -23,8 +23,8 @@ public class DtoConverter {
   public static Restaurant fromInDTOToEntity(RestaurantInDTO restaurantInDTO) {
     Restaurant restaurant = new Restaurant();
     restaurant.setUserId(restaurantInDTO.getUserId());
-    restaurant.setRestaurantName(restaurantInDTO.getRestaurantName());
-    restaurant.setRestaurantAddress(restaurantInDTO.getRestaurantAddress());
+    restaurant.setRestaurantName(restaurantInDTO.getRestaurantName().trim());
+    restaurant.setRestaurantAddress(restaurantInDTO.getRestaurantAddress().trim());
     restaurant.setContactNumber(restaurantInDTO.getContactNumber());
     restaurant.setDescription(restaurantInDTO.getDescription());
     restaurant.setRegistrationDate(LocalDate.now());

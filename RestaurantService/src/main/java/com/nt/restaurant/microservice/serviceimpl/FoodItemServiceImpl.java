@@ -4,9 +4,8 @@ import com.nt.restaurant.microservice.dtoconvertion.FoodItemDtoConverter;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.FoodItem;
 import com.nt.restaurant.microservice.entities.Restaurant;
-import com.nt.restaurant.microservice.exception.AlreadyExistException;
-import com.nt.restaurant.microservice.exception.InvalidImageFileException;
-import com.nt.restaurant.microservice.exception.NotFoundException;
+import com.nt.restaurant.microservice.exception.ResourceAlreadyExistException;
+import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
 import com.nt.restaurant.microservice.dto.FoodItemInDTO;
 import com.nt.restaurant.microservice.dto.FoodItemUpdateInDTO;
 import com.nt.restaurant.microservice.dto.CommonResponse;
@@ -63,7 +62,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    * @param foodItemInDTO The DTO containing the details of the food item to be added.
    * @param image         The image of the food item to be uploaded.
    * @return A response indicating the outcome of the operation.
-   * @throws NotFoundException If the restaurant or food category is not found, or if the food item already exists.
+   * @throws ResourceNotFoundException If the restaurant or food category is not found, or if the food item already exists.
    */
   @Override
   public CommonResponse addFoodItem(FoodItemInDTO foodItemInDTO, MultipartFile image) {
@@ -80,16 +79,16 @@ public class FoodItemServiceImpl implements FoodItemService {
     );
     if (!restaurant.isPresent()) {
       logger.error("Restaurant not found for ID: {}", foodItemInDTO.getRestaurantId());
-      throw new NotFoundException(Constants.RESTAURANT_NOT_FOUND);
+      throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);
     }
     if (!existingCategory.isPresent()) {
       logger.error("Food category not found for ID: {}", foodItemInDTO.getFoodCategoryId());
-      throw new NotFoundException(Constants.FOOD_CATEGORY_NOT_FOUND);
+      throw new ResourceNotFoundException(Constants.FOOD_CATEGORY_NOT_FOUND);
     }
     if (existingFoodItem.isPresent()) {
       logger.warn("Food item '{}' already exists in restaurant ID: {}",
         foodItemInDTO.getFoodItemName(), foodItemInDTO.getRestaurantId());
-      throw new AlreadyExistException(Constants.FOOD_ITEM_ALREADY_PRESENT);
+      throw new ResourceAlreadyExistException(Constants.FOOD_ITEM_ALREADY_PRESENT);
     }
     logger.debug("Converting FoodItemInDTO to FoodItem entity");
     FoodItem foodItem = FoodItemDtoConverter.inDtoToEntity(foodItemInDTO);
@@ -99,16 +98,13 @@ public class FoodItemServiceImpl implements FoodItemService {
         String contentType = image.getContentType();
         if (Objects.isNull(contentType) || !(contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
           logger.error("Invalid image type: {}. Only JPG and PNG are allowed.", contentType);
-          throw new InvalidImageFileException(Constants.INVALID_FILE_TYPE);
+          throw new ResourceNotFoundException(Constants.INVALID_FILE_TYPE);
         }
         foodItem.setFoodItemImage(image.getBytes());
         logger.debug("Image processed successfully for food item: {}", foodItemInDTO.getFoodItemName());
       } else {
         logger.warn("No image provided for food item: {}", foodItemInDTO.getFoodItemName());
       }
-    } catch (InvalidImageFileException e) {
-      logger.error("Invalid image file type for food item '{}': {}", foodItemInDTO.getFoodItemName(), e.getMessage());
-      throw e;
     } catch (Exception e) {
       logger.error("Error occurred while processing image for food item '{}': {}", foodItemInDTO.getFoodItemName(), e.getMessage());
       throw new RuntimeException("Image processing failed", e);
@@ -127,7 +123,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    *
    * @param categoryId The ID of the food category whose items are to be retrieved.
    * @return A list of DTOs containing the details of the food items in the specified category.
-   * @throws NotFoundException If no food items are found for the category ID.
+   * @throws ResourceNotFoundException If no food items are found for the category ID.
    */
   @Override
   public List<FoodItemOutDTO> getFoodItemsByCategory(Integer categoryId) {
@@ -135,7 +131,7 @@ public class FoodItemServiceImpl implements FoodItemService {
     List<FoodItem> foodItems = foodItemRepository.findByCategoryId(categoryId);
     if (foodItems.isEmpty()) {
       logger.error("No food items found for category ID: {}", categoryId);
-      throw new NotFoundException(Constants.NO_FOOD_ITEM_PRESENT);
+      throw new ResourceNotFoundException(Constants.NO_FOOD_ITEM_PRESENT);
     }
     List<FoodItemOutDTO> foodItemOutDTOList = new ArrayList<>();
     for (FoodItem foodItem : foodItems) {
@@ -151,7 +147,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    *
    * @param restaurantId The ID of the restaurant whose food items are to be retrieved.
    * @return A list of DTOs containing the details of the food items in the specified restaurant.
-   * @throws NotFoundException If no food items are found for the restaurant ID.
+   * @throws ResourceNotFoundException If no food items are found for the restaurant ID.
    */
   @Override
   public List<FoodItemOutDTO> getFoodItemsByRestaurant(Integer restaurantId) {
@@ -159,7 +155,7 @@ public class FoodItemServiceImpl implements FoodItemService {
     List<FoodItem> foodItems = foodItemRepository.findByRestaurantId(restaurantId);
     if (foodItems.isEmpty()) {
       logger.error("No food items found for restaurant ID: {}", restaurantId);
-      throw new NotFoundException(Constants.NO_FOOD_ITEM_PRESENT);
+      throw new ResourceNotFoundException(Constants.NO_FOOD_ITEM_PRESENT);
     }
     List<FoodItemOutDTO> foodItemOutDTOList = new ArrayList<>();
     for (FoodItem foodItem : foodItems) {
@@ -241,12 +237,12 @@ public class FoodItemServiceImpl implements FoodItemService {
    *
    * @param id The ID of the food item to be found.
    * @return The food item entity with the specified ID.
-   * @throws NotFoundException If no food item is found with the specified ID.
+   * @throws ResourceNotFoundException If no food item is found with the specified ID.
    */
   public FoodItem findFoodItemById(Integer id) {
     logger.info("Looking for food item with ID: {}", id);
 
     return foodItemRepository.findById(id)
-      .orElseThrow(() -> new NotFoundException(Constants.NO_FOOD_ITEM_PRESENT));
+      .orElseThrow(() -> new ResourceNotFoundException(Constants.NO_FOOD_ITEM_PRESENT));
   }
 }

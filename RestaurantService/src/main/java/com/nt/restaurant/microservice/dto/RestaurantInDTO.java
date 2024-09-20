@@ -26,7 +26,7 @@ public class RestaurantInDTO {
    * Must be non-blank and only contain alphabets.
    */
   @NotBlank(message = "Restaurant name cannot be blank")
-  @Pattern(regexp = "^[A-Za-z]+(?:\\s[A-Za-z]+)*$", message = "Restaurant name must contain only alphabets")
+  @Pattern(regexp = "^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$", message = "Restaurant name must contain at least two alphabets and only alphabets")
   private String restaurantName;
 
   /**
@@ -34,14 +34,13 @@ public class RestaurantInDTO {
    * Must be non-blank and cannot contain leading or trailing spaces.
    */
   @NotBlank(message = "Address cannot be blank")
-  @Pattern(regexp = "^(?!\\s)(?!.*\\s$).+", message = "Address cannot contain leading or trailing spaces")
   private String restaurantAddress;
 
   /**
    * The contact number of the restaurant.
    * Must be a valid 10-digit number starting with 9, 8, 7, or 6.
    */
-  @NotBlank
+  @NotBlank(message = "contactNumber cannot be blank")
   @Pattern(regexp = "^[9876]\\d{9}$", message = "Phone number must start with 9, 8, 7, or 6 and contain 10 digits")
   private String contactNumber;
 
@@ -52,7 +51,6 @@ public class RestaurantInDTO {
    */
   @NotBlank(message = "Description cannot be blank")
   @Size(max = 255, message = "Description cannot exceed 255 characters")
-  @Pattern(regexp = "^(?!\\s)(?!.*\\s$).+", message = "Description cannot contain leading or trailing spaces")
   private String description;
 
   /**

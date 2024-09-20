@@ -5,8 +5,8 @@ import com.nt.restaurant.microservice.dto.FoodCategoryInDTO;
 import com.nt.restaurant.microservice.dtoconvertion.FoodCategoryDtoConverter;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.Restaurant;
-import com.nt.restaurant.microservice.exception.AlreadyExistException;
-import com.nt.restaurant.microservice.exception.NotFoundException;
+import com.nt.restaurant.microservice.exception.ResourceAlreadyExistException;
+import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
 import com.nt.restaurant.microservice.dto.CommonResponse;
 import com.nt.restaurant.microservice.dto.FoodCategoryOutDTO;
 import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
@@ -50,16 +50,16 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
    *
    * @param foodCategoryInDTO The details of the food category to be added.
    * @return A {@link CommonResponse} indicating the result of the operation.
-   * @throws NotFoundException     If the associated restaurant is not found.
-   * @throws AlreadyExistException If a food category with the same name already exists in the restaurant.
+   * @throws ResourceNotFoundException     If the associated restaurant is not found.
+   * @throws ResourceAlreadyExistException If a food category with the same name already exists in the restaurant.
    */
   /**
    * Adds a new food category.
    *
    * @param foodCategoryInDTO The details of the food category to be added.
    * @return A {@link CommonResponse} indicating the result of the operation.
-   * @throws NotFoundException     If the associated restaurant is not found.
-   * @throws AlreadyExistException If a food category with the same name already exists in the restaurant.
+   * @throws ResourceNotFoundException     If the associated restaurant is not found.
+   * @throws ResourceAlreadyExistException If a food category with the same name already exists in the restaurant.
    */
   @Override
   public CommonResponse addFoodCategory(FoodCategoryInDTO foodCategoryInDTO) {
@@ -68,7 +68,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     Optional<Restaurant> restaurant = restaurantRepository.findById(foodCategoryInDTO.getRestaurantId());
     if (!restaurant.isPresent()) {
       logger.error("Restaurant with ID {} not found", foodCategoryInDTO.getRestaurantId());
-      throw new NotFoundException(Constants.RESTAURANT_NOT_FOUND);
+      throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);
     }
 
     Optional<FoodCategory> existingCategoryWithName = foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(
@@ -78,7 +78,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     if (existingCategoryWithName.isPresent()) {
       logger.error("Food category with name {} already exists in restaurant ID {}", foodCategoryInDTO.getFoodCategoryName(),
         foodCategoryInDTO.getRestaurantId());
-      throw new AlreadyExistException(Constants.FOOD_CATEGORY_ALREADY_EXIST);
+      throw new ResourceAlreadyExistException(Constants.FOOD_CATEGORY_ALREADY_EXIST);
     }
 
     FoodCategory convertedFoodCategory = FoodCategoryDtoConverter.convertToEntity(foodCategoryInDTO);
@@ -93,7 +93,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
    *
    * @param restaurantId The ID of the restaurant whose food categories are to be fetched.
    * @return A list of {@link FoodCategoryOutDTO} objects representing the food categories.
-   * @throws NotFoundException If the restaurant is not found.
+   * @throws ResourceNotFoundException If the restaurant is not found.
    */
   @Override
   public List<FoodCategoryOutDTO> getFoodCategoryByRestaurantId(Integer restaurantId) {
@@ -102,7 +102,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantId);
     if (!restaurant.isPresent()) {
       logger.error("Restaurant with ID {} not found", restaurantId);
-      throw new NotFoundException(Constants.RESTAURANT_NOT_FOUND);
+      throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);
     }
 
     List<FoodCategory> foodCategories = foodCategoryRepository.findByRestaurantId(restaurantId);
@@ -122,8 +122,9 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
    * @param foodCategoryId    The ID of the food category to be updated.
    * @param foodCategoryInDTO The updated details of the food category.
    * @return A {@link CommonResponse} indicating the result of the operation.
-   * @throws NotFoundException     If the food category with the given ID is not found.
-   * @throws AlreadyExistException If a food category with the same name already exists in the restaurant, excluding the current one.
+   * @throws ResourceNotFoundException     If the food category with the given ID is not found.
+   * @throws ResourceAlreadyExistException If a food category with the same name already exists in the restaurant,
+   * excluding the current one.
    */
   @Override
   public CommonResponse updateFoodCategory(Integer foodCategoryId, FoodCategoryInDTO foodCategoryInDTO) {
@@ -132,7 +133,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     Optional<FoodCategory> existingCategory = foodCategoryRepository.findById(foodCategoryId);
     if (!existingCategory.isPresent()) {
       logger.error("Food category with ID {} not found", foodCategoryId);
-      throw new NotFoundException(Constants.FOOD_CATEGORY_NOT_FOUND);
+      throw new ResourceNotFoundException(Constants.FOOD_CATEGORY_NOT_FOUND);
     }
 
     Optional<FoodCategory> existingCategoryWithName = foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(
@@ -142,7 +143,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
     if (existingCategoryWithName.isPresent() && !existingCategoryWithName.get().getFoodCategoryId().equals(foodCategoryId)) {
       logger.error("Food category with name {} already exists for restaurant ID {}", foodCategoryInDTO.getFoodCategoryName(),
         foodCategoryInDTO.getRestaurantId());
-      throw new AlreadyExistException(Constants.FOOD_CATEGORY_ALREADY_EXIST);
+      throw new ResourceAlreadyExistException(Constants.FOOD_CATEGORY_ALREADY_EXIST);
     }
 
     FoodCategory categoryToUpdate = existingCategory.get();

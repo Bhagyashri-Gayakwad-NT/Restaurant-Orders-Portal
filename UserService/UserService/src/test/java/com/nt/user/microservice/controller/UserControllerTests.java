@@ -2,6 +2,7 @@ package com.nt.user.microservice.controller;
 
 import com.nt.user.microservice.contoller.UserController;
 import com.nt.user.microservice.dto.LogInDTO;
+import com.nt.user.microservice.dto.LoginOutDTO;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
@@ -68,17 +69,14 @@ class UserControllerTests {
     loginDTO.setEmail("test@nucleusteq.com");
     loginDTO.setPassword("password1");
 
-    UserOutDTO userOutDTO = new UserOutDTO();
-    userOutDTO.setEmail("test@nucleusteq.com");
-    userOutDTO.setRole("USER");
-    userOutDTO.setWalletBalance(100.0);
+    LoginOutDTO loginOutDTO = new LoginOutDTO();
+    loginOutDTO.setRole("USER");
+    when(userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword())).thenReturn(loginOutDTO);
 
-    when(userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword())).thenReturn(userOutDTO);
-
-    ResponseEntity<UserOutDTO> responseEntity = userController.loginUser(loginDTO);
+    ResponseEntity<LoginOutDTO> responseEntity = userController.loginUser(loginDTO);
 
     assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(userOutDTO, responseEntity.getBody());
+    assertEquals(loginOutDTO, responseEntity.getBody());
   }
 
   @Test

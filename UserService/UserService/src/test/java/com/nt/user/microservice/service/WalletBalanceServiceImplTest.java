@@ -4,7 +4,7 @@ import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.entites.User;
 import com.nt.user.microservice.entites.WalletBalance;
 import com.nt.user.microservice.exceptions.InsufficientBalanceException;
-import com.nt.user.microservice.exceptions.NotFoundException;
+import com.nt.user.microservice.exceptions.ResourceNotFoundException;
 import com.nt.user.microservice.repository.UserRepository;
 import com.nt.user.microservice.repository.WalletBalanceRepository;
 import com.nt.user.microservice.serviceimpl.WalletBalanceServiceImpl;
@@ -72,7 +72,7 @@ class WalletBalanceServiceImplTest {
   @Test
   void testUpdateWalletBalance_UserNotFound() {
     when(userRepository.findById(anyInt())).thenReturn(Optional.empty());
-    NotFoundException exception = assertThrows(NotFoundException.class,
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
       () -> walletBalanceService.updateWalletBalance(1, 500.0));
     assertEquals("User not found with ID: 1", exception.getMessage());
     verify(walletBalanceRepository, never()).findByUserId(anyInt());
@@ -82,7 +82,7 @@ class WalletBalanceServiceImplTest {
   void testUpdateWalletBalance_WalletNotFound() {
     when(userRepository.findById(anyInt())).thenReturn(Optional.of(user));
     when(walletBalanceRepository.findByUserId(anyInt())).thenReturn(null);
-    NotFoundException exception = assertThrows(NotFoundException.class,
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
       () -> walletBalanceService.updateWalletBalance(1, 500.0));
     assertEquals("Wallet not found for user ID: 1", exception.getMessage());
     verify(walletBalanceRepository, never()).save(walletBalance);

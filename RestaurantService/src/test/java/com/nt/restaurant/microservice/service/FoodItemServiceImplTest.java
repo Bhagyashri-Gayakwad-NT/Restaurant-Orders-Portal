@@ -3,8 +3,8 @@ package com.nt.restaurant.microservice.service;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.FoodItem;
 import com.nt.restaurant.microservice.entities.Restaurant;
-import com.nt.restaurant.microservice.exception.AlreadyExistException;
-import com.nt.restaurant.microservice.exception.NotFoundException;
+import com.nt.restaurant.microservice.exception.ResourceAlreadyExistException;
+import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
 import com.nt.restaurant.microservice.dto.FoodItemInDTO;
 import com.nt.restaurant.microservice.dto.FoodItemUpdateInDTO;
 import com.nt.restaurant.microservice.dto.CommonResponse;
@@ -74,7 +74,7 @@ class FoodItemServiceImplTest {
     when(foodItemRepository.findByFoodItemNameAndRestaurantId(any(String.class), any(Integer.class)))
       .thenReturn(Optional.of(existingFoodItem));
 
-    assertThrows(AlreadyExistException.class, () -> foodItemService.addFoodItem(foodItemInDTO, image));
+    assertThrows(ResourceAlreadyExistException.class, () -> foodItemService.addFoodItem(foodItemInDTO, image));
   }
 
   @Test
@@ -95,7 +95,7 @@ class FoodItemServiceImplTest {
   void testGetFoodItemsByCategory_NotFound() {
     when(foodItemRepository.findByCategoryId(any(Integer.class))).thenReturn(new ArrayList<>());
 
-    assertThrows(NotFoundException.class, () -> foodItemService.getFoodItemsByCategory(1));
+    assertThrows(ResourceNotFoundException.class, () -> foodItemService.getFoodItemsByCategory(1));
   }
 
   @Test
@@ -146,6 +146,6 @@ class FoodItemServiceImplTest {
   void testFindFoodItemById_NotFound() {
     when(foodItemRepository.findById(any(Integer.class))).thenReturn(Optional.empty());
 
-    assertThrows(NotFoundException.class, () -> foodItemService.findFoodItemById(1));
+    assertThrows(ResourceNotFoundException.class, () -> foodItemService.findFoodItemById(1));
   }
 }

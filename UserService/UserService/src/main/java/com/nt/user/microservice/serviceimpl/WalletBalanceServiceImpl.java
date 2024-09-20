@@ -4,7 +4,7 @@ import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.entites.User;
 import com.nt.user.microservice.entites.WalletBalance;
 import com.nt.user.microservice.exceptions.InsufficientBalanceException;
-import com.nt.user.microservice.exceptions.NotFoundException;
+import com.nt.user.microservice.exceptions.ResourceNotFoundException;
 import com.nt.user.microservice.repository.UserRepository;
 import com.nt.user.microservice.repository.WalletBalanceRepository;
 import com.nt.user.microservice.service.WalletBalanceService;
@@ -64,7 +64,7 @@ public class WalletBalanceServiceImpl implements WalletBalanceService {
    * @param userId the ID of the user whose wallet balance is to be updated
    * @param amount the amount to be deducted from the wallet balance
    * @return a {@link UserOutDTO} object containing updated user information and wallet balance
-   * @throws NotFoundException if the user or wallet is not found
+   * @throws ResourceNotFoundException if the user or wallet is not found
    * @throws InsufficientBalanceException if the wallet balance is insufficient for the requested amount
    */
   @Override
@@ -72,10 +72,10 @@ public class WalletBalanceServiceImpl implements WalletBalanceService {
     logger.info("Updating wallet balance for user ID: {}", userId);
 
     User user = userRepository.findById(userId)
-      .orElseThrow(() -> new NotFoundException("User not found with ID: " + userId));
+      .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
     WalletBalance walletBalance = walletBalanceRepository.findByUserId(userId);
     if (walletBalance == null) {
-      throw new NotFoundException("Wallet not found for user ID: " + userId);
+      throw new ResourceNotFoundException("Wallet not found for user ID: " + userId);
     }
 
     Double currentBalance = walletBalance.getBalance();
@@ -88,6 +88,37 @@ public class WalletBalanceServiceImpl implements WalletBalanceService {
 
     logger.info("Wallet balance updated successfully for user ID: {}", userId);
 
+    UserOutDTO userOutDTO = new UserOutDTO();
+    userOutDTO.setId(user.getId());
+    userOutDTO.setFirstName(user.getFirstName());
+    userOutDTO.setLastName(user.getLastName());
+    userOutDTO.setEmail(user.getEmail());
+    userOutDTO.setPhoneNo(user.getPhoneNo());
+    userOutDTO.setWalletBalance(walletBalance.getBalance());
+    userOutDTO.setRole(user.getRole().name());
+    return userOutDTO;
+  }
+
+
+  @Override
+  public UserOutDTO addMoney(Integer userId, Double amount) {
+    // Logic to add money
+    User user = userRepository.findById(userId)
+      .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+
+    WalletBalance walletBalance = walletBalanceRepository.findByUserId(userId);
+    if (walletBalance == null) {
+      throw new ResourceNotFoundException("Wallet not found for user ID: " + userId);
+    }
+
+    Double currentBalance = walletBalance.getBalance();
+    walletBalance.setBalance(currentBalance + amount);
+    walletBalanceRepository.save(walletBalance);
+
+    return mapToUserOutDTO(user, walletBalance);
+  }
+
+  private UserOutDTO mapToUserOutDTO(User user, WalletBalance walletBalance) {
     UserOutDTO userOutDTO = new UserOutDTO();
     userOutDTO.setId(user.getId());
     userOutDTO.setFirstName(user.getFirstName());

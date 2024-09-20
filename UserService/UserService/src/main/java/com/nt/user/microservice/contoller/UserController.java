@@ -2,11 +2,13 @@ package com.nt.user.microservice.contoller;
 
 import com.nt.user.microservice.dto.AmountInDTO;
 import com.nt.user.microservice.dto.LogInDTO;
+import com.nt.user.microservice.dto.LoginOutDTO;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
 import com.nt.user.microservice.service.UserService;
 import com.nt.user.microservice.service.WalletBalanceService;
+import com.nt.user.microservice.util.Constants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -81,9 +84,9 @@ public class UserController {
    * @return a response entity with user details if login is successful.
    */
   @PostMapping("/login")
-  public ResponseEntity<UserOutDTO> loginUser(@Valid @RequestBody LogInDTO loginDTO) {
+  public ResponseEntity<LoginOutDTO> loginUser(@Valid @RequestBody LogInDTO loginDTO) {
     logger.info("Attempting to login user with email: {}", loginDTO.getEmail());
-    UserOutDTO userOutDTO = userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword());
+    LoginOutDTO userOutDTO = userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword());
     logger.info("User logged in successfully: {}", loginDTO.getEmail());
     return ResponseEntity.ok(userOutDTO);
   }
@@ -131,6 +134,12 @@ public class UserController {
     return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
   }
 
+  @PutMapping("/addMoney/{userId}")
+  public ResponseEntity<UserOutDTO> addMoney(@PathVariable Integer userId, @RequestBody AmountInDTO amountInDto) {
+    logger.info("Adding {} to wallet for user ID: {}", amountInDto.getBalance(), userId);
+    UserOutDTO userResponse = walletBalanceService.addMoney(userId, amountInDto.getBalance());
+    return new ResponseEntity<>(userResponse, HttpStatus.OK);
+  }
   /**
    * Updates the wallet balance for a user.
    * <p>
@@ -148,4 +157,15 @@ public class UserController {
     UserOutDTO userResponse = walletBalanceService.updateWalletBalance(id, amountInDTO.getBalance());
     return new ResponseEntity<>(userResponse, HttpStatus.OK);
   }
+
+
+  @PostMapping("/send")
+  public ResponseEntity<UserResponse> sendEmail(@RequestParam String text, @RequestParam String subject) {
+    userService.sendMail(text, subject);
+    UserResponse response = new UserResponse();
+    response.setSuccessMessage(Constants.SENDED_SUCCESS);
+    return new ResponseEntity<>(response, HttpStatus.OK);
+    //return new ResponseEntity<>(new ApiResponse(Constants.SENDED_SUCCESS), HttpStatus.OK);
+  }
+
 }

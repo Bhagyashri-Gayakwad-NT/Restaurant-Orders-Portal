@@ -3,12 +3,15 @@ package com.nt.user.microservice.exceptions;
 import com.nt.user.microservice.util.Constants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,17 +23,23 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
   /**
-   * Handles {@link NotFoundException} thrown when a requested resource is not found.
+   * Handles {@link ResourceNotFoundException} thrown when a requested resource is not found.
    * <p>
    * This method returns an {@link ErrorResponse} with an HTTP status code of
    * {@code CONFLICT} (409) and the exception message.
    *
-   * @param ex the {@link NotFoundException} exception to handle.
+   * @param ex the {@link ResourceNotFoundException} exception to handle.
    * @return a {@link ResponseEntity} containing the {@link ErrorResponse}
    *         with HTTP status code {@code CONFLICT} (409).
    */
-  @ExceptionHandler(NotFoundException.class)
-  public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNotFoundException(ResourceNotFoundException ex) {
+    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
+    return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(ResourceAlreadyExistException.class)
+  public ResponseEntity<ErrorResponse> AlreadyExistException(ResourceAlreadyExistException ex) {
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
     return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
   }
@@ -83,7 +92,7 @@ public class GlobalExceptionHandler {
    */
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
   public ResponseEntity<ErrorResponse> handleMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
-    String errorMessage = "Method not allowed";
+    String errorMessage = Constants.METHODE_NOT_ALLOWED;
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), errorMessage);
     return new ResponseEntity<>(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);
   }
@@ -102,22 +111,17 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(InsufficientBalanceException.class)
   public ResponseEntity<ErrorResponse> handleInsufficientBalanceException(InsufficientBalanceException ex) {
     String errorMessage = Constants.INSUFFICIENT_BALANCE;
-    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), errorMessage);
-    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.PAYMENT_REQUIRED.value(), errorMessage);
+    return new ResponseEntity<>(errorResponse, HttpStatus.PAYMENT_REQUIRED);
   }
-  /**
-   * Handles all other exceptions that are not explicitly handled by the above exception handlers.
-   * <p>
-   * This method returns a generic error message and an HTTP status code of
-   * {@code INTERNAL_SERVER_ERROR} (500).
-   *
-   * @param ex the {@link Exception} to handle.
-   * @return a {@link ResponseEntity} containing the {@link ErrorResponse}
-   *         with HTTP status code {@code INTERNAL_SERVER_ERROR} (500).
-   */
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
-    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "An unexpected error occurred");
-    return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
+    Map<String, Object> body = new HashMap<>();
+    body.put("status", HttpStatus.BAD_REQUEST.value());
+    body.put("error", "Invalid request body");
+    body.put("message", "No content was provided in the request body or the format is invalid");
+    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
   }
+
 }

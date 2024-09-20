@@ -81,4 +81,7 @@ public class Constants {
    */
   public static final String INVALID_FILE_SIZE = "File size exceeds the maximum limit of 5 MB.";
 
+  public static final String RESTAURANT_NAME_EXISTS = "Restaurant name already exists. Please choose a different name.";
+
+
 }

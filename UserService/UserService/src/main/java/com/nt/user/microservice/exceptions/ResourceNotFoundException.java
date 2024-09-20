@@ -5,14 +5,14 @@ package com.nt.user.microservice.exceptions;
  * This class extends {@link RuntimeException}, allowing it to be thrown
  * when a specific resource or entity is not found in the application.
  */
-public class NotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
 
   /**
    * Constructs a new {@code NotFoundException} with the specified detail message.
    *
    * @param message the detail message that explains the reason for the exception.
    */
-  public NotFoundException(String message) {
+  public ResourceNotFoundException(String message) {
     super(message);
   }
 }

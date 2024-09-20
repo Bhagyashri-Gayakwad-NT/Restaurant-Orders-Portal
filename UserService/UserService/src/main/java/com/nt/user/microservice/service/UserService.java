@@ -1,5 +1,6 @@
 package com.nt.user.microservice.service;
 
+import com.nt.user.microservice.dto.LoginOutDTO;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
@@ -27,7 +28,7 @@ public interface UserService {
    * @param password the password of the user attempting to log in
    * @return a data transfer object containing user details if login is successful
    */
-  UserOutDTO loginUser(String email, String password);
+  LoginOutDTO loginUser(String email, String password);
 
   /**
    * Retrieves the profile of a user by their ID.
@@ -53,4 +54,6 @@ public interface UserService {
    * @return a response containing the status of the deletion operation
    */
   UserResponse deleteUser(Integer id);
+
+  void sendMail(String text, String subject);
 }

@@ -1,8 +1,7 @@
 package com.nt.restaurant.microservice.service;
 
 import com.nt.restaurant.microservice.entities.Restaurant;
-import com.nt.restaurant.microservice.exception.InvalidImageFileException;
-import com.nt.restaurant.microservice.exception.NotFoundException;
+import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
 import com.nt.restaurant.microservice.dto.RestaurantInDTO;
 import com.nt.restaurant.microservice.dto.CommonResponse;
 import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
@@ -115,8 +114,8 @@ public class RestaurantServiceImplTest {
 
     when(userFClient.getUserProfile(1)).thenReturn(userOutDTO);
 
-    NotFoundException exception = assertThrows(
-      NotFoundException.class,
+    ResourceNotFoundException exception = assertThrows(
+      ResourceNotFoundException.class,
       () -> restaurantService.addRestaurant(restaurantInDTO, null)
     );
     assertEquals(Constants.USER_NOT_RESTAURANT_OWNER, exception.getMessage());
@@ -129,8 +128,8 @@ public class RestaurantServiceImplTest {
 
     when(userFClient.getUserProfile(1)).thenThrow(new RuntimeException("User not found"));
 
-    NotFoundException exception = assertThrows(
-      NotFoundException.class,
+    ResourceNotFoundException exception = assertThrows(
+      ResourceNotFoundException.class,
       () -> restaurantService.addRestaurant(restaurantInDTO, null)
     );
     assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
@@ -155,8 +154,8 @@ public class RestaurantServiceImplTest {
   public void testGetRestaurantById_NotFound() {
     when(restaurantRepository.findById(1)).thenReturn(Optional.empty());
 
-    NotFoundException exception = assertThrows(
-      NotFoundException.class,
+    ResourceNotFoundException exception = assertThrows(
+      ResourceNotFoundException.class,
       () -> restaurantService.getRestaurantById(1)
     );
     assertEquals(Constants.RESTAURANT_NOT_FOUND, exception.getMessage());

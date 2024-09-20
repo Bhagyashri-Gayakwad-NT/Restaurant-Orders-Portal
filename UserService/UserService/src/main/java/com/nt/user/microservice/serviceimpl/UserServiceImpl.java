@@ -1,8 +1,11 @@
 package com.nt.user.microservice.serviceimpl;
 
+import com.nt.user.microservice.dto.LoginOutDTO;
+import com.nt.user.microservice.exceptions.ResourceAlreadyExistException;
 import com.nt.user.microservice.exceptions.InvalidCredentialsException;
-import com.nt.user.microservice.exceptions.NotFoundException;
+import com.nt.user.microservice.exceptions.ResourceNotFoundException;
 import com.nt.user.microservice.dto.UserResponse;
+import com.nt.user.microservice.service.EmailService;
 import com.nt.user.microservice.util.Constants;
 import com.nt.user.microservice.util.Role;
 import com.nt.user.microservice.entites.User;
@@ -18,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -43,6 +48,9 @@ public class UserServiceImpl implements UserService {
    * </p>
    */
   private final UserRepository userRepository;
+
+  @Autowired
+  private EmailService emailService;
 
   /**
    * Repository for performing CRUD operations on {@link WalletBalance} entities.
@@ -76,16 +84,16 @@ public class UserServiceImpl implements UserService {
   public UserResponse registerUser(UserInDTO userInDTO) {
     logger.info("Attempting to register user with email: {}", userInDTO.getEmail());
 
-    Optional<User> existingUser = userRepository.findByEmail(userInDTO.getEmail());
+    Optional<User> existingUser = userRepository.findByEmail(userInDTO.getEmail().toLowerCase());
     if (existingUser.isPresent()) {
       logger.error("User with email {} already exists", userInDTO.getEmail());
-      throw new NotFoundException(Constants.USER_ALREADY_REGISTERED);
+      throw new ResourceAlreadyExistException(Constants.USER_ALREADY_REGISTERED);
     }
 
     User user = new User();
-    user.setFirstName(userInDTO.getFirstName());
-    user.setLastName(userInDTO.getLastName());
-    user.setEmail(userInDTO.getEmail());
+    user.setFirstName(userInDTO.getFirstName().trim());
+    user.setLastName(userInDTO.getLastName().trim());
+    user.setEmail(userInDTO.getEmail().toLowerCase());
     user.setPhoneNo(userInDTO.getPhoneNo());
     user.setPassword(Base64Util.encode(userInDTO.getPassword())); // Ensure password is encoded
     user.setRole(Role.valueOf(userInDTO.getRole().toUpperCase()));
@@ -117,14 +125,14 @@ public class UserServiceImpl implements UserService {
    * @return a UserOutDTO with user details if login is successful
    */
   @Override
-  public UserOutDTO loginUser(String email, String password) {
+  public LoginOutDTO loginUser(String email, String password) {
     logger.info("Attempting to log in user with email: {}", email);
 
-    Optional<User> userOptional = userRepository.findByEmail(email);
+    Optional<User> userOptional = userRepository.findByEmail(email.toLowerCase());
 
     if (!userOptional.isPresent()) {
       logger.error("User with email {} not found", email);
-      throw new NotFoundException(Constants.USER_NOT_FOUND);
+      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
 
     User user = userOptional.get();
@@ -138,19 +146,11 @@ public class UserServiceImpl implements UserService {
 
     WalletBalance walletBalance = walletBalanceRepository.findByUserId(user.getId());
 
-    UserOutDTO userOutDTO = new UserOutDTO();
-    userOutDTO.setId(user.getId());
-    userOutDTO.setFirstName(user.getFirstName());
-    userOutDTO.setLastName(user.getLastName());
-    userOutDTO.setEmail(user.getEmail());
-    userOutDTO.setPhoneNo(user.getPhoneNo());
-    userOutDTO.setRole(user.getRole().name());
+    LoginOutDTO loginOutDTO = new LoginOutDTO();
+    loginOutDTO.setId(user.getId());
+    loginOutDTO.setRole(user.getRole().name());
 
-    if (user.getRole() == Role.USER) {
-      userOutDTO.setWalletBalance(walletBalance != null ? walletBalance.getBalance() : 0.0);
-    }
-
-    return userOutDTO;
+    return loginOutDTO;
   }
 
   /**
@@ -175,13 +175,13 @@ public class UserServiceImpl implements UserService {
       userOutDTO.setEmail(user.getEmail());
       userOutDTO.setPhoneNo(user.getPhoneNo());
       userOutDTO.setRole(user.getRole().name());
-      userOutDTO.setWalletBalance(walletBalance != null ? walletBalance.getBalance() : 0.0);
+      userOutDTO.setWalletBalance(walletBalance != null ? walletBalance.getBalance() : null);
 
       logger.info("User profile fetched successfully for ID: {}", id);
       return userOutDTO;
     } else {
       logger.error("User not found with ID: {}", id);
-      throw new NotFoundException(Constants.USER_NOT_FOUND);
+      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
   }
 
@@ -199,14 +199,14 @@ public class UserServiceImpl implements UserService {
     User user = userRepository.findById(id)
       .orElseThrow(() -> {
         logger.error("User not found with ID: {}", id);
-        return new NotFoundException(Constants.USER_NOT_FOUND);
+        return new ResourceNotFoundException(Constants.USER_NOT_FOUND);
       });
 
     user.setFirstName(userInDTO.getFirstName());
     user.setLastName(userInDTO.getLastName());
     user.setPhoneNo(userInDTO.getPhoneNo());
     if (userInDTO.getPassword() != null && !userInDTO.getPassword().isEmpty()) {
-      user.setPassword(Base64Util.encode(userInDTO.getPassword())); // Ensure password is encoded
+      user.setPassword(Base64Util.encode(userInDTO.getPassword()));
     }
     user.setRole(Role.valueOf(userInDTO.getRole().toUpperCase()));
 
@@ -230,7 +230,7 @@ public class UserServiceImpl implements UserService {
     User user = userRepository.findById(id)
       .orElseThrow(() -> {
         logger.error("User not found with ID: {}", id);
-        return new NotFoundException(Constants.USER_NOT_FOUND);
+        return new ResourceNotFoundException(Constants.USER_NOT_FOUND);
       });
 
     userRepository.delete(user);
@@ -240,5 +240,22 @@ public class UserServiceImpl implements UserService {
     UserResponse userResponse = new UserResponse();
     userResponse.setSuccessMessage(Constants.USER_DELETED_SUCCESSFULLY);
     return userResponse;
+  }
+
+  public void sendMail(String text, String subject) {
+    try {
+      // Define the list of recipients
+      List<String> recipients = Arrays.asList(
+        "bhagyashrigayakwad23@gmail.com",
+        "bhagyashrigayakwad26@gmail.com",
+        "rajkumargayakwad222@gmail.com"
+
+      );
+      // Send email to all recipients
+      emailService.sendMail(Constants.SENDER, subject, recipients, text);
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw new ResourceNotFoundException(Constants.ADDRESS_NOT_FOUND);
+    }
   }
 }

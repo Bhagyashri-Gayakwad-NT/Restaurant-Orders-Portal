@@ -3,8 +3,8 @@ package com.nt.restaurant.microservice.service;
 import com.nt.restaurant.microservice.dto.FoodCategoryInDTO;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.Restaurant;
-import com.nt.restaurant.microservice.exception.AlreadyExistException;
-import com.nt.restaurant.microservice.exception.NotFoundException;
+import com.nt.restaurant.microservice.exception.ResourceAlreadyExistException;
+import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
 import com.nt.restaurant.microservice.dto.CommonResponse;
 import com.nt.restaurant.microservice.dto.FoodCategoryOutDTO;
 import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
@@ -79,7 +79,7 @@ public class FoodCategoryServiceImplTest {
 
     when(restaurantRepository.findById(1)).thenReturn(Optional.empty());
 
-    NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       foodCategoryService.addFoodCategory(foodCategoryInDTO);
     });
 
@@ -118,7 +118,7 @@ public class FoodCategoryServiceImplTest {
 
     when(foodCategoryRepository.findById(1)).thenReturn(Optional.empty());
 
-    NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       foodCategoryService.updateFoodCategory(1, foodCategoryInDTO);
     });
 
@@ -143,7 +143,7 @@ public class FoodCategoryServiceImplTest {
     when(foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(1, "MAIN COURSE")).thenReturn(
       Optional.of(existingCategoryWithName));
 
-    AlreadyExistException exception = assertThrows(AlreadyExistException.class, () -> {
+    ResourceAlreadyExistException exception = assertThrows(ResourceAlreadyExistException.class, () -> {
       foodCategoryService.updateFoodCategory(1, foodCategoryInDTO);
     });
 
@@ -175,7 +175,7 @@ public class FoodCategoryServiceImplTest {
 
     when(restaurantRepository.findById(restaurantId)).thenReturn(Optional.empty());
 
-    NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       foodCategoryService.getFoodCategoryByRestaurantId(restaurantId);
     });
 

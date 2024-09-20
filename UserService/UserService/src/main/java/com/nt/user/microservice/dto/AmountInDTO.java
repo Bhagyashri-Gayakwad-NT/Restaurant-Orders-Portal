@@ -1,5 +1,7 @@
 package com.nt.user.microservice.dto;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Data Transfer Object (DTO) for representing the amount to be deducted from the wallet balance.
  * <p>
@@ -11,6 +13,7 @@ public class AmountInDTO {
   /**
    * The amount to be deducted from the user's wallet balance.
    */
+  @NotNull(message = "Balance cannot be null")
   private Double balance;
 
   /**

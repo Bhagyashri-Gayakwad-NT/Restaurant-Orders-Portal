@@ -23,7 +23,7 @@ public class FoodItemDtoConverter {
     foodItem.setCategoryId(foodItemInDTO.getFoodCategoryId());
     foodItem.setRestaurantId(foodItemInDTO.getRestaurantId());
     foodItem.setFoodItemName(foodItemInDTO.getFoodItemName().toUpperCase());
-    foodItem.setDescription(foodItemInDTO.getDescription());
+    foodItem.setDescription(foodItemInDTO.getDescription().trim());
     foodItem.setPrice(foodItemInDTO.getPrice());
     foodItem.setAvailable(true);
 

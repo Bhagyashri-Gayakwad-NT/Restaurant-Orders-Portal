@@ -123,4 +123,10 @@ public class Constants {
    * </p>
    */
   public static final String INSUFFICIENT_BALANCE = "Insufficient balance in wallet.";
+
+  public static final String METHODE_NOT_ALLOWED = "Method not allowed";
+
+  public static final String SENDED_SUCCESS = "email sended successfull";
+
+  public static final String SENDER = "bhagyashrigayakwad23@gmail.com";
 }
