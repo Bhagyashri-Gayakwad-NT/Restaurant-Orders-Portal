@@ -67,8 +67,10 @@ public class LogInDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof LogInDTO)) return false;
+    if (this == o) {
+      return true; }
+    if (!(o instanceof LogInDTO)) {
+      return false; }
     LogInDTO logInDTO = (LogInDTO) o;
     return Objects.equals(email, logInDTO.email) && Objects.equals(password, logInDTO.password);
   }

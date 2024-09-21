@@ -59,8 +59,10 @@ public class WalletBalanceInDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof WalletBalanceInDTO)) return false;
+    if (this == o) {
+      return true; }
+    if (!(o instanceof WalletBalanceInDTO)) {
+      return false; }
     WalletBalanceInDTO that = (WalletBalanceInDTO) o;
     return Double.compare(balance, that.balance) == 0 && Objects.equals(id, that.id);
   }

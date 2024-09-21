@@ -53,8 +53,10 @@ public class AmountInDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof AmountInDTO)) return false;
+    if (this == o) {
+      return true; }
+    if (!(o instanceof AmountInDTO)) {
+      return false; }
     AmountInDTO that = (AmountInDTO) o;
     return Objects.equals(balance, that.balance);
   }

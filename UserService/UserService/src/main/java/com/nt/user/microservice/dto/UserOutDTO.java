@@ -171,8 +171,10 @@ public class UserOutDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof UserOutDTO)) return false;
+    if (this == o) {
+      return true; }
+    if (!(o instanceof UserOutDTO)) {
+      return false; }
     UserOutDTO that = (UserOutDTO) o;
     return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) &&
       Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) &&

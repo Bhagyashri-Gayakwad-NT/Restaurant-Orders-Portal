@@ -33,8 +33,10 @@ public class UserResponse {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof UserResponse)) return false;
+    if (this == o) {
+      return true; }
+    if (!(o instanceof UserResponse)) {
+      return false; }
     UserResponse that = (UserResponse) o;
     return Objects.equals(successMessage, that.successMessage);
   }

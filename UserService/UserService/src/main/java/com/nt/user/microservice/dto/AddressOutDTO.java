@@ -148,8 +148,10 @@ public class AddressOutDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof AddressOutDTO)) return false;
+    if (this == o) {
+      return true; }
+    if (!(o instanceof AddressOutDTO)) {
+      return false; }
     AddressOutDTO that = (AddressOutDTO) o;
     return Objects.equals(id, that.id) && Objects.equals(street, that.street) &&
       Objects.equals(city, that.city) && Objects.equals(state, that.state) &&

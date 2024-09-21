@@ -24,8 +24,10 @@ public class LoginOutDTO {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof LoginOutDTO)) return false;
+    if (this == o) {
+      return true; }
+    if (!(o instanceof LoginOutDTO)) {
+      return false; }
     LoginOutDTO that = (LoginOutDTO) o;
     return Objects.equals(id, that.id) && Objects.equals(role, that.role);
   }
