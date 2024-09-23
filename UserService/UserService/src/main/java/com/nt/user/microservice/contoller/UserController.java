@@ -153,12 +153,17 @@ public class UserController {
    */
   @PutMapping("/walletBalance/{id}")
   public ResponseEntity<UserOutDTO> updateWalletBalance(@PathVariable Integer id, @RequestBody AmountInDTO amountInDTO) {
-    //logger.info("Deducting {} from user ID: {}", amount, id);
     UserOutDTO userResponse = walletBalanceService.updateWalletBalance(id, amountInDTO.getBalance());
     return new ResponseEntity<>(userResponse, HttpStatus.OK);
   }
 
-
+  /**
+   * Sends an email with the specified text and subject.
+   *
+   * @param text the body of the email to be sent
+   * @param subject the subject of the email
+   * @return ResponseEntity containing a success message and HTTP status OK
+   */
   @PostMapping("/send")
   public ResponseEntity<UserResponse> sendEmail(@RequestParam String text, @RequestParam String subject) {
     userService.sendMail(text, subject);

@@ -57,7 +57,7 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @throws ResourceNotFoundException If the user is not found or is not a restaurant owner.
    */
   @Override
-  public CommonResponse addRestaurant(RestaurantInDTO restaurantInDTO, MultipartFile image) {
+  public CommonResponse addRestaurant(final RestaurantInDTO restaurantInDTO, final MultipartFile image) {
     logger.info("Attempting to add restaurant with details: {}", restaurantInDTO);
     UserOutDTO userOutDto;
     try {
@@ -114,7 +114,7 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @throws ResourceNotFoundException If the restaurant is not found.
    */
   @Override
-  public RestaurantOutDTO getRestaurantById(Integer restaurantId) {
+  public RestaurantOutDTO getRestaurantById(final Integer restaurantId) {
     logger.info("Fetching restaurant with ID: {}", restaurantId);
 
     Optional<Restaurant> restaurantOptional = restaurantRepository.findById(restaurantId);
@@ -137,7 +137,7 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @return A list of DTOs containing the details of the user's restaurants.
    */
   @Override
-  public List<RestaurantOutDTO> getRestaurantsByUserId(Integer userId) {
+  public List<RestaurantOutDTO> getRestaurantsByUserId(final Integer userId) {
     logger.info("Fetching restaurants for user ID: {}", userId);
     List<Restaurant> restaurants = restaurantRepository.findByUserId(userId);
     List<RestaurantOutDTO> restaurantOutDTOList = new ArrayList<>();
@@ -158,7 +158,7 @@ public class RestaurantServiceImpl implements RestaurantService {
    * @return A byte array representing the image of the restaurant.
    */
   @Override
-  public byte[] getRestaurantImage(Integer id) {
+  public byte[] getRestaurantImage(final Integer id) {
     logger.info("Fetching image for restaurant with ID: {}", id);
     RestaurantOutDTO restaurant = getRestaurantById(id);
     String base64Image = restaurant.getRestaurantImage();

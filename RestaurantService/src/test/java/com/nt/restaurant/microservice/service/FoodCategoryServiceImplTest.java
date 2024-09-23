@@ -52,17 +52,17 @@ public class FoodCategoryServiceImplTest {
   public void testAddFoodCategory_Success() {
     FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
-    foodCategoryInDTO.setFoodCategoryName("Appetizers");
+    foodCategoryInDTO.setFoodCategoryName("Test Category");
 
     Restaurant restaurant = new Restaurant();
     restaurant.setRestaurantId(1);
 
     FoodCategory foodCategory = new FoodCategory();
     foodCategory.setFoodCategoryId(1);
-    foodCategory.setFoodCategoryName("APPETIZERS");
+    foodCategory.setFoodCategoryName("TEST CATEGORY");
 
     when(restaurantRepository.findById(1)).thenReturn(Optional.of(restaurant));
-    when(foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(1, "APPETIZERS")).thenReturn(Optional.empty());
+    when(foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(1, "TEST CATEGORY")).thenReturn(Optional.empty());
     when(foodCategoryRepository.save(any(FoodCategory.class))).thenReturn(foodCategory);
 
     CommonResponse response = foodCategoryService.addFoodCategory(foodCategoryInDTO);
@@ -75,7 +75,7 @@ public class FoodCategoryServiceImplTest {
   public void testAddFoodCategory_RestaurantNotFound() {
     FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
-    foodCategoryInDTO.setFoodCategoryName("Appetizers");
+    foodCategoryInDTO.setFoodCategoryName("Test Category");
 
     when(restaurantRepository.findById(1)).thenReturn(Optional.empty());
 
@@ -90,18 +90,18 @@ public class FoodCategoryServiceImplTest {
   public void testUpdateFoodCategory_Success() {
     FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
-    foodCategoryInDTO.setFoodCategoryName("Main Course");
+    foodCategoryInDTO.setFoodCategoryName("Sample Category");
 
     FoodCategory existingCategory = new FoodCategory();
     existingCategory.setFoodCategoryId(1);
-    existingCategory.setFoodCategoryName("Appetizers");
+    existingCategory.setFoodCategoryName("Test Category");
 
     FoodCategory updatedCategory = new FoodCategory();
     updatedCategory.setFoodCategoryId(1);
-    updatedCategory.setFoodCategoryName("MAIN COURSE");
+    updatedCategory.setFoodCategoryName("SAMPLE CATEGORY");
 
     when(foodCategoryRepository.findById(1)).thenReturn(Optional.of(existingCategory));
-    when(foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(1, "MAIN COURSE")).thenReturn(Optional.empty());
+    when(foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(1, "SAMPLE CATEGORY")).thenReturn(Optional.empty());
     when(foodCategoryRepository.save(any(FoodCategory.class))).thenReturn(updatedCategory);
 
     CommonResponse response = foodCategoryService.updateFoodCategory(1, foodCategoryInDTO);
@@ -114,7 +114,7 @@ public class FoodCategoryServiceImplTest {
   public void testUpdateFoodCategory_NotFound() {
     FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
-    foodCategoryInDTO.setFoodCategoryName("Main Course");
+    foodCategoryInDTO.setFoodCategoryName("Sample Category");
 
     when(foodCategoryRepository.findById(1)).thenReturn(Optional.empty());
 
@@ -129,18 +129,18 @@ public class FoodCategoryServiceImplTest {
   public void testUpdateFoodCategory_AlreadyExists() {
     FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
     foodCategoryInDTO.setRestaurantId(1);
-    foodCategoryInDTO.setFoodCategoryName("Main Course");
+    foodCategoryInDTO.setFoodCategoryName("Sample Category");
 
     FoodCategory existingCategory = new FoodCategory();
     existingCategory.setFoodCategoryId(1);
-    existingCategory.setFoodCategoryName("Appetizers");
+    existingCategory.setFoodCategoryName("Test Category");
 
     FoodCategory existingCategoryWithName = new FoodCategory();
     existingCategoryWithName.setFoodCategoryId(2);
-    existingCategoryWithName.setFoodCategoryName("MAIN COURSE");
+    existingCategoryWithName.setFoodCategoryName("SAMPLE CATEGORY");
 
     when(foodCategoryRepository.findById(1)).thenReturn(Optional.of(existingCategory));
-    when(foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(1, "MAIN COURSE")).thenReturn(
+    when(foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(1, "SAMPLE CATEGORY")).thenReturn(
       Optional.of(existingCategoryWithName));
 
     ResourceAlreadyExistException exception = assertThrows(ResourceAlreadyExistException.class, () -> {
@@ -155,7 +155,7 @@ public class FoodCategoryServiceImplTest {
     Integer restaurantId = 1;
     FoodCategory foodCategory = new FoodCategory();
     foodCategory.setFoodCategoryId(1);
-    foodCategory.setFoodCategoryName("Appetizers");
+    foodCategory.setFoodCategoryName("Test Category");
 
     List<FoodCategory> foodCategoryList = new ArrayList<>();
     foodCategoryList.add(foodCategory);
@@ -166,7 +166,7 @@ public class FoodCategoryServiceImplTest {
     List<FoodCategoryOutDTO> result = foodCategoryService.getFoodCategoryByRestaurantId(restaurantId);
 
     assertFalse(result.isEmpty());
-    assertEquals("Appetizers", result.get(0).getFoodCategoryName());
+    assertEquals("Test Category", result.get(0).getFoodCategoryName());
   }
 
   @Test

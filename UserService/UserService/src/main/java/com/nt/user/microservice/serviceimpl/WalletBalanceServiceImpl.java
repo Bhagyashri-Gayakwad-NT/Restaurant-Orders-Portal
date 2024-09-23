@@ -99,10 +99,21 @@ public class WalletBalanceServiceImpl implements WalletBalanceService {
     return userOutDTO;
   }
 
-
+  /**
+   * Adds money to the wallet balance for a given user.
+   * <p>
+   * This method retrieves the user and their wallet balance, adds the specified amount
+   * to the current balance, and saves the updated wallet balance.
+   * If the user or wallet is not found, an appropriate exception is thrown.
+   * </p>
+   *
+   * @param userId the ID of the user whose wallet balance is to be updated
+   * @param amount the amount to be added to the wallet balance
+   * @return a {@link UserOutDTO} object containing updated user information and wallet balance
+   * @throws ResourceNotFoundException if the user or wallet is not found
+   */
   @Override
   public UserOutDTO addMoney(Integer userId, Double amount) {
-    // Logic to add money
     User user = userRepository.findById(userId)
       .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
 
@@ -118,6 +129,13 @@ public class WalletBalanceServiceImpl implements WalletBalanceService {
     return mapToUserOutDTO(user, walletBalance);
   }
 
+  /**
+   * Maps a User and WalletBalance to a UserOutDTO.
+   *
+   * @param user the user to be mapped
+   * @param walletBalance the wallet balance to be included in the DTO
+   * @return a {@link UserOutDTO} object containing user information and wallet balance
+   */
   private UserOutDTO mapToUserOutDTO(User user, WalletBalance walletBalance) {
     UserOutDTO userOutDTO = new UserOutDTO();
     userOutDTO.setId(user.getId());

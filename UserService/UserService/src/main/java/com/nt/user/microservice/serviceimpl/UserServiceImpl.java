@@ -242,6 +242,12 @@ public class UserServiceImpl implements UserService {
     return userResponse;
   }
 
+  /**
+   * Sends an email to a list of predefined recipients.
+   *
+   * @param text    the body of the email
+   * @param subject the subject of the email
+   */
   public void sendMail(String text, String subject) {
     List<String> recipients = Arrays.asList(
       "bhagyashrigayakwad23@gmail.com",

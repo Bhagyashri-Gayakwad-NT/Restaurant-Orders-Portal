@@ -15,8 +15,8 @@ class FoodCategoryOutDTOTest {
 
   @BeforeEach
   void setUp() {
-    dto1 = new FoodCategoryOutDTO(1, 100, "Appetizers");
-    dto2 = new FoodCategoryOutDTO(1, 100, "Appetizers");
+    dto1 = new FoodCategoryOutDTO(1, 100, "FoodCategory");
+    dto2 = new FoodCategoryOutDTO(1, 100, "FoodCategory");
   }
 
   @Test
@@ -29,38 +29,38 @@ class FoodCategoryOutDTOTest {
 
   @Test
   void testParameterizedConstructor() {
-    FoodCategoryOutDTO dto = new FoodCategoryOutDTO(2, 200, "Main Course");
+    FoodCategoryOutDTO dto = new FoodCategoryOutDTO(2, 200, "FoodName");
     assertEquals(2, dto.getFoodCategoryId());
     assertEquals(200, dto.getRestaurantId());
-    assertEquals("Main Course", dto.getFoodCategoryName());
+    assertEquals("FoodName", dto.getFoodCategoryName());
   }
 
   @Test
   void testGettersAndSetters() {
     dto1.setFoodCategoryId(10);
     dto1.setRestaurantId(200);
-    dto1.setFoodCategoryName("Desserts");
+    dto1.setFoodCategoryName("Category");
 
     assertEquals(10, dto1.getFoodCategoryId());
     assertEquals(200, dto1.getRestaurantId());
-    assertEquals("Desserts", dto1.getFoodCategoryName());
+    assertEquals("Category", dto1.getFoodCategoryName());
   }
 
   @Test
   void testEqualsAndHashCode() {
-    FoodCategoryOutDTO dto2 = new FoodCategoryOutDTO(1, 100, "Appetizers");
+    FoodCategoryOutDTO dto2 = new FoodCategoryOutDTO(1, 100, "FoodCategory");
     assertEquals(dto1, dto2);
     assertEquals(dto1.hashCode(), dto2.hashCode());
 
-    FoodCategoryOutDTO dto3 = new FoodCategoryOutDTO(2, 100, "Appetizers");
+    FoodCategoryOutDTO dto3 = new FoodCategoryOutDTO(2, 100, "FoodCategory");
     assertNotEquals(dto1, dto3);
     assertNotEquals(dto1.hashCode(), dto3.hashCode());
 
-    FoodCategoryOutDTO dto4 = new FoodCategoryOutDTO(1, 200, "Appetizers");
+    FoodCategoryOutDTO dto4 = new FoodCategoryOutDTO(1, 200, "FoodCategory");
     assertNotEquals(dto1, dto4);
     assertNotEquals(dto1.hashCode(), dto4.hashCode());
 
-    FoodCategoryOutDTO dto5 = new FoodCategoryOutDTO(1, 100, "Main Course");
+    FoodCategoryOutDTO dto5 = new FoodCategoryOutDTO(1, 100, "FoodName");
     assertNotEquals(dto1, dto5);
     assertNotEquals(dto1.hashCode(), dto5.hashCode());
   }

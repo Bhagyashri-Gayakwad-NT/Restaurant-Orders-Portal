@@ -62,7 +62,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
    * @throws ResourceAlreadyExistException If a food category with the same name already exists in the restaurant.
    */
   @Override
-  public CommonResponse addFoodCategory(FoodCategoryInDTO foodCategoryInDTO) {
+  public CommonResponse addFoodCategory(final FoodCategoryInDTO foodCategoryInDTO) {
     logger.info("Adding food category: {}", foodCategoryInDTO);
 
     Optional<Restaurant> restaurant = restaurantRepository.findById(foodCategoryInDTO.getRestaurantId());
@@ -96,7 +96,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
    * @throws ResourceNotFoundException If the restaurant is not found.
    */
   @Override
-  public List<FoodCategoryOutDTO> getFoodCategoryByRestaurantId(Integer restaurantId) {
+  public List<FoodCategoryOutDTO> getFoodCategoryByRestaurantId(final Integer restaurantId) {
     logger.info("Fetching food categories for restaurant ID: {}", restaurantId);
 
     Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantId);
@@ -127,7 +127,7 @@ public class FoodCategoryServiceImpl implements FoodCategoryService {
    * excluding the current one.
    */
   @Override
-  public CommonResponse updateFoodCategory(Integer foodCategoryId, FoodCategoryInDTO foodCategoryInDTO) {
+  public CommonResponse updateFoodCategory(final Integer foodCategoryId, final FoodCategoryInDTO foodCategoryInDTO) {
     logger.info("Updating food category with ID: {}", foodCategoryId);
 
     Optional<FoodCategory> existingCategory = foodCategoryRepository.findById(foodCategoryId);

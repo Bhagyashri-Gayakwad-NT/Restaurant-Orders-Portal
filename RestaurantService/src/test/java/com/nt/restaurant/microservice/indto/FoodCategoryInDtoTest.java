@@ -16,10 +16,10 @@ class FoodCategoryInDTOTest {
 
   @Test
   void testParameterizedConstructor() {
-    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO(1, "Appetizers");
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO(1, "Test Category");
 
     assertEquals(1, foodCategoryInDTO.getRestaurantId());
-    assertEquals("Appetizers", foodCategoryInDTO.getFoodCategoryName());
+    assertEquals("Test Category", foodCategoryInDTO.getFoodCategoryName());
   }
 
   @Test
@@ -27,17 +27,17 @@ class FoodCategoryInDTOTest {
     FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
 
     foodCategoryInDTO.setRestaurantId(2);
-    foodCategoryInDTO.setFoodCategoryName("Main Course");
+    foodCategoryInDTO.setFoodCategoryName("Category");
 
     assertEquals(2, foodCategoryInDTO.getRestaurantId());
-    assertEquals("Main Course", foodCategoryInDTO.getFoodCategoryName());
+    assertEquals("Category", foodCategoryInDTO.getFoodCategoryName());
   }
 
   @Test
   void testEquals() {
-    FoodCategoryInDTO foodCategoryInDTO1 = new FoodCategoryInDTO(1, "Desserts");
-    FoodCategoryInDTO foodCategoryInDTO2 = new FoodCategoryInDTO(1, "Desserts");
-    FoodCategoryInDTO foodCategoryInDTO3 = new FoodCategoryInDTO(2, "Beverages");
+    FoodCategoryInDTO foodCategoryInDTO1 = new FoodCategoryInDTO(1, "CategoryOne");
+    FoodCategoryInDTO foodCategoryInDTO2 = new FoodCategoryInDTO(1, "CategoryOne");
+    FoodCategoryInDTO foodCategoryInDTO3 = new FoodCategoryInDTO(2, "CategoryTwo");
 
     assertEquals(foodCategoryInDTO1, foodCategoryInDTO2);
     assertNotEquals(foodCategoryInDTO1, foodCategoryInDTO3);
@@ -45,18 +45,18 @@ class FoodCategoryInDTOTest {
 
   @Test
   void testHashCode() {
-    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO(1, "Snacks");
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO(1, "FoodOne");
 
     assertNotNull(foodCategoryInDTO.hashCode());
   }
 
   @Test
   void testToString() {
-    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO(1, "Salads");
+    FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO(1, "FoodTwo");
 
     String expectedString = "FoodCategoryInDTO{" +
       "restaurantId=1" +
-      ", foodCategoryName='Salads'" +
+      ", foodCategoryName='FoodTwo'" +
       '}';
 
     assertEquals(expectedString, foodCategoryInDTO.toString());

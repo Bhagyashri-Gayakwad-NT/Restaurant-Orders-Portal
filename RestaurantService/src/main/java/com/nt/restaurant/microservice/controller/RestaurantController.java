@@ -59,9 +59,9 @@ public class RestaurantController {
    * @return a response entity with a success message if the restaurant is added successfully.
    */
   @PostMapping(value = "/addRestaurant", consumes = "multipart/form-data")
-  public ResponseEntity<CommonResponse> addRestaurant(@Valid @ModelAttribute RestaurantInDTO restaurantInDTO,
+  public ResponseEntity<CommonResponse> addRestaurant(@Valid @ModelAttribute final RestaurantInDTO restaurantInDTO,
                                                       @RequestParam("restaurantImage")
-                                                      MultipartFile image) {
+                                                      final MultipartFile image) {
     logger.info("Received request to add a restaurant: {}", restaurantInDTO);
     CommonResponse response = restaurantService.addRestaurant(restaurantInDTO, image);
     logger.info("Successfully added restaurant: {}", response.getMessage());
@@ -75,7 +75,7 @@ public class RestaurantController {
    * @return a response entity containing restaurant details or a 404 status if the restaurant is not found.
    */
   @GetMapping("/getRestaurant/{restaurantId}")
-  public ResponseEntity<RestaurantOutDTO> getRestaurantById(@PathVariable Integer restaurantId) {
+  public ResponseEntity<RestaurantOutDTO> getRestaurantById(@PathVariable final Integer restaurantId) {
     logger.info("Fetching restaurant details for ID: {}", restaurantId);
     RestaurantOutDTO restaurantOutDTO = restaurantService.getRestaurantById(restaurantId);
     logger.info("Successfully retrieved restaurant details for ID: {}", restaurantId);
@@ -89,7 +89,7 @@ public class RestaurantController {
    * @return a response entity containing a list of restaurants for the specified user.
    */
   @GetMapping("/restaurants/{userId}")
-  public ResponseEntity<List<RestaurantOutDTO>> getRestaurantsByUserId(@PathVariable Integer userId) {
+  public ResponseEntity<List<RestaurantOutDTO>> getRestaurantsByUserId(@PathVariable final Integer userId) {
     logger.info("Fetching restaurants for user ID: {}", userId);
     List<RestaurantOutDTO> restaurants = restaurantService.getRestaurantsByUserId(userId);
     logger.info("Successfully retrieved {} restaurants for user ID: {}", restaurants.size(), userId);
@@ -103,7 +103,7 @@ public class RestaurantController {
    * @return a response entity containing the restaurant image in JPEG format.
    */
   @GetMapping("/{id}/image")
-  public ResponseEntity<byte[]> getRestaurantImage(@PathVariable Integer id) {
+  public ResponseEntity<byte[]> getRestaurantImage(@PathVariable final Integer id) {
     logger.info("Fetching image for restaurant ID: {}", id);
     byte[] imageData = restaurantService.getRestaurantImage(id);
     logger.info("Successfully retrieved image for restaurant ID: {}", id);

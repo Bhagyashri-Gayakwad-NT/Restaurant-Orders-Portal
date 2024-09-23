@@ -11,7 +11,7 @@ class UserResponseTests {
   void testGettersAndSetters() {
     UserResponse response = new UserResponse();
 
-    response.setSuccessMessage("Operation successful"); // Placeholder for message
+    response.setSuccessMessage("Operation successful");
 
     assertEquals("Operation successful", response.getSuccessMessage());
   }
@@ -19,13 +19,13 @@ class UserResponseTests {
   @Test
   void testEquals() {
     UserResponse response1 = new UserResponse();
-    response1.setSuccessMessage("Operation successful"); // Placeholder for message
+    response1.setSuccessMessage("Operation successful");
 
     UserResponse response2 = new UserResponse();
-    response2.setSuccessMessage("Operation successful"); // Same message
+    response2.setSuccessMessage("Operation successful");
 
     UserResponse response3 = new UserResponse();
-    response3.setSuccessMessage("Another operation successful"); // Different message
+    response3.setSuccessMessage("Another operation successful");
 
     assertEquals(response1, response2, "Same messages should be equal.");
     assertNotEquals(response1, response3, "Different messages should not be equal.");
@@ -36,13 +36,13 @@ class UserResponseTests {
   @Test
   void testHashCode() {
     UserResponse response1 = new UserResponse();
-    response1.setSuccessMessage("Operation successful"); // Placeholder for message
+    response1.setSuccessMessage("Operation successful");
 
     UserResponse response2 = new UserResponse();
-    response2.setSuccessMessage("Operation successful"); // Same message
+    response2.setSuccessMessage("Operation successful");
 
     UserResponse response3 = new UserResponse();
-    response3.setSuccessMessage("Another operation successful"); // Different message
+    response3.setSuccessMessage("Another operation successful");
 
     assertEquals(response1.hashCode(), response2.hashCode(), "Equal objects should have the same hash code.");
     assertNotEquals(response1.hashCode(), response3.hashCode(), "Different objects should have different hash codes.");
@@ -51,7 +51,7 @@ class UserResponseTests {
   @Test
   void testToString() {
     UserResponse response = new UserResponse();
-    response.setSuccessMessage("Operation successful"); // Placeholder for message
+    response.setSuccessMessage("Operation successful");
 
     String expectedString = "UserResponse{successMessage='Operation successful'}";
     assertEquals(expectedString, response.toString(), "toString() should return the correct string representation.");

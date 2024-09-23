@@ -120,6 +120,16 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(errorResponse, HttpStatus.PAYMENT_REQUIRED);
   }
 
+  /**
+   * Handles exceptions when the request body is not readable or is invalid.
+   *
+   * This method catches {@link HttpMessageNotReadableException} and provides a custom response
+   * indicating that the request body is invalid or empty.
+   *
+   * @param ex the exception that was thrown when the request body could not be read
+   * @param request the {@link WebRequest} object that contains the details of the current request
+   * @return a {@link ResponseEntity} containing a map with error details and HTTP status BAD_REQUEST
+   */
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
     Map<String, Object> body = new HashMap<>();

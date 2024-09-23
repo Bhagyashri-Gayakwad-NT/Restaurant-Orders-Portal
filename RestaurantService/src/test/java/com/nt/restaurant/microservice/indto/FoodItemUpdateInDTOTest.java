@@ -24,10 +24,10 @@ class FoodItemUpdateInDTOTest {
   @Test
   void testParameterizedConstructor() {
     MultipartFile image = new MockMultipartFile("file", "filename.png", "image/png", new byte[1]);
-    FoodItemUpdateInDTO dto = new FoodItemUpdateInDTO("Pizza", "Delicious pizza", 10.99, image);
+    FoodItemUpdateInDTO dto = new FoodItemUpdateInDTO("Test Food", "Test Description", 10.99, image);
 
-    assertEquals("Pizza", dto.getFoodItemName());
-    assertEquals("Delicious pizza", dto.getDescription());
+    assertEquals("Test Food", dto.getFoodItemName());
+    assertEquals("Test Description", dto.getDescription());
     assertEquals(10.99, dto.getPrice());
     assertEquals(image, dto.getFoodItemImage());
   }
@@ -35,14 +35,14 @@ class FoodItemUpdateInDTOTest {
   @Test
   void testGettersAndSetters() {
     FoodItemUpdateInDTO dto = new FoodItemUpdateInDTO();
-    dto.setFoodItemName("Burger");
-    dto.setDescription("Juicy burger");
+    dto.setFoodItemName("Test Food");
+    dto.setDescription("Test Description");
     dto.setPrice(5.99);
     MultipartFile image = new MockMultipartFile("file", "burger.png", "image/png", new byte[1]);
     dto.setFoodItemImage(image);
 
-    assertEquals("Burger", dto.getFoodItemName());
-    assertEquals("Juicy burger", dto.getDescription());
+    assertEquals("Test Food", dto.getFoodItemName());
+    assertEquals("Test Description", dto.getDescription());
     assertEquals(5.99, dto.getPrice());
     assertEquals(image, dto.getFoodItemImage());
   }
@@ -50,9 +50,9 @@ class FoodItemUpdateInDTOTest {
   @Test
   void testEquals() {
     MultipartFile image = new MockMultipartFile("file", "filename.png", "image/png", new byte[1]);
-    FoodItemUpdateInDTO dto1 = new FoodItemUpdateInDTO("Pasta", "Creamy pasta", 7.99, image);
-    FoodItemUpdateInDTO dto2 = new FoodItemUpdateInDTO("Pasta", "Creamy pasta", 7.99, image);
-    FoodItemUpdateInDTO dto3 = new FoodItemUpdateInDTO("Pizza", "Delicious pizza", 10.99, image);
+    FoodItemUpdateInDTO dto1 = new FoodItemUpdateInDTO("Test Food", "Test Description", 7.99, image);
+    FoodItemUpdateInDTO dto2 = new FoodItemUpdateInDTO("Test Food", "Test Description", 7.99, image);
+    FoodItemUpdateInDTO dto3 = new FoodItemUpdateInDTO("Test Food", "Test Description", 10.99, image);
 
     assertTrue(dto1.equals(dto2));
     assertFalse(dto1.equals(dto3));
@@ -63,8 +63,8 @@ class FoodItemUpdateInDTOTest {
   @Test
   void testHashCode() {
     MultipartFile image = new MockMultipartFile("file", "filename.png", "image/png", new byte[1]);
-    FoodItemUpdateInDTO dto1 = new FoodItemUpdateInDTO("Sushi", "Fresh sushi", 12.99, image);
-    FoodItemUpdateInDTO dto2 = new FoodItemUpdateInDTO("Sushi", "Fresh sushi", 12.99, image);
+    FoodItemUpdateInDTO dto1 = new FoodItemUpdateInDTO("Test Food", "Test Description", 12.99, image);
+    FoodItemUpdateInDTO dto2 = new FoodItemUpdateInDTO("Test Food", "Test Description", 12.99, image);
 
     assertEquals(dto1.hashCode(), dto2.hashCode());
   }
@@ -72,11 +72,11 @@ class FoodItemUpdateInDTOTest {
   @Test
   void testToString() {
     MultipartFile image = new MockMultipartFile("file", "filename.png", "image/png", new byte[1]);
-    FoodItemUpdateInDTO dto = new FoodItemUpdateInDTO("Noodles", "Spicy noodles", 8.99, image);
+    FoodItemUpdateInDTO dto = new FoodItemUpdateInDTO("Test Food", "Test Description", 8.99, image);
 
     String expected = "FoodItemUpdateInDTO{" +
-      "foodItemName='Noodles'" +
-      ", description='Spicy noodles'" +
+      "foodItemName='Test Food'" +
+      ", description='Test Description'" +
       ", price=8.99" +
       ", foodItemImage=" + image +
       '}';

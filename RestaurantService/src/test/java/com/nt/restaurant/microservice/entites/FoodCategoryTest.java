@@ -19,10 +19,10 @@ public class FoodCategoryTest {
 
   @Test
   public void testParameterizedConstructorWithId() {
-    FoodCategory foodCategory = new FoodCategory(1, 1, "Appetizers");
+    FoodCategory foodCategory = new FoodCategory(1, 1, "TestCategory");
     assertEquals(1, foodCategory.getFoodCategoryId());
     assertEquals(1, foodCategory.getRestaurantId());
-    assertEquals("Appetizers", foodCategory.getFoodCategoryName());
+    assertEquals("TestCategory", foodCategory.getFoodCategoryName());
   }
 
   @Test

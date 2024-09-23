@@ -23,7 +23,14 @@ public interface WalletBalanceService {
    */
   UserOutDTO updateWalletBalance(Integer userId,  Double amount);
 
+  /**
+   * Adds a specified amount to a user's wallet balance.
+   *
+   * @param userId the ID of the user
+   * @param amount the amount to add
+   * @return updated user information with new wallet balance
+   * @throws ResourceNotFoundException if the user or wallet is not found
+   */
   UserOutDTO addMoney(Integer userId,  Double amount);
 
-  // WalletBalanceInDTO getWalletBalanceByUserId(Integer userId);
 }

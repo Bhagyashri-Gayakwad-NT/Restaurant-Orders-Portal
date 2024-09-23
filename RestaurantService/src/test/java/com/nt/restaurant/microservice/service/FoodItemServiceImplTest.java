@@ -61,7 +61,7 @@ class FoodItemServiceImplTest {
   @Test
   void testAddFoodItem_FoodItemAlreadyExists() {
     FoodItemInDTO foodItemInDTO = new FoodItemInDTO();
-    foodItemInDTO.setFoodItemName("Pizza");
+    foodItemInDTO.setFoodItemName("Test FoodItem");
     foodItemInDTO.setRestaurantId(1);
     foodItemInDTO.setFoodCategoryId(1);
 
@@ -76,6 +76,7 @@ class FoodItemServiceImplTest {
 
     assertThrows(ResourceAlreadyExistException.class, () -> foodItemService.addFoodItem(foodItemInDTO, image));
   }
+
 
   @Test
 
@@ -99,12 +100,43 @@ class FoodItemServiceImplTest {
   }
 
   @Test
+  void testGetFoodItemsByRestaurant_Success() {
+    // Arrange
+    Integer restaurantId = 1;
+    List<FoodItem> foodItems = new ArrayList<>();
+    FoodItem foodItem = new FoodItem();
+    foodItem.setFoodItemName("Test FoodItem");
+    foodItems.add(foodItem);
+
+    when(foodItemRepository.findByRestaurantId(restaurantId)).thenReturn(foodItems);
+
+    // Act
+    List<FoodItemOutDTO> foodItemOutDTOList = foodItemService.getFoodItemsByRestaurant(restaurantId);
+
+    // Assert
+    assertFalse(foodItemOutDTOList.isEmpty());
+    assertEquals(1, foodItemOutDTOList.size());
+    assertEquals("Test FoodItem", foodItemOutDTOList.get(0).getFoodItemName()); // Assuming name is converted to upper case
+  }
+
+  @Test
+  void testGetFoodItemsByRestaurant_NotFound() {
+    // Arrange
+    Integer restaurantId = 1;
+
+    when(foodItemRepository.findByRestaurantId(restaurantId)).thenReturn(new ArrayList<>());
+
+    // Act & Assert
+    assertThrows(ResourceNotFoundException.class, () -> foodItemService.getFoodItemsByRestaurant(restaurantId));
+  }
+
+  @Test
   void testUpdateFoodItemByFoodItemId_Success() throws IOException {
     FoodItemUpdateInDTO foodItemUpdateInDTO = new FoodItemUpdateInDTO();
-    foodItemUpdateInDTO.setFoodItemName("Updated Pizza");
+    foodItemUpdateInDTO.setFoodItemName("Updated FoodItem");
 
     FoodItem existingFoodItem = new FoodItem();
-    existingFoodItem.setFoodItemName("Pizza");
+    existingFoodItem.setFoodItemName("Test FoodItem");
 
     when(foodItemRepository.findById(any(Integer.class))).thenReturn(Optional.of(existingFoodItem));
     when(foodItemRepository.save(any(FoodItem.class))).thenReturn(existingFoodItem);
@@ -118,11 +150,11 @@ class FoodItemServiceImplTest {
   @Test
   void testUpdateFoodItemByFoodItemId_ImageProcessingError() throws IOException {
     FoodItemUpdateInDTO foodItemUpdateInDTO = new FoodItemUpdateInDTO();
-    foodItemUpdateInDTO.setFoodItemName("Updated Pizza");
+    foodItemUpdateInDTO.setFoodItemName("Updated FoodItem");
     foodItemUpdateInDTO.setFoodItemImage(image);
 
     FoodItem existingFoodItem = new FoodItem();
-    existingFoodItem.setFoodItemName("Pizza");
+    existingFoodItem.setFoodItemName("Test FoodItem");
 
     when(foodItemRepository.findById(any(Integer.class))).thenReturn(Optional.of(existingFoodItem));
     doThrow(new IOException("Image processing failed")).when(image).getBytes();

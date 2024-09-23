@@ -50,8 +50,8 @@ class UserServiceImplTest {
     UserInDTO userInDTO = new UserInDTO();
     userInDTO.setEmail("test@nucleusteq.com");
     userInDTO.setPassword("password1");
-    userInDTO.setFirstName("John");
-    userInDTO.setLastName("Doe");
+    userInDTO.setFirstName("First");
+    userInDTO.setLastName("Last");
     userInDTO.setPhoneNo("9876543210");
     userInDTO.setRole("USER");
 
@@ -117,8 +117,8 @@ class UserServiceImplTest {
 
     User user = new User();
     user.setId(userId);
-    user.setFirstName("John");
-    user.setLastName("Doe");
+    user.setFirstName("First");
+    user.setLastName("Last");
     user.setEmail("john.doe@nucleusteq.com");
     user.setPhoneNo("9876543210");
     user.setRole(Role.USER);
@@ -155,16 +155,16 @@ class UserServiceImplTest {
   void testUpdateUserProfile_Success() {
     Integer userId = 1;
     UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setFirstName("Jane");
-    userInDTO.setLastName("Doe");
+    userInDTO.setFirstName("First");
+    userInDTO.setLastName("Last");
     userInDTO.setPhoneNo("9876543211");
     userInDTO.setPassword("newpassword1");
     userInDTO.setRole("USER");
 
     User existingUser = new User();
     existingUser.setId(userId);
-    existingUser.setFirstName("John");
-    existingUser.setLastName("Doe");
+    existingUser.setFirstName("First");
+    existingUser.setLastName("Last");
     existingUser.setPhoneNo("9876543210");
     existingUser.setPassword(Base64Util.encode("password1"));
 

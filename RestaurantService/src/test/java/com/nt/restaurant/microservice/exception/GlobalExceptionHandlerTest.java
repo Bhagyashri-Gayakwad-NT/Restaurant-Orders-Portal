@@ -35,11 +35,4 @@ class GlobalExceptionHandlerTest {
     assertEquals("Entity not found", responseEntity.getBody().getMessage());
   }
 
-//  @Test
-//  void testHandleInvalidImageFileException() {
-//    InvalidImageFileException ex = new InvalidImageFileException("Invalid image file");
-//    ResponseEntity<ErrorResponse> responseEntity = globalExceptionHandler.handleInvalidImageFileException(ex);
-//    assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-//    assertEquals("Invalid image file", responseEntity.getBody().getMessage());
-//  }
 }

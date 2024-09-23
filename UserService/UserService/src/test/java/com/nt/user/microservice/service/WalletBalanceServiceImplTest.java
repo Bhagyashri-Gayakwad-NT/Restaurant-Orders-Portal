@@ -47,7 +47,7 @@ public class WalletBalanceServiceImplTest {
     user.setFirstName("FirstName");
     user.setLastName("LastName");
     user.setEmail("test@example.com");
-    user.setRole(Role.USER); // Set the role here
+    user.setRole(Role.USER);
 
     WalletBalance walletBalance = new WalletBalance();
     walletBalance.setUserId(userId);
@@ -127,7 +127,7 @@ public class WalletBalanceServiceImplTest {
     user.setFirstName("FirstName");
     user.setLastName("LastName");
     user.setEmail("test@example.com");
-    user.setRole(Role.USER); // Set the role here
+    user.setRole(Role.USER);
 
     WalletBalance walletBalance = new WalletBalance();
     walletBalance.setUserId(userId);

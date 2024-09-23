@@ -51,7 +51,6 @@ public class LogInDTOTests {
       .map(ConstraintViolation::getMessage)
       .collect(Collectors.toList());
 
-    // Check that both expected messages are present in any order
     assertTrue(actualMessages.contains("Email is required"), "Expected violation for blank email");
     assertTrue(actualMessages.contains("Email must be valid, must end with @nucleusteq.com, " +
         "and contain at least one alphabet before the '@' symbol."),

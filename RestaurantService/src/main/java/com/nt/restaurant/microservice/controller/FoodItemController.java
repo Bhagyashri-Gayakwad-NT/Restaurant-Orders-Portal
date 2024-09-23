@@ -60,8 +60,9 @@ public class FoodItemController {
    * @return a response entity with a success message if the food item is added successfully.
    */
   @PostMapping("/addFoodItem")
-  public ResponseEntity<CommonResponse> addFoodItem(@Valid @ModelAttribute FoodItemInDTO foodItemInDTO, @RequestParam("foodItemImage")
-    MultipartFile image) {
+  public ResponseEntity<CommonResponse> addFoodItem(@Valid @ModelAttribute final FoodItemInDTO foodItemInDTO,
+                                                    @RequestParam("foodItemImage")
+    final MultipartFile image) {
     logger.info("Received request to add food item: {}", foodItemInDTO);
     CommonResponse response = foodItemService.addFoodItem(foodItemInDTO, image);
     logger.info("Successfully added food item with ID: {}", response.getMessage());
@@ -75,7 +76,7 @@ public class FoodItemController {
    * @return a response entity containing a list of food items for the specified category.
    */
   @GetMapping("/getFoodItem/{categoryId}")
-  public ResponseEntity<List<FoodItemOutDTO>> getFoodItemsByCategory(@PathVariable Integer categoryId) {
+  public ResponseEntity<List<FoodItemOutDTO>> getFoodItemsByCategory(@PathVariable final Integer categoryId) {
     logger.info("Fetching food items for category ID: {}", categoryId);
     List<FoodItemOutDTO> foodItems = foodItemService.getFoodItemsByCategory(categoryId);
     logger.info("Successfully retrieved {} food items for category ID: {}", foodItems.size(), categoryId);
@@ -89,7 +90,7 @@ public class FoodItemController {
    * @return a response entity containing a list of food items for the specified restaurant.
    */
   @GetMapping("getFoodItems/{restaurantId}")
-  public ResponseEntity<List<FoodItemOutDTO>> getFoodItemsByRestaurant(@PathVariable Integer restaurantId) {
+  public ResponseEntity<List<FoodItemOutDTO>> getFoodItemsByRestaurant(@PathVariable final Integer restaurantId) {
     logger.info("Fetching food items for restaurant ID: {}", restaurantId);
     List<FoodItemOutDTO> foodItems = foodItemService.getFoodItemsByRestaurant(restaurantId);
     logger.info("Successfully retrieved {} food items for restaurant ID: {}", foodItems.size(), restaurantId);
@@ -105,8 +106,8 @@ public class FoodItemController {
    */
   @PutMapping("/updateFoodItem/{foodItemId}")
   public ResponseEntity<CommonResponse> updateFoodItemByFoodItemId(
-    @PathVariable Integer foodItemId,
-    @Valid @ModelAttribute FoodItemUpdateInDTO foodItemUpdateInDTO) {
+    @PathVariable final Integer foodItemId,
+    @Valid @ModelAttribute final FoodItemUpdateInDTO foodItemUpdateInDTO) {
 
     logger.info("Received request to update food item with ID: {} with details: {}", foodItemId, foodItemUpdateInDTO);
     CommonResponse updatedFoodItem = foodItemService.updateFoodItemByFoodItemId(foodItemId, foodItemUpdateInDTO);
@@ -121,7 +122,7 @@ public class FoodItemController {
    * @return a response entity containing the food item image in JPEG format.
    */
   @GetMapping("/{id}/image")
-  public ResponseEntity<byte[]> getFoodItemImage(@PathVariable Integer id) {
+  public ResponseEntity<byte[]> getFoodItemImage(@PathVariable final Integer id) {
     logger.info("Fetching image for food item with ID: {}", id);
     byte[] imageData = foodItemService.getFoodItemImage(id);
     logger.info("Successfully retrieved image for food item with ID: {}", id);

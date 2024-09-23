@@ -68,14 +68,12 @@ public class AddressServiceImpl implements AddressService {
   public UserResponse addAddress(AddressInDTO addressInDTO) {
     logger.info("Adding a new address for userId: {}", addressInDTO.getUserId());
 
-    // Check if the user exists
     Optional<User> userOptional = userRepository.findById(addressInDTO.getUserId());
     if (!userOptional.isPresent()) {
       logger.error("User with ID {} not found", addressInDTO.getUserId());
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
 
-    // Create and populate the Address entity
     Address address = new Address();
     address.setStreet(addressInDTO.getStreet().trim());
     address.setCity(addressInDTO.getCity().trim());

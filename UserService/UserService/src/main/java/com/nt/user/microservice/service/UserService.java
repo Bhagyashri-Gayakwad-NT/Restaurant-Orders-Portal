@@ -55,5 +55,11 @@ public interface UserService {
    */
   UserResponse deleteUser(Integer id);
 
+  /**
+   * Sends an email with the specified subject and text.
+   *
+   * @param text the content of the email
+   * @param subject the subject of the email
+   */
   void sendMail(String text, String subject);
 }

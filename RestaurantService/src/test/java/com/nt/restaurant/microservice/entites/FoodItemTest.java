@@ -14,7 +14,7 @@ public class FoodItemTest {
   private static final Integer CATEGORY_ID = 2;
   private static final Integer RESTAURANT_ID = 3;
   private static final String FOOD_ITEM_NAME = "Sample Food";
-  private static final String DESCRIPTION = "Delicious food item.";
+  private static final String DESCRIPTION = "Test Description";
   private static final Double PRICE = 9.99;
   private static final boolean IS_AVAILABLE = true;
   private static final byte[] IMAGE = new byte[]{1, 2, 3};

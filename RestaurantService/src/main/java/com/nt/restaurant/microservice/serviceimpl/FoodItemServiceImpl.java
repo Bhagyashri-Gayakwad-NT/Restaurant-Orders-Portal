@@ -65,7 +65,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    * @throws ResourceNotFoundException If the restaurant or food category is not found, or if the food item already exists.
    */
   @Override
-  public CommonResponse addFoodItem(FoodItemInDTO foodItemInDTO, MultipartFile image) {
+  public CommonResponse addFoodItem(final FoodItemInDTO foodItemInDTO, final MultipartFile image) {
     logger.info("Attempting to add food item: {}", foodItemInDTO.getFoodItemName());
     logger.debug("Fetching restaurant with ID: {}", foodItemInDTO.getRestaurantId());
     Optional<Restaurant> restaurant = restaurantRepository.findById(foodItemInDTO.getRestaurantId());
@@ -126,7 +126,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    * @throws ResourceNotFoundException If no food items are found for the category ID.
    */
   @Override
-  public List<FoodItemOutDTO> getFoodItemsByCategory(Integer categoryId) {
+  public List<FoodItemOutDTO> getFoodItemsByCategory(final Integer categoryId) {
     logger.info("Fetching food items for category ID: {}", categoryId);
     List<FoodItem> foodItems = foodItemRepository.findByCategoryId(categoryId);
     if (foodItems.isEmpty()) {
@@ -150,7 +150,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    * @throws ResourceNotFoundException If no food items are found for the restaurant ID.
    */
   @Override
-  public List<FoodItemOutDTO> getFoodItemsByRestaurant(Integer restaurantId) {
+  public List<FoodItemOutDTO> getFoodItemsByRestaurant(final Integer restaurantId) {
     logger.info("Fetching food items for restaurant ID: {}", restaurantId);
     List<FoodItem> foodItems = foodItemRepository.findByRestaurantId(restaurantId);
     if (foodItems.isEmpty()) {
@@ -175,7 +175,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    * @throws RuntimeException If an error occurs while processing the food item image.
    */
   @Override
-  public CommonResponse updateFoodItemByFoodItemId(Integer foodItemId, FoodItemUpdateInDTO foodItemUpdateInDTO) {
+  public CommonResponse updateFoodItemByFoodItemId(final Integer foodItemId, final FoodItemUpdateInDTO foodItemUpdateInDTO) {
     logger.info("Attempting to update food item with ID: {}", foodItemId);
     FoodItem existingFoodItem = findFoodItemById(foodItemId);
     try {
@@ -197,7 +197,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    * @param existingFoodItem The existing food item entity to be updated.
    * @throws IOException If an error occurs while processing the food item image.
    */
-  private void updateFoodItemRequest(FoodItemUpdateInDTO foodItemInDTO, FoodItem existingFoodItem) throws IOException {
+  private void updateFoodItemRequest(final FoodItemUpdateInDTO foodItemInDTO, final FoodItem existingFoodItem) throws IOException {
     existingFoodItem.setFoodItemName(foodItemInDTO.getFoodItemName().toUpperCase());
     existingFoodItem.setDescription(foodItemInDTO.getDescription());
     existingFoodItem.setPrice(foodItemInDTO.getPrice());
@@ -214,7 +214,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    * @param foodItem The food item entity to be converted.
    * @return The output DTO containing the food item details.
    */
-  private FoodItemOutDTO convertFoodItemToFoodItemResponse(FoodItem foodItem) {
+  private FoodItemOutDTO convertFoodItemToFoodItemResponse(final FoodItem foodItem) {
     return FoodItemDtoConverter.entityToOutDTO(foodItem);
   }
 
@@ -225,7 +225,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    * @return A byte array representing the image of the food item.
    */
   @Override
-  public byte[] getFoodItemImage(Integer id) {
+  public byte[] getFoodItemImage(final Integer id) {
     logger.info("Fetching food item image for ID: {}", id);
 
     FoodItem foodItem = findFoodItemById(id);
@@ -239,7 +239,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    * @return The food item entity with the specified ID.
    * @throws ResourceNotFoundException If no food item is found with the specified ID.
    */
-  public FoodItem findFoodItemById(Integer id) {
+  public FoodItem findFoodItemById(final Integer id) {
     logger.info("Looking for food item with ID: {}", id);
 
     return foodItemRepository.findById(id)

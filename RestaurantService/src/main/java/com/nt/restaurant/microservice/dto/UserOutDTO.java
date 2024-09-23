@@ -1,6 +1,8 @@
 package com.nt.restaurant.microservice.dto;
 
 
+import java.util.Objects;
+
 /**
  * Data Transfer Object (DTO) for representing user information in the response.
  * This class is used to convey user details from the server to the client.
@@ -193,5 +195,36 @@ public class UserOutDTO {
    */
   public void setWalletBalance(Double walletBalance) {
     this.walletBalance = walletBalance;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true; }
+    if (!(o instanceof UserOutDTO)) {
+      return false; }
+    UserOutDTO that = (UserOutDTO) o;
+    return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) &&
+      Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) &&
+      Objects.equals(phoneNo, that.phoneNo) && Objects.equals(role, that.role) &&
+      Objects.equals(walletBalance, that.walletBalance);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, firstName, lastName, email, phoneNo, role, walletBalance);
+  }
+
+  @Override
+  public String toString() {
+    return "UserOutDTO{" +
+      "id=" + id +
+      ", firstName='" + firstName + '\'' +
+      ", lastName='" + lastName + '\'' +
+      ", email='" + email + '\'' +
+      ", phoneNo='" + phoneNo + '\'' +
+      ", role='" + role + '\'' +
+      ", walletBalance=" + walletBalance +
+      '}';
   }
 }

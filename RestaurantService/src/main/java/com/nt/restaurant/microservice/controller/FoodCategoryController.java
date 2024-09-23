@@ -50,7 +50,7 @@ public class FoodCategoryController {
    * @return a response entity with a success message if the food category is added successfully.
    */
   @PostMapping("/addFoodCategory")
-  public ResponseEntity<CommonResponse> addFoodCategory(@Valid @RequestBody FoodCategoryInDTO foodCategoryInDTO) {
+  public ResponseEntity<CommonResponse> addFoodCategory(@Valid @RequestBody final FoodCategoryInDTO foodCategoryInDTO) {
     logger.info("Received request to add food category: {}", foodCategoryInDTO);
     CommonResponse response = foodCategoryService.addFoodCategory(foodCategoryInDTO);
     logger.info("Successfully added food category with ID: {}", response.getMessage());
@@ -64,7 +64,8 @@ public class FoodCategoryController {
    * @return a response entity containing the list of food categories for the specified restaurant.
    */
   @GetMapping("/foodCategory/{restaurantId}")
-  public ResponseEntity<List<FoodCategoryOutDTO>> getFoodCategoryByRestaurantId(@PathVariable("restaurantId") Integer restaurantId) {
+  public ResponseEntity<List<FoodCategoryOutDTO>> getFoodCategoryByRestaurantId(@PathVariable("restaurantId")
+                                                                                  final Integer restaurantId) {
     logger.info("Fetching food categories for restaurant ID: {}", restaurantId);
     List<FoodCategoryOutDTO> foodCategories = foodCategoryService.getFoodCategoryByRestaurantId(restaurantId);
     logger.info("Successfully retrieved {} food categories for restaurant ID: {}", foodCategories.size(), restaurantId);
@@ -79,8 +80,8 @@ public class FoodCategoryController {
    * @return a response entity with a success message if the food category is updated successfully.
    */
   @PutMapping("/updateFoodCategory/{id}")
-  public ResponseEntity<CommonResponse> updateFoodCategory(@PathVariable("id") Integer id,
-                                                           @Valid @RequestBody FoodCategoryInDTO foodCategoryInDTO) {
+  public ResponseEntity<CommonResponse> updateFoodCategory(@PathVariable("id") final Integer id,
+                                                           @Valid @RequestBody final FoodCategoryInDTO foodCategoryInDTO) {
     logger.info("Received request to update food category with ID: {} with details: {}", id, foodCategoryInDTO);
     CommonResponse updatedCategory = foodCategoryService.updateFoodCategory(id, foodCategoryInDTO);
     logger.info("Successfully updated food category with ID: {}", id);
