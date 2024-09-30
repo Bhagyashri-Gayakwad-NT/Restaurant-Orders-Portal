@@ -2,6 +2,7 @@ package com.nt.restaurant.microservice.outdto;
 
 import com.nt.restaurant.microservice.dto.UserOutDTO;
 import org.junit.jupiter.api.Test;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class UserOutDTOTest {

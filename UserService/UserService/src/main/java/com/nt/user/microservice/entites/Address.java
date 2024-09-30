@@ -64,7 +64,7 @@ public class Address {
    *
    * @param id the address ID to set.
    */
-  public void setId(Integer id) {
+  public void setId(final Integer id) {
     this.id = id;
   }
 
@@ -82,7 +82,7 @@ public class Address {
    *
    * @param street the street address to set.
    */
-  public void setStreet(String street) {
+  public void setStreet(final String street) {
     this.street = street;
   }
 
@@ -100,7 +100,7 @@ public class Address {
    *
    * @param city the city to set.
    */
-  public void setCity(String city) {
+  public void setCity(final String city) {
     this.city = city;
   }
 
@@ -118,7 +118,7 @@ public class Address {
    *
    * @param country the country to set.
    */
-  public void setCountry(String country) {
+  public void setCountry(final String country) {
     this.country = country;
   }
 
@@ -136,7 +136,7 @@ public class Address {
    *
    * @param state the state to set.
    */
-  public void setState(String state) {
+  public void setState(final String state) {
     this.state = state;
   }
 
@@ -154,7 +154,7 @@ public class Address {
    *
    * @param pinCode the postal code to set.
    */
-  public void setPinCode(String pinCode) {
+  public void setPinCode(final String pinCode) {
     this.pinCode = pinCode;
   }
 
@@ -172,7 +172,7 @@ public class Address {
    *
    * @param userId the user ID to set.
    */
-  public void setUserId(Integer userId) {
+  public void setUserId(final Integer userId) {
     this.userId = userId;
   }
 
@@ -184,19 +184,21 @@ public class Address {
    * @return true if the given object represents an Address equivalent to this address, false otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
-      return true; }
+      return true;
+    }
     if (o == null || getClass() != o.getClass()) {
-      return false; }
+      return false;
+    }
     Address address = (Address) o;
-    return Objects.equals(id, address.id) &&
-      Objects.equals(street, address.street) &&
-      Objects.equals(city, address.city) &&
-      Objects.equals(country, address.country) &&
-      Objects.equals(state, address.state) &&
-      Objects.equals(pinCode, address.pinCode) &&
-      Objects.equals(userId, address.userId);
+    return Objects.equals(id, address.id)
+      && Objects.equals(street, address.street)
+      && Objects.equals(city, address.city)
+      && Objects.equals(country, address.country)
+      && Objects.equals(state, address.state)
+      && Objects.equals(pinCode, address.pinCode)
+      && Objects.equals(userId, address.userId);
   }
 
   /**
@@ -217,14 +219,14 @@ public class Address {
    */
   @Override
   public String toString() {
-    return "Address{" +
-      "id=" + id +
-      ", street='" + street + '\'' +
-      ", city='" + city + '\'' +
-      ", country='" + country + '\'' +
-      ", state='" + state + '\'' +
-      ", pinCode='" + pinCode + '\'' +
-      ", userId=" + userId +
-      '}';
+    return "Address{"
+      + "id=" + id
+      + ", street='" + street
+      + '\'' + ", city='" + city
+      + '\'' + ", country='" + country
+      + '\'' + ", state='" + state
+      + '\'' + ", pinCode='" + pinCode
+      + '\'' + ", userId=" + userId
+      + '}';
   }
 }

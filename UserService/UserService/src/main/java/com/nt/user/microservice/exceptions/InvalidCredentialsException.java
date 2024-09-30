@@ -12,7 +12,7 @@ public class InvalidCredentialsException extends RuntimeException {
    *
    * @param message the detail message which is saved for later retrieval by the {@link #getMessage()} method
    */
-  public InvalidCredentialsException(String message) {
+  public InvalidCredentialsException(final String message) {
     super(message);
   }
 }

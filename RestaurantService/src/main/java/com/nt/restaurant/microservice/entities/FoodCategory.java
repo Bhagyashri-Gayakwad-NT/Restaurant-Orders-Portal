@@ -44,7 +44,7 @@ public class FoodCategory {
    * @param restaurantId     the ID of the associated restaurant
    * @param foodCategoryName the name of the food category
    */
-  public FoodCategory(Integer foodCategoryId, Integer restaurantId, String foodCategoryName) {
+  public FoodCategory(final Integer foodCategoryId, final Integer restaurantId, final String foodCategoryName) {
     this.foodCategoryId = foodCategoryId;
     this.restaurantId = restaurantId;
     this.foodCategoryName = foodCategoryName;
@@ -57,7 +57,7 @@ public class FoodCategory {
    * @param restaurantId     the ID of the associated restaurant
    * @param foodCategoryName the name of the food category
    */
-  public FoodCategory(Integer restaurantId, String foodCategoryName) {
+  public FoodCategory(final Integer restaurantId, final String foodCategoryName) {
     this.restaurantId = restaurantId;
     this.foodCategoryName = foodCategoryName;
   }
@@ -78,7 +78,7 @@ public class FoodCategory {
    *
    * @param foodCategoryId the unique ID of the food category.
    */
-  public void setFoodCategoryId(Integer foodCategoryId) {
+  public void setFoodCategoryId(final Integer foodCategoryId) {
     this.foodCategoryId = foodCategoryId;
   }
 
@@ -96,7 +96,7 @@ public class FoodCategory {
    *
    * @param restaurantId the restaurant ID.
    */
-  public void setRestaurantId(Integer restaurantId) {
+  public void setRestaurantId(final Integer restaurantId) {
     this.restaurantId = restaurantId;
   }
 
@@ -114,7 +114,7 @@ public class FoodCategory {
    *
    * @param foodCategoryName the name of the food category.
    */
-  public void setFoodCategoryName(String foodCategoryName) {
+  public void setFoodCategoryName(final String foodCategoryName) {
     this.foodCategoryName = foodCategoryName;
   }
 
@@ -127,7 +127,7 @@ public class FoodCategory {
    * @return true if the objects are equal, false otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -135,9 +135,9 @@ public class FoodCategory {
       return false;
     }
     FoodCategory that = (FoodCategory) o;
-    return Objects.equals(foodCategoryId, that.foodCategoryId) &&
-      Objects.equals(restaurantId, that.restaurantId) &&
-      Objects.equals(foodCategoryName, that.foodCategoryName);
+    return Objects.equals(foodCategoryId, that.foodCategoryId)
+      && Objects.equals(restaurantId, that.restaurantId)
+      && Objects.equals(foodCategoryName, that.foodCategoryName);
   }
 
   /**
@@ -157,10 +157,10 @@ public class FoodCategory {
    */
   @Override
   public String toString() {
-    return "FoodCategory{" +
-      "foodCategoryId=" + foodCategoryId +
-      ", restaurantId=" + restaurantId +
-      ", foodCategoryName='" + foodCategoryName + '\'' +
-      '}';
+    return "FoodCategory{"
+      + "foodCategoryId=" + foodCategoryId
+      + ", restaurantId=" + restaurantId
+      + ", foodCategoryName='" + foodCategoryName
+      + '\'' + '}';
   }
 }

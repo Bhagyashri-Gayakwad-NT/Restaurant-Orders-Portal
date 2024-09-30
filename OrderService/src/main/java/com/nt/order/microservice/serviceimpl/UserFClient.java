@@ -26,7 +26,7 @@ public interface UserFClient {
   /**
    * Updates the wallet balance of a user.
    *
-   * @param id the ID of the user whose wallet balance to update
+   * @param id     the ID of the user whose wallet balance to update
    * @param amount the AmountInDTO object containing the amount to update
    * @return UserOutDTO containing the updated wallet balance
    */
@@ -36,7 +36,7 @@ public interface UserFClient {
   /**
    * Adds money to the user's wallet.
    *
-   * @param userId the ID of the user to whom the money is to be added
+   * @param userId      the ID of the user to whom the money is to be added
    * @param amountInDto the AmountInDTO object containing the amount to add
    * @return UserOutDTO containing the updated wallet balance after adding money
    */

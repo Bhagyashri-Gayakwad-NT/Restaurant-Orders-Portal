@@ -43,7 +43,8 @@ public class FoodItemUpdateInDTO {
    */
   @NotBlank(message = "Food item name cannot be blank")
   @Size(max = 100, message = "Food item name cannot exceed 100 characters")
-  @Pattern(regexp = "^[A-Za-z]+(?:\\s[A-Za-z]+)*$", message = "Food Item name must contain only alphabets")
+  @Pattern(regexp = "^[A-Za-z]+(?:\\s[A-Za-z]+)*$", message = "Food Item name must contain "
+    + "only alphabets and cannot include numbers")
   private String foodItemName;
 
   /**
@@ -84,7 +85,8 @@ public class FoodItemUpdateInDTO {
    * @param price         the price of the food item.
    * @param foodItemImage the image of the food item (optional).
    */
-  public FoodItemUpdateInDTO(String foodItemName, String description, Double price, MultipartFile foodItemImage) {
+  public FoodItemUpdateInDTO(final String foodItemName, final String description,
+                             final Double price, final MultipartFile foodItemImage) {
     this.foodItemName = foodItemName;
     this.description = description;
     this.price = price;
@@ -105,7 +107,7 @@ public class FoodItemUpdateInDTO {
    *
    * @param foodItemName the name of the food item to set.
    */
-  public void setFoodItemName(String foodItemName) {
+  public void setFoodItemName(final String foodItemName) {
     this.foodItemName = foodItemName;
   }
 
@@ -123,7 +125,7 @@ public class FoodItemUpdateInDTO {
    *
    * @param description the description of the food item to set.
    */
-  public void setDescription(String description) {
+  public void setDescription(final String description) {
     this.description = description;
   }
 
@@ -141,7 +143,7 @@ public class FoodItemUpdateInDTO {
    *
    * @param price the price of the food item to set.
    */
-  public void setPrice(Double price) {
+  public void setPrice(final Double price) {
     this.price = price;
   }
 
@@ -159,7 +161,7 @@ public class FoodItemUpdateInDTO {
    *
    * @param foodItemImage the image of the food item to set.
    */
-  public void setFoodItemImage(MultipartFile foodItemImage) {
+  public void setFoodItemImage(final MultipartFile foodItemImage) {
     this.foodItemImage = foodItemImage;
   }
 
@@ -170,7 +172,7 @@ public class FoodItemUpdateInDTO {
    * @return true if both objects are equal, false otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -178,10 +180,10 @@ public class FoodItemUpdateInDTO {
       return false;
     }
     FoodItemUpdateInDTO that = (FoodItemUpdateInDTO) o;
-    return Objects.equals(foodItemName, that.foodItemName) &&
-      Objects.equals(description, that.description) &&
-      Objects.equals(price, that.price) &&
-      Objects.equals(foodItemImage, that.foodItemImage);
+    return Objects.equals(foodItemName, that.foodItemName)
+      && Objects.equals(description, that.description)
+      && Objects.equals(price, that.price)
+      && Objects.equals(foodItemImage, that.foodItemImage);
   }
 
   /**
@@ -201,11 +203,11 @@ public class FoodItemUpdateInDTO {
    */
   @Override
   public String toString() {
-    return "FoodItemUpdateInDTO{" +
-      "foodItemName='" + foodItemName + '\'' +
-      ", description='" + description + '\'' +
-      ", price=" + price +
-      ", foodItemImage=" + foodItemImage +
-      '}';
+    return "FoodItemUpdateInDTO{"
+      + "foodItemName='" + foodItemName
+      + '\'' + ", description='" + description
+      + '\'' + ", price=" + price
+      + ", foodItemImage=" + foodItemImage
+      + '}';
   }
 }

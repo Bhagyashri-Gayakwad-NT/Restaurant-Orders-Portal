@@ -1,6 +1,11 @@
 package com.nt.order.microservice.service;
 
-import com.nt.order.microservice.dtos.*;
+import com.nt.order.microservice.dtos.CartInDTO;
+import com.nt.order.microservice.dtos.CartOutDTO;
+import com.nt.order.microservice.dtos.CommonResponse;
+import com.nt.order.microservice.dtos.FoodItemOutDTO;
+import com.nt.order.microservice.dtos.RestaurantOutDTO;
+import com.nt.order.microservice.dtos.UserOutDTO;
 import com.nt.order.microservice.entities.Cart;
 import com.nt.order.microservice.exception.InvalidRequestException;
 import com.nt.order.microservice.exception.ResourceNotFoundException;
@@ -19,10 +24,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class CartServiceImplTest {
 
@@ -143,7 +157,7 @@ public class CartServiceImplTest {
       cartServiceImpl.addItemToCart(cartInDTO);
     });
 
-    assertEquals(Constants.FoodItem_NOT_FOUND, exception.getMessage());
+    assertEquals(Constants.FOODITEM_NOT_FOUND, exception.getMessage());
   }
 
   @Test
@@ -241,6 +255,7 @@ public class CartServiceImplTest {
     assertEquals(Constants.CART_CLEARED_SUCCESSFULLY, response.getMessage());
     verify(cartRepository, times(1)).deleteAll(carts);
   }
+
   @Test
   void testGetCartItemsByUserIdAndRestaurantId_Success() {
     // Arrange

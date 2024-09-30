@@ -124,17 +124,84 @@ public class Constants {
    */
   public static final String INSUFFICIENT_BALANCE = "Insufficient balance in wallet.";
 
-  public static final String METHODE_NOT_ALLOWED = "Method not allowed";
+  /**
+   * Message indicating that the HTTP method is not allowed for the requested resource.
+   * <p>
+   * This constant is used when a client attempts to use a method that is not supported by the server for the specific endpoint.
+   * </p>
+   */
+  public static final String METHOD_NOT_ALLOWED = "Method not allowed";
 
+  /**
+   * Error message indicating that the subject of an email cannot be null or empty.
+   * <p>
+   * This constant is used in validation scenarios to ensure that the subject field is provided.
+   * </p>
+   */
   public static final String SUBJECT_EMPTY_ERROR = "Subject cannot be null or empty.";
+
+  /**
+   * Error message indicating that the recipient list for an email cannot be null or empty.
+   * <p>
+   * This constant is used in validation scenarios to ensure that at least one recipient is specified.
+   * </p>
+   */
   public static final String RECIPIENT_LIST_EMPTY_ERROR = "Recipient list cannot be null or empty.";
+
+  /**
+   * Error message indicating that the recipient email cannot be null or empty.
+   * <p>
+   * This constant is used in validation scenarios to ensure that the recipient's email address is provided.
+   * </p>
+   */
   public static final String RECIPIENT_EMAIL_EMPTY_ERROR = "Recipient email cannot be null or empty: ";
+
+  /**
+   * Error message indicating that the provided email format is invalid.
+   * <p>
+   * This constant is used in validation scenarios to notify users of incorrect email formats.
+   * </p>
+   */
   public static final String INVALID_EMAIL_FORMAT_ERROR = "Invalid email format: ";
+
+  /**
+   * Error message indicating that the email body cannot be null or empty.
+   * <p>
+   * This constant is used in validation scenarios to ensure that an email body is provided.
+   * </p>
+   */
   public static final String EMAIL_BODY_EMPTY_ERROR = "Email body cannot be null or empty.";
 
+  /**
+   * Message indicating that the email has been sent successfully.
+   * <p>
+   * This constant is used to provide feedback to users upon successful email transmission.
+   * </p>
+   */
   public static final String EMAIL_SENT_SUCCESSFULLY = "Email sent successfully.";
 
+  /**
+   * The sender's email address used for sending emails.
+   * <p>
+   * This constant defines the email address that will be displayed as the sender when emails are sent.
+   * </p>
+   */
   public static final String SENDER = "bhagyashrigayakwad23@gmail.com";
+
+  /**
+   * Error message indicating that the request body is invalid.
+   * <p>
+   * This constant is used to inform clients when the provided request body does not conform to expected formats.
+   * </p>
+   */
   public static final String INVALID_REQUEST_BODY_ERROR = "Invalid request body";
+
+  /**
+   * Error message indicating that no content was provided in the request body or that the format is invalid.
+   * <p>
+   * This constant is used in scenarios where the request body is either empty or not formatted correctly.
+   * </p>
+   */
   public static final String EMPTY_CONTENT_ERROR = "No content was provided in the request body or the format is invalid";
 }
+

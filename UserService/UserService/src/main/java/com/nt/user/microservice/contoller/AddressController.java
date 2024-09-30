@@ -29,13 +29,13 @@ import java.util.List;
 @CrossOrigin
 public class AddressController {
   /**
-   * Logger for this class, used to log important information, request details, and any issues encountered.
+   * LOGGER for this class, used to log important information, request details, and any issues encountered.
    * <p>
    * The {@link Logger} instance allows tracking of incoming requests, responses, and events such as
    * adding, fetching, or deleting addresses. It helps monitor the application flow and provides
    * detailed logs for debugging and auditing purposes.
    */
-  private static final Logger logger = LogManager.getLogger(AddressController.class);
+  private static final Logger LOGGER = LogManager.getLogger(AddressController.class);
   /**
    * Service layer to handle address-related business logic.
    * <p>
@@ -55,10 +55,10 @@ public class AddressController {
    * @return a response entity with a success message if the address is added successfully.
    */
   @PostMapping("/add")
-  public ResponseEntity<UserResponse> addAddress(@Valid @RequestBody AddressInDTO addressInDTO) {
-    logger.info("Request received to add address for user ID: {}", addressInDTO.getUserId());
+  public ResponseEntity<UserResponse> addAddress(@Valid @RequestBody final AddressInDTO addressInDTO) {
+    LOGGER.info("Request received to add address for user ID: {}", addressInDTO.getUserId());
     UserResponse userResponse = addressService.addAddress(addressInDTO);
-    logger.info("Address added successfully for user ID: {}", addressInDTO.getUserId());
+    LOGGER.info("Address added successfully for user ID: {}", addressInDTO.getUserId());
     return new ResponseEntity<UserResponse>(userResponse, HttpStatus.CREATED);
   }
 
@@ -69,10 +69,10 @@ public class AddressController {
    * @return a response entity with the list of addresses for the user.
    */
   @GetMapping("/user/{userId}")
-  public ResponseEntity<List<AddressOutDTO>> getUserAddresses(@PathVariable Integer userId) {
-    logger.info("Request received to fetch addresses for user ID: {}", userId);
+  public ResponseEntity<List<AddressOutDTO>> getUserAddresses(final @PathVariable Integer userId) {
+    LOGGER.info("Request received to fetch addresses for user ID: {}", userId);
     List<AddressOutDTO> addresses = addressService.getUserAddresses(userId);
-    logger.info("Addresses fetched successfully for user ID: {}", userId);
+    LOGGER.info("Addresses fetched successfully for user ID: {}", userId);
     return new ResponseEntity<List<AddressOutDTO>>(addresses, HttpStatus.OK);
   }
 
@@ -83,12 +83,13 @@ public class AddressController {
    * @return a response entity with a success message if the address is deleted successfully.
    */
   @DeleteMapping("/{id}")
-  public ResponseEntity<UserResponse> deleteAddress(@PathVariable Integer id) {
-    logger.info("Request received to delete address with ID: {}", id);
+  public ResponseEntity<UserResponse> deleteAddress(final @PathVariable Integer id) {
+    LOGGER.info("Request received to delete address with ID: {}", id);
     addressService.deleteAddress(id);
-    logger.info("Address deleted successfully with ID: {}", id);
+    LOGGER.info("Address deleted successfully with ID: {}", id);
     UserResponse response = new UserResponse();
     response.setSuccessMessage(Constants.ADDRESS_ADDED_SUCCESSFULLY); // Assuming a constant for successful deletion
     return new ResponseEntity<UserResponse>(response, HttpStatus.OK);
   }
 }
+

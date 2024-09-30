@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.entites</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.entites;
+
+import com.nt.user.microservice.util.Role;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.util.Objects;
+
+/**
+ * Represents a user entity for the application.
+ * This entity is mapped to the &quot;users&quot; table in the database.
+ */
+@Entity
+@Table(name = &quot;users&quot;)
+<span class="fc" id="L21">public class User {</span>
+
+  /**
+   * The unique identifier for the user.
+   */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
+
+  /**
+   * The first name of the user.
+   */
+  private String firstName;
+
+  /**
+   * The last name of the user.
+   */
+  private String lastName;
+
+  /**
+   * The email address of the user.
+   */
+  private String email;
+
+  /**
+   * The password for the user's account.
+   * Passwords should be stored in encrypted format.
+   */
+  private String password;
+
+  /**
+   * The phone number of the user.
+   */
+  private String phoneNo;
+
+  /**
+   * The role of the user, either USER or RESTAURANT_OWNER.
+   * This field is stored as a string in the database.
+   */
+  @Enumerated(EnumType.STRING)
+  @Column(name = &quot;role&quot;)
+  private Role role;
+
+  /**
+   * Gets the unique identifier of the user.
+   *
+   * @return the user's ID.
+   */
+  public Integer getId() {
+<span class="fc" id="L70">    return id;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the user.
+   *
+   * @param id the user's ID to set.
+   */
+  public void setId(final Integer id) {
+<span class="fc" id="L79">    this.id = id;</span>
+<span class="fc" id="L80">  }</span>
+
+  /**
+   * Gets the first name of the user.
+   *
+   * @return the user's first name.
+   */
+  public String getFirstName() {
+<span class="fc" id="L88">    return firstName;</span>
+  }
+
+  /**
+   * Sets the first name for the user.
+   *
+   * @param firstName the user's first name to set.
+   */
+  public void setFirstName(final String firstName) {
+<span class="fc" id="L97">    this.firstName = firstName;</span>
+<span class="fc" id="L98">  }</span>
+
+  /**
+   * Gets the last name of the user.
+   *
+   * @return the user's last name.
+   */
+  public String getLastName() {
+<span class="fc" id="L106">    return lastName;</span>
+  }
+
+  /**
+   * Sets the last name for the user.
+   *
+   * @param lastName the user's last name to set.
+   */
+  public void setLastName(final String lastName) {
+<span class="fc" id="L115">    this.lastName = lastName;</span>
+<span class="fc" id="L116">  }</span>
+
+  /**
+   * Gets the email address of the user.
+   *
+   * @return the user's email.
+   */
+  public String getEmail() {
+<span class="fc" id="L124">    return email;</span>
+  }
+
+  /**
+   * Sets the email address for the user.
+   *
+   * @param email the user's email to set.
+   */
+  public void setEmail(final String email) {
+<span class="fc" id="L133">    this.email = email;</span>
+<span class="fc" id="L134">  }</span>
+
+  /**
+   * Gets the password for the user's account.
+   *
+   * @return the user's password.
+   */
+  public String getPassword() {
+<span class="fc" id="L142">    return password;</span>
+  }
+
+  /**
+   * Sets the password for the user's account.
+   * Ensure that passwords are encrypted before storing.
+   *
+   * @param password the user's password to set.
+   */
+  public void setPassword(final String password) {
+<span class="fc" id="L152">    this.password = password;</span>
+<span class="fc" id="L153">  }</span>
+
+  /**
+   * Gets the phone number of the user.
+   *
+   * @return the user's phone number.
+   */
+  public String getPhoneNo() {
+<span class="fc" id="L161">    return phoneNo;</span>
+  }
+
+  /**
+   * Sets the phone number for the user.
+   *
+   * @param phoneNo the user's phone number to set.
+   */
+  public void setPhoneNo(final String phoneNo) {
+<span class="fc" id="L170">    this.phoneNo = phoneNo;</span>
+<span class="fc" id="L171">  }</span>
+
+  /**
+   * Gets the role of the user.
+   *
+   * @return the user's role.
+   */
+  public Role getRole() {
+<span class="fc" id="L179">    return role;</span>
+  }
+
+  /**
+   * Sets the role for the user.
+   *
+   * @param role the user's role to set.
+   */
+  public void setRole(final Role role) {
+<span class="fc" id="L188">    this.role = role;</span>
+<span class="fc" id="L189">  }</span>
+
+  /**
+   * Compares this user to the specified object. The result is true if and only if
+   * the argument is not null and is a User object that has the same values for all fields.
+   *
+   * @param o the object to compare this user against.
+   * @return true if the given object represents a User equivalent to this user, false otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L201">      return true;</span>
+    }
+<span class="pc bpc" id="L203" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L204">      return false;</span>
+    }
+<span class="fc" id="L206">    User user = (User) o;</span>
+<span class="pc bpc" id="L207" title="1 of 2 branches missed.">    return Objects.equals(id, user.id)</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(firstName, user.firstName)</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(lastName, user.lastName)</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">      &amp;&amp; Objects.equals(email, user.email)</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(password, user.password)</span>
+<span class="pc bpc" id="L212" title="2 of 4 branches missed.">      &amp;&amp; Objects.equals(phoneNo, user.phoneNo)</span>
+      &amp;&amp; role == user.role;
+  }
+
+  /**
+   * Returns a hash code value for the user. This method is supported for the benefit
+   * of hash tables such as those provided by HashMap.
+   *
+   * @return a hash code value for this user.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L224">    return Objects.hash(id, firstName, lastName, email, password, phoneNo, role);</span>
+  }
+
+  /**
+   * Returns a string representation of the user, including the values of all fields.
+   *
+   * @return a string representation of the user.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L234">    return &quot;User{&quot;</span>
+      + &quot;id=&quot; + id
+      + &quot;, firstName='&quot; + firstName
+      + '\'' + &quot;, lastName='&quot; + lastName
+      + '\'' + &quot;, email='&quot; + email
+      + '\'' + &quot;, password='&quot; + password
+      + '\'' + &quot;, phoneNo='&quot; + phoneNo
+      + '\'' + &quot;, role=&quot; + role
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

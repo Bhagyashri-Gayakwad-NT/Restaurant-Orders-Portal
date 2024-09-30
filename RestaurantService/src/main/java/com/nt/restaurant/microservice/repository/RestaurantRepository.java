@@ -30,5 +30,11 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
    */
   Optional<Restaurant> findById(Integer restaurantId);
 
+  /**
+   * Checks if a restaurant exists with the given name, ignoring case.
+   *
+   * @param normalizedRestaurantName the name of the restaurant to check for existence.
+   * @return true if a restaurant with the specified name exists, false otherwise.
+   */
   boolean existsByRestaurantNameIgnoreCase(String normalizedRestaurantName);
 }

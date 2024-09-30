@@ -11,15 +11,27 @@ import java.util.Objects;
  */
 public class CartOutDTO {
 
+  /** The ID of the cart. */
   private Integer cartId;
+
+  /** The ID of the user associated with the cart. */
   private Integer userId;
+
+  /** The ID of the restaurant associated with the cart. */
   private Integer restaurantId;
+
+  /** The ID of the food item in the cart. */
   private Integer foodItemId;
+
+  /** The quantity of the food item in the cart. */
   private Integer quantity;
+
+  /** The price of the food item in the cart. */
   private Double price;
 
   /**
    * Default constructor.
+   * Initializes an empty CartOutDTO object.
    */
   public CartOutDTO() {
   }
@@ -27,14 +39,15 @@ public class CartOutDTO {
   /**
    * Parameterized constructor to create a CartOutDTO with specified values.
    *
-   * @param cartId        the ID of the cart
-   * @param userId        the ID of the user
-   * @param restaurantId   the ID of the restaurant
-   * @param foodItemId    the ID of the food item
-   * @param quantity       the quantity of the food item
-   * @param price          the price of the food item
+   * @param cartId       the ID of the cart
+   * @param userId       the ID of the user
+   * @param restaurantId the ID of the restaurant
+   * @param foodItemId   the ID of the food item
+   * @param quantity     the quantity of the food item
+   * @param price        the price of the food item
    */
-  public CartOutDTO(Integer cartId, Integer userId, Integer restaurantId, Integer foodItemId, Integer quantity, Double price) {
+  public CartOutDTO(final Integer cartId, final Integer userId, final Integer restaurantId,
+                    final Integer foodItemId, final Integer quantity, final Double price) {
     this.cartId = cartId;
     this.userId = userId;
     this.restaurantId = restaurantId;
@@ -57,7 +70,7 @@ public class CartOutDTO {
    *
    * @param cartId the cart ID to set
    */
-  public void setCartId(Integer cartId) {
+  public void setCartId(final Integer cartId) {
     this.cartId = cartId;
   }
 
@@ -75,7 +88,7 @@ public class CartOutDTO {
    *
    * @param userId the user ID to set
    */
-  public void setUserId(Integer userId) {
+  public void setUserId(final Integer userId) {
     this.userId = userId;
   }
 
@@ -93,7 +106,7 @@ public class CartOutDTO {
    *
    * @param restaurantId the restaurant ID to set
    */
-  public void setRestaurantId(Integer restaurantId) {
+  public void setRestaurantId(final Integer restaurantId) {
     this.restaurantId = restaurantId;
   }
 
@@ -111,7 +124,7 @@ public class CartOutDTO {
    *
    * @param foodItemId the food item ID to set
    */
-  public void setFoodItemId(Integer foodItemId) {
+  public void setFoodItemId(final Integer foodItemId) {
     this.foodItemId = foodItemId;
   }
 
@@ -129,7 +142,7 @@ public class CartOutDTO {
    *
    * @param quantity the quantity to set
    */
-  public void setQuantity(Integer quantity) {
+  public void setQuantity(final Integer quantity) {
     this.quantity = quantity;
   }
 
@@ -147,12 +160,18 @@ public class CartOutDTO {
    *
    * @param price the price to set
    */
-  public void setPrice(Double price) {
+  public void setPrice(final Double price) {
     this.price = price;
   }
 
+  /**
+   * Compares this object to another object for equality.
+   *
+   * @param o the other object to compare to
+   * @return true if the objects are equal, false otherwise
+   */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -160,28 +179,37 @@ public class CartOutDTO {
       return false;
     }
     CartOutDTO that = (CartOutDTO) o;
-    return Objects.equals(cartId, that.cartId) &&
-      Objects.equals(userId, that.userId) &&
-      Objects.equals(restaurantId, that.restaurantId) &&
-      Objects.equals(foodItemId, that.foodItemId) &&
-      Objects.equals(quantity, that.quantity) &&
-      Objects.equals(price, that.price);
+    return Objects.equals(cartId, that.cartId)
+      && Objects.equals(userId, that.userId)
+      && Objects.equals(restaurantId, that.restaurantId)
+      && Objects.equals(foodItemId, that.foodItemId)
+      && Objects.equals(quantity, that.quantity)
+      && Objects.equals(price, that.price);
   }
 
+  /**
+   * Generates a hash code for this object.
+   *
+   * @return the hash code of this object
+   */
   @Override
   public int hashCode() {
     return Objects.hash(cartId, userId, restaurantId, foodItemId, quantity, price);
   }
 
-  @Override
+  /**
+   * Returns a string representation of this object.
+   *
+   * @return a string representing this CartOutDTO
+   */@Override
   public String toString() {
-    return "CartOutDTO{" +
-      "cartId=" + cartId +
-      ", userId=" + userId +
-      ", restaurantId=" + restaurantId +
-      ", foodItemId=" + foodItemId +
-      ", quantity=" + quantity +
-      ", price=" + price +
-      '}';
+    return "CartOutDTO{"
+      + "cartId=" + cartId
+      + ", userId=" + userId
+      + ", restaurantId=" + restaurantId
+      + ", foodItemId=" + foodItemId
+      + ", quantity=" + quantity
+      + ", price=" + price
+      + '}';
   }
 }

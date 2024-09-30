@@ -15,7 +15,7 @@ public class InsufficientBalanceException extends RuntimeException {
    *
    * @param message the detail message that explains the reason for the exception.
    */
-  public InsufficientBalanceException(String message) {
+  public InsufficientBalanceException(final String message) {
     super(message);
   }
 }

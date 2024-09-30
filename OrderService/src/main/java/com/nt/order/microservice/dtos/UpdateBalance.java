@@ -8,9 +8,20 @@ import java.util.Objects;
  */
 public class UpdateBalance {
 
-  private Integer id;      // Unique identifier for the balance update record
-  private Integer userId;  // ID of the user whose balance is being updated
-  private Double balance;   // New balance amount
+  /**
+   * Unique identifier for the balance update record.
+   */
+  private Integer id;
+
+  /**
+   * ID of the user whose balance is being updated.
+   */
+  private Integer userId;
+
+  /**
+   * New balance amount.
+   */
+  private Double balance;
 
   /**
    * Default constructor.
@@ -21,11 +32,11 @@ public class UpdateBalance {
   /**
    * Parameterized constructor to create an UpdateBalance object with specified details.
    *
-   * @param id       the unique identifier for the balance update
-   * @param userId   the ID of the user
-   * @param balance  the new balance amount
+   * @param id      the unique identifier for the balance update
+   * @param userId  the ID of the user
+   * @param balance the new balance amount
    */
-  public UpdateBalance(Integer id, Integer userId, Double balance) {
+  public UpdateBalance(final Integer id, final Integer userId, final Double balance) {
     this.id = id;
     this.userId = userId;
     this.balance = balance;
@@ -45,7 +56,7 @@ public class UpdateBalance {
    *
    * @param id the unique identifier to set
    */
-  public void setId(Integer id) {
+  public void setId(final Integer id) {
     this.id = id;
   }
 
@@ -63,7 +74,7 @@ public class UpdateBalance {
    *
    * @param userId the user ID to set
    */
-  public void setUserId(Integer userId) {
+  public void setUserId(final Integer userId) {
     this.userId = userId;
   }
 
@@ -81,12 +92,19 @@ public class UpdateBalance {
    *
    * @param balance the balance to set
    */
-  public void setBalance(Double balance) {
+  public void setBalance(final Double balance) {
     this.balance = balance;
   }
 
+
+  /**
+   * Checks if two UpdateBalance objects are equal.
+   *
+   * @param o the object to compare with
+   * @return true if the objects are equal, false otherwise
+   */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -94,21 +112,31 @@ public class UpdateBalance {
       return false;
     }
     UpdateBalance that = (UpdateBalance) o;
-    return Objects.equals(id, that.id) && Objects.equals(userId, that.userId) &&
-      Objects.equals(balance, that.balance);
+    return Objects.equals(id, that.id) && Objects.equals(userId, that.userId)
+      && Objects.equals(balance, that.balance);
   }
 
+  /**
+   * Returns a hash code for the UpdateBalance object.
+   *
+   * @return a hash code value for this object
+   */
   @Override
   public int hashCode() {
     return Objects.hash(id, userId, balance);
   }
 
+  /**
+   * Returns a string representation of the UpdateBalance object.
+   *
+   * @return a string representation of the UpdateBalance
+   */
   @Override
   public String toString() {
-    return "UpdateBalance{" +
-      "id=" + id +
-      ", userId=" + userId +
-      ", balance=" + balance +
-      '}';
+    return "UpdateBalance{"
+      + "id=" + id
+      + ", userId=" + userId
+      + ", balance=" + balance
+      + '}';
   }
 }

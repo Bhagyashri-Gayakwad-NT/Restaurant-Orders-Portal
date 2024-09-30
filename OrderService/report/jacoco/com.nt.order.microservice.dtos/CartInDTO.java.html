@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CartInDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.dtos</a> &gt; <span class="el_source">CartInDTO.java</span></div><h1>CartInDTO.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.dtos;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
+
+/**
+ * Data Transfer Object for Cart Input.
+ * This class is used to represent the details required
+ * to add an item to the cart, including user ID, restaurant ID,
+ * food item ID, quantity, and price.
+ */
+public class CartInDTO {
+
+  /**
+   * The ID of the user who is adding an item to the cart.
+   * It is a mandatory field, and cannot be {@code null}.
+   */
+  @NotNull(message = &quot;User ID cannot be null&quot;)
+  private Integer userId;
+
+  /**
+   * The ID of the restaurant from which the item is being added.
+   * It is a mandatory field, and cannot be {@code null}.
+   */
+  @NotNull(message = &quot;Restaurant ID cannot be null&quot;)
+  private Integer restaurantId;
+
+  /**
+   * The ID of the food item being added to the cart.
+   * It is a mandatory field, and cannot be {@code null}.
+   */
+  @NotNull(message = &quot;Food Item ID cannot be null&quot;)
+  private Integer foodItemId;
+
+  /**
+   * The quantity of the food item being added.
+   * Must be at least 1 and cannot be {@code null}.
+   */
+  @NotNull(message = &quot;Quantity cannot be null&quot;)
+  @Min(value = 1, message = &quot;Quantity must be at least 1&quot;)
+  private Integer quantity;
+
+  /**
+   * The price of the food item.
+   * Must be greater than 0 and formatted to a maximum of 10 integer digits and 2 fraction digits.
+   * It cannot be {@code null}.
+   */
+  @NotNull(message = &quot;Price cannot be null&quot;)
+  @DecimalMin(value = &quot;0.0&quot;, inclusive = false, message = &quot;Price must be greater than 0&quot;)
+  @Digits(integer = 10, fraction = 2, message = &quot;Price format is invalid&quot;)
+  private Double price;
+
+  /**
+   * Default constructor for CartInDTO.
+   * Creates an empty CartInDTO object.
+   */
+<span class="fc" id="L60">  public CartInDTO() {</span>
+<span class="fc" id="L61">  }</span>
+
+  /**
+   * Parameterized constructor to create a CartInDTO with specified values.
+   *
+   * @param userId       the ID of the user
+   * @param restaurantId the ID of the restaurant
+   * @param foodItemId   the ID of the food item
+   * @param quantity     the quantity of the food item
+   * @param price        the price of the food item
+   */
+  public CartInDTO(final Integer userId, final Integer restaurantId,
+<span class="fc" id="L73">                   final Integer foodItemId, final Integer quantity, final Double price) {</span>
+<span class="fc" id="L74">    this.userId = userId;</span>
+<span class="fc" id="L75">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L76">    this.foodItemId = foodItemId;</span>
+<span class="fc" id="L77">    this.quantity = quantity;</span>
+<span class="fc" id="L78">    this.price = price;</span>
+<span class="fc" id="L79">  }</span>
+
+  /**
+   * Retrieves the user ID.
+   *
+   * @return the user ID
+   */
+  public Integer getUserId() {
+<span class="fc" id="L87">    return userId;</span>
+  }
+
+  /**
+   * Sets the user ID.
+   *
+   * @param userId the user ID to set
+   */
+  public void setUserId(final Integer userId) {
+<span class="fc" id="L96">    this.userId = userId;</span>
+<span class="fc" id="L97">  }</span>
+
+  /**
+   * Retrieves the restaurant ID.
+   *
+   * @return the restaurant ID
+   */
+  public Integer getRestaurantId() {
+<span class="fc" id="L105">    return restaurantId;</span>
+  }
+
+  /**
+   * Sets the restaurant ID.
+   *
+   * @param restaurantId the restaurant ID to set
+   */
+  public void setRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L114">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L115">  }</span>
+
+  /**
+   * Retrieves the food item ID.
+   *
+   * @return the food item ID
+   */
+  public Integer getFoodItemId() {
+<span class="fc" id="L123">    return foodItemId;</span>
+  }
+
+  /**
+   * Sets the food item ID.
+   *
+   * @param foodItemId the food item ID to set
+   */
+  public void setFoodItemId(final Integer foodItemId) {
+<span class="fc" id="L132">    this.foodItemId = foodItemId;</span>
+<span class="fc" id="L133">  }</span>
+
+  /**
+   * Retrieves the quantity of the food item.
+   *
+   * @return the quantity
+   */
+  public Integer getQuantity() {
+<span class="fc" id="L141">    return quantity;</span>
+  }
+
+  /**
+   * Sets the quantity of the food item.
+   *
+   * @param quantity the quantity to set
+   */
+  public void setQuantity(final Integer quantity) {
+<span class="fc" id="L150">    this.quantity = quantity;</span>
+<span class="fc" id="L151">  }</span>
+
+  /**
+   * Retrieves the price of the food item.
+   *
+   * @return the price
+   */
+  public Double getPrice() {
+<span class="fc" id="L159">    return price;</span>
+  }
+
+  /**
+   * Sets the price of the food item.
+   *
+   * @param price the price to set
+   */
+  public void setPrice(final Double price) {
+<span class="fc" id="L168">    this.price = price;</span>
+<span class="fc" id="L169">  }</span>
+
+  /**
+   * Compares this CartInDTO to another object for equality.
+   * Two CartInDTOs are considered equal if they have the same
+   * userId, restaurantId, foodItemId, quantity, and price.
+   *
+   * @param o the object to compare to
+   * @return {@code true} if the objects are equal, {@code false} otherwise
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L182">      return true;</span>
+    }
+<span class="pc bpc" id="L184" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L185">      return false;</span>
+    }
+<span class="fc" id="L187">    CartInDTO cartInDTO = (CartInDTO) o;</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">    return Objects.equals(userId, cartInDTO.userId)</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantId, cartInDTO.restaurantId)</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(foodItemId, cartInDTO.foodItemId)</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(quantity, cartInDTO.quantity)</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(price, cartInDTO.price);</span>
+  }
+
+  /**
+   * Computes a hash code for this CartInDTO based on its fields.
+   *
+   * @return the hash code value for this object
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L202">    return Objects.hash(userId, restaurantId, foodItemId, quantity, price);</span>
+  }
+
+  /**
+   * Returns a string representation of the CartInDTO.
+   * This includes the userId, restaurantId, foodItemId, quantity, and price.
+   *
+   * @return a string representation of the object
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L213">    return &quot;CartInDTO{&quot;</span>
+      + &quot;userId=&quot; + userId
+      + &quot;, restaurantId=&quot; + restaurantId
+      + &quot;, foodItemId=&quot; + foodItemId
+      + &quot;, quantity=&quot; + quantity
+      + &quot;, price=&quot; + price
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

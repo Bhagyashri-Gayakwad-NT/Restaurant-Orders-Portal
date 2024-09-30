@@ -3,7 +3,10 @@ package com.nt.restaurant.microservice.indto;
 import com.nt.restaurant.microservice.dto.FoodCategoryInDTO;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class FoodCategoryInDTOTest {
 

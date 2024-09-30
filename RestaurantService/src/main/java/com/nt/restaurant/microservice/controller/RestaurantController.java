@@ -1,7 +1,7 @@
 package com.nt.restaurant.microservice.controller;
 
-import com.nt.restaurant.microservice.dto.RestaurantInDTO;
 import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.RestaurantInDTO;
 import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
 import com.nt.restaurant.microservice.service.RestaurantService;
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +38,7 @@ public class RestaurantController {
    * The {@link Logger} instance tracks events such as adding, fetching, and retrieving restaurants or their images.
    * It helps with application flow monitoring, debugging, and auditing purposes.
    */
-  private static final Logger logger = LogManager.getLogger(RestaurantController.class);
+  private static final Logger LOGGER = LogManager.getLogger(RestaurantController.class);
 
   /**
    * Service responsible for handling the business logic related to restaurant operations.
@@ -56,15 +56,15 @@ public class RestaurantController {
    * Adds a new restaurant based on the provided {@link RestaurantInDTO} data.
    *
    * @param restaurantInDTO the restaurant information to add.
+   * @param image the image file of the restaurant.
    * @return a response entity with a success message if the restaurant is added successfully.
    */
   @PostMapping(value = "/addRestaurant", consumes = "multipart/form-data")
   public ResponseEntity<CommonResponse> addRestaurant(@Valid @ModelAttribute final RestaurantInDTO restaurantInDTO,
-                                                      @RequestParam("restaurantImage")
-                                                      final MultipartFile image) {
-    logger.info("Received request to add a restaurant: {}", restaurantInDTO);
+                                                      @RequestParam("restaurantImage") final MultipartFile image) {
+    LOGGER.info("Received request to add a restaurant: {}", restaurantInDTO);
     CommonResponse response = restaurantService.addRestaurant(restaurantInDTO, image);
-    logger.info("Successfully added restaurant: {}", response.getMessage());
+    LOGGER.info("Successfully added restaurant: {}", response.getMessage());
     return new ResponseEntity<CommonResponse>(response, HttpStatus.CREATED);
   }
 
@@ -76,9 +76,9 @@ public class RestaurantController {
    */
   @GetMapping("/getRestaurant/{restaurantId}")
   public ResponseEntity<RestaurantOutDTO> getRestaurantById(@PathVariable final Integer restaurantId) {
-    logger.info("Fetching restaurant details for ID: {}", restaurantId);
+    LOGGER.info("Fetching restaurant details for ID: {}", restaurantId);
     RestaurantOutDTO restaurantOutDTO = restaurantService.getRestaurantById(restaurantId);
-    logger.info("Successfully retrieved restaurant details for ID: {}", restaurantId);
+    LOGGER.info("Successfully retrieved restaurant details for ID: {}", restaurantId);
     return ResponseEntity.ok(restaurantOutDTO);
   }
 
@@ -90,9 +90,9 @@ public class RestaurantController {
    */
   @GetMapping("/restaurants/{userId}")
   public ResponseEntity<List<RestaurantOutDTO>> getRestaurantsByUserId(@PathVariable final Integer userId) {
-    logger.info("Fetching restaurants for user ID: {}", userId);
+    LOGGER.info("Fetching restaurants for user ID: {}", userId);
     List<RestaurantOutDTO> restaurants = restaurantService.getRestaurantsByUserId(userId);
-    logger.info("Successfully retrieved {} restaurants for user ID: {}", restaurants.size(), userId);
+    LOGGER.info("Successfully retrieved {} restaurants for user ID: {}", restaurants.size(), userId);
     return ResponseEntity.ok(restaurants);
   }
 
@@ -104,9 +104,9 @@ public class RestaurantController {
    */
   @GetMapping("/{id}/image")
   public ResponseEntity<byte[]> getRestaurantImage(@PathVariable final Integer id) {
-    logger.info("Fetching image for restaurant ID: {}", id);
+    LOGGER.info("Fetching image for restaurant ID: {}", id);
     byte[] imageData = restaurantService.getRestaurantImage(id);
-    logger.info("Successfully retrieved image for restaurant ID: {}", id);
+    LOGGER.info("Successfully retrieved image for restaurant ID: {}", id);
     return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageData);
   }
 
@@ -117,9 +117,9 @@ public class RestaurantController {
    */
   @GetMapping()
   public ResponseEntity<List<RestaurantOutDTO>> getAllRestaurants() {
-    logger.info("Fetching all restaurants");
+    LOGGER.info("Fetching all restaurants");
     List<RestaurantOutDTO> restaurantOutDTOs = restaurantService.getAllRestaurants();
-    logger.info("Successfully retrieved {} restaurants", restaurantOutDTOs.size());
+    LOGGER.info("Successfully retrieved {} restaurants", restaurantOutDTOs.size());
     return ResponseEntity.ok(restaurantOutDTOs);
   }
 

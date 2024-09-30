@@ -1,8 +1,6 @@
 package com.nt.user.microservice.service;
 
 import com.nt.user.microservice.dto.UserOutDTO;
-import com.nt.user.microservice.exceptions.InsufficientBalanceException;
-import com.nt.user.microservice.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,8 +16,6 @@ public interface WalletBalanceService {
    * @param userId the ID of the user whose wallet balance is to be updated
    * @param amount the amount to deduct from the user's wallet balance
    * @return {@link UserOutDTO} containing the updated user information and new wallet balance
-   * @throws ResourceNotFoundException if the user or their wallet is not found
-   * @throws InsufficientBalanceException if the user's wallet does not have enough balance
    */
   UserOutDTO updateWalletBalance(Integer userId,  Double amount);
 
@@ -29,7 +25,6 @@ public interface WalletBalanceService {
    * @param userId the ID of the user
    * @param amount the amount to add
    * @return updated user information with new wallet balance
-   * @throws ResourceNotFoundException if the user or wallet is not found
    */
   UserOutDTO addMoney(Integer userId,  Double amount);
 

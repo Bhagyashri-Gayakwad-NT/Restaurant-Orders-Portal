@@ -38,7 +38,7 @@ public class FoodItemInDTO {
   @NotBlank(message = "Food item name cannot be blank")
   @Size(max = 100, message = "Food item name cannot exceed 100 characters")
   @Pattern(regexp = "^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$",
-    message = "Food Item name must contain at least two alphabets")
+    message = "Food Item name must contain at least two alphabets and cannot include numbers")
   private String foodItemName;
 
   /**
@@ -89,8 +89,9 @@ public class FoodItemInDTO {
    * @param isAvailable    the availability status of the food item
    * @param foodItemImage  the image of the food item
    */
-  public FoodItemInDTO(Integer foodCategoryId, Integer restaurantId, String foodItemName, String description, Double price,
-                       boolean isAvailable, MultipartFile foodItemImage) {
+  public FoodItemInDTO(final Integer foodCategoryId, final Integer restaurantId, final String foodItemName,
+                       final String description, final Double price,
+                       final boolean isAvailable, final MultipartFile foodItemImage) {
     this.foodCategoryId = foodCategoryId;
     this.restaurantId = restaurantId;
     this.foodItemName = foodItemName;
@@ -114,7 +115,7 @@ public class FoodItemInDTO {
    *
    * @param foodCategoryId the new food category ID
    */
-  public void setFoodCategoryId(Integer foodCategoryId) {
+  public void setFoodCategoryId(final Integer foodCategoryId) {
     this.foodCategoryId = foodCategoryId;
   }
 
@@ -132,7 +133,7 @@ public class FoodItemInDTO {
    *
    * @param restaurantId the new restaurant ID
    */
-  public void setRestaurantId(Integer restaurantId) {
+  public void setRestaurantId(final Integer restaurantId) {
     this.restaurantId = restaurantId;
   }
 
@@ -150,7 +151,7 @@ public class FoodItemInDTO {
    *
    * @param foodItemName the new food item name
    */
-  public void setFoodItemName(String foodItemName) {
+  public void setFoodItemName(final String foodItemName) {
     this.foodItemName = foodItemName;
   }
 
@@ -168,7 +169,7 @@ public class FoodItemInDTO {
    *
    * @param description the new description
    */
-  public void setDescription(String description) {
+  public void setDescription(final String description) {
     this.description = description;
   }
 
@@ -186,7 +187,7 @@ public class FoodItemInDTO {
    *
    * @param price the new price
    */
-  public void setPrice(Double price) {
+  public void setPrice(final Double price) {
     this.price = price;
   }
 
@@ -204,7 +205,7 @@ public class FoodItemInDTO {
    *
    * @param available the new availability status
    */
-  public void setAvailable(boolean available) {
+  public void setAvailable(final boolean available) {
     isAvailable = available;
   }
 
@@ -222,7 +223,7 @@ public class FoodItemInDTO {
    *
    * @param foodItemImage the new food item image
    */
-  public void setFoodItemImage(MultipartFile foodItemImage) {
+  public void setFoodItemImage(final MultipartFile foodItemImage) {
     this.foodItemImage = foodItemImage;
   }
 
@@ -233,7 +234,7 @@ public class FoodItemInDTO {
    * @return {@code true} if both objects are equal, otherwise {@code false}
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -241,10 +242,10 @@ public class FoodItemInDTO {
       return false;
     }
     FoodItemInDTO that = (FoodItemInDTO) o;
-    return isAvailable == that.isAvailable && Objects.equals(foodCategoryId, that.foodCategoryId) &&
-      Objects.equals(restaurantId, that.restaurantId) && Objects.equals(foodItemName, that.foodItemName) &&
-      Objects.equals(description, that.description) && Objects.equals(price, that.price) &&
-      Objects.equals(foodItemImage, that.foodItemImage);
+    return isAvailable == that.isAvailable && Objects.equals(foodCategoryId, that.foodCategoryId)
+      && Objects.equals(restaurantId, that.restaurantId) && Objects.equals(foodItemName, that.foodItemName)
+      && Objects.equals(description, that.description) && Objects.equals(price, that.price)
+      && Objects.equals(foodItemImage, that.foodItemImage);
   }
 
   /**
@@ -264,14 +265,20 @@ public class FoodItemInDTO {
    */
   @Override
   public String toString() {
-    return "FoodItemInDTO{" +
-      "foodCategoryId=" + foodCategoryId +
-      ", restaurantId=" + restaurantId +
-      ", foodItemName='" + foodItemName + '\'' +
-      ", description='" + description + '\'' +
-      ", price=" + price +
-      ", isAvailable=" + isAvailable +
-      ", foodItemImage=" + foodItemImage +
-      '}';
+    return "FoodItemInDTO{"
+      + "foodCategoryId="
+      + foodCategoryId
+      + ", restaurantId="
+      + restaurantId
+      + ", foodItemName='"
+      + foodItemName + '\''
+      + ", description='"
+      + description + '\''
+      + ", price=" + price
+      + ", isAvailable="
+      + isAvailable
+      + ", foodItemImage="
+      + foodItemImage
+      + '}';
   }
 }

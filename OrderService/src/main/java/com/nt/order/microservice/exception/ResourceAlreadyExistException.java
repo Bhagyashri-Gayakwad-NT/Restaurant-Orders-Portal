@@ -11,7 +11,7 @@ public class ResourceAlreadyExistException extends RuntimeException {
    *
    * @param message the detail message, saved for later retrieval by the {@link Throwable#getMessage()} method.
    */
-  public ResourceAlreadyExistException(String message) {
+  public ResourceAlreadyExistException(final String message) {
     super(message);
   }
 }

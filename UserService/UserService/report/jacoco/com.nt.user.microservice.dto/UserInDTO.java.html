@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserInDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.dto</a> &gt; <span class="el_source">UserInDTO.java</span></div><h1>UserInDTO.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.dto;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import java.util.Objects;
+
+/**
+ * Data Transfer Object (DTO) for user registration input.
+ * This DTO is used to capture user details during registration.
+ */
+<span class="fc" id="L12">public class UserInDTO {</span>
+
+  /**
+   * First name of the user.
+   * It must start with a capital letter and contain only alphabetic characters.
+   */
+  @NotBlank(message = &quot;First name is required&quot;)
+  @Pattern(regexp = &quot;^[A-Z][a-zA-Z]*$&quot;,
+    message = &quot;First name must start with a capital letter and contain only letters&quot;)
+  private String firstName;
+
+  /**
+   * Last name of the user.
+   * It must start with a capital letter and contain only alphabetic characters.
+   */
+  @NotBlank(message = &quot;Last name is required&quot;)
+  @Pattern(regexp = &quot;^[A-Z][a-zA-Z]*$&quot;,
+    message = &quot;Last name must start with a capital letter and contain only letters&quot;)
+  private String lastName;
+
+  /**
+   * Email address of the user.
+   * It must be valid and should end with '@nucleusteq.com'.
+   */
+  @NotBlank(message = &quot;Email is required&quot;)
+  @Email(message = &quot;Email should be valid&quot;)
+  @Pattern(regexp = &quot;^[a-zA-Z]+[a-zA-Z0-9._%+-]*@(nucleusteq\\.com)$&quot;,
+    message = &quot;Email must be valid, must end with @nucleusteq.com, and &quot;
+      + &quot;contain at least one alphabet before the '@' symbol.&quot;)
+  private String email;
+
+  /**
+   * Password of the user.
+   * Cannot be blank.
+   */
+  @NotBlank(message = &quot;Password is required&quot;)
+  private String password;
+
+  /**
+   * Phone number of the user.
+   * It must start with 9, 8, 7, or 6 and contain exactly 10 digits.
+   */
+  @NotBlank(message = &quot;Phone number is required&quot;)
+  @Pattern(regexp = &quot;^[9876]\\d{9}$&quot;,
+    message = &quot;Phone number must start with 9, 8, 7, or 6 and contain 10 digits&quot;)
+  private String phoneNo;
+
+  /**
+   * Role of the user.
+   * Must be either 'USER' or 'RESTAURANT_OWNER'.
+   */
+  @NotBlank(message = &quot;Role is required&quot;)
+  @Pattern(regexp = &quot;^(USER|RESTAURANT_OWNER)$&quot;,
+    message = &quot;Role must be either 'USER' or 'RESTAURANT_OWNER'&quot;)
+  private String role;
+
+  // Getters and setters
+
+  /**
+   * Gets the first name of the user.
+   *
+   * @return the first name of the user.
+   */
+  public String getFirstName() {
+<span class="fc" id="L76">    return firstName;</span>
+  }
+
+  /**
+   * Sets the first name of the user.
+   *
+   * @param firstName the first name to set.
+   */
+  public void setFirstName(final String firstName) {
+<span class="fc" id="L85">    this.firstName = firstName;</span>
+<span class="fc" id="L86">  }</span>
+
+  /**
+   * Gets the last name of the user.
+   *
+   * @return the last name of the user.
+   */
+  public String getLastName() {
+<span class="fc" id="L94">    return lastName;</span>
+  }
+
+  /**
+   * Sets the last name of the user.
+   *
+   * @param lastName the last name to set.
+   */
+  public void setLastName(final String lastName) {
+<span class="fc" id="L103">    this.lastName = lastName;</span>
+<span class="fc" id="L104">  }</span>
+
+  /**
+   * Gets the email address of the user.
+   *
+   * @return the email address of the user.
+   */
+  public String getEmail() {
+<span class="fc" id="L112">    return email;</span>
+  }
+
+  /**
+   * Sets the email address of the user.
+   *
+   * @param email the email address to set.
+   */
+  public void setEmail(final String email) {
+<span class="fc" id="L121">    this.email = email;</span>
+<span class="fc" id="L122">  }</span>
+
+  /**
+   * Gets the password of the user.
+   *
+   * @return the password of the user.
+   */
+  public String getPassword() {
+<span class="fc" id="L130">    return password;</span>
+  }
+
+  /**
+   * Sets the password of the user.
+   *
+   * @param password the password to set.
+   */
+  public void setPassword(final String password) {
+<span class="fc" id="L139">    this.password = password;</span>
+<span class="fc" id="L140">  }</span>
+
+  /**
+   * Gets the phone number of the user.
+   *
+   * @return the phone number of the user.
+   */
+  public String getPhoneNo() {
+<span class="fc" id="L148">    return phoneNo;</span>
+  }
+
+  /**
+   * Sets the phone number of the user.
+   *
+   * @param phoneNo the phone number to set.
+   */
+  public void setPhoneNo(final String phoneNo) {
+<span class="fc" id="L157">    this.phoneNo = phoneNo;</span>
+<span class="fc" id="L158">  }</span>
+
+  /**
+   * Gets the role of the user.
+   *
+   * @return the role of the user.
+   */
+  public String getRole() {
+<span class="fc" id="L166">    return role;</span>
+  }
+
+  /**
+   * Sets the role of the user.
+   *
+   * @param role the role to set.
+   */
+  public void setRole(final String role) {
+<span class="fc" id="L175">    this.role = role;</span>
+<span class="fc" id="L176">  }</span>
+
+  /**
+   * Checks equality between this object and another object.
+   *
+   * @param o the object to compare with.
+   * @return true if the objects are equal, false otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="fc bfc" id="L186" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L187">      return true;</span>
+    }
+<span class="pc bpc" id="L189" title="1 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L190">      return false;</span>
+    }
+<span class="fc" id="L192">    UserInDTO userInDTO = (UserInDTO) o;</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">    return Objects.equals(firstName, userInDTO.firstName)</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">      &amp;&amp; Objects.equals(lastName, userInDTO.lastName)</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">      &amp;&amp; Objects.equals(email, userInDTO.email)</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">      &amp;&amp; Objects.equals(password, userInDTO.password)</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">      &amp;&amp; Objects.equals(phoneNo, userInDTO.phoneNo)</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">      &amp;&amp; Objects.equals(role, userInDTO.role);</span>
+  }
+
+  /**
+   * Computes the hash code for this object.
+   *
+   * @return the hash code value for this object.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L208">    return Objects.hash(firstName, lastName, email, password, phoneNo, role);</span>
+  }
+
+  /**
+   * Returns the string representation of this object.
+   *
+   * @return the string representation of this object.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L218">    return &quot;UserInDTO{&quot;</span>
+      + &quot;firstName='&quot; + firstName
+      + '\'' + &quot;, lastName='&quot; + lastName
+      + '\'' + &quot;, email='&quot; + email
+      + '\'' + &quot;, password='&quot; + password
+      + '\'' + &quot;, phoneNo='&quot; + phoneNo
+      + '\'' + &quot;, role='&quot; + role
+      + '\'' + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

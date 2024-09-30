@@ -6,7 +6,12 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FoodItemTest {
 
@@ -17,7 +22,7 @@ public class FoodItemTest {
   private static final String DESCRIPTION = "Test Description";
   private static final Double PRICE = 9.99;
   private static final boolean IS_AVAILABLE = true;
-  private static final byte[] IMAGE = new byte[]{1, 2, 3};
+  private static final byte[] IMAGE = new byte[] {1, 2, 3};
 
   @Test
   public void testDefaultConstructor() {
@@ -83,7 +88,7 @@ public class FoodItemTest {
       ", restaurantId=" + RESTAURANT_ID +
       ", foodItemName='" + FOOD_ITEM_NAME + '\'' +
       ", description='" + DESCRIPTION + '\'' +
-      ", Price=" + PRICE +
+      ", price=" + PRICE +
       ", isAvailable=" + IS_AVAILABLE +
       ", foodItemImage=" + Arrays.toString(IMAGE) +
       '}';

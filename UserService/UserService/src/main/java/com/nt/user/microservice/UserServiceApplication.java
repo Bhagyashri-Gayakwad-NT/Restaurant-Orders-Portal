@@ -2,7 +2,6 @@ package com.nt.user.microservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
  * The main class for the User Service microservice application.
@@ -13,7 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
  * </p>
  */
 @SpringBootApplication
-@ComponentScan(basePackages = "com.nt.user.microservice")
 public class UserServiceApplication {
 
   /**
@@ -23,7 +21,7 @@ public class UserServiceApplication {
    *
    * @param args command-line arguments passed to the application
    */
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
     SpringApplication.run(UserServiceApplication.class, args);
   }
 }

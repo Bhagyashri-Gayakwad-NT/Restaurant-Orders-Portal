@@ -1,8 +1,17 @@
 package com.nt.order.microservice.service;
 
-import com.nt.order.microservice.dtos.*;
+import com.nt.order.microservice.dtos.AddressOutDTO;
+import com.nt.order.microservice.dtos.AmountInDTO;
+import com.nt.order.microservice.dtos.CartItemDTO;
+import com.nt.order.microservice.dtos.CommonResponse;
+import com.nt.order.microservice.dtos.FoodItemOutDTO;
+import com.nt.order.microservice.dtos.OrderInDTO;
+import com.nt.order.microservice.dtos.OrderOutDTO;
+import com.nt.order.microservice.dtos.RestaurantOutDTO;
+import com.nt.order.microservice.dtos.UserOutDTO;
 import com.nt.order.microservice.entities.Order;
-import com.nt.order.microservice.exception.*;
+import com.nt.order.microservice.exception.ResourceNotFoundException;
+import com.nt.order.microservice.exception.UnauthorizedException;
 import com.nt.order.microservice.repository.CartRepository;
 import com.nt.order.microservice.repository.OrderRepository;
 import com.nt.order.microservice.serviceimpl.AddressFClient;
@@ -26,9 +35,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class OrderServiceImplTest {
 
@@ -99,27 +115,6 @@ public class OrderServiceImplTest {
     foodItemOutDTO = new FoodItemOutDTO();
     foodItemOutDTO.setFoodItemId(1);  // Mocking a valid food item ID
   }
-
-//  @Test
-//  public void testPlaceOrder_Success() {
-//    // Setup valid mocks
-//    when(userFClient.getUserProfile(anyInt())).thenReturn(userOutDTO);
-//    when(restaurantFClient.getRestaurantById(anyInt())).thenReturn(restaurantOutDTO);
-//    when(addressFClient.getUserAddresses(anyInt())).thenReturn(Collections.singletonList(addressOutDTO));
-//
-//    // Mocking food item response
-//    when(foodItemFClient.getFoodItemById(anyInt())).thenReturn(foodItemOutDTO);
-//    when(foodItemFClient.getFoodItemsByRestaurant(anyInt())).thenReturn(Collections.singletonList(foodItemOutDTO));
-//
-//    // Call placeOrder
-//    CommonResponse response = orderService.placeOrder(orderInDTO);
-//
-//    // Verify successful order placement
-//    assertEquals(Constants.ITEM_ADDED_TO_CART_SUCCESS, response.getMessage());
-//    verify(orderRepository, times(1)).save(any(Order.class));
-//    verify(cartRepository, times(1)).deleteByUserId(anyInt());
-//    verify(userFClient, times(1)).updateWalletBalance(anyInt(), any(AmountInDTO.class));
-//  }
 
   @Test
   public void testPlaceOrder_UserIsRestaurantOwner() {
@@ -265,6 +260,7 @@ public class OrderServiceImplTest {
     assertTrue(orders.isEmpty());
     verify(orderRepository, times(1)).findByUserId(anyInt());
   }
+
   @Test
   public void testGetOrdersByUserId_UserNotFound() {
     when(userFClient.getUserProfile(anyInt())).thenThrow(FeignException.NotFound.class);

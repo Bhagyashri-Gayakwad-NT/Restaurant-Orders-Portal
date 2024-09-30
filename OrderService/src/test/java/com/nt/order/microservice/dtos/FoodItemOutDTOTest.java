@@ -1,7 +1,13 @@
 package com.nt.order.microservice.dtos;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FoodItemOutDTOTest {
 
@@ -31,7 +37,7 @@ class FoodItemOutDTOTest {
     String description = "Sample Description";
     Double price = 100.0;
     boolean isAvailable = true;
-    byte[] foodItemImage = new byte[]{1, 2, 3};
+    byte[] foodItemImage = new byte[] {1, 2, 3};
 
     // When
     FoodItemOutDTO dto = new FoodItemOutDTO(foodItemId, categoryId, restaurantId, foodItemName,
@@ -59,7 +65,7 @@ class FoodItemOutDTOTest {
     String description = "Another Description";
     Double price = 200.0;
     boolean isAvailable = false;
-    byte[] foodItemImage = new byte[]{4, 5, 6};
+    byte[] foodItemImage = new byte[] {4, 5, 6};
 
     // When
     dto.setFoodItemId(foodItemId);
@@ -85,9 +91,9 @@ class FoodItemOutDTOTest {
   @Test
   void testEqualsAndHashCode() {
     // Given
-    FoodItemOutDTO dto1 = new FoodItemOutDTO(1, 2, 3, "FoodName", "Description", 100.0, true, new byte[]{1, 2, 3});
-    FoodItemOutDTO dto2 = new FoodItemOutDTO(1, 2, 3, "FoodName", "Description", 100.0, true, new byte[]{1, 2, 3});
-    FoodItemOutDTO dto3 = new FoodItemOutDTO(2, 3, 4, "DifferentFood", "Different Description", 200.0, false, new byte[]{4, 5, 6});
+    FoodItemOutDTO dto1 = new FoodItemOutDTO(1, 2, 3, "FoodName", "Description", 100.0, true, new byte[] {1, 2, 3});
+    FoodItemOutDTO dto2 = new FoodItemOutDTO(1, 2, 3, "FoodName", "Description", 100.0, true, new byte[] {1, 2, 3});
+    FoodItemOutDTO dto3 = new FoodItemOutDTO(2, 3, 4, "DifferentFood", "Different Description", 200.0, false, new byte[] {4, 5, 6});
 
     // Then
     assertEquals(dto1, dto2);
@@ -99,7 +105,7 @@ class FoodItemOutDTOTest {
   @Test
   void testToString() {
     // Given
-    FoodItemOutDTO dto = new FoodItemOutDTO(1, 2, 3, "FoodItem", "Food Description", 150.0, true, new byte[]{7, 8, 9});
+    FoodItemOutDTO dto = new FoodItemOutDTO(1, 2, 3, "FoodItem", "Food Description", 150.0, true, new byte[] {7, 8, 9});
 
     // When
     String result = dto.toString();

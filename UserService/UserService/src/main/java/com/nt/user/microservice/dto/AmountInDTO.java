@@ -29,7 +29,7 @@ public class AmountInDTO {
    *
    * @param balance the amount to be deducted from the wallet.
    */
-  public AmountInDTO(Double balance) {
+  public AmountInDTO(final Double balance) {
     this.balance = balance;
   }
 
@@ -47,29 +47,51 @@ public class AmountInDTO {
    *
    * @param balance the amount to set.
    */
-  public void setBalance(Double balance) {
+  public void setBalance(final Double balance) {
     this.balance = balance;
   }
 
+  /**
+   * Compares this AmountInDTO object to the specified object for equality.
+   * Two AmountInDTO objects are considered equal if they have the same value
+   * for the balance field.
+   *
+   * @param o the object to compare this AmountInDTO against
+   * @return true if the specified object is equal to this AmountInDTO; false otherwise
+   */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
-      return true; }
+      return true;
+    }
     if (!(o instanceof AmountInDTO)) {
-      return false; }
+      return false;
+    }
     AmountInDTO that = (AmountInDTO) o;
     return Objects.equals(balance, that.balance);
   }
 
+  /**
+   * Returns a hash code value for this AmountInDTO object.
+   * The hash code is computed based on the value of the balance field.
+   *
+   * @return a hash code value for this AmountInDTO object
+   */
   @Override
   public int hashCode() {
     return Objects.hashCode(balance);
   }
 
+  /**
+   * Returns a string representation of this AmountInDTO object.
+   * The string includes the class name and the value of the balance field.
+   *
+   * @return a string representation of this AmountInDTO object
+   */
   @Override
   public String toString() {
-    return "AmountInDTO{" +
-      "balance=" + balance +
-      '}';
+    return "AmountInDTO{"
+      + "balance=" + balance
+      + '}';
   }
 }

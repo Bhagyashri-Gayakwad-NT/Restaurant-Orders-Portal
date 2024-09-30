@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Constants.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.util</a> &gt; <span class="el_source">Constants.java</span></div><h1>Constants.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.util;
+
+/**
+ * Constants class contains all the constant string messages used throughout the application.
+ * These constants are used for error messages, success responses, and validation messages.
+ */
+<span class="nc" id="L7">public class Constants {</span>
+
+  // Cart-related messages
+  /**
+   * Success message when an item is removed from the cart.
+   */
+  public static final String CART_ITEM_REMOVED_SUCCESSFULLY = &quot;Cart item removed successfully&quot;;
+  /**
+   * Error message when a cart item is not found.
+   */
+  public static final String CART_ITEM_NOT_FOUND = &quot;Cart item not found&quot;;
+  /**
+   * Error message when a cart is not found.
+   */
+  public static final String CART_NOT_FOUND = &quot;Cart not found&quot;;
+  /**
+   * Success message when a cart is cleared after placing an order.
+   */
+  public static final String CART_CLEARED_SUCCESSFULLY = &quot;Cart cleared successfully after placing the order.&quot;;
+  /**
+   * Error message when there is a price mismatch for a food item in the cart.
+   */
+  public static final String PRICE_MISMATCH = &quot;Price mismatch between request and actual food item price.&quot;;
+  /**
+   * Success message when the quantity of an item is updated in the cart.
+   */
+  public static final String ITEM_QUANTITY_UPDATED_SUCCESS = &quot;Item quantity updated successfully in the cart.&quot;;
+  /**
+   * Success message when an item is removed from the cart.
+   */
+  public static final String ITEM_REMOVED_SUCCESSFULLY = &quot;Item removed from cart successfully.&quot;;
+  /**
+   * Success message when an item is added to the cart.
+   */
+  public static final String ITEM_ADDED_TO_CART_SUCCESS = &quot;Item added to cart successfully.&quot;;
+
+  // Order-related messages
+  /**
+   * Success message when an order is cancelled.
+   */
+  public static final String ORDER_CANCELLED_SUCCESSFULLY = &quot;Order cancelled successfully.&quot;;
+  /**
+   * Success message when an order is marked as completed.
+   */
+  public static final String ORDER_COMPLETED_SUCCESSFULLY = &quot;Order has been marked as completed successfully&quot;;
+  /**
+   * Error message when a user is not found.
+   */
+  public static final String USER_NOT_FOUND = &quot;User not found&quot;;
+  /**
+   * Error message when an order is not found.
+   */
+  public static final String ORDER_NOT_FOUND = &quot;Order not found&quot;;
+  /**
+   * Error message when a restaurant ID is invalid.
+   */
+  public static final String INVALID_RESTAURANT_ID = &quot;Invalid restaurant ID.&quot;;
+  /**
+   * Error message when a food item ID is invalid.
+   */
+  public static final String INVALID_FOOD_ITEM_ID = &quot;Invalid food item ID.&quot;;
+  /**
+   * Error message when a cart quantity is less than 1.
+   */
+  public static final String INVALID_CART_QUANTITY = &quot;Quantity cannot be less than 1.&quot;;
+  /**
+   * Error message when a user's cart is empty.
+   */
+  public static final String CART_EMPTY_FOR_USER = &quot;No items found in the cart for this User&quot;;
+
+  // Authorization messages
+  /**
+   * Error message when a user is unauthorized to perform an action.
+   */
+  public static final String UNAUTHORIZED_USER = &quot;Unauthorized: Only the restaurant owner can mark the order as completed.&quot;;
+  /**
+   * Error message when an order is already completed.
+   */
+  public static final String ALREADY_COMPLETED = &quot;Order is already completed.&quot;;
+  /**
+   * Error message when a restaurant owner is attempting to perform a user-only action.
+   */
+  public static final String RESTAURANT_OWNER = &quot;User is Restaurant Owner&quot;;
+
+  // Order cancellation-related messages
+  /**
+   * Error message when the time limit for order cancellation has been exceeded.
+   */
+  public static final String ORDER_CANCELLATION_TIME_LIMIT_EXCEEDED = &quot;Order cancellation time limit exceeded&quot;;
+
+  // Cart restrictions for restaurant owners
+  /**
+   * Error message when a restaurant owner attempts to add items to the cart.
+   */
+  public static final String RESTAURANT_OWNER_CART_ERROR = &quot;Restaurant owners cannot add items to the cart.&quot;;
+  /**
+   * Error message when a restaurant owner attempts to place an order.
+   */
+  public static final String RESTAURANT_OWNER_ORDER_ERROR = &quot;Restaurant owners cannot place an order&quot;;
+
+  // General error messages
+  /**
+   * Error message for unsupported methods.
+   */
+  public static final String METHODE_NOT_ALLOWED = &quot;Method not allowed&quot;;
+  /**
+   * Error message when no addresses are found for a user.
+   */
+  public static final String ADDRESS_NOT_FOUND = &quot;No addresses found for this user.&quot;;
+  /**
+   * Error message when a food item is not found.
+   */
+  public static final String FOODITEM_NOT_FOUND = &quot;Food Item not found for this id.&quot;;
+  /**
+   * Error message when an address ID is invalid.
+   */
+  public static final String INVALID_ADDRESS_ID = &quot;Invalid address Id.&quot;;
+
+  // Order placement-related messages
+  /**
+   * Success message when an order is placed successfully.
+   */
+  public static final String ORDER_PLACED_SUCCESSFULLY = &quot;Order placed successfully!&quot;;
+  /**
+   * Error message when a food item does not belong to a specified restaurant.
+   */
+  public static final String FOOD_ITEM_DOES_NOT_BELONG_TO_RESTAURANT = &quot;Food item does not belong to the specified restaurant&quot;;
+
+  // Wallet-related messages
+  /**
+   * Error message when a wallet has insufficient balance.
+   */
+  public static final String INSUFFICIENT_BALANCE = &quot;Insufficient balance in wallet.&quot;;
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

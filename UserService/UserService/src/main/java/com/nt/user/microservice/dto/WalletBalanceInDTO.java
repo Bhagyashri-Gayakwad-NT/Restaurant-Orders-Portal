@@ -35,7 +35,7 @@ public class WalletBalanceInDTO {
    *
    * @param id the user ID to set
    */
-  public void setId(Integer id) {
+  public void setId(final Integer id) {
     this.id = id;
   }
 
@@ -53,30 +53,54 @@ public class WalletBalanceInDTO {
    *
    * @param balance the balance to set
    */
-  public void setBalance(double balance) {
+  public void setBalance(final double balance) {
     this.balance = balance;
   }
 
+  /**
+   * Compares this {@code WalletBalanceInDTO} with another object for equality.
+   *
+   * <p>Two {@code WalletBalanceInDTO} objects are considered equal if they have
+   * the same user ID and wallet balance.</p>
+   *
+   * @param o the reference object with which to compare.
+   * @return {@code true} if this object is equal to the given object;
+   *         {@code false} otherwise.
+   */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
-      return true; }
+      return true;
+    }
     if (!(o instanceof WalletBalanceInDTO)) {
-      return false; }
+      return false;
+    }
     WalletBalanceInDTO that = (WalletBalanceInDTO) o;
     return Double.compare(balance, that.balance) == 0 && Objects.equals(id, that.id);
   }
 
+  /**
+   * Returns a hash code value for this {@code WalletBalanceInDTO}.
+   *
+   * @return a hash code value based on the user ID and wallet balance.
+   */
   @Override
   public int hashCode() {
     return Objects.hash(id, balance);
   }
 
+  /**
+   * Returns a string representation of this {@code WalletBalanceInDTO}.
+   *
+   * <p>The string representation includes the class name, user ID, and balance.</p>
+   *
+   * @return a string representation of the object.
+   */
   @Override
   public String toString() {
-    return "WalletBalanceInDTO{" +
-      "id=" + id +
-      ", balance=" + balance +
-      '}';
+    return "WalletBalanceInDTO{"
+      + "id=" + id
+      + ", balance=" + balance
+      + '}';
   }
 }

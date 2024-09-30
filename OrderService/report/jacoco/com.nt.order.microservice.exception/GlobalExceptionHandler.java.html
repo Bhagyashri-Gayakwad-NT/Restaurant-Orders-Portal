@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.exception</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.exception;
+
+import com.nt.order.microservice.util.Constants;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Global Exception Handler for managing exceptions thrown in the application.
+ * This class handles various exceptions and provides standardized error responses.
+ */
+@ControllerAdvice
+<span class="nc" id="L22">public class GlobalExceptionHandler {</span>
+
+  /**
+   * Handles validation exceptions when method arguments are not valid.
+   *
+   * @param ex the validation exception
+   * @return ResponseEntity with error details
+   */
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleValidationExceptions(final MethodArgumentNotValidException ex) {
+<span class="nc" id="L32">    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
+
+<span class="nc bnc" id="L34" title="All 2 branches missed.">    for (FieldError error : ex.getBindingResult().getFieldErrors()) {</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">      String fieldName = error.getField().contains(&quot;[&quot;) ? error.getField().substring(error.getField().indexOf(&quot;]&quot;) + 2)</span>
+<span class="nc" id="L36">        : error.getField();</span>
+<span class="nc" id="L37">      errors.put(fieldName, error.getDefaultMessage());</span>
+<span class="nc" id="L38">    }</span>
+<span class="nc" id="L39">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), &quot;Validation failed&quot;, errors);</span>
+<span class="nc" id="L40">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  /**
+   * Handles exceptions thrown when an unsupported HTTP method is used.
+   *
+   * @param ex the method not supported exception
+   * @return ResponseEntity with error details
+   */
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleMethodNotSupportedException(final HttpRequestMethodNotSupportedException ex) {
+<span class="nc" id="L51">    String errorMessage = Constants.METHODE_NOT_ALLOWED;</span>
+<span class="nc" id="L52">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), errorMessage);</span>
+<span class="nc" id="L53">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);</span>
+  }
+
+  /**
+   * Handles custom invalid request exceptions.
+   *
+   * @param ex the invalid request exception
+   * @return ResponseEntity with error details
+   */
+  @ExceptionHandler(InvalidRequestException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleInvalidRequestException(final InvalidRequestException ex) {
+<span class="nc" id="L64">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());</span>
+<span class="nc" id="L65">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  /**
+   * Handles resource not found exceptions.
+   *
+   * @param ex the resource not found exception
+   * @return ResponseEntity with error details
+   */
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleUserNotFoundException(final ResourceNotFoundException ex) {
+<span class="nc" id="L76">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());</span>
+<span class="nc" id="L77">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.NOT_FOUND);</span>
+  }
+
+  /**
+   * Handles unauthorized access exceptions.
+   *
+   * @param ex the unauthorized exception
+   * @return ResponseEntity with error details
+   */
+  @ExceptionHandler(UnauthorizedException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleUnauthorizedException(final UnauthorizedException ex) {
+<span class="nc" id="L88">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());</span>
+<span class="nc" id="L89">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.UNAUTHORIZED);</span>
+  }
+
+  /**
+   * Handles exceptions thrown when a resource already exists.
+   *
+   * @param ex the resource already exists exception
+   * @return ResponseEntity with error details
+   */
+  @ExceptionHandler(ResourceAlreadyExistException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleAlreadyExistException(final ResourceAlreadyExistException ex) {
+<span class="nc" id="L100">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());</span>
+<span class="nc" id="L101">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.CONFLICT);</span>
+  }
+
+  /**
+   * Handles insufficient balance exceptions.
+   *
+   * @param ex the insufficient balance exception
+   * @return ResponseEntity with error details
+   */
+  @ExceptionHandler(InsufficientBalanceException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleInsufficientBalanceException(final InsufficientBalanceException ex) {
+<span class="nc" id="L112">    String errorMessage = Constants.INSUFFICIENT_BALANCE;</span>
+<span class="nc" id="L113">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), errorMessage);</span>
+<span class="nc" id="L114">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  /**
+   * Handles exceptions related to unreadable HTTP messages.
+   *
+   * @param ex      the HTTP message not readable exception
+   * @param request the web request
+   * @return ResponseEntity with error details
+   */
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity&lt;Object&gt; handleHttpMessageNotReadableException(
+    final HttpMessageNotReadableException ex, final WebRequest request) {
+<span class="nc" id="L127">    Map&lt;String, Object&gt; body = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L128">    body.put(&quot;status&quot;, HttpStatus.BAD_REQUEST.value());</span>
+<span class="nc" id="L129">    body.put(&quot;error&quot;, &quot;Invalid request body&quot;);</span>
+<span class="nc" id="L130">    body.put(&quot;message&quot;, &quot;No content was provided in the request body or the format is invalid&quot;);</span>
+
+<span class="nc" id="L132">    return new ResponseEntity&lt;&gt;(body, HttpStatus.BAD_REQUEST);</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

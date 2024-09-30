@@ -1,6 +1,8 @@
 package com.nt.restaurant.microservice.service;
 
-import com.nt.restaurant.microservice.dto.*;
+import com.nt.restaurant.microservice.dto.RestaurantInDTO;
+import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
+import com.nt.restaurant.microservice.dto.UserOutDTO;
 import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.exception.InvalidRequestException;
 import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
@@ -16,11 +18,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.when;
 
 class RestaurantServiceImplTest {
 

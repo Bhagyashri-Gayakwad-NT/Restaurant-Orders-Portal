@@ -1,8 +1,8 @@
 package com.nt.restaurant.microservice.dtoconvertion;
 
-import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.dto.RestaurantInDTO;
 import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
+import com.nt.restaurant.microservice.entities.Restaurant;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -20,7 +20,7 @@ public class DtoConverter {
    * @param restaurantInDTO the DTO containing restaurant input data.
    * @return the {@link Restaurant} entity populated with input data.
    */
-  public static Restaurant fromInDTOToEntity(RestaurantInDTO restaurantInDTO) {
+  public static Restaurant fromInDTOToEntity(final RestaurantInDTO restaurantInDTO) {
     Restaurant restaurant = new Restaurant();
     restaurant.setUserId(restaurantInDTO.getUserId());
     restaurant.setRestaurantName(restaurantInDTO.getRestaurantName().trim());
@@ -46,7 +46,7 @@ public class DtoConverter {
    * @param restaurant the entity representing the restaurant.
    * @return a {@link RestaurantOutDTO} populated with restaurant data.
    */
-  public static RestaurantOutDTO fromEntityToOutDTO(Restaurant restaurant) {
+  public static RestaurantOutDTO fromEntityToOutDTO(final Restaurant restaurant) {
     RestaurantOutDTO restaurantOutDTO = new RestaurantOutDTO();
     restaurantOutDTO.setRestaurantId(restaurant.getRestaurantId());
     restaurantOutDTO.setRestaurantName(restaurant.getRestaurantName());

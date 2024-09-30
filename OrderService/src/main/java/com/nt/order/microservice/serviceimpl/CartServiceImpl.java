@@ -38,20 +38,36 @@ import java.util.Optional;
 @Service
 public class CartServiceImpl implements CartService {
 
-  private static final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
+  /** Logger for CartServiceImpl class, used for logging information and errors. */
+  private static final Logger LOGGER = LoggerFactory.getLogger(CartServiceImpl.class);
 
+  /**
+   * Repository for managing Cart entities.
+   */
   @Autowired
   private CartRepository cartRepository;
 
+  /**
+   * Repository for managing Order entities.
+   */
   @Autowired
   private OrderRepository orderRepository;
 
+  /**
+   * Feign client for interacting with the User service.
+   */
   @Autowired
   private UserFClient userFClient;
 
+  /**
+   * Feign client for interacting with the Restaurant service.
+   */
   @Autowired
   private RestaurantFClient restaurantFClient;
 
+  /**
+   * Feign client for interacting with the Food Item service.
+   */
   @Autowired
   private FoodItemFClient foodItemFClient;
 
@@ -60,11 +76,14 @@ public class CartServiceImpl implements CartService {
    *
    * @param cartInDTO the DTO containing the cart input data
    * @return a response indicating the result of the operation
+   * @throws UnauthorizedException if the user is a restaurant owner
+   * @throws ResourceNotFoundException if the user, restaurant, or food item is not found
+   * @throws InvalidRequestException if the provided price does not match the food item price
    */
   @Override
   @Transactional
   public CommonResponse addItemToCart(final CartInDTO cartInDTO) {
-    logger.info("Adding item to cart for userId: {}", cartInDTO.getUserId());
+    LOGGER.info("Adding item to cart for userId: {}", cartInDTO.getUserId());
 
     UserOutDTO userOutDto = fetchUser(cartInDTO.getUserId());
     validateUserRole(userOutDto);
@@ -72,7 +91,7 @@ public class CartServiceImpl implements CartService {
     try {
       validateFoodItemInRestaurant(cartInDTO);
     } catch (Exception e) {
-      throw new ResourceNotFoundException(Constants.FoodItem_NOT_FOUND);
+      throw new ResourceNotFoundException(Constants.FOODITEM_NOT_FOUND);
     }
 
     FoodItemOutDTO foodItemOutDTO = fetchFoodItem(cartInDTO.getFoodItemId());
@@ -81,72 +100,119 @@ public class CartServiceImpl implements CartService {
     return processCartUpdate(cartInDTO, foodItemOutDTO);
   }
 
+  /**
+   * Fetches the user details based on the user ID.
+   *
+   * @param userId the ID of the user to fetch
+   * @return the UserOutDTO object containing user details
+   * @throws ResourceNotFoundException if the user is not found
+   */
   private UserOutDTO fetchUser(final Integer userId) {
     try {
       UserOutDTO userOutDto = userFClient.getUserProfile(userId);
-      logger.info("User fetched successfully: {}", userOutDto);
+      LOGGER.info("User fetched successfully: {}", userOutDto);
       return userOutDto;
     } catch (FeignException.NotFound ex) {
-      logger.error("User not found for userId: {}", userId);
+      LOGGER.error("User not found for userId: {}", userId);
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
   }
 
-  private void validateUserRole(UserOutDTO userOutDto) {
+  /**
+   * Validates the user's role to ensure they are not a restaurant owner.
+   *
+   * @param userOutDto the UserOutDTO object containing user details
+   * @throws UnauthorizedException if the user is a restaurant owner
+   */
+  private void validateUserRole(final UserOutDTO userOutDto) {
     if (userOutDto.getRole().equals(Role.RESTAURANT_OWNER.name())) {
-      logger.warn("Restaurant owner attempting to add items to cart, userId: {}", userOutDto.getId());
+      LOGGER.warn("Restaurant owner attempting to add items to cart, userId: {}", userOutDto.getId());
       throw new UnauthorizedException(Constants.RESTAURANT_OWNER_CART_ERROR);
     }
   }
 
+  /**
+   * Validates the existence of a restaurant based on the restaurant ID.
+   *
+   * @param restaurantId the ID of the restaurant to validate
+   * @throws ResourceNotFoundException if the restaurant is not found
+   */
   private void validateRestaurant(final Integer restaurantId) {
     try {
       RestaurantOutDTO restaurantOutDTO = restaurantFClient.getRestaurantById(restaurantId);
       if (restaurantOutDTO == null) {
-        logger.error("Invalid restaurantId: {}", restaurantId);
+        LOGGER.error("Invalid restaurantId: {}", restaurantId);
         throw new ResourceNotFoundException(Constants.INVALID_RESTAURANT_ID);
       }
-      logger.info("Restaurant found: {}", restaurantOutDTO);
+      LOGGER.info("Restaurant found: {}", restaurantOutDTO);
     } catch (FeignException.NotFound ex) {
-      logger.error("Restaurant not found for restaurantId: {}", restaurantId);
+      LOGGER.error("Restaurant not found for restaurantId: {}", restaurantId);
       throw new ResourceNotFoundException(Constants.INVALID_RESTAURANT_ID);
     }
   }
 
+  /**
+   * Validates whether the food item belongs to the specified restaurant.
+   *
+   * @param cartInDTO the DTO containing cart input data
+   * @throws UnauthorizedException if the food item does not belong to the restaurant
+   */
   private void validateFoodItemInRestaurant(final CartInDTO cartInDTO) {
     List<FoodItemOutDTO> foodItemsInRestaurant = foodItemFClient.getFoodItemsByRestaurant(cartInDTO.getRestaurantId());
     boolean isFoodItemValid = foodItemsInRestaurant.stream()
       .anyMatch(foodItem -> foodItem.getFoodItemId().equals(cartInDTO.getFoodItemId()));
 
     if (!isFoodItemValid) {
-      logger.error("Food item with id: {} does not belong to restaurantId: {}", cartInDTO.getFoodItemId(), cartInDTO.getRestaurantId());
+      LOGGER.error("Food item with id: {} does not belong to restaurantId: {}",
+        cartInDTO.getFoodItemId(), cartInDTO.getRestaurantId());
       throw new UnauthorizedException(Constants.FOOD_ITEM_DOES_NOT_BELONG_TO_RESTAURANT);
     }
   }
 
+  /**
+   * Fetches the food item details based on the food item ID.
+   *
+   * @param foodItemId the ID of the food item to fetch
+   * @return the FoodItemOutDTO object containing food item details
+   * @throws ResourceNotFoundException if the food item is not found
+   */
   private FoodItemOutDTO fetchFoodItem(final Integer foodItemId) {
     try {
       FoodItemOutDTO foodItemOutDTO = foodItemFClient.getFoodItemById(foodItemId);
       if (foodItemOutDTO == null) {
-        logger.error("Invalid foodItemId: {}", foodItemId);
+        LOGGER.error("Invalid foodItemId: {}", foodItemId);
         throw new ResourceNotFoundException(Constants.INVALID_FOOD_ITEM_ID);
       }
-      logger.info("Food item found: {}", foodItemOutDTO);
+      LOGGER.info("Food item found: {}", foodItemOutDTO);
       return foodItemOutDTO;
     } catch (FeignException.NotFound ex) {
-      logger.error("Food item not found for foodItemId: {}", foodItemId);
+      LOGGER.error("Food item not found for foodItemId: {}", foodItemId);
       throw new ResourceNotFoundException(Constants.INVALID_FOOD_ITEM_ID);
     }
   }
 
-  private void validatePrice(final CartInDTO cartInDTO, FoodItemOutDTO foodItemOutDTO) {
+  /**
+   * Validates the price of the food item against the provided price.
+   *
+   * @param cartInDTO the DTO containing cart input data
+   * @param foodItemOutDTO the FoodItemOutDTO object containing food item details
+   * @throws InvalidRequestException if the prices do not match
+   */
+  private void validatePrice(final CartInDTO cartInDTO, final FoodItemOutDTO foodItemOutDTO) {
     if (foodItemOutDTO.getPrice().compareTo(cartInDTO.getPrice()) != 0) {
-      logger.error("Price mismatch for foodItemId: {}, expected: {}, provided: {}",
+      LOGGER.error("Price mismatch for foodItemId: {}, expected: {}, provided: {}",
         cartInDTO.getFoodItemId(), foodItemOutDTO.getPrice(), cartInDTO.getPrice());
       throw new InvalidRequestException(Constants.PRICE_MISMATCH);
     }
   }
 
+  /**
+   * Processes the cart update by either updating the quantity of an existing item or adding a new item.
+   *
+   * @param cartInDTO the DTO containing cart input data
+   * @param foodItemOutDTO the FoodItemOutDTO object containing food item details
+   * @return a response indicating the result of the operation
+   */
   private CommonResponse processCartUpdate(final CartInDTO cartInDTO, final FoodItemOutDTO foodItemOutDTO) {
     List<Cart> existingCartItems = cartRepository.findByUserId(cartInDTO.getUserId());
     Optional<Cart> existingCart = existingCartItems.stream()
@@ -159,12 +225,12 @@ public class CartServiceImpl implements CartService {
       cart.setQuantity(cart.getQuantity() + cartInDTO.getQuantity());
       cart.setPrice(cart.getPrice());
       cartRepository.save(cart);
-      logger.info("Item quantity updated for cartId: {}", cart.getCartId());
+      LOGGER.info("Item quantity updated for cartId: {}", cart.getCartId());
       return new CommonResponse(Constants.ITEM_QUANTITY_UPDATED_SUCCESS);
     } else {
       Cart cart = CartDtoConverter.toEntity(cartInDTO);
       cartRepository.save(cart);
-      logger.info("Item added to cart for userId: {}", cartInDTO.getUserId());
+      LOGGER.info("Item added to cart for userId: {}", cartInDTO.getUserId());
       return new CommonResponse(Constants.ITEM_ADDED_TO_CART_SUCCESS);
     }
   }
@@ -177,10 +243,10 @@ public class CartServiceImpl implements CartService {
    */
   @Override
   public CartOutDTO getCartById(final Integer cartId) {
-    logger.info("Fetching cart by cartId: {}", cartId);
+    LOGGER.info("Fetching cart by cartId: {}", cartId);
     Cart cart = cartRepository.findById(cartId)
       .orElseThrow(() -> new ResourceNotFoundException(Constants.CART_NOT_FOUND));
-    logger.info("Cart found: {}", cart);
+    LOGGER.info("Cart found: {}", cart);
     return CartDtoConverter.toOutDTO(cart);
   }
 
@@ -192,24 +258,24 @@ public class CartServiceImpl implements CartService {
    */
   @Override
   public List<CartOutDTO> getCartsByUserId(final Integer userId) {
-    logger.info("Fetching carts for userId: {}", userId);
+    LOGGER.info("Fetching carts for userId: {}", userId);
     UserOutDTO userOutDto;
     try {
       userOutDto = userFClient.getUserProfile(userId);
     } catch (Exception e) {
-      logger.error("User not found for userId: {}", userId);
+      LOGGER.error("User not found for userId: {}", userId);
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
     List<Cart> carts = cartRepository.findByUserId(userId);
     if (carts.isEmpty()) {
-      logger.warn("No carts found for userId: {}", userId);
+      LOGGER.warn("No carts found for userId: {}", userId);
       throw new ResourceNotFoundException(Constants.CART_NOT_FOUND);
     }
     List<CartOutDTO> cartOutDTOs = new ArrayList<>();
     for (Cart cart : carts) {
       cartOutDTOs.add(CartDtoConverter.toOutDTO(cart));
     }
-    logger.info("Carts fetched successfully for userId: {}", userId);
+    LOGGER.info("Carts fetched successfully for userId: {}", userId);
     return cartOutDTOs;
   }
 
@@ -222,41 +288,41 @@ public class CartServiceImpl implements CartService {
    */
   @Override
   public List<Cart> getCartItemsByUserIdAndRestaurantId(final Integer userId, final Integer restaurantId) {
-    logger.info("Fetching cart items for userId: {} and restaurantId: {}", userId, restaurantId);
+    LOGGER.info("Fetching cart items for userId: {} and restaurantId: {}", userId, restaurantId);
     UserOutDTO userOutDto;
     try {
       userOutDto = userFClient.getUserProfile(userId);
     } catch (Exception e) {
-      logger.error("User not found for userId: {}", userId);
+      LOGGER.error("User not found for userId: {}", userId);
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
     List<Cart> carts = cartRepository.findByUserIdAndRestaurantId(userId, restaurantId);
     if (carts.isEmpty()) {
-      logger.warn("No cart items found for userId: {} and restaurantId: {}", userId, restaurantId);
+      LOGGER.warn("No cart items found for userId: {} and restaurantId: {}", userId, restaurantId);
       throw new ResourceNotFoundException(Constants.CART_NOT_FOUND);
     }
-    logger.info("Cart items fetched successfully for userId: {} and restaurantId: {}", userId, restaurantId);
+    LOGGER.info("Cart items fetched successfully for userId: {} and restaurantId: {}", userId, restaurantId);
     return carts;
   }
 
   /**
    * Updates the quantity of an item in the cart.
    *
-   * @param cartId        the ID of the cart to update
+   * @param cartId         the ID of the cart to update
    * @param quantityChange the change in quantity to apply
    * @return a CommonResponse indicating the result of the operation
    */
   @Override
   @Transactional
   public CommonResponse updateQuantity(final Integer cartId, final Integer quantityChange) {
-    logger.info("Updating quantity for cartId: {}, quantity change: {}", cartId, quantityChange);
+    LOGGER.info("Updating quantity for cartId: {}, quantity change: {}", cartId, quantityChange);
     Cart cart = cartRepository.findById(cartId)
       .orElseThrow(() -> new ResourceNotFoundException(Constants.CART_NOT_FOUND));
     double unitPrice = cart.getPrice() / cart.getQuantity();
     int newQuantity = Math.max(0, cart.getQuantity() + quantityChange);
     if (newQuantity == 0) {
       cartRepository.deleteById(cartId);
-      logger.info("Item removed from cart with cartId: {}", cartId);
+      LOGGER.info("Item removed from cart with cartId: {}", cartId);
       throw new InvalidRequestException(Constants.ITEM_REMOVED_SUCCESSFULLY);
     }
     double newPrice = unitPrice * newQuantity;
@@ -264,7 +330,7 @@ public class CartServiceImpl implements CartService {
     cart.setQuantity(newQuantity);
     cart.setPrice(roundedPrice.doubleValue());
     cartRepository.save(cart);
-    logger.info("Cart updated with new quantity for cartId: {}", cartId);
+    LOGGER.info("Cart updated with new quantity for cartId: {}", cartId);
     return new CommonResponse(Constants.ITEM_QUANTITY_UPDATED_SUCCESS);
   }
 
@@ -276,15 +342,15 @@ public class CartServiceImpl implements CartService {
    */
   @Override
   @Transactional
-  public CommonResponse removeItemFromCart(Integer cartId) {
-    logger.info("Removing item from cart with cartId: {}", cartId);
+  public CommonResponse removeItemFromCart(final Integer cartId) {
+    LOGGER.info("Removing item from cart with cartId: {}", cartId);
     Optional<Cart> cartOptional = cartRepository.findById(cartId);
     if (!cartOptional.isPresent()) {
-      logger.warn("Cart item not found with cartId: {}", cartId);
+      LOGGER.warn("Cart item not found with cartId: {}", cartId);
       throw new ResourceNotFoundException(Constants.CART_ITEM_NOT_FOUND);
     }
     cartRepository.deleteById(cartId);
-    logger.info("Cart item removed successfully for cartId: {}", cartId);
+    LOGGER.info("Cart item removed successfully for cartId: {}", cartId);
     return new CommonResponse(Constants.CART_ITEM_REMOVED_SUCCESSFULLY);
   }
 
@@ -296,15 +362,15 @@ public class CartServiceImpl implements CartService {
    */
   @Override
   @Transactional
-  public CommonResponse clearCartAfterPlaceAnOrder(Integer userId) {
-    logger.info("Clearing cart after placing an order for userId: {}", userId);
+  public CommonResponse clearCartAfterPlaceAnOrder(final Integer userId) {
+    LOGGER.info("Clearing cart after placing an order for userId: {}", userId);
     List<Cart> userCart = cartRepository.findByUserId(userId);
     if (userCart.isEmpty()) {
-      logger.warn("No cart items found for userId: {}", userId);
+      LOGGER.warn("No cart items found for userId: {}", userId);
       throw new ResourceNotFoundException(Constants.CART_NOT_FOUND);
     }
     cartRepository.deleteAll(userCart);
-    logger.info("Cart cleared successfully for userId: {}", userId);
+    LOGGER.info("Cart cleared successfully for userId: {}", userId);
     return new CommonResponse(Constants.CART_CLEARED_SUCCESSFULLY);
   }
 }

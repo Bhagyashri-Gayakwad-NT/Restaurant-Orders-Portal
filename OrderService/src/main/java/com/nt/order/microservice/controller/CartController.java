@@ -5,11 +5,11 @@ import com.nt.order.microservice.dtos.CartOutDTO;
 import com.nt.order.microservice.dtos.CommonResponse;
 import com.nt.order.microservice.entities.Cart;
 import com.nt.order.microservice.service.CartService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,8 +34,21 @@ import java.util.List;
 @CrossOrigin
 public class CartController {
 
-  private static final Logger logger = LoggerFactory.getLogger(CartController.class);  // SLF4J logger
+  /**
+   * Logger for the CartController class, used to log important information like incoming requests,
+   * processed responses, and any potential issues.
+   * <p>
+   * The {@link Logger} instance helps to track the flow of execution, capture messages for debugging,
+   * and monitor the application's behavior in production.
+   * </p>
+   */
+  private static final Logger LOGGER = LoggerFactory.getLogger(CartController.class);  // SLF4J logger
 
+  /**
+   * Service layer responsible for handling cart-related operations such as adding, updating,
+   * retrieving, and removing cart items. The {@link CartService} provides the business logic
+   * required to interact with the database and manage cart functionality for users.
+   */
   @Autowired
   private CartService cartService;
 
@@ -47,25 +60,25 @@ public class CartController {
    */
   @PostMapping("/add")
   public ResponseEntity<CommonResponse> addItemToCart(@Valid @RequestBody final CartInDTO cartInDTO) {
-    logger.info("Received request to add item to cart: {}", cartInDTO);
+    LOGGER.info("Received request to add item to cart: {}", cartInDTO);
     CommonResponse response = cartService.addItemToCart(cartInDTO);
-    logger.info("Item added to cart with response: {}", response);
+    LOGGER.info("Item added to cart with response: {}", response);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
   /**
    * Updates the quantity of a cart item.
    *
-   * @param cartId        the ID of the cart item to be updated
+   * @param cartId         the ID of the cart item to be updated
    * @param quantityChange the new quantity change for the cart item
    * @return ResponseEntity containing the response message
    */
   @PutMapping("/update/{cartId}")
   public ResponseEntity<CommonResponse> updateCartQuantity(@Valid @PathVariable final Integer cartId,
                                                            @RequestParam final Integer quantityChange) {
-    logger.info("Received request to update quantity for cartId: {}, quantityChange: {}", cartId, quantityChange);
+    LOGGER.info("Received request to update quantity for cartId: {}, quantityChange: {}", cartId, quantityChange);
     CommonResponse commonResponse = cartService.updateQuantity(cartId, quantityChange);
-    logger.info("Cart quantity updated for cartId: {}, response: {}", cartId, commonResponse);
+    LOGGER.info("Cart quantity updated for cartId: {}, response: {}", cartId, commonResponse);
     return new ResponseEntity<>(commonResponse, HttpStatus.OK);
   }
 
@@ -77,9 +90,9 @@ public class CartController {
    */
   @GetMapping("/{cartId}")
   public ResponseEntity<CartOutDTO> getCartById(@PathVariable final Integer cartId) {
-    logger.info("Fetching cart by cartId: {}", cartId);
+    LOGGER.info("Fetching cart by cartId: {}", cartId);
     CartOutDTO cartOutDTO = cartService.getCartById(cartId);
-    logger.info("Fetched cart: {}", cartOutDTO);
+    LOGGER.info("Fetched cart: {}", cartOutDTO);
     return ResponseEntity.ok(cartOutDTO);
   }
 
@@ -91,9 +104,9 @@ public class CartController {
    */
   @GetMapping("/user/{userId}")
   public ResponseEntity<List<CartOutDTO>> getCartsByUserId(@PathVariable final Integer userId) {
-    logger.info("Fetching carts for userId: {}", userId);
+    LOGGER.info("Fetching carts for userId: {}", userId);
     List<CartOutDTO> carts = cartService.getCartsByUserId(userId);
-    logger.info("Fetched carts for userId: {}: {}", userId, carts);
+    LOGGER.info("Fetched carts for userId: {}: {}", userId, carts);
     return ResponseEntity.ok(carts);
   }
 
@@ -107,9 +120,9 @@ public class CartController {
   @GetMapping("/user/{userId}/restaurant/{restaurantId}")
   public ResponseEntity<List<Cart>> getCartItemsByUserIdAndRestaurantId(@PathVariable final Integer userId,
                                                                         @PathVariable final Integer restaurantId) {
-    logger.info("Fetching cart items for userId: {} and restaurantId: {}", userId, restaurantId);
+    LOGGER.info("Fetching cart items for userId: {} and restaurantId: {}", userId, restaurantId);
     List<Cart> carts = cartService.getCartItemsByUserIdAndRestaurantId(userId, restaurantId);
-    logger.info("Fetched cart items: {}", carts);
+    LOGGER.info("Fetched cart items: {}", carts);
     return ResponseEntity.ok(carts);
   }
 
@@ -121,9 +134,9 @@ public class CartController {
    */
   @DeleteMapping("/{cartId}")
   public ResponseEntity<CommonResponse> removeItemFromCart(@PathVariable final Integer cartId) {
-    logger.info("Received request to remove item from cart with cartId: {}", cartId);
+    LOGGER.info("Received request to remove item from cart with cartId: {}", cartId);
     CommonResponse response = cartService.removeItemFromCart(cartId);
-    logger.info("Item removed from cart with response: {}", response);
+    LOGGER.info("Item removed from cart with response: {}", response);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
@@ -135,9 +148,9 @@ public class CartController {
    */
   @DeleteMapping("/clear/{userId}")
   public ResponseEntity<CommonResponse> clearCartAfterPlaceAnOrder(@PathVariable final Integer userId) {
-    logger.info("Received request to clear cart for userId: {}", userId);
+    LOGGER.info("Received request to clear cart for userId: {}", userId);
     CommonResponse response = cartService.clearCartAfterPlaceAnOrder(userId);
-    logger.info("Cart cleared for userId: {}, response: {}", userId, response);
+    LOGGER.info("Cart cleared for userId: {}, response: {}", userId, response);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 }

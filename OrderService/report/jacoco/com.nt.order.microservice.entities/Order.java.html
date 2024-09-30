@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Order.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.entities</a> &gt; <span class="el_source">Order.java</span></div><h1>Order.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.entities;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nt.order.microservice.dtos.CartItemDTO;
+import com.nt.order.microservice.util.OrderStatus;
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+/**
+ * Represents an Order entity in the system.
+ */
+@Entity
+@Table(name = &quot;orders&quot;)
+public class Order {
+
+  /** Unique identifier for the order. */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer orderId;
+
+  /** Identifier for the user who placed the order. */
+  private Integer userId;
+
+  /** Identifier for the restaurant from which the order is placed. */
+  private Integer restaurantId;
+
+  /** Identifier for the address associated with the order. */
+  private Integer addressId;
+
+  /** Status of the order, represented by an enum. */
+  @Enumerated(EnumType.STRING)
+  private OrderStatus orderStatus;
+
+  /** Total price of the order. */
+  private Double totalPrice;
+
+  /** Cart items in JSON format as a String. */
+  private String cartItems;
+
+  /** Time when the order was placed. */
+  private LocalDateTime placedTiming;
+
+  /** ObjectMapper instance for JSON processing. */
+<span class="fc" id="L54">  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();</span>
+
+  /**
+   * Converts the cartItems JSON string into a list of CartItemDTO objects.
+   *
+   * @return List of CartItemDTO representing the cart items.
+   * @throws JsonProcessingException if there is an error during JSON processing.
+   */
+  public List&lt;CartItemDTO&gt; getCartItemOutDTOAsList() throws JsonProcessingException {
+<span class="fc" id="L63">    List&lt;Cart&gt; list = OBJECT_MAPPER.readValue(cartItems, OBJECT_MAPPER.getTypeFactory()</span>
+<span class="fc" id="L64">      .constructCollectionType(List.class, Cart.class));</span>
+
+<span class="fc" id="L66">    List&lt;CartItemDTO&gt; cartItemOutDTOS = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">    for (Cart item : list) {</span>
+<span class="fc" id="L68">      CartItemDTO cartItemDTO = new CartItemDTO();</span>
+<span class="fc" id="L69">      cartItemDTO.setFoodItemId(item.getFoodItemId());</span>
+<span class="fc" id="L70">      cartItemDTO.setPrice(item.getPrice());</span>
+<span class="fc" id="L71">      cartItemDTO.setQuantity(item.getQuantity());</span>
+<span class="fc" id="L72">      cartItemOutDTOS.add(cartItemDTO);</span>
+<span class="fc" id="L73">    }</span>
+<span class="fc" id="L74">    return cartItemOutDTOS;</span>
+  }
+
+  /**
+   * Sets the cartItems field from a list of CartItemDTO.
+   *
+   * @param cartItems List of CartItemDTO to be converted to JSON string.
+   * @throws JsonProcessingException if there is an error during JSON processing.
+   */
+  public void setCartItemsFromList(
+    final List&lt;CartItemDTO&gt; cartItems) throws JsonProcessingException {
+<span class="fc" id="L85">    this.cartItems = OBJECT_MAPPER.writeValueAsString(cartItems);</span>
+<span class="fc" id="L86">  }</span>
+
+  /** Default constructor. */
+<span class="fc" id="L89">  public Order() {</span>
+<span class="fc" id="L90">  }</span>
+
+  /**
+   * Constructs an Order with specified parameters.
+   *
+   * @param orderId        Unique identifier for the order.
+   * @param userId        Identifier for the user who placed the order.
+   * @param restaurantId   Identifier for the restaurant from which the order is placed.
+   * @param addressId      Identifier for the address associated with the order.
+   * @param orderStatus    Status of the order.
+   * @param totalPrice     Total price of the order.
+   * @param cartItems      Cart items in JSON format.
+   * @param placedTiming   Time when the order was placed.
+   */
+  public Order(final Integer orderId, final Integer userId, final Integer restaurantId,
+               final Integer addressId, final OrderStatus orderStatus, final Double totalPrice,
+<span class="fc" id="L106">               final String cartItems, final LocalDateTime placedTiming) {</span>
+<span class="fc" id="L107">    this.orderId = orderId;</span>
+<span class="fc" id="L108">    this.userId = userId;</span>
+<span class="fc" id="L109">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L110">    this.addressId = addressId;</span>
+<span class="fc" id="L111">    this.orderStatus = orderStatus;</span>
+<span class="fc" id="L112">    this.totalPrice = totalPrice;</span>
+<span class="fc" id="L113">    this.cartItems = cartItems;</span>
+<span class="fc" id="L114">    this.placedTiming = placedTiming;</span>
+<span class="fc" id="L115">  }</span>
+  /**
+   * Gets the unique identifier for the order.
+   *
+   * @return the orderId.
+   */
+  public Integer getOrderId() {
+<span class="fc" id="L122">    return orderId;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the order.
+   *
+   * @param orderId the orderId to set.
+   */
+  public void setOrderId(final Integer orderId) {
+<span class="fc" id="L131">    this.orderId = orderId; // fixed this line to set orderId correctly</span>
+<span class="fc" id="L132">  }</span>
+
+  /**
+   * Gets the identifier for the user who placed the order.
+   *
+   * @return the userId.
+   */
+  public Integer getUserId() {
+<span class="fc" id="L140">    return userId;</span>
+  }
+
+  /**
+   * Sets the identifier for the user who placed the order.
+   *
+   * @param userId the userId to set.
+   */
+  public void setUserId(final Integer userId) {
+<span class="fc" id="L149">    this.userId = userId;</span>
+<span class="fc" id="L150">  }</span>
+
+  /**
+   * Gets the identifier for the restaurant from which the order is placed.
+   *
+   * @return the restaurantId.
+   */
+  public Integer getRestaurantId() {
+<span class="fc" id="L158">    return restaurantId;</span>
+  }
+
+  /**
+   * Sets the identifier for the restaurant from which the order is placed.
+   *
+   * @param restaurantId the restaurantId to set.
+   */
+  public void setRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L167">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L168">  }</span>
+
+  /**
+   * Gets the identifier for the address associated with the order.
+   *
+   * @return the addressId.
+   */
+  public Integer getAddressId() {
+<span class="fc" id="L176">    return addressId;</span>
+  }
+
+  /**
+   * Sets the identifier for the address associated with the order.
+   *
+   * @param addressId the addressId to set.
+   */
+  public void setAddressId(final Integer addressId) {
+<span class="fc" id="L185">    this.addressId = addressId;</span>
+<span class="fc" id="L186">  }</span>
+
+  /**
+   * Gets the status of the order.
+   *
+   * @return the orderStatus.
+   */
+  public OrderStatus getOrderStatus() {
+<span class="fc" id="L194">    return orderStatus;</span>
+  }
+
+  /**
+   * Sets the status of the order.
+   *
+   * @param orderStatus the orderStatus to set.
+   */
+  public void setOrderStatus(final OrderStatus orderStatus) {
+<span class="fc" id="L203">    this.orderStatus = orderStatus;</span>
+<span class="fc" id="L204">  }</span>
+
+  /**
+   * Gets the total price of the order.
+   *
+   * @return the totalPrice.
+   */
+  public Double getTotalPrice() {
+<span class="fc" id="L212">    return totalPrice;</span>
+  }
+
+  /**
+   * Sets the total price of the order.
+   *
+   * @param totalPrice the totalPrice to set.
+   */
+  public void setTotalPrice(final Double totalPrice) {
+<span class="fc" id="L221">    this.totalPrice = totalPrice;</span>
+<span class="fc" id="L222">  }</span>
+
+  /**
+   * Gets the cart items in JSON format as a String.
+   *
+   * @return the cartItems.
+   */
+  public String getCartItems() {
+<span class="fc" id="L230">    return cartItems;</span>
+  }
+
+  /**
+   * Sets the cart items in JSON format.
+   *
+   * @param cartItems the cartItems to set.
+   */
+  public void setCartItems(final String cartItems) {
+<span class="fc" id="L239">    this.cartItems = cartItems;</span>
+<span class="fc" id="L240">  }</span>
+
+  /**
+   * Gets the time when the order was placed.
+   *
+   * @return the placedTiming.
+   */
+  public LocalDateTime getPlacedTiming() {
+<span class="fc" id="L248">    return placedTiming;</span>
+  }
+
+  /**
+   * Sets the time when the order was placed.
+   *
+   * @param placedTiming the placedTiming to set.
+   */
+  public void setPlacedTiming(final LocalDateTime placedTiming) {
+<span class="fc" id="L257">    this.placedTiming = placedTiming;</span>
+<span class="fc" id="L258">  }</span>
+
+  /**
+   * Checks equality of two Order objects.
+   *
+   * @param o the object to compare with.
+   * @return true if the objects are equal, false otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L269">      return true;</span>
+    }
+<span class="pc bpc" id="L271" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L272">      return false;</span>
+    }
+<span class="fc" id="L274">    Order order = (Order) o;</span>
+<span class="pc bpc" id="L275" title="2 of 4 branches missed.">    return Objects.equals(orderId, order.orderId) &amp;&amp; Objects.equals(userId, order.userId)</span>
+<span class="pc bpc" id="L276" title="3 of 6 branches missed.">      &amp;&amp; Objects.equals(restaurantId, order.restaurantId) &amp;&amp; Objects.equals(addressId, order.addressId)</span>
+<span class="pc bpc" id="L277" title="1 of 2 branches missed.">      &amp;&amp; orderStatus == order.orderStatus &amp;&amp; Objects.equals(totalPrice, order.totalPrice)</span>
+<span class="pc bpc" id="L278" title="2 of 4 branches missed.">      &amp;&amp; Objects.equals(cartItems, order.cartItems) &amp;&amp; Objects.equals(placedTiming, order.placedTiming);</span>
+  }
+
+  /**
+   * Generates a hash code for the Order object.
+   *
+   * @return hash code representing the Order.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L288">    return Objects.hash(orderId, userId, restaurantId, addressId, orderStatus, totalPrice, cartItems, placedTiming);</span>
+  }
+
+  /**
+   * Provides a string representation of the Order object.
+   *
+   * @return string representation of the Order.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L298">    return &quot;Order{&quot;</span>
+      + &quot;OrderId=&quot; + orderId
+      + &quot;, userId=&quot; + userId
+      + &quot;, restaurantId=&quot; + restaurantId
+      + &quot;, addressId=&quot; + addressId
+      + &quot;, orderStatus=&quot; + orderStatus
+      + &quot;, totalPrice=&quot; + totalPrice
+      + &quot;, cartItems='&quot; + cartItems
+      + '\'' + &quot;, placedTiming=&quot; + placedTiming
+      + '}';
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -45,7 +45,7 @@ public class FoodItem {
   /**
    * The price of the food item.
    */
-  private Double Price;
+  private Double price;
 
   /**
    * Availability status of the food item.
@@ -77,14 +77,14 @@ public class FoodItem {
    * @param isAvailable   availability status of the food item
    * @param foodItemImage the image of the food item as a byte array
    */
-  public FoodItem(Integer foodItemId, Integer categoryId, Integer restaurantId, String foodItemName,
-                  String description, Double price, boolean isAvailable, byte[] foodItemImage) {
+  public FoodItem(final Integer foodItemId, final Integer categoryId, final Integer restaurantId, final String foodItemName,
+                  final String description, final Double price, final boolean isAvailable, final byte[] foodItemImage) {
     this.foodItemId = foodItemId;
     this.categoryId = categoryId;
     this.restaurantId = restaurantId;
     this.foodItemName = foodItemName;
     this.description = description;
-    Price = price;
+    this.price = price;
     this.isAvailable = isAvailable;
     this.foodItemImage = foodItemImage;
   }
@@ -105,7 +105,7 @@ public class FoodItem {
    *
    * @param foodItemId the unique ID of the food item.
    */
-  public void setFoodItemId(Integer foodItemId) {
+  public void setFoodItemId(final Integer foodItemId) {
     this.foodItemId = foodItemId;
   }
 
@@ -123,7 +123,7 @@ public class FoodItem {
    *
    * @param categoryId the category ID.
    */
-  public void setCategoryId(Integer categoryId) {
+  public void setCategoryId(final Integer categoryId) {
     this.categoryId = categoryId;
   }
 
@@ -141,7 +141,7 @@ public class FoodItem {
    *
    * @param restaurantId the restaurant ID.
    */
-  public void setRestaurantId(Integer restaurantId) {
+  public void setRestaurantId(final Integer restaurantId) {
     this.restaurantId = restaurantId;
   }
 
@@ -159,7 +159,7 @@ public class FoodItem {
    *
    * @param foodItemName the name of the food item.
    */
-  public void setFoodItemName(String foodItemName) {
+  public void setFoodItemName(final String foodItemName) {
     this.foodItemName = foodItemName;
   }
 
@@ -177,7 +177,7 @@ public class FoodItem {
    *
    * @param description the description of the food item.
    */
-  public void setDescription(String description) {
+  public void setDescription(final String description) {
     this.description = description;
   }
 
@@ -187,7 +187,7 @@ public class FoodItem {
    * @return the price of the food item.
    */
   public Double getPrice() {
-    return Price;
+    return price;
   }
 
   /**
@@ -195,8 +195,8 @@ public class FoodItem {
    *
    * @param price the price of the food item.
    */
-  public void setPrice(Double price) {
-    Price = price;
+  public void setPrice(final Double price) {
+    this.price = price;
   }
 
   /**
@@ -213,7 +213,7 @@ public class FoodItem {
    *
    * @param available the availability status.
    */
-  public void setAvailable(boolean available) {
+  public void setAvailable(final boolean available) {
     isAvailable = available;
   }
 
@@ -231,7 +231,7 @@ public class FoodItem {
    *
    * @param foodItemImage the food item's image.
    */
-  public void setFoodItemImage(byte[] foodItemImage) {
+  public void setFoodItemImage(final byte[] foodItemImage) {
     this.foodItemImage = foodItemImage;
   }
 
@@ -244,7 +244,7 @@ public class FoodItem {
    * @return true if the objects are equal, false otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -252,14 +252,14 @@ public class FoodItem {
       return false;
     }
     FoodItem foodItem = (FoodItem) o;
-    return isAvailable == foodItem.isAvailable &&
-      Objects.equals(foodItemId, foodItem.foodItemId) &&
-      Objects.equals(categoryId, foodItem.categoryId) &&
-      Objects.equals(restaurantId, foodItem.restaurantId) &&
-      Objects.equals(foodItemName, foodItem.foodItemName) &&
-      Objects.equals(description, foodItem.description) &&
-      Objects.equals(Price, foodItem.Price) &&
-      Arrays.equals(foodItemImage, foodItem.foodItemImage);
+    return isAvailable == foodItem.isAvailable
+      && Objects.equals(foodItemId, foodItem.foodItemId)
+      && Objects.equals(categoryId, foodItem.categoryId)
+      && Objects.equals(restaurantId, foodItem.restaurantId)
+      && Objects.equals(foodItemName, foodItem.foodItemName)
+      && Objects.equals(description, foodItem.description)
+      && Objects.equals(price, foodItem.price)
+      && Arrays.equals(foodItemImage, foodItem.foodItemImage);
   }
 
   /**
@@ -269,7 +269,8 @@ public class FoodItem {
    */
   @Override
   public int hashCode() {
-    return Objects.hash(foodItemId, categoryId, restaurantId, foodItemName, description, Price, isAvailable) +
+    return Objects.hash(foodItemId, categoryId, restaurantId, foodItemName, description, price, isAvailable)
+      +
       Arrays.hashCode(foodItemImage);
   }
 
@@ -280,15 +281,15 @@ public class FoodItem {
    */
   @Override
   public String toString() {
-    return "FoodItem{" +
-      "foodItemId=" + foodItemId +
-      ", categoryId=" + categoryId +
-      ", restaurantId=" + restaurantId +
-      ", foodItemName='" + foodItemName + '\'' +
-      ", description='" + description + '\'' +
-      ", Price=" + Price +
-      ", isAvailable=" + isAvailable +
-      ", foodItemImage=" + Arrays.toString(foodItemImage) +
-      '}';
+    return "FoodItem{"
+      + "foodItemId=" + foodItemId
+      + ", categoryId=" + categoryId
+      + ", restaurantId=" + restaurantId
+      + ", foodItemName='" + foodItemName
+      + '\'' + ", description='" + description
+      + '\'' + ", price=" + price
+      + ", isAvailable=" + isAvailable
+      + ", foodItemImage=" + Arrays.toString(foodItemImage)
+      + '}';
   }
 }

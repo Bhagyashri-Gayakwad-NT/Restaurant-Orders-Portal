@@ -14,7 +14,7 @@ public class Base64Util {
    * @param data the string to be encoded
    * @return the Base64 encoded representation of the input string
    */
-  public static String encode(String data) {
+  public static String encode(final String data) {
     return Base64.getEncoder().encodeToString(data.getBytes());
   }
 
@@ -24,7 +24,7 @@ public class Base64Util {
    * @param data the Base64 encoded string to be decoded
    * @return the decoded string
    */
-  public static String decode(String data) {
+  public static String decode(final String data) {
     return new String(Base64.getDecoder().decode(data));
   }
 }

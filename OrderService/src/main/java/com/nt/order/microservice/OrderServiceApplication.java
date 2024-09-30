@@ -21,7 +21,7 @@ public class OrderServiceApplication {
    *
    * @param args command-line arguments (if any) passed when running the application.
    */
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
     SpringApplication.run(OrderServiceApplication.class, args);
   }
 }

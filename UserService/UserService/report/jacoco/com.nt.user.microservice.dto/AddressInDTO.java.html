@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddressInDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.dto</a> &gt; <span class="el_source">AddressInDTO.java</span></div><h1>AddressInDTO.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.dto;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.Objects;
+
+/**
+ * Data Transfer Object (DTO) for Address input.
+ * This DTO is used to capture address details from the user.
+ */
+<span class="fc" id="L13">public class AddressInDTO {</span>
+
+  /**
+   * The street address of the user.
+   * Must be between 4 and 100 characters.
+   */
+  @NotBlank(message = &quot;Street is required&quot;)
+  @Size(min = 4, max = 100, message = &quot;Street must be between 4 and 100 characters&quot;)
+  private String street;
+
+  /**
+   * The city of the user.
+   * Must contain only alphabetic characters and be between 3 and 50 characters.
+   */
+  @NotBlank(message = &quot;City is required&quot;)
+  @Size(min = 3, max = 50, message = &quot;City must be between 3 and 50 characters&quot;)
+  @Pattern(regexp = &quot;^[a-zA-Z]+$&quot;, message = &quot;City must contain only alphabetic characters&quot;)
+  private String city;
+
+  /**
+   * The state of the user.
+   * Must contain only alphabetic characters and be between 2 and 50 characters.
+   */
+  @NotBlank(message = &quot;State is required&quot;)
+  @Size(min = 2, max = 50, message = &quot;State must be between 2 and 50 characters&quot;)
+  @Pattern(regexp = &quot;^[a-zA-Z\\s]+$&quot;, message = &quot;State must contain only alphabetic characters&quot;)
+  private String state;
+
+  /**
+   * The country of the user.
+   * Must contain only alphabetic characters and be no longer than 50 characters.
+   */
+  @NotBlank(message = &quot;Country is required&quot;)
+  @Size(max = 50, message = &quot;Country cannot be longer than 50 characters&quot;)
+  @Pattern(regexp = &quot;^[a-zA-Z]+$&quot;, message = &quot;Country must contain only alphabetic characters&quot;)
+  private String country;
+
+  /**
+   * The pin code of the user's address.
+   * Must be exactly 6 digits.
+   */
+  @NotBlank(message = &quot;Pin code is required&quot;)
+  @Pattern(regexp = &quot;^[0-9]{6}$&quot;, message = &quot;Pin code must be exactly 6 digits&quot;)
+  private String pinCode;
+
+  /**
+   * The unique identifier of the user associated with the address.
+   */
+  @NotNull(message = &quot;User ID is required&quot;)
+  private Integer userId;
+
+  /**
+   * Gets the street address.
+   *
+   * @return the street address.
+   */
+  public String getStreet() {
+<span class="fc" id="L70">    return street;</span>
+  }
+
+  /**
+   * Sets the street address.
+   *
+   * @param street the street address to set.
+   */
+  public void setStreet(final String street) {
+<span class="fc" id="L79">    this.street = street;</span>
+<span class="fc" id="L80">  }</span>
+
+  /**
+   * Gets the city of the user.
+   *
+   * @return the city.
+   */
+  public String getCity() {
+<span class="fc" id="L88">    return city;</span>
+  }
+
+  /**
+   * Sets the city of the user.
+   *
+   * @param city the city to set.
+   */
+  public void setCity(final String city) {
+<span class="fc" id="L97">    this.city = city;</span>
+<span class="fc" id="L98">  }</span>
+
+  /**
+   * Gets the state of the user.
+   *
+   * @return the state.
+   */
+  public String getState() {
+<span class="fc" id="L106">    return state;</span>
+  }
+
+  /**
+   * Sets the state of the user.
+   *
+   * @param state the state to set.
+   */
+  public void setState(final String state) {
+<span class="fc" id="L115">    this.state = state;</span>
+<span class="fc" id="L116">  }</span>
+
+  /**
+   * Gets the country of the user.
+   *
+   * @return the country.
+   */
+  public String getCountry() {
+<span class="fc" id="L124">    return country;</span>
+  }
+
+  /**
+   * Sets the country of the user.
+   *
+   * @param country the country to set.
+   */
+  public void setCountry(final String country) {
+<span class="fc" id="L133">    this.country = country;</span>
+<span class="fc" id="L134">  }</span>
+
+  /**
+   * Gets the pin code of the user's address.
+   *
+   * @return the pin code.
+   */
+  public String getPinCode() {
+<span class="fc" id="L142">    return pinCode;</span>
+  }
+
+  /**
+   * Sets the pin code of the user's address.
+   *
+   * @param pinCode the pin code to set.
+   */
+  public void setPinCode(final String pinCode) {
+<span class="fc" id="L151">    this.pinCode = pinCode;</span>
+<span class="fc" id="L152">  }</span>
+
+  /**
+   * Gets the user ID associated with this address.
+   *
+   * @return the user ID.
+   */
+  public Integer getUserId() {
+<span class="fc" id="L160">    return userId;</span>
+  }
+
+  /**
+   * Sets the user ID associated with this address.
+   *
+   * @param userId the user ID to set.
+   */
+  public void setUserId(final Integer userId) {
+<span class="fc" id="L169">    this.userId = userId;</span>
+<span class="fc" id="L170">  }</span>
+
+  /**
+   * Compares this address input DTO to another object.
+   * The result is true if the fields of both objects are equal.
+   *
+   * @param o the object to compare this DTO against.
+   * @return true if the given object represents an AddressInDTO equivalent to this DTO, false otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L182">      return true;</span>
+    }
+<span class="pc bpc" id="L184" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L185">      return false;</span>
+    }
+<span class="fc" id="L187">    AddressInDTO that = (AddressInDTO) o;</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">    return Objects.equals(street, that.street)</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(city, that.city)</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(state, that.state)</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(country, that.country)</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(pinCode, that.pinCode)</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(userId, that.userId);</span>
+  }
+
+  /**
+   * Returns a hash code value for the AddressInDTO.
+   *
+   * @return a hash code value for this DTO.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L203">    return Objects.hash(street, city, state, country, pinCode, userId);</span>
+  }
+
+  /**
+   * Returns a string representation of the AddressInDTO.
+   *
+   * @return a string representation of the address input DTO.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L213">    return &quot;AddressInDTO{&quot;</span>
+      + &quot;street='&quot; + street
+      + '\'' + &quot;, city='&quot; + city
+      + '\'' + &quot;, state='&quot; + state
+      + '\'' + &quot;, country='&quot; + country
+      + '\'' + &quot;, pinCode='&quot; + pinCode
+      + '\'' + &quot;, userId=&quot; + userId
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

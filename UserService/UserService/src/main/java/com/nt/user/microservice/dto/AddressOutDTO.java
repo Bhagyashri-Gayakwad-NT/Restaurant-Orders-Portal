@@ -52,7 +52,7 @@ public class AddressOutDTO {
    *
    * @param id the address ID to set
    */
-  public void setId(Integer id) {
+  public void setId(final Integer id) {
     this.id = id;
   }
 
@@ -70,7 +70,7 @@ public class AddressOutDTO {
    *
    * @param street the street name to set
    */
-  public void setStreet(String street) {
+  public void setStreet(final String street) {
     this.street = street;
   }
 
@@ -88,7 +88,7 @@ public class AddressOutDTO {
    *
    * @param city the city name to set
    */
-  public void setCity(String city) {
+  public void setCity(final String city) {
     this.city = city;
   }
 
@@ -106,7 +106,7 @@ public class AddressOutDTO {
    *
    * @param state the state name to set
    */
-  public void setState(String state) {
+  public void setState(final String state) {
     this.state = state;
   }
 
@@ -124,7 +124,7 @@ public class AddressOutDTO {
    *
    * @param country the country name to set
    */
-  public void setCountry(String country) {
+  public void setCountry(final String country) {
     this.country = country;
   }
 
@@ -142,36 +142,60 @@ public class AddressOutDTO {
    *
    * @param pinCode the postal pin code to set
    */
-  public void setPinCode(String pinCode) {
+  public void setPinCode(final String pinCode) {
     this.pinCode = pinCode;
   }
 
+  /**
+   * Compares this AddressOutDTO object to the specified object for equality.
+   * Two AddressOutDTO objects are considered equal if they have the same
+   * values for all their fields (id, street, city, state, country, and pinCode).
+   *
+   * @param o the object to compare this AddressOutDTO against
+   * @return true if the specified object is equal to this AddressOutDTO; false otherwise
+   */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
-      return true; }
+      return true;
+    }
     if (!(o instanceof AddressOutDTO)) {
-      return false; }
+      return false;
+    }
     AddressOutDTO that = (AddressOutDTO) o;
-    return Objects.equals(id, that.id) && Objects.equals(street, that.street) &&
-      Objects.equals(city, that.city) && Objects.equals(state, that.state) &&
-      Objects.equals(country, that.country) && Objects.equals(pinCode, that.pinCode);
+    return Objects.equals(id, that.id) && Objects.equals(street, that.street)
+      && Objects.equals(city, that.city) && Objects.equals(state, that.state)
+      && Objects.equals(country, that.country)
+      && Objects.equals(pinCode, that.pinCode);
   }
 
+
+/**
+ * Returns a hash code value for this AddressOutDTO object.
+ * The hash code is computed based on the values of the fields (id, street, city, state, country, and pinCode).
+ *
+ * @return a hash code value for this AddressOutDTO object
+ */
   @Override
   public int hashCode() {
     return Objects.hash(id, street, city, state, country, pinCode);
   }
 
+  /**
+   * Returns a string representation of this AddressOutDTO object.
+   * The string includes the class name and the values of all fields (id, street, city, state, country, and pinCode).
+   *
+   * @return a string representation of this AddressOutDTO object
+   */
   @Override
   public String toString() {
-    return "AddressOutDTO{" +
-      "id=" + id +
-      ", street='" + street + '\'' +
-      ", city='" + city + '\'' +
-      ", state='" + state + '\'' +
-      ", country='" + country + '\'' +
-      ", pinCode='" + pinCode + '\'' +
-      '}';
+    return "AddressOutDTO{"
+      + "id=" + id
+      + ", street='" + street
+      + '\'' + ", city='" + city
+      + '\'' + ", state='" + state
+      + '\'' + ", country='" + country
+      + '\'' + ", pinCode='" + pinCode
+      + '\'' + '}';
   }
 }

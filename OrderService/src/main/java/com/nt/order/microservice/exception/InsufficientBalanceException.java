@@ -11,7 +11,7 @@ public class InsufficientBalanceException extends RuntimeException {
    *
    * @param message the detail message, saved for later retrieval by the {@link Throwable#getMessage()} method.
    */
-  public InsufficientBalanceException(String message) {
+  public InsufficientBalanceException(final String message) {
     super(message);
   }
 }

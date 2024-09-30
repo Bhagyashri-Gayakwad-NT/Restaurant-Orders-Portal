@@ -1,21 +1,22 @@
 package com.nt.user.microservice.serviceimpl;
 
+import com.nt.user.microservice.dto.EmailRequestDTO;
 import com.nt.user.microservice.dto.LoginOutDTO;
-import com.nt.user.microservice.exceptions.ResourceAlreadyExistException;
-import com.nt.user.microservice.exceptions.InvalidCredentialsException;
-import com.nt.user.microservice.exceptions.ResourceNotFoundException;
-import com.nt.user.microservice.dto.UserResponse;
-import com.nt.user.microservice.service.EmailService;
-import com.nt.user.microservice.util.Constants;
-import com.nt.user.microservice.util.Role;
-import com.nt.user.microservice.entites.User;
-import com.nt.user.microservice.entites.WalletBalance;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
+import com.nt.user.microservice.dto.UserResponse;
+import com.nt.user.microservice.entites.User;
+import com.nt.user.microservice.entites.WalletBalance;
+import com.nt.user.microservice.exceptions.InvalidCredentialsException;
+import com.nt.user.microservice.exceptions.ResourceAlreadyExistException;
+import com.nt.user.microservice.exceptions.ResourceNotFoundException;
 import com.nt.user.microservice.repository.UserRepository;
 import com.nt.user.microservice.repository.WalletBalanceRepository;
+import com.nt.user.microservice.service.EmailService;
 import com.nt.user.microservice.service.UserService;
 import com.nt.user.microservice.util.Base64Util;
+import com.nt.user.microservice.util.Constants;
+import com.nt.user.microservice.util.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +32,14 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
   /**
-   * Logger for the UserServiceImpl class, used for logging important information
+   * LOGGER for the UserServiceImpl class, used for logging important information
    * such as user registration attempts, login attempts, profile updates, and deletions.
    * <p>
    * The {@link Logger} instance helps in tracking execution flow, capturing success and error messages,
    * and facilitating debugging and auditing of user-related operations.
    * </p>
    */
-  private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
   /**
    * Repository for performing CRUD operations on {@link User} entities.
@@ -47,8 +48,17 @@ public class UserServiceImpl implements UserService {
    * It provides methods for saving, retrieving, updating, and deleting user records.
    * </p>
    */
-  private final UserRepository userRepository;
+  @Autowired
+  private  UserRepository userRepository;
 
+  /**
+   * Service for handling email-related operations.
+   * <p>
+   * The {@link EmailService} is used to send emails to recipients for various notifications such as
+   * registration confirmation, password reset, or other important communication. It provides methods for
+   * composing and sending emails.
+   * </p>
+   */
   @Autowired
   private EmailService emailService;
 
@@ -59,20 +69,8 @@ public class UserServiceImpl implements UserService {
    * It provides methods for saving, retrieving, and deleting wallet balance records associated with users.
    * </p>
    */
-  private final WalletBalanceRepository walletBalanceRepository;
-
-
-  /**
-   * Constructor for UserServiceImpl.
-   *
-   * @param userRepository           the UserRepository to be injected
-   * @param walletBalanceRepository  the WalletBalanceRepository to be injected
-   */
   @Autowired
-  public UserServiceImpl(UserRepository userRepository, WalletBalanceRepository walletBalanceRepository) {
-    this.userRepository = userRepository;
-    this.walletBalanceRepository = walletBalanceRepository;
-  }
+  private  WalletBalanceRepository walletBalanceRepository;
 
   /**
    * Registers a new user.
@@ -81,12 +79,12 @@ public class UserServiceImpl implements UserService {
    * @return a UserResponse indicating the result of the registration
    */
   @Override
-  public UserResponse registerUser(UserInDTO userInDTO) {
-    logger.info("Attempting to register user with email: {}", userInDTO.getEmail());
+  public UserResponse registerUser(final UserInDTO userInDTO) {
+    LOGGER.info("Attempting to register user with email: {}", userInDTO.getEmail());
 
     Optional<User> existingUser = userRepository.findByEmail(userInDTO.getEmail().toLowerCase());
     if (existingUser.isPresent()) {
-      logger.error("User with email {} already exists", userInDTO.getEmail());
+      LOGGER.error("User with email {} already exists", userInDTO.getEmail());
       throw new ResourceAlreadyExistException(Constants.USER_ALREADY_REGISTERED);
     }
 
@@ -99,17 +97,17 @@ public class UserServiceImpl implements UserService {
     user.setRole(Role.valueOf(userInDTO.getRole().toUpperCase()));
 
     User savedUser = userRepository.save(user);
-    logger.info("User registered successfully with ID: {}", savedUser.getId());
+    LOGGER.info("User registered successfully with ID: {}", savedUser.getId());
 
     if (Role.USER.equals(user.getRole())) {
-      logger.info("Assigning initial wallet balance for user with ID: {}", savedUser.getId());
+      LOGGER.info("Assigning initial wallet balance for user with ID: {}", savedUser.getId());
 
       WalletBalance walletBalanceEntity = new WalletBalance();
       walletBalanceEntity.setUserId(savedUser.getId());
       walletBalanceEntity.setBalance(Constants.INITIAL_WALLET_BALANCE);
       walletBalanceRepository.save(walletBalanceEntity);
 
-      logger.info("Initial wallet balance assigned for user with ID: {}", savedUser.getId());
+      LOGGER.info("Initial wallet balance assigned for user with ID: {}", savedUser.getId());
     }
 
     UserResponse response = new UserResponse();
@@ -125,26 +123,24 @@ public class UserServiceImpl implements UserService {
    * @return a UserOutDTO with user details if login is successful
    */
   @Override
-  public LoginOutDTO loginUser(String email, String password) {
-    logger.info("Attempting to log in user with email: {}", email);
+  public LoginOutDTO loginUser(final String email, final String password) {
+    LOGGER.info("Attempting to log in user with email: {}", email);
 
     Optional<User> userOptional = userRepository.findByEmail(email.toLowerCase());
 
     if (!userOptional.isPresent()) {
-      logger.error("User with email {} not found", email);
+      LOGGER.error("User with email {} not found", email);
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
 
     User user = userOptional.get();
 
     if (!Base64Util.encode(password).equals(user.getPassword())) {
-      logger.error("Invalid credentials for user with email: {}", email);
+      LOGGER.error("Invalid credentials for user with email: {}", email);
       throw new InvalidCredentialsException(Constants.INVALID_CREDENTIALS);
     }
 
-    logger.info("Login successful for user with email: {}", email);
-
-    WalletBalance walletBalance = walletBalanceRepository.findByUserId(user.getId());
+    LOGGER.info("Login successful for user with email: {}", email);
 
     LoginOutDTO loginOutDTO = new LoginOutDTO();
     loginOutDTO.setId(user.getId());
@@ -160,8 +156,8 @@ public class UserServiceImpl implements UserService {
    * @return a UserOutDTO with the user's profile information
    */
   @Override
-  public UserOutDTO getUserProfile(Integer id) {
-    logger.info("Fetching user profile for ID: {}", id);
+  public UserOutDTO getUserProfile(final Integer id) {
+    LOGGER.info("Fetching user profile for ID: {}", id);
 
     Optional<User> userOptional = userRepository.findById(id);
     if (userOptional.isPresent()) {
@@ -177,10 +173,10 @@ public class UserServiceImpl implements UserService {
       userOutDTO.setRole(user.getRole().name());
       userOutDTO.setWalletBalance(walletBalance != null ? walletBalance.getBalance() : null);
 
-      logger.info("User profile fetched successfully for ID: {}", id);
+      LOGGER.info("User profile fetched successfully for ID: {}", id);
       return userOutDTO;
     } else {
-      logger.error("User not found with ID: {}", id);
+      LOGGER.error("User not found with ID: {}", id);
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
   }
@@ -193,12 +189,12 @@ public class UserServiceImpl implements UserService {
    * @return a UserResponse indicating the result of the update
    */
   @Override
-  public UserResponse updateUserProfile(Integer id, UserInDTO userInDTO) {
-    logger.info("Updating user profile for ID: {}", id);
+  public UserResponse updateUserProfile(final Integer id, final UserInDTO userInDTO) {
+    LOGGER.info("Updating user profile for ID: {}", id);
 
     User user = userRepository.findById(id)
       .orElseThrow(() -> {
-        logger.error("User not found with ID: {}", id);
+        LOGGER.error("User not found with ID: {}", id);
         return new ResourceNotFoundException(Constants.USER_NOT_FOUND);
       });
 
@@ -211,7 +207,7 @@ public class UserServiceImpl implements UserService {
     user.setRole(Role.valueOf(userInDTO.getRole().toUpperCase()));
 
     userRepository.save(user);
-    logger.info("User profile updated successfully for ID: {}", id);
+    LOGGER.info("User profile updated successfully for ID: {}", id);
     UserResponse userResponse = new UserResponse();
     userResponse.setSuccessMessage(Constants.USER_PROFILE_UPDATED_SUCCESSFULLY);
     return userResponse;
@@ -224,36 +220,39 @@ public class UserServiceImpl implements UserService {
    * @return a UserResponse indicating the result of the deletion
    */
   @Override
-  public UserResponse deleteUser(Integer id) {
-    logger.info("Attempting to delete user with ID: {}", id);
+  public UserResponse deleteUser(final Integer id) {
+    LOGGER.info("Attempting to delete user with ID: {}", id);
 
     User user = userRepository.findById(id)
       .orElseThrow(() -> {
-        logger.error("User not found with ID: {}", id);
+        LOGGER.error("User not found with ID: {}", id);
         return new ResourceNotFoundException(Constants.USER_NOT_FOUND);
       });
 
     userRepository.delete(user);
     walletBalanceRepository.deleteByUserId(id);
 
-    logger.info("User and associated wallet balance deleted successfully for ID: {}", id);
+    LOGGER.info("User and associated wallet balance deleted successfully for ID: {}", id);
     UserResponse userResponse = new UserResponse();
     userResponse.setSuccessMessage(Constants.USER_DELETED_SUCCESSFULLY);
     return userResponse;
   }
 
   /**
-   * Sends an email to a list of predefined recipients.
+   * Sends an email to a predefined list of recipients.
    *
-   * @param text    the body of the email
-   * @param subject the subject of the email
+   * @param emailRequestDTO the details of the email, including subject and body
+   * @return a {@link UserResponse} containing a success message if the email was sent successfully
    */
-  public void sendMail(String text, String subject) {
+  public UserResponse sendMail(final EmailRequestDTO emailRequestDTO) {
     List<String> recipients = Arrays.asList(
       "bhagyashrigayakwad23@gmail.com",
       "bhagyashrigayakwad26@gmail.com",
       "rajkumargayakwad222@gmail.com"
     );
-    emailService.sendMail(Constants.SENDER, subject, recipients, text);
+    emailService.sendMail(Constants.SENDER, emailRequestDTO, recipients);
+    UserResponse response = new UserResponse();
+    response.setSuccessMessage(Constants.EMAIL_SENT_SUCCESSFULLY);
+    return response;
   }
 }

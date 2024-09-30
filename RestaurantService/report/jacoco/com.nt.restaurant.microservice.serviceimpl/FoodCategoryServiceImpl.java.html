@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FoodCategoryServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.serviceimpl</a> &gt; <span class="el_source">FoodCategoryServiceImpl.java</span></div><h1>FoodCategoryServiceImpl.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.serviceimpl;
+
+
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.FoodCategoryInDTO;
+import com.nt.restaurant.microservice.dto.FoodCategoryOutDTO;
+import com.nt.restaurant.microservice.dtoconvertion.FoodCategoryDtoConverter;
+import com.nt.restaurant.microservice.entities.FoodCategory;
+import com.nt.restaurant.microservice.entities.Restaurant;
+import com.nt.restaurant.microservice.exception.ResourceAlreadyExistException;
+import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
+import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
+import com.nt.restaurant.microservice.repository.RestaurantRepository;
+import com.nt.restaurant.microservice.service.FoodCategoryService;
+import com.nt.restaurant.microservice.util.Constants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Implementation of {@link FoodCategoryService} for managing food categories.
+ */
+@Service
+<span class="fc" id="L29">public class FoodCategoryServiceImpl implements FoodCategoryService {</span>
+
+  /**
+   * Logger instance for logging information and errors.
+   */
+<span class="fc" id="L34">  private static final Logger LOGGER = LogManager.getLogger(FoodCategoryServiceImpl.class);</span>
+
+  /**
+   * Injects the {@link FoodCategoryRepository} to interact with the food category data in the database.
+   */
+  @Autowired
+  private FoodCategoryRepository foodCategoryRepository;
+
+  /**
+   * Injects the {@link RestaurantRepository} to interact with the restaurant data in the database.
+   */
+  @Autowired
+  private RestaurantRepository restaurantRepository;
+
+  /**
+   * Adds a new food category.
+   *
+   * @param foodCategoryInDTO The details of the food category to be added.
+   * @return A {@link CommonResponse} indicating the result of the operation.
+   * @throws ResourceNotFoundException     If the associated restaurant is not found.
+   * @throws ResourceAlreadyExistException If a food category with the same name already exists in the restaurant.
+   */
+  @Override
+  public CommonResponse addFoodCategory(final FoodCategoryInDTO foodCategoryInDTO) {
+<span class="fc" id="L58">    LOGGER.info(&quot;Adding food category: {}&quot;, foodCategoryInDTO);</span>
+
+<span class="fc" id="L60">    Optional&lt;Restaurant&gt; restaurant = restaurantRepository.findById(foodCategoryInDTO.getRestaurantId());</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">    if (!restaurant.isPresent()) {</span>
+<span class="fc" id="L62">      LOGGER.error(&quot;Restaurant with ID {} not found&quot;, foodCategoryInDTO.getRestaurantId());</span>
+<span class="fc" id="L63">      throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);</span>
+    }
+
+<span class="fc" id="L66">    Optional&lt;FoodCategory&gt; existingCategoryWithName = foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(</span>
+<span class="fc" id="L67">      foodCategoryInDTO.getRestaurantId(),</span>
+<span class="fc" id="L68">      foodCategoryInDTO.getFoodCategoryName().toUpperCase()</span>
+    );
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">    if (existingCategoryWithName.isPresent()) {</span>
+<span class="nc" id="L71">      LOGGER.error(&quot;Food category with name {} already exists in restaurant ID {}&quot;, foodCategoryInDTO.getFoodCategoryName(),</span>
+<span class="nc" id="L72">        foodCategoryInDTO.getRestaurantId());</span>
+<span class="nc" id="L73">      throw new ResourceAlreadyExistException(Constants.FOOD_CATEGORY_ALREADY_EXIST);</span>
+    }
+
+<span class="fc" id="L76">    FoodCategory convertedFoodCategory = FoodCategoryDtoConverter.convertToEntity(foodCategoryInDTO);</span>
+<span class="fc" id="L77">    FoodCategory savedFoodCategory = foodCategoryRepository.save(convertedFoodCategory);</span>
+<span class="fc" id="L78">    FoodCategoryDtoConverter.convertToOutDTO(savedFoodCategory);</span>
+<span class="fc" id="L79">    LOGGER.info(&quot;Food category {} successfully added&quot;, foodCategoryInDTO.getFoodCategoryName());</span>
+<span class="fc" id="L80">    return new CommonResponse(Constants.FOOD_CATEGORY_ADDED_SUCCESS);</span>
+  }
+
+  /**
+   * Retrieves food categories for a specific restaurant.
+   *
+   * @param restaurantId The ID of the restaurant whose food categories are to be fetched.
+   * @return A list of {@link FoodCategoryOutDTO} objects representing the food categories.
+   * @throws ResourceNotFoundException If the restaurant is not found.
+   */
+  @Override
+  public List&lt;FoodCategoryOutDTO&gt; getFoodCategoryByRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L92">    LOGGER.info(&quot;Fetching food categories for restaurant ID: {}&quot;, restaurantId);</span>
+
+<span class="fc" id="L94">    Optional&lt;Restaurant&gt; restaurant = restaurantRepository.findById(restaurantId);</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">    if (!restaurant.isPresent()) {</span>
+<span class="fc" id="L96">      LOGGER.error(&quot;Restaurant with ID {} not found&quot;, restaurantId);</span>
+<span class="fc" id="L97">      throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);</span>
+    }
+
+<span class="fc" id="L100">    List&lt;FoodCategory&gt; foodCategories = foodCategoryRepository.findByRestaurantId(restaurantId);</span>
+<span class="fc" id="L101">    List&lt;FoodCategoryOutDTO&gt; foodCategoryOutDTOList = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">    for (FoodCategory foodCategory : foodCategories) {</span>
+<span class="fc" id="L103">      FoodCategoryOutDTO dto = FoodCategoryDtoConverter.convertToOutDTO(foodCategory);</span>
+<span class="fc" id="L104">      foodCategoryOutDTOList.add(dto);</span>
+<span class="fc" id="L105">    }</span>
+
+<span class="fc" id="L107">    LOGGER.info(&quot;Retrieved {} food categories for restaurant ID {}&quot;, foodCategoryOutDTOList.size(), restaurantId);</span>
+<span class="fc" id="L108">    return foodCategoryOutDTOList;</span>
+  }
+
+  /**
+   * Updates an existing food category.
+   *
+   * @param foodCategoryId    The ID of the food category to be updated.
+   * @param foodCategoryInDTO The updated details of the food category.
+   * @return A {@link CommonResponse} indicating the result of the operation.
+   * @throws ResourceNotFoundException     If the food category with the given ID is not found.
+   * @throws ResourceAlreadyExistException If a food category with the same name already exists in the restaurant,
+   *                                       excluding the current one.
+   */
+  @Override
+  public CommonResponse updateFoodCategory(final Integer foodCategoryId, final FoodCategoryInDTO foodCategoryInDTO) {
+<span class="fc" id="L123">    LOGGER.info(&quot;Updating food category with ID: {}&quot;, foodCategoryId);</span>
+
+<span class="fc" id="L125">    Optional&lt;FoodCategory&gt; existingCategory = foodCategoryRepository.findById(foodCategoryId);</span>
+<span class="fc bfc" id="L126" title="All 2 branches covered.">    if (!existingCategory.isPresent()) {</span>
+<span class="fc" id="L127">      LOGGER.error(&quot;Food category with ID {} not found&quot;, foodCategoryId);</span>
+<span class="fc" id="L128">      throw new ResourceNotFoundException(Constants.FOOD_CATEGORY_NOT_FOUND);</span>
+    }
+
+<span class="fc" id="L131">    Optional&lt;FoodCategory&gt; existingCategoryWithName = foodCategoryRepository.findByRestaurantIdAndFoodCategoryName(</span>
+<span class="fc" id="L132">      foodCategoryInDTO.getRestaurantId(),</span>
+<span class="fc" id="L133">      foodCategoryInDTO.getFoodCategoryName().toUpperCase()</span>
+    );
+<span class="pc bpc" id="L135" title="1 of 4 branches missed.">    if (existingCategoryWithName.isPresent() &amp;&amp; !existingCategoryWithName.get().getFoodCategoryId().equals(foodCategoryId)) {</span>
+<span class="fc" id="L136">      LOGGER.error(&quot;Food category with name {} already exists for restaurant ID {}&quot;, foodCategoryInDTO.getFoodCategoryName(),</span>
+<span class="fc" id="L137">        foodCategoryInDTO.getRestaurantId());</span>
+<span class="fc" id="L138">      throw new ResourceAlreadyExistException(Constants.FOOD_CATEGORY_ALREADY_EXIST);</span>
+    }
+
+<span class="fc" id="L141">    FoodCategory categoryToUpdate = existingCategory.get();</span>
+<span class="fc" id="L142">    categoryToUpdate.setRestaurantId(foodCategoryInDTO.getRestaurantId());</span>
+<span class="fc" id="L143">    categoryToUpdate.setFoodCategoryName(foodCategoryInDTO.getFoodCategoryName().toUpperCase());</span>
+
+<span class="fc" id="L145">    FoodCategory updatedCategory = foodCategoryRepository.save(categoryToUpdate);</span>
+<span class="fc" id="L146">    LOGGER.info(&quot;Successfully updated food category with ID: {}&quot;, foodCategoryId);</span>
+<span class="fc" id="L147">    FoodCategoryDtoConverter.convertToOutDTO(updatedCategory);</span>
+<span class="fc" id="L148">    return new CommonResponse(Constants.FOOD_CATEGORY_UPDATED_SUCCESS);</span>
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

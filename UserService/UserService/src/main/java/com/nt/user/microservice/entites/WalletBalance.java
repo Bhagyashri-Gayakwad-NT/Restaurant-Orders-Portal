@@ -44,7 +44,7 @@ public class WalletBalance {
    *
    * @param id the wallet balance ID to set.
    */
-  public void setId(Integer id) {
+  public void setId(final Integer id) {
     this.id = id;
   }
 
@@ -62,7 +62,7 @@ public class WalletBalance {
    *
    * @param userId the user ID to set.
    */
-  public void setUserId(Integer userId) {
+  public void setUserId(final Integer userId) {
     this.userId = userId;
   }
 
@@ -80,7 +80,7 @@ public class WalletBalance {
    *
    * @param balance the wallet balance to set.
    */
-  public void setBalance(Double balance) {
+  public void setBalance(final Double balance) {
     this.balance = balance;
   }
 
@@ -92,15 +92,17 @@ public class WalletBalance {
    * @return true if the given object represents a WalletBalance equivalent to this wallet balance, false otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
-      return true; }
+      return true;
+    }
     if (o == null || getClass() != o.getClass()) {
-      return false; }
+      return false;
+    }
     WalletBalance that = (WalletBalance) o;
-    return Double.compare(that.balance, balance) == 0 &&
-      Objects.equals(id, that.id) &&
-      Objects.equals(userId, that.userId);
+    return Double.compare(that.balance, balance) == 0
+      && Objects.equals(id, that.id)
+      && Objects.equals(userId, that.userId);
   }
 
   /**
@@ -121,10 +123,10 @@ public class WalletBalance {
    */
   @Override
   public String toString() {
-    return "WalletBalance{" +
-      "id=" + id +
-      ", userId=" + userId +
-      ", balance=" + balance +
-      '}';
+    return "WalletBalance{"
+      + "id=" + id
+      + ", userId=" + userId
+      + ", balance=" + balance
+      + '}';
   }
 }

@@ -22,7 +22,7 @@ public class CommonResponse {
    *
    * @param message the message to be set in the response.
    */
-  public CommonResponse(String message) {
+  public CommonResponse(final String message) {
     this.message = message;
   }
 
@@ -40,7 +40,7 @@ public class CommonResponse {
    *
    * @param message the message to set.
    */
-  public void setMessage(String message) {
+  public void setMessage(final String message) {
     this.message = message;
   }
 }

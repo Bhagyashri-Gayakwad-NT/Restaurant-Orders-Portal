@@ -9,6 +9,13 @@ import javax.validation.constraints.NotNull;
  */
 public class AmountInDTO {
 
+  /**
+   * The balance amount for financial operations.
+   * <p>
+   * This field represents the balance to be added or updated in the user's wallet.
+   * It is a mandatory field, and cannot be {@code null}.
+   * </p>
+   */
   @NotNull(message = "Balance cannot be null")
   private Double balance;
 
@@ -26,7 +33,7 @@ public class AmountInDTO {
    *
    * @param balance the balance to set
    */
-  public void setBalance(Double balance) {
+  public void setBalance(final Double balance) {
     this.balance = balance;
   }
 }

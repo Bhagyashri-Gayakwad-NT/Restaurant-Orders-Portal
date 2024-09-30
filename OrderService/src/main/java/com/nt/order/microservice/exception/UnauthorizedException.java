@@ -11,7 +11,7 @@ public class UnauthorizedException extends RuntimeException {
    *
    * @param message the detail message, saved for later retrieval by the {@link Throwable#getMessage()} method.
    */
-  public UnauthorizedException(String message) {
+  public UnauthorizedException(final String message) {
     super(message);
   }
 }

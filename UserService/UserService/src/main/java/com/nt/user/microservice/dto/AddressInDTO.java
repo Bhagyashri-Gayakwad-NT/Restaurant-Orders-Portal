@@ -35,7 +35,7 @@ public class AddressInDTO {
    */
   @NotBlank(message = "State is required")
   @Size(min = 2, max = 50, message = "State must be between 2 and 50 characters")
-  @Pattern(regexp = "^[a-zA-Z]+$", message = "State must contain only alphabetic characters")
+  @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "State must contain only alphabetic characters")
   private String state;
 
   /**
@@ -44,7 +44,7 @@ public class AddressInDTO {
    */
   @NotBlank(message = "Country is required")
   @Size(max = 50, message = "Country cannot be longer than 50 characters")
-  @Pattern(regexp = "^[a-zA-Z]+$", message = "Country must contain only alphabetic characters without spaces or special characters")
+  @Pattern(regexp = "^[a-zA-Z]+$", message = "Country must contain only alphabetic characters")
   private String country;
 
   /**
@@ -75,7 +75,7 @@ public class AddressInDTO {
    *
    * @param street the street address to set.
    */
-  public void setStreet(String street) {
+  public void setStreet(final String street) {
     this.street = street;
   }
 
@@ -93,7 +93,7 @@ public class AddressInDTO {
    *
    * @param city the city to set.
    */
-  public void setCity(String city) {
+  public void setCity(final String city) {
     this.city = city;
   }
 
@@ -111,7 +111,7 @@ public class AddressInDTO {
    *
    * @param state the state to set.
    */
-  public void setState(String state) {
+  public void setState(final String state) {
     this.state = state;
   }
 
@@ -129,7 +129,7 @@ public class AddressInDTO {
    *
    * @param country the country to set.
    */
-  public void setCountry(String country) {
+  public void setCountry(final String country) {
     this.country = country;
   }
 
@@ -147,7 +147,7 @@ public class AddressInDTO {
    *
    * @param pinCode the pin code to set.
    */
-  public void setPinCode(String pinCode) {
+  public void setPinCode(final String pinCode) {
     this.pinCode = pinCode;
   }
 
@@ -165,7 +165,7 @@ public class AddressInDTO {
    *
    * @param userId the user ID to set.
    */
-  public void setUserId(Integer userId) {
+  public void setUserId(final Integer userId) {
     this.userId = userId;
   }
 
@@ -177,18 +177,20 @@ public class AddressInDTO {
    * @return true if the given object represents an AddressInDTO equivalent to this DTO, false otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
-      return true; }
+      return true;
+    }
     if (o == null || getClass() != o.getClass()) {
-      return false; }
+      return false;
+    }
     AddressInDTO that = (AddressInDTO) o;
-    return Objects.equals(street, that.street) &&
-      Objects.equals(city, that.city) &&
-      Objects.equals(state, that.state) &&
-      Objects.equals(country, that.country) &&
-      Objects.equals(pinCode, that.pinCode) &&
-      Objects.equals(userId, that.userId);
+    return Objects.equals(street, that.street)
+      && Objects.equals(city, that.city)
+      && Objects.equals(state, that.state)
+      && Objects.equals(country, that.country)
+      && Objects.equals(pinCode, that.pinCode)
+      && Objects.equals(userId, that.userId);
   }
 
   /**
@@ -208,13 +210,13 @@ public class AddressInDTO {
    */
   @Override
   public String toString() {
-    return "AddressInDTO{" +
-      "street='" + street + '\'' +
-      ", city='" + city + '\'' +
-      ", state='" + state + '\'' +
-      ", country='" + country + '\'' +
-      ", pinCode='" + pinCode + '\'' +
-      ", userId=" + userId +
-      '}';
+    return "AddressInDTO{"
+      + "street='" + street
+      + '\'' + ", city='" + city
+      + '\'' + ", state='" + state
+      + '\'' + ", country='" + country
+      + '\'' + ", pinCode='" + pinCode
+      + '\'' + ", userId=" + userId
+      + '}';
   }
 }

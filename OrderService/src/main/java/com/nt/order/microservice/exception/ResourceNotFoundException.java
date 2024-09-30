@@ -11,7 +11,7 @@ public class ResourceNotFoundException extends RuntimeException {
    *
    * @param message the detail message, saved for later retrieval by the {@link Throwable#getMessage()} method.
    */
-  public ResourceNotFoundException(String message) {
+  public ResourceNotFoundException(final String message) {
     super(message);
   }
 }

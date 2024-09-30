@@ -36,8 +36,8 @@ public class UserInDTO {
   @NotBlank(message = "Email is required")
   @Email(message = "Email should be valid")
   @Pattern(regexp = "^[a-zA-Z]+[a-zA-Z0-9._%+-]*@(nucleusteq\\.com)$",
-    message = "Email must be valid, must end with @nucleusteq.com, and " +
-      "contain at least one alphabet before the '@' symbol.")
+    message = "Email must be valid, must end with @nucleusteq.com, and "
+      + "contain at least one alphabet before the '@' symbol.")
   private String email;
 
   /**
@@ -65,8 +65,6 @@ public class UserInDTO {
     message = "Role must be either 'USER' or 'RESTAURANT_OWNER'")
   private String role;
 
-  // Getters and setters
-
   /**
    * Gets the first name of the user.
    *
@@ -81,7 +79,7 @@ public class UserInDTO {
    *
    * @param firstName the first name to set.
    */
-  public void setFirstName(String firstName) {
+  public void setFirstName(final String firstName) {
     this.firstName = firstName;
   }
 
@@ -99,7 +97,7 @@ public class UserInDTO {
    *
    * @param lastName the last name to set.
    */
-  public void setLastName(String lastName) {
+  public void setLastName(final String lastName) {
     this.lastName = lastName;
   }
 
@@ -117,7 +115,7 @@ public class UserInDTO {
    *
    * @param email the email address to set.
    */
-  public void setEmail(String email) {
+  public void setEmail(final String email) {
     this.email = email;
   }
 
@@ -135,7 +133,7 @@ public class UserInDTO {
    *
    * @param password the password to set.
    */
-  public void setPassword(String password) {
+  public void setPassword(final String password) {
     this.password = password;
   }
 
@@ -153,7 +151,7 @@ public class UserInDTO {
    *
    * @param phoneNo the phone number to set.
    */
-  public void setPhoneNo(String phoneNo) {
+  public void setPhoneNo(final String phoneNo) {
     this.phoneNo = phoneNo;
   }
 
@@ -171,11 +169,9 @@ public class UserInDTO {
    *
    * @param role the role to set.
    */
-  public void setRole(String role) {
+  public void setRole(final String role) {
     this.role = role;
   }
-
-  // Override methods
 
   /**
    * Checks equality between this object and another object.
@@ -184,7 +180,7 @@ public class UserInDTO {
    * @return true if the objects are equal, false otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -192,12 +188,12 @@ public class UserInDTO {
       return false;
     }
     UserInDTO userInDTO = (UserInDTO) o;
-    return Objects.equals(firstName, userInDTO.firstName) &&
-      Objects.equals(lastName, userInDTO.lastName) &&
-      Objects.equals(email, userInDTO.email) &&
-      Objects.equals(password, userInDTO.password) &&
-      Objects.equals(phoneNo, userInDTO.phoneNo) &&
-      Objects.equals(role, userInDTO.role);
+    return Objects.equals(firstName, userInDTO.firstName)
+      && Objects.equals(lastName, userInDTO.lastName)
+      && Objects.equals(email, userInDTO.email)
+      && Objects.equals(password, userInDTO.password)
+      && Objects.equals(phoneNo, userInDTO.phoneNo)
+      && Objects.equals(role, userInDTO.role);
   }
 
   /**
@@ -217,13 +213,13 @@ public class UserInDTO {
    */
   @Override
   public String toString() {
-    return "UserInDTO{" +
-      "firstName='" + firstName + '\'' +
-      ", lastName='" + lastName + '\'' +
-      ", email='" + email + '\'' +
-      ", password='" + password + '\'' +
-      ", phoneNo='" + phoneNo + '\'' +
-      ", role='" + role + '\'' +
-      '}';
+    return "UserInDTO{"
+      + "firstName='" + firstName
+      + '\'' + ", lastName='" + lastName
+      + '\'' + ", email='" + email
+      + '\'' + ", password='" + password
+      + '\'' + ", phoneNo='" + phoneNo
+      + '\'' + ", role='" + role
+      + '\'' + '}';
   }
 }

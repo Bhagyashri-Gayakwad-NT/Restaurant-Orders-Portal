@@ -1,14 +1,14 @@
 package com.nt.restaurant.microservice.service;
 
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.FoodItemInDTO;
+import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
+import com.nt.restaurant.microservice.dto.FoodItemUpdateInDTO;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.FoodItem;
 import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.exception.ResourceAlreadyExistException;
 import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
-import com.nt.restaurant.microservice.dto.FoodItemInDTO;
-import com.nt.restaurant.microservice.dto.FoodItemUpdateInDTO;
-import com.nt.restaurant.microservice.dto.CommonResponse;
-import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
 import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
 import com.nt.restaurant.microservice.repository.FoodItemRepository;
 import com.nt.restaurant.microservice.repository.RestaurantRepository;
@@ -79,7 +79,6 @@ class FoodItemServiceImplTest {
 
 
   @Test
-
   void testGetFoodItemsByCategory_Success() {
     List<FoodItem> foodItems = new ArrayList<>();
     FoodItem foodItem = new FoodItem();
@@ -116,7 +115,7 @@ class FoodItemServiceImplTest {
     // Assert
     assertFalse(foodItemOutDTOList.isEmpty());
     assertEquals(1, foodItemOutDTOList.size());
-    assertEquals("Test FoodItem", foodItemOutDTOList.get(0).getFoodItemName()); // Assuming name is converted to upper case
+    assertEquals("Test FoodItem", foodItemOutDTOList.get(0).getfoodItemName()); // Assuming name is converted to upper case
   }
 
   @Test

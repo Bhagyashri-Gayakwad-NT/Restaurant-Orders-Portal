@@ -1,7 +1,10 @@
 package com.nt.order.microservice.dtos;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class UpdateBalanceTest {
 
@@ -90,6 +93,7 @@ public class UpdateBalanceTest {
     // Assert
     assertEquals(balance, updateBalance.getBalance());
   }
+
   @Test
   public void testEquals() {
     // Arrange

@@ -1,5 +1,6 @@
 package com.nt.user.microservice.service;
 
+import com.nt.user.microservice.dto.EmailRequestDTO;
 import com.nt.user.microservice.dto.LoginOutDTO;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
@@ -56,10 +57,10 @@ public interface UserService {
   UserResponse deleteUser(Integer id);
 
   /**
-   * Sends an email with the specified subject and text.
+   * Sends an email with the specified subject and content.
    *
-   * @param text the content of the email
-   * @param subject the subject of the email
+   * @param emailRequestDTO the DTO containing the email details such as subject and content
+   * @return a UserResponse containing the status or result of the email operation
    */
-  void sendMail(String text, String subject);
+  UserResponse sendMail(EmailRequestDTO emailRequestDTO);
 }

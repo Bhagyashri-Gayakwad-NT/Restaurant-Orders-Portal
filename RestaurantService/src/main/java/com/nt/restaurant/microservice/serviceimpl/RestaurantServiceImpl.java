@@ -1,18 +1,19 @@
 package com.nt.restaurant.microservice.serviceimpl;
 
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.RestaurantInDTO;
+import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
+import com.nt.restaurant.microservice.dto.UserOutDTO;
 import com.nt.restaurant.microservice.dtoconvertion.DtoConverter;
 import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.exception.InvalidRequestException;
 import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
-import com.nt.restaurant.microservice.dto.RestaurantInDTO;
-import com.nt.restaurant.microservice.dto.CommonResponse;
-import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
-import com.nt.restaurant.microservice.dto.UserOutDTO;
 import com.nt.restaurant.microservice.exception.UnauthorizedException;
 import com.nt.restaurant.microservice.repository.RestaurantRepository;
 import com.nt.restaurant.microservice.service.RestaurantService;
 import com.nt.restaurant.microservice.util.Constants;
 import com.nt.restaurant.microservice.util.Role;
+import feign.FeignException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class RestaurantServiceImpl implements RestaurantService {
   /**
    * Logger for the RestaurantServiceImpl class.
    */
-  private static final Logger logger = LogManager.getLogger(RestaurantServiceImpl.class);
+  private static final Logger LOGGER = LogManager.getLogger(RestaurantServiceImpl.class);
 
   /**
    * Autowired RestaurantRepository to perform CRUD operations on Restaurant entities.
@@ -58,51 +59,51 @@ public class RestaurantServiceImpl implements RestaurantService {
    */
   @Override
   public CommonResponse addRestaurant(final RestaurantInDTO restaurantInDTO, final MultipartFile image) {
-    logger.info("Attempting to add restaurant with details: {}", restaurantInDTO);
+    LOGGER.info("Attempting to add restaurant with details: {}", restaurantInDTO);
     UserOutDTO userOutDto;
     try {
-      logger.debug("Fetching user profile for userId: {}", restaurantInDTO.getUserId());
+      LOGGER.debug("Fetching user profile for userId: {}", restaurantInDTO.getUserId());
       userOutDto = userFClient.getUserProfile(restaurantInDTO.getUserId());
-      logger.debug("User profile fetched successfully: {}", userOutDto);
-    } catch (Exception e) {
-      logger.error("User with ID {} not found: {}", restaurantInDTO.getUserId(), e.getMessage());
+      LOGGER.debug("User profile fetched successfully: {}", userOutDto);
+    } catch (FeignException.NotFound ex) {
+      LOGGER.error("User with ID {} not found: {}", restaurantInDTO.getUserId(), ex.getMessage());
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
     if (userOutDto.getRole().equals(Role.USER.name())) {
-      logger.warn("User with ID {} is not a restaurant owner", restaurantInDTO.getUserId());
+      LOGGER.error("User with ID {} is not a restaurant owner", restaurantInDTO.getUserId());
       throw new UnauthorizedException(Constants.USER_NOT_RESTAURANT_OWNER);
     }
     String normalizedRestaurantName = restaurantInDTO.getRestaurantName().trim().toLowerCase();
     if (restaurantRepository.existsByRestaurantNameIgnoreCase(normalizedRestaurantName)) {
-      logger.error("Restaurant name {} already exists", restaurantInDTO.getRestaurantName());
+      LOGGER.error("Restaurant name {} already exists", restaurantInDTO.getRestaurantName());
       throw new InvalidRequestException(Constants.RESTAURANT_NAME_EXISTS);
     }
-    logger.debug("Converting RestaurantInDTO to Restaurant entity");
+    LOGGER.debug("Converting RestaurantInDTO to Restaurant entity");
     Restaurant restaurant = DtoConverter.fromInDTOToEntity(restaurantInDTO);
     restaurant.setRestaurantName(normalizedRestaurantName);
     try {
       if (Objects.nonNull(image) && !image.isEmpty()) {
-        logger.debug("Processing image for restaurant: {}", restaurantInDTO.getRestaurantName());
+        LOGGER.debug("Processing image for restaurant: {}", restaurantInDTO.getRestaurantName());
         String contentType = image.getContentType();
         if (Objects.isNull(contentType) || !(contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
-          logger.error("Invalid image type: {}. Only JPG and PNG are allowed.", contentType);
+          LOGGER.error("Invalid image type: {}. Only JPG and PNG are allowed.", contentType);
           throw new ResourceNotFoundException(Constants.INVALID_FILE_TYPE);
         }
         restaurant.setRestaurantImage(image.getBytes());
-        logger.debug("Image processed and added successfully for restaurant: {}", restaurantInDTO.getRestaurantName());
+        LOGGER.debug("Image processed and added successfully for restaurant: {}", restaurantInDTO.getRestaurantName());
       } else {
-        logger.warn("No image provided for restaurant: {}", restaurantInDTO.getRestaurantName());
+        LOGGER.warn("No image provided for restaurant: {}", restaurantInDTO.getRestaurantName());
       }
     } catch (Exception e) {
-      logger.error("Error occurred while processing image file for restaurant: {}", e.getMessage());
+      LOGGER.error("Error occurred while processing image file for restaurant: {}", e.getMessage());
       e.printStackTrace();
       throw new RuntimeException("Image processing failed");
     }
-    logger.debug("Saving restaurant entity to the database");
+    LOGGER.debug("Saving restaurant entity to the database");
     Restaurant savedRestaurant = restaurantRepository.save(restaurant);
-    logger.info("Successfully added restaurant with ID: {}", savedRestaurant.getRestaurantId());
+    LOGGER.info("Successfully added restaurant with ID: {}", savedRestaurant.getRestaurantId());
     DtoConverter.fromEntityToOutDTO(savedRestaurant);
-    logger.debug("Returning success response after adding restaurant");
+    LOGGER.debug("Returning success response after adding restaurant");
     return new CommonResponse(Constants.RESTAURANT_ADDED_SUCCESS);
   }
 
@@ -115,17 +116,17 @@ public class RestaurantServiceImpl implements RestaurantService {
    */
   @Override
   public RestaurantOutDTO getRestaurantById(final Integer restaurantId) {
-    logger.info("Fetching restaurant with ID: {}", restaurantId);
+    LOGGER.info("Fetching restaurant with ID: {}", restaurantId);
 
     Optional<Restaurant> restaurantOptional = restaurantRepository.findById(restaurantId);
     if (restaurantOptional.isPresent()) {
       Restaurant restaurant = restaurantOptional.get();
       RestaurantOutDTO restaurantOutDTO = DtoConverter.fromEntityToOutDTO(restaurant);
 
-      logger.info("Successfully retrieved restaurant with ID: {}", restaurantId);
+      LOGGER.info("Successfully retrieved restaurant with ID: {}", restaurantId);
       return restaurantOutDTO;
     } else {
-      logger.error("Restaurant not found with ID: {}", restaurantId);
+      LOGGER.error("Restaurant not found with ID: {}", restaurantId);
       throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);
     }
   }
@@ -138,7 +139,7 @@ public class RestaurantServiceImpl implements RestaurantService {
    */
   @Override
   public List<RestaurantOutDTO> getRestaurantsByUserId(final Integer userId) {
-    logger.info("Fetching restaurants for user ID: {}", userId);
+    LOGGER.info("Fetching restaurants for user ID: {}", userId);
     List<Restaurant> restaurants = restaurantRepository.findByUserId(userId);
     List<RestaurantOutDTO> restaurantOutDTOList = new ArrayList<>();
 
@@ -147,7 +148,7 @@ public class RestaurantServiceImpl implements RestaurantService {
       restaurantOutDTOList.add(restaurantOutDTO);
     }
 
-    logger.info("Successfully retrieved {} restaurants for user ID: {}", restaurantOutDTOList.size(), userId);
+    LOGGER.info("Successfully retrieved {} restaurants for user ID: {}", restaurantOutDTOList.size(), userId);
     return restaurantOutDTOList;
   }
 
@@ -159,21 +160,13 @@ public class RestaurantServiceImpl implements RestaurantService {
    */
   @Override
   public byte[] getRestaurantImage(final Integer id) {
-    logger.info("Fetching image for restaurant with ID: {}", id);
+    LOGGER.info("Fetching image for restaurant with ID: {}", id);
     RestaurantOutDTO restaurant = getRestaurantById(id);
     String base64Image = restaurant.getRestaurantImage();
     byte[] imageData = Base64.getDecoder().decode(base64Image);
-    logger.info("Image byte length for restaurant with ID {}: {}", id, imageData.length);
+    LOGGER.info("Image byte length for restaurant with ID {}: {}", id, imageData.length);
     return imageData;
   }
-
-  /**
-   * Finds a restaurant by its ID.
-   *
-   * @param id The ID of the restaurant to be found.
-   * @return The Restaurant entity corresponding to the given ID.
-   * @throws ResourceNotFoundException If the restaurant is not found.
-   */
 
   /**
    * Retrieves a list of all restaurants in the system.
@@ -182,7 +175,7 @@ public class RestaurantServiceImpl implements RestaurantService {
    */
   @Override
   public List<RestaurantOutDTO> getAllRestaurants() {
-    logger.info("Fetching all restaurants");
+    LOGGER.info("Fetching all restaurants");
 
     List<Restaurant> restaurants = restaurantRepository.findAll();
     List<RestaurantOutDTO> restaurantOutDTOs = new ArrayList<>();
@@ -192,7 +185,7 @@ public class RestaurantServiceImpl implements RestaurantService {
       restaurantOutDTOs.add(restaurantOutDTO);
     }
 
-    logger.info("Successfully retrieved {} restaurants", restaurantOutDTOs.size());
+    LOGGER.info("Successfully retrieved {} restaurants", restaurantOutDTOs.size());
     return restaurantOutDTOs;
   }
 }

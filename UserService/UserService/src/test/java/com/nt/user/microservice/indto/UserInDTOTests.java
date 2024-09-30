@@ -1,155 +1,133 @@
 package com.nt.user.microservice.indto;
 
-import com.nt.user.microservice.dto.UserInDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import com.nt.user.microservice.dto.UserInDTO;
+import org.junit.jupiter.api.Test;
 
 public class UserInDTOTests {
 
-  private UserInDTO userInDTO;
+  @Test
+  public void testGetterAndSetter() {
+    UserInDTO userInDTO = new UserInDTO();
 
-  @BeforeEach
-  void setUp() {
-    userInDTO = new UserInDTO();
+    assertNull(userInDTO.getFirstName());
+    String firstName = "John";
+    userInDTO.setFirstName(firstName);
+    assertEquals(firstName, userInDTO.getFirstName());
+
+    assertNull(userInDTO.getLastName());
+    String lastName = "Doe";
+    userInDTO.setLastName(lastName);
+    assertEquals(lastName, userInDTO.getLastName());
+
+    assertNull(userInDTO.getEmail());
+    String email = "john.doe@nucleusteq.com";
+    userInDTO.setEmail(email);
+    assertEquals(email, userInDTO.getEmail());
+
+    assertNull(userInDTO.getPassword());
+    String password = "Password123!";
+    userInDTO.setPassword(password);
+    assertEquals(password, userInDTO.getPassword());
+
+    assertNull(userInDTO.getPhoneNo());
+    String phoneNo = "9876543210";
+    userInDTO.setPhoneNo(phoneNo);
+    assertEquals(phoneNo, userInDTO.getPhoneNo());
+
+    assertNull(userInDTO.getRole());
+    String role = "USER";
+    userInDTO.setRole(role);
+    assertEquals(role, userInDTO.getRole());
   }
 
   @Test
-  void testGettersAndSetters() {
-    // Setting values
-    userInDTO.setFirstName("TestFirst");
-    userInDTO.setLastName("TestLast");
-    userInDTO.setEmail("test@nucleusteq.com");
-    userInDTO.setPassword("Password123!");
-    userInDTO.setPhoneNo("9876543210");
-    userInDTO.setRole("USER");
+  public void testToString() {
+    UserInDTO userInDTO = new UserInDTO();
 
-    // Asserting getters
-    assertEquals("TestFirst", userInDTO.getFirstName(), "Expected firstName to be 'TestFirst'");
-    assertEquals("TestLast", userInDTO.getLastName(), "Expected lastName to be 'TestLast'");
-    assertEquals("test@nucleusteq.com", userInDTO.getEmail(), "Expected email to be 'test@nucleusteq.com'");
-    assertEquals("Password123!", userInDTO.getPassword(), "Expected password to be 'Password123!'");
-    assertEquals("9876543210", userInDTO.getPhoneNo(), "Expected phone number to be '9876543210'");
-    assertEquals("USER", userInDTO.getRole(), "Expected role to be 'USER'");
+    String firstName = "John";
+    userInDTO.setFirstName(firstName);
+
+    String lastName = "Doe";
+    userInDTO.setLastName(lastName);
+
+    String email = "john.doe@nucleusteq.com";
+    userInDTO.setEmail(email);
+
+    String password = "Password123!";
+    userInDTO.setPassword(password);
+
+    String phoneNo = "9876543210";
+    userInDTO.setPhoneNo(phoneNo);
+
+    String role = "USER";
+    userInDTO.setRole(role);
+
+    assertEquals("UserInDTO{firstName='John', lastName='Doe', email='john.doe@nucleusteq.com', " +
+      "password='Password123!', phoneNo='9876543210', role='USER'}", userInDTO.toString());
   }
 
   @Test
-  void testEqualsSameObject() {
-    // Asserting that the same object is equal
-    assertEquals(userInDTO, userInDTO, "The same object should be equal to itself");
+  public void testEqualsAndHashcode() {
+    String firstName = "John";
+    String lastName = "Doe";
+    String email = "john.doe@nucleusteq.com";
+    String password = "Password123!";
+    String phoneNo = "9876543210";
+    String role = "USER";
+
+    UserInDTO userInDTO1 = buildUserInDTO(firstName, lastName, email, password, phoneNo, role);
+
+    assertEquals(userInDTO1, userInDTO1);
+    assertEquals(userInDTO1.hashCode(), userInDTO1.hashCode());
+
+    assertNotEquals(userInDTO1, new Object());
+
+    UserInDTO userInDTO2 = buildUserInDTO(firstName, lastName, email, password, phoneNo, role);
+    assertEquals(userInDTO1, userInDTO2);
+    assertEquals(userInDTO1.hashCode(), userInDTO2.hashCode());
+
+    userInDTO2 = buildUserInDTO(firstName + " ", lastName, email, password, phoneNo, role);
+    assertNotEquals(userInDTO1, userInDTO2);
+    assertNotEquals(userInDTO1.hashCode(), userInDTO2.hashCode());
+
+    userInDTO2 = buildUserInDTO(firstName, lastName + " ", email, password, phoneNo, role);
+    assertNotEquals(userInDTO1, userInDTO2);
+    assertNotEquals(userInDTO1.hashCode(), userInDTO2.hashCode());
+
+    userInDTO2 = buildUserInDTO(firstName, lastName, email + " ", password, phoneNo, role);
+    assertNotEquals(userInDTO1, userInDTO2);
+    assertNotEquals(userInDTO1.hashCode(), userInDTO2.hashCode());
+
+    userInDTO2 = buildUserInDTO(firstName, lastName, email, password + " ", phoneNo, role);
+    assertNotEquals(userInDTO1, userInDTO2);
+    assertNotEquals(userInDTO1.hashCode(), userInDTO2.hashCode());
+
+    userInDTO2 = buildUserInDTO(firstName, lastName, email, password, phoneNo + " ", role);
+    assertNotEquals(userInDTO1, userInDTO2);
+    assertNotEquals(userInDTO1.hashCode(), userInDTO2.hashCode());
+
+    userInDTO2 = buildUserInDTO(firstName, lastName, email, password, phoneNo, role + " ");
+    assertNotEquals(userInDTO1, userInDTO2);
+    assertNotEquals(userInDTO1.hashCode(), userInDTO2.hashCode());
+
+    userInDTO1 = new UserInDTO();
+    userInDTO2 = new UserInDTO();
+    assertEquals(userInDTO1, userInDTO2);
+    assertEquals(userInDTO1.hashCode(), userInDTO2.hashCode());
   }
 
-  @Test
-  void testEqualsDifferentObjectSameValues() {
-    // Create another object with the same values
-    UserInDTO anotherDTO = new UserInDTO();
-    anotherDTO.setFirstName("TestFirst");
-    anotherDTO.setLastName("TestLast");
-    anotherDTO.setEmail("test@nucleusteq.com");
-    anotherDTO.setPassword("Password123!");
-    anotherDTO.setPhoneNo("9876543210");
-    anotherDTO.setRole("USER");
+  private UserInDTO buildUserInDTO(String firstName, String lastName, String email, String password, String phoneNo, String role) {
+    UserInDTO userInDTO = new UserInDTO();
 
-    // Set the same values for the original object
-    userInDTO.setFirstName("TestFirst");
-    userInDTO.setLastName("TestLast");
-    userInDTO.setEmail("test@nucleusteq.com");
-    userInDTO.setPassword("Password123!");
-    userInDTO.setPhoneNo("9876543210");
-    userInDTO.setRole("USER");
+    userInDTO.setFirstName(firstName);
+    userInDTO.setLastName(lastName);
+    userInDTO.setEmail(email);
+    userInDTO.setPassword(password);
+    userInDTO.setPhoneNo(phoneNo);
+    userInDTO.setRole(role);
 
-    // Assert equality between the two objects
-    assertEquals(userInDTO, anotherDTO, "Objects with the same values should be equal");
-  }
-
-  @Test
-  void testEqualsDifferentObjectDifferentValues() {
-    // Create another object with different values
-    UserInDTO anotherDTO = new UserInDTO();
-    anotherDTO.setFirstName("DifferentFirst");
-    anotherDTO.setLastName("DifferentLast");
-    anotherDTO.setEmail("diff@nucleusteq.com");
-    anotherDTO.setPassword("DiffPass123!");
-    anotherDTO.setPhoneNo("8765432109");
-    anotherDTO.setRole("RESTAURANT_OWNER");
-
-    // Set different values for the original object
-    userInDTO.setFirstName("TestFirst");
-    userInDTO.setLastName("TestLast");
-    userInDTO.setEmail("test@nucleusteq.com");
-    userInDTO.setPassword("Password123!");
-    userInDTO.setPhoneNo("9876543210");
-    userInDTO.setRole("USER");
-
-    // Assert that the objects are not equal
-    assertNotEquals(userInDTO, anotherDTO, "Objects with different values should not be equal");
-  }
-
-  @Test
-  void testEqualsNull() {
-    // Asserting that the object is not equal to null
-    assertNotEquals(userInDTO, null, "Object should not be equal to null");
-  }
-
-  @Test
-  void testHashCodeSameValues() {
-    // Create another object with the same values
-    UserInDTO anotherDTO = new UserInDTO();
-    anotherDTO.setFirstName("TestFirst");
-    anotherDTO.setLastName("TestLast");
-    anotherDTO.setEmail("test@nucleusteq.com");
-    anotherDTO.setPassword("Password123!");
-    anotherDTO.setPhoneNo("9876543210");
-    anotherDTO.setRole("USER");
-
-    // Set the same values for the original object
-    userInDTO.setFirstName("TestFirst");
-    userInDTO.setLastName("TestLast");
-    userInDTO.setEmail("test@nucleusteq.com");
-    userInDTO.setPassword("Password123!");
-    userInDTO.setPhoneNo("9876543210");
-    userInDTO.setRole("USER");
-
-    // Asserting that the hash codes are the same for the same values
-    assertEquals(userInDTO.hashCode(), anotherDTO.hashCode(), "Hash codes should match for same values");
-  }
-
-  @Test
-  void testHashCodeDifferentValues() {
-    // Create another object with different values
-    UserInDTO anotherDTO = new UserInDTO();
-    anotherDTO.setFirstName("DifferentFirst");
-    anotherDTO.setLastName("DifferentLast");
-    anotherDTO.setEmail("diff@nucleusteq.com");
-    anotherDTO.setPassword("DiffPass123!");
-    anotherDTO.setPhoneNo("8765432109");
-    anotherDTO.setRole("RESTAURANT_OWNER");
-
-    // Set different values for the original object
-    userInDTO.setFirstName("TestFirst");
-    userInDTO.setLastName("TestLast");
-    userInDTO.setEmail("test@nucleusteq.com");
-    userInDTO.setPassword("Password123!");
-    userInDTO.setPhoneNo("9876543210");
-    userInDTO.setRole("USER");
-
-    // Assert that the hash codes are different for different values
-    assertNotEquals(userInDTO.hashCode(), anotherDTO.hashCode(), "Hash codes should differ for different values");
-  }
-
-  @Test
-  void testToString() {
-    userInDTO.setFirstName("TestFirst");
-    userInDTO.setLastName("TestLast");
-    userInDTO.setEmail("test@nucleusteq.com");
-    userInDTO.setPassword("Password123!");
-    userInDTO.setPhoneNo("9876543210");
-    userInDTO.setRole("USER");
-
-    String expectedString = "UserInDTO{firstName='TestFirst', lastName='TestLast', " +
-      "email='test@nucleusteq.com', password='Password123!', phoneNo='9876543210', role='USER'}";
-
-    assertEquals(expectedString, userInDTO.toString(), "Expected toString output to match the format");
+    return userInDTO;
   }
 }

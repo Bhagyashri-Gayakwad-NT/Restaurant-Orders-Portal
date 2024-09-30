@@ -24,13 +24,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class WalletBalanceServiceImpl implements WalletBalanceService {
   /**
-   * Logger for logging information, warnings, and errors related to wallet balance operations.
+   * LOGGER for logging information, warnings, and errors related to wallet balance operations.
    * <p>
-   * The Logger is used to record events and errors that occur during the execution of methods in this class.
+   * The LOGGER is used to record events and errors that occur during the execution of methods in this class.
    * This helps in debugging and tracking the application's behavior.
    * </p>
    */
-  private static final Logger logger = LoggerFactory.getLogger(WalletBalanceServiceImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(WalletBalanceServiceImpl.class);
 
   /**
    * Repository for performing CRUD operations on the WalletBalance entity.
@@ -68,8 +68,8 @@ public class WalletBalanceServiceImpl implements WalletBalanceService {
    * @throws InsufficientBalanceException if the wallet balance is insufficient for the requested amount
    */
   @Override
-  public UserOutDTO updateWalletBalance(Integer userId, Double amount) {
-    logger.info("Updating wallet balance for user ID: {}", userId);
+  public UserOutDTO updateWalletBalance(final Integer userId, final Double amount) {
+    LOGGER.info("Updating wallet balance for user ID: {}", userId);
 
     User user = userRepository.findById(userId)
       .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
@@ -80,13 +80,13 @@ public class WalletBalanceServiceImpl implements WalletBalanceService {
 
     Double currentBalance = walletBalance.getBalance();
     if (currentBalance < amount) {
-      logger.error("Insufficient funds for user ID: {}", userId);
+      LOGGER.error("Insufficient funds for user ID: {}", userId);
       throw new InsufficientBalanceException(Constants.INSUFFICIENT_BALANCE);
     }
     walletBalance.setBalance(currentBalance - amount);
     walletBalanceRepository.save(walletBalance);
 
-    logger.info("Wallet balance updated successfully for user ID: {}", userId);
+    LOGGER.info("Wallet balance updated successfully for user ID: {}", userId);
 
     UserOutDTO userOutDTO = new UserOutDTO();
     userOutDTO.setId(user.getId());
@@ -113,7 +113,7 @@ public class WalletBalanceServiceImpl implements WalletBalanceService {
    * @throws ResourceNotFoundException if the user or wallet is not found
    */
   @Override
-  public UserOutDTO addMoney(Integer userId, Double amount) {
+  public UserOutDTO addMoney(final Integer userId, final Double amount) {
     User user = userRepository.findById(userId)
       .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
 
@@ -136,7 +136,7 @@ public class WalletBalanceServiceImpl implements WalletBalanceService {
    * @param walletBalance the wallet balance to be included in the DTO
    * @return a {@link UserOutDTO} object containing user information and wallet balance
    */
-  private UserOutDTO mapToUserOutDTO(User user, WalletBalance walletBalance) {
+  private UserOutDTO mapToUserOutDTO(final User user, final WalletBalance walletBalance) {
     UserOutDTO userOutDTO = new UserOutDTO();
     userOutDTO.setId(user.getId());
     userOutDTO.setFirstName(user.getFirstName());

@@ -32,13 +32,23 @@ public class GlobalExceptionHandler {
    *         with HTTP status code {@code CONFLICT} (409).
    */
   @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<ErrorResponse> handleNotFoundException(ResourceNotFoundException ex) {
+  public ResponseEntity<ErrorResponse> handleResourceNotFoundException(final ResourceNotFoundException ex) {
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
 
+  /**
+   * Handles exceptions thrown when trying to create an entity that already exists.
+   * This method catches {@link ResourceAlreadyExistException} and returns an error response.
+   * <p>
+   * It returns an {@link ErrorResponse} with a {@code 409 Conflict} status.
+   * </p>
+   *
+   * @param ex the exception instance indicating the entity already exists
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} and a {@code 409 Conflict} status
+   */
   @ExceptionHandler(ResourceAlreadyExistException.class)
-  public ResponseEntity<ErrorResponse> AlreadyExistException(ResourceAlreadyExistException ex) {
+  public ResponseEntity<ErrorResponse> handleResourceAlreadyExistException(final ResourceAlreadyExistException ex) {
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
     return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
   }
@@ -54,7 +64,7 @@ public class GlobalExceptionHandler {
    *         with HTTP status code {@code UNAUTHORIZED} (401).
    */
   @ExceptionHandler(InvalidCredentialsException.class)
-  public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(InvalidCredentialsException ex) {
+  public ResponseEntity<ErrorResponse> handleInvalidCredentialsException(final InvalidCredentialsException ex) {
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
     return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
   }
@@ -70,7 +80,7 @@ public class GlobalExceptionHandler {
    *         with HTTP status code {@code BAD_REQUEST} (400) and validation errors.
    */
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+  public ResponseEntity<ErrorResponse> handleValidationExceptions(final MethodArgumentNotValidException ex) {
     Map<String, String> errors = new HashMap<>();
     for (FieldError error : ex.getBindingResult().getFieldErrors()) {
       errors.put(error.getField(), error.getDefaultMessage());
@@ -90,14 +100,25 @@ public class GlobalExceptionHandler {
    *         with HTTP status code {@code METHOD_NOT_ALLOWED} (405).
    */
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-  public ResponseEntity<ErrorResponse> handleMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
-    String errorMessage = Constants.METHODE_NOT_ALLOWED;
+  public ResponseEntity<ErrorResponse> handleMethodNotSupportedException(final HttpRequestMethodNotSupportedException ex) {
+    String errorMessage = Constants.METHOD_NOT_ALLOWED;
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), errorMessage);
     return new ResponseEntity<>(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);
   }
 
+  /**
+   * Handles exceptions related to invalid requests, such as image file validation failures.
+   * This method catches {@link InvalidRequestException} and returns an appropriate error response.
+   *
+   * <p>
+   * It generates an {@link ErrorResponse} object and returns it with a {@code 400 Bad Request} HTTP status.
+   * </p>
+   *
+   * @param ex the exception instance indicating the request is invalid
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 400 Bad Request} status
+   */
   @ExceptionHandler(InvalidRequestException.class)
-  public ResponseEntity<ErrorResponse> handleInvalidRequestException(InvalidRequestException ex) {
+  public ResponseEntity<ErrorResponse> handleInvalidRequestException(final InvalidRequestException ex) {
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
@@ -114,7 +135,7 @@ public class GlobalExceptionHandler {
    *         with HTTP status code {@code BAD_REQUEST} (400).
    */
   @ExceptionHandler(InsufficientBalanceException.class)
-  public ResponseEntity<ErrorResponse> handleInsufficientBalanceException(InsufficientBalanceException ex) {
+  public ResponseEntity<ErrorResponse> handleInsufficientBalanceException(final InsufficientBalanceException ex) {
     String errorMessage = Constants.INSUFFICIENT_BALANCE;
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.PAYMENT_REQUIRED.value(), errorMessage);
     return new ResponseEntity<>(errorResponse, HttpStatus.PAYMENT_REQUIRED);
@@ -131,7 +152,8 @@ public class GlobalExceptionHandler {
    * @return a {@link ResponseEntity} containing a map with error details and HTTP status BAD_REQUEST
    */
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
+  public ResponseEntity<Object> handleHttpMessageNotReadableException(final HttpMessageNotReadableException ex,
+                                                                      final WebRequest request) {
     Map<String, Object> body = new HashMap<>();
     body.put("status", HttpStatus.BAD_REQUEST.value());
     body.put("error", Constants.INVALID_REQUEST_BODY_ERROR);

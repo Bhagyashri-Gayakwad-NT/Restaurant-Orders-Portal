@@ -57,7 +57,7 @@ public class UserOutDTO {
    *
    * @param id the user's ID.
    */
-  public void setId(Integer id) {
+  public void setId(final Integer id) {
     this.id = id;
   }
 
@@ -75,7 +75,7 @@ public class UserOutDTO {
    *
    * @param firstName the user's first name.
    */
-  public void setFirstName(String firstName) {
+  public void setFirstName(final String firstName) {
     this.firstName = firstName;
   }
 
@@ -93,7 +93,7 @@ public class UserOutDTO {
    *
    * @param lastName the user's last name.
    */
-  public void setLastName(String lastName) {
+  public void setLastName(final String lastName) {
     this.lastName = lastName;
   }
 
@@ -111,7 +111,7 @@ public class UserOutDTO {
    *
    * @param email the user's email address.
    */
-  public void setEmail(String email) {
+  public void setEmail(final String email) {
     this.email = email;
   }
 
@@ -129,7 +129,7 @@ public class UserOutDTO {
    *
    * @param phoneNo the user's phone number.
    */
-  public void setPhoneNo(String phoneNo) {
+  public void setPhoneNo(final String phoneNo) {
     this.phoneNo = phoneNo;
   }
 
@@ -147,7 +147,7 @@ public class UserOutDTO {
    *
    * @param role the user's role.
    */
-  public void setRole(String role) {
+  public void setRole(final String role) {
     this.role = role;
   }
 
@@ -165,38 +165,59 @@ public class UserOutDTO {
    *
    * @param walletBalance the user's wallet balance.
    */
-  public void setWalletBalance(Double walletBalance) {
+  public void setWalletBalance(final Double walletBalance) {
     this.walletBalance = walletBalance;
   }
 
+  /**
+   * Indicates whether some other object is "equal to" this one.
+   *
+   * @param o the object to compare with this instance.
+   * @return {@code true} if this object is the same as the object argument; {@code false} otherwise.
+   */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
-      return true; }
+      return true;
+    }
     if (!(o instanceof UserOutDTO)) {
-      return false; }
+      return false;
+    }
     UserOutDTO that = (UserOutDTO) o;
-    return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) &&
-      Objects.equals(lastName, that.lastName) && Objects.equals(email, that.email) &&
-      Objects.equals(phoneNo, that.phoneNo) && Objects.equals(role, that.role) &&
-      Objects.equals(walletBalance, that.walletBalance);
+    return Objects.equals(id, that.id)
+      && Objects.equals(firstName, that.firstName)
+      && Objects.equals(lastName, that.lastName)
+      && Objects.equals(email, that.email)
+      && Objects.equals(phoneNo, that.phoneNo)
+      && Objects.equals(role, that.role)
+      && Objects.equals(walletBalance, that.walletBalance);
   }
 
+  /**
+   * Returns a hash code value for the object.
+   *
+   * @return a hash code value for this object.
+   */
   @Override
   public int hashCode() {
     return Objects.hash(id, firstName, lastName, email, phoneNo, role, walletBalance);
   }
 
+  /**
+   * Returns a string representation of the object.
+   *
+   * @return a string representation of this UserOutDTO.
+   */
   @Override
   public String toString() {
-    return "UserOutDTO{" +
-      "id=" + id +
-      ", firstName='" + firstName + '\'' +
-      ", lastName='" + lastName + '\'' +
-      ", email='" + email + '\'' +
-      ", phoneNo='" + phoneNo + '\'' +
-      ", role='" + role + '\'' +
-      ", walletBalance=" + walletBalance +
-      '}';
+    return "UserOutDTO{"
+      + "id=" + id
+      + ", firstName='" + firstName
+      + '\'' + ", lastName='" + lastName
+      + '\'' + ", email='" + email
+      + '\'' + ", phoneNo='" + phoneNo
+      + '\'' + ", role='" + role
+      + '\'' + ", walletBalance=" + walletBalance
+      + '}';
   }
 }

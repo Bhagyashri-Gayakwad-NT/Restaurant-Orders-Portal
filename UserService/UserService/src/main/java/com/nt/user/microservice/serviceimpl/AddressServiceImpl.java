@@ -26,15 +26,15 @@ import java.util.Optional;
 @Service
 public class AddressServiceImpl implements AddressService {
   /**
-   * Logger for the AddressServiceImpl class, used for logging important information
+   * LOGGER for the AddressServiceImpl class, used for logging important information
    * such as operations performed, success messages, and any issues encountered during address management.
    * <p>
-   * The {@link Logger} instance helps in tracking the execution flow, capturing detailed logs
+   * The {@link Logger instance helps in tracking the execution flow, capturing detailed logs
    * for debugging, and auditing purposes, including logging operations like adding, retrieving,
    * and deleting addresses.
    * </p>
    */
-  private static final Logger logger = LogManager.getLogger(AddressServiceImpl.class);
+  private static final Logger LOGGER = LogManager.getLogger(AddressServiceImpl.class);
 
   /**
    * Repository for performing CRUD operations on {@link Address} entities.
@@ -65,12 +65,12 @@ public class AddressServiceImpl implements AddressService {
    * @throws ResourceNotFoundException if the user with the specified ID is not found.
    */
   @Override
-  public UserResponse addAddress(AddressInDTO addressInDTO) {
-    logger.info("Adding a new address for userId: {}", addressInDTO.getUserId());
+  public UserResponse addAddress(final AddressInDTO addressInDTO) {
+    LOGGER.info("Adding a new address for userId: {}", addressInDTO.getUserId());
 
     Optional<User> userOptional = userRepository.findById(addressInDTO.getUserId());
     if (!userOptional.isPresent()) {
-      logger.error("User with ID {} not found", addressInDTO.getUserId());
+      LOGGER.error("User with ID {} not found", addressInDTO.getUserId());
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
 
@@ -83,7 +83,7 @@ public class AddressServiceImpl implements AddressService {
     address.setUserId(addressInDTO.getUserId());
 
     addressRepository.save(address);
-    logger.info("Address saved successfully for UserID: {}", addressInDTO.getUserId());
+    LOGGER.info("Address saved successfully for UserID: {}", addressInDTO.getUserId());
 
     UserResponse response = new UserResponse();
     response.setSuccessMessage(Constants.ADDRESS_ADDED_SUCCESSFULLY);
@@ -99,19 +99,19 @@ public class AddressServiceImpl implements AddressService {
    * @throws ResourceNotFoundException if no addresses are found for the specified user.
    */
   @Override
-  public List<AddressOutDTO> getUserAddresses(Integer userId) {
-    logger.info("Fetching addresses for userId: {}", userId);
+  public List<AddressOutDTO> getUserAddresses(final Integer userId) {
+    LOGGER.info("Fetching addresses for userId: {}", userId);
     Optional<User> optionalUser = userRepository.findById(userId);
     if (!optionalUser.isPresent()) {
-      logger.error("User with ID {} not found", userId);
+      LOGGER.error("User with ID {} not found", userId);
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
     List<Address> addresses = addressRepository.findAllByUserId(userId);
     if (addresses.isEmpty()) {
-      logger.error("No addresses found for userId: {}", userId);
+      LOGGER.error("No addresses found for userId: {}", userId);
       throw new ResourceNotFoundException(Constants.ADDRESS_NOT_FOUND);
     }
-    logger.info("Found {} addresses for userId: {}", addresses.size(), userId);
+    LOGGER.info("Found {} addresses for userId: {}", addresses.size(), userId);
     List<AddressOutDTO> addressOutDTOs = new ArrayList<>();
     for (Address address : addresses) {
       AddressOutDTO addressOutDTO = new AddressOutDTO();
@@ -133,13 +133,13 @@ public class AddressServiceImpl implements AddressService {
    * @throws ResourceNotFoundException if the address with the specified ID is not found.
    */
   @Override
-  public void deleteAddress(Integer id) {
-    logger.info("Attempting to delete address with ID: {}", id);
+  public void deleteAddress(final Integer id) {
+    LOGGER.info("Attempting to delete address with ID: {}", id);
     if (addressRepository.existsById(id)) {
       addressRepository.deleteById(id);
-      logger.info("Address deleted successfully with ID: {}", id);
+      LOGGER.info("Address deleted successfully with ID: {}", id);
     } else {
-      logger.warn("Address with ID: {} not found, cannot delete", id);
+      LOGGER.warn("Address with ID: {} not found, cannot delete", id);
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
   }

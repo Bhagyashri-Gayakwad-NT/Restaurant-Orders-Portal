@@ -36,7 +36,7 @@ public class ErrorResponse {
    * @param status  the HTTP status code of the error
    * @param message a description of the error
    */
-  public ErrorResponse(int status, String message) {
+  public ErrorResponse(final int status, final String message) {
     this.status = status;
     this.message = message;
     this.errors = new HashMap<>();
@@ -49,7 +49,7 @@ public class ErrorResponse {
    * @param message a description of the error
    * @param errors  a map of field-specific validation errors
    */
-  public ErrorResponse(int status, String message, Map<String, String> errors) {
+  public ErrorResponse(final int status, final String message, final Map<String, String> errors) {
     this.status = status;
     this.message = message;
     this.errors = errors != null ? errors : new HashMap<>();
@@ -76,7 +76,7 @@ public class ErrorResponse {
    *
    * @param status the status code to set
    */
-  public void setStatus(int status) {
+  public void setStatus(final int status) {
     this.status = status;
   }
 
@@ -94,7 +94,7 @@ public class ErrorResponse {
    *
    * @param message the error message to set
    */
-  public void setMessage(String message) {
+  public void setMessage(final String message) {
     this.message = message;
   }
 
@@ -112,7 +112,7 @@ public class ErrorResponse {
    *
    * @param errors the validation errors to set
    */
-  public void setErrors(Map<String, String> errors) {
+  public void setErrors(final Map<String, String> errors) {
     this.errors = errors != null ? errors : new HashMap<>();
   }
 }

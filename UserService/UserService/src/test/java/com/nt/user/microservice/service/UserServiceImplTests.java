@@ -1,13 +1,13 @@
 package com.nt.user.microservice.service;
 
 import com.nt.user.microservice.dto.LoginOutDTO;
+import com.nt.user.microservice.dto.UserInDTO;
+import com.nt.user.microservice.dto.UserOutDTO;
+import com.nt.user.microservice.dto.UserResponse;
 import com.nt.user.microservice.entites.User;
 import com.nt.user.microservice.entites.WalletBalance;
 import com.nt.user.microservice.exceptions.ResourceAlreadyExistException;
 import com.nt.user.microservice.exceptions.ResourceNotFoundException;
-import com.nt.user.microservice.dto.UserInDTO;
-import com.nt.user.microservice.dto.UserOutDTO;
-import com.nt.user.microservice.dto.UserResponse;
 import com.nt.user.microservice.repository.UserRepository;
 import com.nt.user.microservice.repository.WalletBalanceRepository;
 import com.nt.user.microservice.serviceimpl.UserServiceImpl;
@@ -22,8 +22,13 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class UserServiceImplTest {
 
@@ -53,7 +58,7 @@ class UserServiceImplTest {
     userInDTO.setFirstName("First");
     userInDTO.setLastName("Last");
     userInDTO.setPhoneNo("9876543210");
-    userInDTO.setRole("USER");
+    userInDTO.setRole(String.valueOf(Role.USER));
 
     when(userRepository.findByEmail(userInDTO.getEmail())).thenReturn(Optional.empty());
 
@@ -87,6 +92,8 @@ class UserServiceImplTest {
     assertThrows(ResourceAlreadyExistException.class, () -> userService.registerUser(userInDTO));
     verify(userRepository, never()).save(any(User.class));
   }
+
+
   @Test
   void testLoginUser_Success() {
     String email = "test@nucleusteq.com";
@@ -100,10 +107,10 @@ class UserServiceImplTest {
 
     when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
 
-    WalletBalance walletBalance = new WalletBalance();
-    walletBalance.setBalance(100.0);
-    walletBalance.setUserId(user.getId());
-    when(walletBalanceRepository.findByUserId(user.getId())).thenReturn(walletBalance);
+   // WalletBalance walletBalance = new WalletBalance();
+//    walletBalance.setBalance(100.0);
+  //  walletBalance.setUserId(user.getId());
+  //  when(walletBalanceRepository.findByUserId(user.getId())).thenReturn(walletBalance);
 
     LoginOutDTO loginOutDTO = userService.loginUser(email, password);
 
@@ -159,7 +166,7 @@ class UserServiceImplTest {
     userInDTO.setLastName("Last");
     userInDTO.setPhoneNo("9876543211");
     userInDTO.setPassword("newpassword1");
-    userInDTO.setRole("USER");
+    userInDTO.setRole(String.valueOf(Role.USER));
 
     User existingUser = new User();
     existingUser.setId(userId);
@@ -179,7 +186,9 @@ class UserServiceImplTest {
     assertEquals(userInDTO.getLastName(), existingUser.getLastName());
     assertEquals(userInDTO.getPhoneNo(), existingUser.getPhoneNo());
     assertEquals(Base64Util.encode(userInDTO.getPassword()), existingUser.getPassword());
-    assertEquals(Role.valueOf(userInDTO.getRole().toUpperCase()), existingUser.getRole());
+
+    assertEquals(Role.valueOf(userInDTO.getRole()
+      .toUpperCase()), existingUser.getRole());
   }
 
   @Test
@@ -214,14 +223,5 @@ class UserServiceImplTest {
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
     assertThrows(ResourceNotFoundException.class, () -> userService.deleteUser(userId));
-  }
-
-  @Test
-  void testSendMail_Exception() {
-    String subject = "Test Subject";
-    String text = "Test Body";
-    doThrow(new RuntimeException("Test Exception"))
-      .when(emailService)
-      .sendMail(eq(Constants.SENDER), eq(subject), anyList(), eq(text));
   }
 }

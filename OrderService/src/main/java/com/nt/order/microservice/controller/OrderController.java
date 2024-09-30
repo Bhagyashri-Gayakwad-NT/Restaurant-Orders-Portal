@@ -4,11 +4,11 @@ import com.nt.order.microservice.dtos.CommonResponse;
 import com.nt.order.microservice.dtos.OrderInDTO;
 import com.nt.order.microservice.dtos.OrderOutDTO;
 import com.nt.order.microservice.service.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +29,22 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderController {
 
-  private static final Logger logger = LoggerFactory.getLogger(OrderController.class);  // SLF4J logger
 
+  /**
+   * LOGGER for the OrderController class, used to log important information like incoming requests,
+   * processed responses, and any potential issues encountered during order-related operations.
+   * <p>
+   * The {@link Logger} instance is used for debugging, tracking execution flow, and monitoring the
+   * behavior of the application in various environments.
+   * </p>
+   */
+  private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);  // SLF4J logger
+
+  /**
+   * Service layer responsible for handling order-related operations such as placing, updating,
+   * retrieving, and deleting orders. The {@link OrderService} provides the necessary business logic
+   * to interact with the database and manage the order lifecycle for users.
+   */
   @Autowired
   private OrderService orderService;
 
@@ -42,9 +56,9 @@ public class OrderController {
    */
   @PostMapping("/place")
   public ResponseEntity<CommonResponse> placeOrder(@Valid @RequestBody final OrderInDTO orderInDTO) {
-    logger.info("Received request to place order: {}", orderInDTO);
+    LOGGER.info("Received request to place order: {}", orderInDTO);
     final CommonResponse response = orderService.placeOrder(orderInDTO);
-    logger.info("Order placed successfully: {}", response);
+    LOGGER.info("Order placed successfully: {}", response);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
@@ -56,9 +70,9 @@ public class OrderController {
    */
   @DeleteMapping("/cancel/{orderId}")
   public ResponseEntity<CommonResponse> cancelOrder(@Valid @PathVariable final Integer orderId) {
-    logger.info("Received request to cancel order with orderId: {}", orderId);
+    LOGGER.info("Received request to cancel order with orderId: {}", orderId);
     final CommonResponse response = orderService.cancelOrder(orderId);
-    logger.info("Order cancelled for orderId: {}, response: {}", orderId, response);
+    LOGGER.info("Order cancelled for orderId: {}, response: {}", orderId, response);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
@@ -66,14 +80,15 @@ public class OrderController {
    * Marks an order as completed.
    *
    * @param orderId The ID of the order to be marked as completed.
-   * @param userId The ID of the user completing the order.
+   * @param userId  The ID of the user completing the order.
    * @return A response indicating the status of marking the order as completed.
    */
   @PostMapping("/complete/{orderId}/user/{userId}")
-  public ResponseEntity<CommonResponse> markOrderAsCompleted(@PathVariable final Integer orderId, @PathVariable final Integer userId) {
-    logger.info("Received request to mark order as completed for orderId: {} and userId: {}", orderId, userId);
+  public ResponseEntity<CommonResponse> markOrderAsCompleted(@PathVariable final Integer orderId,
+                                                             @PathVariable final Integer userId) {
+    LOGGER.info("Received request to mark order as completed for orderId: {} and userId: {}", orderId, userId);
     final CommonResponse response = orderService.markOrderAsCompleted(orderId, userId);
-    logger.info("Order marked as completed for orderId: {}, userId: {}, response: {}", orderId, userId, response);
+    LOGGER.info("Order marked as completed for orderId: {}, userId: {}, response: {}", orderId, userId, response);
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
 
@@ -85,9 +100,9 @@ public class OrderController {
    */
   @GetMapping("/user/{userId}")
   public ResponseEntity<List<OrderOutDTO>> getOrdersByUserId(@PathVariable final Integer userId) {
-    logger.info("Fetching orders for userId: {}", userId);
+    LOGGER.info("Fetching orders for userId: {}", userId);
     final List<OrderOutDTO> orders = orderService.getOrdersByUserId(userId);
-    logger.info("Fetched orders for userId: {}: {}", userId, orders);
+    LOGGER.info("Fetched orders for userId: {}: {}", userId, orders);
     return new ResponseEntity<>(orders, HttpStatus.OK);
   }
 
@@ -99,9 +114,10 @@ public class OrderController {
    */
   @GetMapping("/restaurant/{restaurantId}")
   public ResponseEntity<List<OrderOutDTO>> getOrdersByRestaurantId(@PathVariable final Integer restaurantId) {
-    logger.info("Fetching orders for restaurantId: {}", restaurantId);
+    LOGGER.info("Fetching orders for restaurantId: {}", restaurantId);
     final List<OrderOutDTO> orders = orderService.getOrdersByRestaurantId(restaurantId);
-    logger.info("Fetched orders for restaurantId: {}: {}", restaurantId, orders);
+    LOGGER.info("Fetched orders for restaurantId: {}: {}", restaurantId, orders);
     return new ResponseEntity<>(orders, HttpStatus.OK);
   }
 }
+

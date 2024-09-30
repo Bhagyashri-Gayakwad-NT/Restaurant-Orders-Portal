@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+
 /**
  * Controller for handling food category-related operations such as adding, fetching, and updating food categories.
  */
@@ -29,9 +30,9 @@ import java.util.List;
 public class FoodCategoryController {
 
   /**
-   * Logger to log important events related to food category operations.
+   * logger to log important events related to food category operations.
    */
-  private static final Logger logger = LogManager.getLogger(FoodCategoryController.class);
+  private static final Logger LOGGER = LogManager.getLogger(FoodCategoryController.class);
 
   /**
    * Service responsible for handling the business logic related to food categories.
@@ -51,9 +52,9 @@ public class FoodCategoryController {
    */
   @PostMapping("/addFoodCategory")
   public ResponseEntity<CommonResponse> addFoodCategory(@Valid @RequestBody final FoodCategoryInDTO foodCategoryInDTO) {
-    logger.info("Received request to add food category: {}", foodCategoryInDTO);
+    LOGGER.info("Received request to add food category: {}", foodCategoryInDTO);
     CommonResponse response = foodCategoryService.addFoodCategory(foodCategoryInDTO);
-    logger.info("Successfully added food category with ID: {}", response.getMessage());
+    LOGGER.info("Successfully added food category with ID: {}", response.getMessage());
     return ResponseEntity.ok(response);
   }
 
@@ -64,11 +65,11 @@ public class FoodCategoryController {
    * @return a response entity containing the list of food categories for the specified restaurant.
    */
   @GetMapping("/foodCategory/{restaurantId}")
-  public ResponseEntity<List<FoodCategoryOutDTO>> getFoodCategoryByRestaurantId(@PathVariable("restaurantId")
-                                                                                  final Integer restaurantId) {
-    logger.info("Fetching food categories for restaurant ID: {}", restaurantId);
+  public ResponseEntity<List<FoodCategoryOutDTO>> getFoodCategoryByRestaurantId(
+    @PathVariable("restaurantId") final Integer restaurantId) {
+    LOGGER.info("Fetching food categories for restaurant ID: {}", restaurantId);
     List<FoodCategoryOutDTO> foodCategories = foodCategoryService.getFoodCategoryByRestaurantId(restaurantId);
-    logger.info("Successfully retrieved {} food categories for restaurant ID: {}", foodCategories.size(), restaurantId);
+    LOGGER.info("Successfully retrieved {} food categories for restaurant ID: {}", foodCategories.size(), restaurantId);
     return ResponseEntity.ok(foodCategories);
   }
 
@@ -82,9 +83,9 @@ public class FoodCategoryController {
   @PutMapping("/updateFoodCategory/{id}")
   public ResponseEntity<CommonResponse> updateFoodCategory(@PathVariable("id") final Integer id,
                                                            @Valid @RequestBody final FoodCategoryInDTO foodCategoryInDTO) {
-    logger.info("Received request to update food category with ID: {} with details: {}", id, foodCategoryInDTO);
+    LOGGER.info("Received request to update food category with ID: {} with details: {}", id, foodCategoryInDTO);
     CommonResponse updatedCategory = foodCategoryService.updateFoodCategory(id, foodCategoryInDTO);
-    logger.info("Successfully updated food category with ID: {}", id);
+    LOGGER.info("Successfully updated food category with ID: {}", id);
     return new ResponseEntity<CommonResponse>(updatedCategory, HttpStatus.OK);
   }
 }

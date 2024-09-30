@@ -12,14 +12,46 @@ import java.util.Objects;
  */
 public class OrderOutDTO {
 
+  /**
+   * The ID of the order.
+   */
   private Integer orderId;
+
+  /**
+   * The ID of the user who placed the order.
+   */
   private Integer userId;
+
+  /**
+   * The ID of the restaurant.
+   */
   private Integer restaurantId;
+
+  /**
+   * The ID of the delivery address.
+   */
   private Integer addressId;
+
+  /**
+   * The status of the order.
+   */
   private OrderStatus orderStatus;
+
+  /**
+   * The total price of the order.
+   */
   private Double totalPrice;
+
+  /**
+   * The list of cart items included in the order.
+   */
   private List<CartItemDTO> cartItems;
+
+  /**
+   * The time when the order was placed.
+   */
   private LocalDateTime placedTiming;
+
 
   /**
    * Default constructor.
@@ -30,17 +62,18 @@ public class OrderOutDTO {
   /**
    * Parameterized constructor to create an OrderOutDTO with specified details.
    *
-   * @param orderId       the ID of the order
-   * @param userId        the ID of the user who placed the order
-   * @param restaurantId  the ID of the restaurant
-   * @param addressId     the ID of the delivery address
-   * @param orderStatus   the status of the order
-   * @param totalPrice    the total price of the order
-   * @param cartItems     the list of cart items included in the order
-   * @param placedTiming  the time when the order was placed
+   * @param orderId      the ID of the order
+   * @param userId       the ID of the user who placed the order
+   * @param restaurantId the ID of the restaurant
+   * @param addressId    the ID of the delivery address
+   * @param orderStatus  the status of the order
+   * @param totalPrice   the total price of the order
+   * @param cartItems    the list of cart items included in the order
+   * @param placedTiming the time when the order was placed
    */
-  public OrderOutDTO(Integer orderId, Integer userId, Integer restaurantId, Integer addressId, OrderStatus orderStatus,
-                     Double totalPrice, List<CartItemDTO> cartItems, LocalDateTime placedTiming) {
+  public OrderOutDTO(final Integer orderId, final Integer userId, final Integer restaurantId,
+                     final Integer addressId, final OrderStatus orderStatus, final Double totalPrice,
+                     final List<CartItemDTO> cartItems, final LocalDateTime placedTiming) {
     this.orderId = orderId;
     this.userId = userId;
     this.restaurantId = restaurantId;
@@ -65,7 +98,7 @@ public class OrderOutDTO {
    *
    * @param orderId the order ID to set
    */
-  public void setOrderId(Integer orderId) {
+  public void setOrderId(final Integer orderId) {
     this.orderId = orderId;
   }
 
@@ -83,7 +116,7 @@ public class OrderOutDTO {
    *
    * @param userId the user ID to set
    */
-  public void setUserId(Integer userId) {
+  public void setUserId(final Integer userId) {
     this.userId = userId;
   }
 
@@ -101,7 +134,7 @@ public class OrderOutDTO {
    *
    * @param restaurantId the restaurant ID to set
    */
-  public void setRestaurantId(Integer restaurantId) {
+  public void setRestaurantId(final Integer restaurantId) {
     this.restaurantId = restaurantId;
   }
 
@@ -119,7 +152,7 @@ public class OrderOutDTO {
    *
    * @param addressId the address ID to set
    */
-  public void setAddressId(Integer addressId) {
+  public void setAddressId(final Integer addressId) {
     this.addressId = addressId;
   }
 
@@ -137,7 +170,7 @@ public class OrderOutDTO {
    *
    * @param orderStatus the order status to set
    */
-  public void setOrderStatus(OrderStatus orderStatus) {
+  public void setOrderStatus(final OrderStatus orderStatus) {
     this.orderStatus = orderStatus;
   }
 
@@ -155,7 +188,7 @@ public class OrderOutDTO {
    *
    * @param totalPrice the total price to set
    */
-  public void setTotalPrice(Double totalPrice) {
+  public void setTotalPrice(final Double totalPrice) {
     this.totalPrice = totalPrice;
   }
 
@@ -173,7 +206,7 @@ public class OrderOutDTO {
    *
    * @param cartItems the list of cart items to set
    */
-  public void setCartItems(List<CartItemDTO> cartItems) {
+  public void setCartItems(final List<CartItemDTO> cartItems) {
     this.cartItems = cartItems;
   }
 
@@ -191,12 +224,18 @@ public class OrderOutDTO {
    *
    * @param placedTiming the placed timing to set
    */
-  public void setPlacedTiming(LocalDateTime placedTiming) {
+  public void setPlacedTiming(final LocalDateTime placedTiming) {
     this.placedTiming = placedTiming;
   }
 
+  /**
+   * Compares this OrderOutDTO to another object for equality.
+   *
+   * @param o the object to compare
+   * @return true if the objects are equal, false otherwise
+   */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -204,28 +243,38 @@ public class OrderOutDTO {
       return false;
     }
     OrderOutDTO that = (OrderOutDTO) o;
-    return Objects.equals(orderId, that.orderId) && Objects.equals(userId, that.userId) &&
-      Objects.equals(restaurantId, that.restaurantId) && Objects.equals(addressId, that.addressId) &&
-      orderStatus == that.orderStatus && Objects.equals(totalPrice, that.totalPrice) &&
-      Objects.equals(cartItems, that.cartItems) && Objects.equals(placedTiming, that.placedTiming);
+    return Objects.equals(orderId, that.orderId) && Objects.equals(userId, that.userId)
+      && Objects.equals(restaurantId, that.restaurantId) && Objects.equals(addressId, that.addressId)
+      && orderStatus == that.orderStatus && Objects.equals(totalPrice, that.totalPrice)
+      && Objects.equals(cartItems, that.cartItems) && Objects.equals(placedTiming, that.placedTiming);
   }
 
+  /**
+   * Returns a hash code value for the object.
+   *
+   * @return the hash code value
+   */
   @Override
   public int hashCode() {
     return Objects.hash(orderId, userId, restaurantId, addressId, orderStatus, totalPrice, cartItems, placedTiming);
   }
 
+  /**
+   * Returns a string representation of the OrderOutDTO.
+   *
+   * @return a string representation of the OrderOutDTO
+   */
   @Override
   public String toString() {
-    return "OrderOutDTO{" +
-      "orderId=" + orderId +
-      ", userId=" + userId +
-      ", restaurantId=" + restaurantId +
-      ", addressId=" + addressId +
-      ", orderStatus=" + orderStatus +
-      ", totalPrice=" + totalPrice +
-      ", cartItems=" + cartItems +
-      ", placedTiming=" + placedTiming +
-      '}';
+    return "OrderOutDTO{"
+      + "orderId=" + orderId
+      + ", userId=" + userId
+      + ", restaurantId=" + restaurantId
+      + ", addressId=" + addressId
+      + ", orderStatus=" + orderStatus
+      + ", totalPrice=" + totalPrice
+      + ", cartItems=" + cartItems
+      + ", placedTiming=" + placedTiming
+      + '}';
   }
 }

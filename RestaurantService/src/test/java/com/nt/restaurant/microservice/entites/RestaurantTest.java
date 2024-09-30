@@ -2,9 +2,16 @@ package com.nt.restaurant.microservice.entites;
 
 import com.nt.restaurant.microservice.entities.Restaurant;
 import org.junit.jupiter.api.Test;
+
 import java.time.LocalDate;
 import java.util.Arrays;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RestaurantTest {
 
@@ -25,7 +32,7 @@ public class RestaurantTest {
   @Test
   public void testParameterizedConstructor() {
     LocalDate registrationDate = LocalDate.of(2024, 1, 1);
-    byte[] image = new byte[]{1, 2, 3};
+    byte[] image = new byte[] {1, 2, 3};
 
     Restaurant restaurant = new Restaurant(1, 1, "Test Restaurant", "123 Test St", "1234567890",
       registrationDate, "Test Description", true, image);
@@ -52,7 +59,7 @@ public class RestaurantTest {
     restaurant.setRegistrationDate(LocalDate.of(2024, 1, 2));
     restaurant.setDescription("Another Description");
     restaurant.setOpen(false);
-    restaurant.setRestaurantImage(new byte[]{4, 5, 6});
+    restaurant.setRestaurantImage(new byte[] {4, 5, 6});
 
     assertEquals(2, restaurant.getRestaurantId());
     assertEquals(3, restaurant.getUserId());
@@ -62,7 +69,7 @@ public class RestaurantTest {
     assertEquals(LocalDate.of(2024, 1, 2), restaurant.getRegistrationDate());
     assertEquals("Another Description", restaurant.getDescription());
     assertFalse(restaurant.isOpen());
-    assertArrayEquals(new byte[]{4, 5, 6}, restaurant.getRestaurantImage());
+    assertArrayEquals(new byte[] {4, 5, 6}, restaurant.getRestaurantImage());
   }
 
   @Test
@@ -75,9 +82,9 @@ public class RestaurantTest {
   public void testEquals_DifferentObjects_SameValues() {
     LocalDate registrationDate = LocalDate.of(2024, 1, 1);
     Restaurant restaurant1 = new Restaurant(1, 1, "Test Restaurant", "123 Test St", "1234567890",
-      registrationDate, "Test Description", true, new byte[]{1});
+      registrationDate, "Test Description", true, new byte[] {1});
     Restaurant restaurant2 = new Restaurant(1, 1, "Test Restaurant", "123 Test St", "1234567890",
-      registrationDate, "Test Description", true, new byte[]{1});
+      registrationDate, "Test Description", true, new byte[] {1});
     assertEquals(restaurant1, restaurant2);
   }
 
@@ -86,16 +93,16 @@ public class RestaurantTest {
     LocalDate registrationDate1 = LocalDate.of(2024, 1, 1);
     LocalDate registrationDate2 = LocalDate.of(2024, 1, 2);
     Restaurant restaurant1 = new Restaurant(1, 1, "Test Restaurant", "123 Test St", "1234567890",
-      registrationDate1, "Test Description", true, new byte[]{1});
+      registrationDate1, "Test Description", true, new byte[] {1});
     Restaurant restaurant2 = new Restaurant(2, 2, "Another Restaurant", "456 Another St", "0987654321",
-      registrationDate2, "Another Description", false, new byte[]{2});
+      registrationDate2, "Another Description", false, new byte[] {2});
     assertNotEquals(restaurant1, restaurant2);
   }
 
   @Test
   public void testHashCode() {
     LocalDate registrationDate = LocalDate.of(2024, 1, 1);
-    Restaurant restaurant = new Restaurant(1, 1, "Test", "Address", "1234567890", registrationDate, "Desc", true, new byte[]{1});
+    Restaurant restaurant = new Restaurant(1, 1, "Test", "Address", "1234567890", registrationDate, "Desc", true, new byte[] {1});
     int expectedHashCode = restaurant.hashCode();
     assertEquals(expectedHashCode, restaurant.hashCode());
   }
@@ -104,13 +111,13 @@ public class RestaurantTest {
   public void testToString() {
     LocalDate registrationDate = LocalDate.of(2024, 1, 1);
     Restaurant restaurant = new Restaurant(1, 1, "Test Restaurant", "123 Test St", "1234567890",
-      registrationDate, "Test Description", true, new byte[]{1});
+      registrationDate, "Test Description", true, new byte[] {1});
 
     String expected = "Restaurant{" +
       "restaurantId=1, userId=1, restaurantName='Test Restaurant', " +
       "restaurantAddress='123 Test St', contactNumber='1234567890', " +
       "registrationDate=" + registrationDate + ", description='Test Description', " +
-      "isOpen=true, restaurantImage=" + Arrays.toString(new byte[]{1}) +
+      "isOpen=true, restaurantImage=" + Arrays.toString(new byte[] {1}) +
       '}';
     assertEquals(expected, restaurant.toString());
   }

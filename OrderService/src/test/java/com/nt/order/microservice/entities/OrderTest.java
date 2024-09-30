@@ -10,7 +10,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class OrderTest {
 
@@ -59,6 +61,7 @@ class OrderTest {
       "totalPrice=150.0, cartItems='[]', placedTiming=" + fixedPlacedTiming + '}';  // Use the fixed time in expected string
     assertEquals(expectedString, order.toString());
   }
+
   @Test
   void testSetCartItemsFromList() throws JsonProcessingException {
     List<CartItemDTO> cartItems = new ArrayList<>();

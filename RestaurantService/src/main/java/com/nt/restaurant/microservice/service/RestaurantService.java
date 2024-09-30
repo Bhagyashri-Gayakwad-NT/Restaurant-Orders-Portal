@@ -1,7 +1,7 @@
 package com.nt.restaurant.microservice.service;
 
-import com.nt.restaurant.microservice.dto.RestaurantInDTO;
 import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.RestaurantInDTO;
 import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +16,7 @@ public interface RestaurantService {
    * Adds a new restaurant.
    *
    * @param restaurantInDTO The details of the restaurant to be added.
+   * @param image The image associated with the restaurant.
    * @return A {@link CommonResponse} indicating the result of the operation.
    */
   CommonResponse addRestaurant(RestaurantInDTO restaurantInDTO, MultipartFile image);

@@ -1,21 +1,20 @@
 package com.nt.order.microservice.dtos;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class CommonResponseTest {
 
   @Test
   void testNoArgsConstructor() {
-    // Given
     CommonResponse commonResponse = new CommonResponse();
-
-    // Then
     assertNull(commonResponse.getMessage(), "Message should be null with no-args constructor");
   }
 
   @Test
   void testAllArgsConstructor() {
-    // Given
     String testMessage = "Test message";
 
     // When

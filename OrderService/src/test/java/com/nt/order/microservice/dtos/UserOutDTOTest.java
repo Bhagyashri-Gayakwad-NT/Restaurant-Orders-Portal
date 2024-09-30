@@ -1,7 +1,9 @@
 package com.nt.order.microservice.dtos;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class UserOutDTOTest {
 
@@ -122,6 +124,7 @@ class UserOutDTOTest {
         " lastName='Last', email='test@domain.com', phoneNo='9999999999', role='role', walletBalance=500.0}",
       userOutDTO.toString());
   }
+
   private UserOutDTO buildUserOutDTO(Integer id, String firstName, String lastName,
                                      String email, String phoneNo, String role, Double walletBalance) {
     UserOutDTO userOutDTO = new UserOutDTO();

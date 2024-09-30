@@ -22,7 +22,7 @@ public class SuccessMessage {
    *
    * @param message the success message to set.
    */
-  public SuccessMessage(String message) {
+  public SuccessMessage(final String message) {
     this.message = message;
   }
 
@@ -40,7 +40,7 @@ public class SuccessMessage {
    *
    * @param message the success message to set.
    */
-  public void setMessage(String message) {
+  public void setMessage(final String message) {
     this.message = message;
   }
 }

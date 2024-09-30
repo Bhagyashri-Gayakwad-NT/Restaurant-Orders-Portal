@@ -26,8 +26,8 @@ public class RestaurantInDTO {
    * Must be non-blank and only contain alphabets.
    */
   @NotBlank(message = "Restaurant name cannot be blank")
-  @Pattern(regexp = "^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$",
-    message = "Restaurant name must contain at least two alphabets")
+  @Pattern(regexp = "^[A-Za-z0-9]{2,}(?:\\s[A-Za-z0-9]+)*$",
+    message = "Restaurant name must contain at least two alphabets and can include numbers")
   private String restaurantName;
 
   /**
@@ -76,8 +76,9 @@ public class RestaurantInDTO {
    * @param description       the description of the restaurant.
    * @param restaurantImage   the image of the restaurant.
    */
-  public RestaurantInDTO(Integer userId, String restaurantName, String restaurantAddress, String contactNumber, String description,
-                         MultipartFile restaurantImage) {
+  public RestaurantInDTO(final Integer userId, final String restaurantName, final String restaurantAddress,
+                         final String contactNumber,
+                         final String description, final MultipartFile restaurantImage) {
     this.userId = userId;
     this.restaurantName = restaurantName;
     this.restaurantAddress = restaurantAddress;
@@ -100,7 +101,7 @@ public class RestaurantInDTO {
    *
    * @param userId the user ID to set.
    */
-  public void setUserId(Integer userId) {
+  public void setUserId(final Integer userId) {
     this.userId = userId;
   }
 
@@ -118,7 +119,7 @@ public class RestaurantInDTO {
    *
    * @param restaurantName the restaurant name to set.
    */
-  public void setRestaurantName(String restaurantName) {
+  public void setRestaurantName(final String restaurantName) {
     this.restaurantName = restaurantName;
   }
 
@@ -136,7 +137,7 @@ public class RestaurantInDTO {
    *
    * @param restaurantAddress the restaurant address to set.
    */
-  public void setRestaurantAddress(String restaurantAddress) {
+  public void setRestaurantAddress(final String restaurantAddress) {
     this.restaurantAddress = restaurantAddress;
   }
 
@@ -154,7 +155,7 @@ public class RestaurantInDTO {
    *
    * @param contactNumber the contact number to set.
    */
-  public void setContactNumber(String contactNumber) {
+  public void setContactNumber(final String contactNumber) {
     this.contactNumber = contactNumber;
   }
 
@@ -172,7 +173,7 @@ public class RestaurantInDTO {
    *
    * @param description the description to set.
    */
-  public void setDescription(String description) {
+  public void setDescription(final String description) {
     this.description = description;
   }
 
@@ -190,7 +191,7 @@ public class RestaurantInDTO {
    *
    * @param restaurantImage the restaurant image to set.
    */
-  public void setRestaurantImage(MultipartFile restaurantImage) {
+  public void setRestaurantImage(final MultipartFile restaurantImage) {
     this.restaurantImage = restaurantImage;
   }
 
@@ -201,7 +202,7 @@ public class RestaurantInDTO {
    * @return true if both objects are equal, false otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -209,12 +210,12 @@ public class RestaurantInDTO {
       return false;
     }
     RestaurantInDTO that = (RestaurantInDTO) o;
-    return Objects.equals(userId, that.userId) &&
-      Objects.equals(restaurantName, that.restaurantName) &&
-      Objects.equals(restaurantAddress, that.restaurantAddress) &&
-      Objects.equals(contactNumber, that.contactNumber) &&
-      Objects.equals(description, that.description) &&
-      Objects.equals(restaurantImage, that.restaurantImage);
+    return Objects.equals(userId, that.userId)
+      && Objects.equals(restaurantName, that.restaurantName)
+      && Objects.equals(restaurantAddress, that.restaurantAddress)
+      && Objects.equals(contactNumber, that.contactNumber)
+      && Objects.equals(description, that.description)
+      && Objects.equals(restaurantImage, that.restaurantImage);
   }
 
   /**
@@ -234,13 +235,16 @@ public class RestaurantInDTO {
    */
   @Override
   public String toString() {
-    return "RestaurantInDto{" +
-      "userId=" + userId +
-      ", restaurantName='" + restaurantName + '\'' +
-      ", restaurantAddress='" + restaurantAddress + '\'' +
-      ", contactNumber='" + contactNumber + '\'' +
-      ", description='" + description + '\'' +
-      ", restaurantImage=" + restaurantImage +
-      '}';
+    return "RestaurantInDto{"
+      + "userId=" + userId
+      + ", restaurantName='" + restaurantName
+      + '\'' + ", restaurantAddress='" + restaurantAddress
+      + '\'' + ", contactNumber='" + contactNumber
+      + '\'' + ", description='" + description
+      + '\'' + ", restaurantImage=" + restaurantImage
+      + '}';
   }
 }
+
+
+

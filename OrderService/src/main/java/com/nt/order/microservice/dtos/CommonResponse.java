@@ -6,6 +6,10 @@ package com.nt.order.microservice.dtos;
  */
 public class CommonResponse {
 
+  /**
+   * The response message that will be sent back to the client.
+   * It provides information about the result of an operation, such as success or failure details.
+   */
   private String message;
 
   /**
@@ -19,7 +23,7 @@ public class CommonResponse {
    *
    * @param message the response message
    */
-  public CommonResponse(String message) {
+  public CommonResponse(final String message) {
     this.message = message;
   }
 
@@ -37,7 +41,7 @@ public class CommonResponse {
    *
    * @param message the message to set
    */
-  public void setMessage(String message) {
+  public void setMessage(final String message) {
     this.message = message;
   }
 }

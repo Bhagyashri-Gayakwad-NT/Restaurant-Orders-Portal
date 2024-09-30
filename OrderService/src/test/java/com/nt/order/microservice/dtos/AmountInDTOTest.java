@@ -7,10 +7,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AmountInDTOTest {
 
@@ -18,50 +19,39 @@ public class AmountInDTOTest {
 
   @BeforeEach
   public void setUp() {
-    // Create a Validator object using ValidatorFactory
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     validator = factory.getValidator();
   }
 
   @Test
   public void testBalanceNotNullConstraintViolation() {
-    // Arrange
     AmountInDTO amountInDTO = new AmountInDTO();
-    amountInDTO.setBalance(null);  // Intentionally setting balance to null
-
-    // Act
+    amountInDTO.setBalance(null);
     Set<ConstraintViolation<AmountInDTO>> violations = validator.validate(amountInDTO);
 
-    // Assert
-    assertFalse(violations.isEmpty());  // Ensure that validation fails
-    assertEquals(1, violations.size()); // Only one violation should be found
+    assertFalse(violations.isEmpty());
+    assertEquals(1, violations.size());
     assertEquals("Balance cannot be null", violations.iterator().next().getMessage());
   }
 
   @Test
   public void testValidBalance() {
-    // Arrange
     AmountInDTO amountInDTO = new AmountInDTO();
-    amountInDTO.setBalance(100.0);  // Set a valid balance (not null)
+    amountInDTO.setBalance(100.0);
 
-    // Act
     Set<ConstraintViolation<AmountInDTO>> violations = validator.validate(amountInDTO);
 
-    // Assert
-    assertTrue(violations.isEmpty());  // Ensure no validation violations
+    assertTrue(violations.isEmpty());
   }
 
   @Test
   public void testSetAndGetBalance() {
-    // Arrange
     AmountInDTO amountInDTO = new AmountInDTO();
     Double testBalance = 150.50;
 
-    // Act
     amountInDTO.setBalance(testBalance);
     Double balance = amountInDTO.getBalance();
 
-    // Assert
-    assertEquals(testBalance, balance);  // Verify the getter/setter works correctly
+    assertEquals(testBalance, balance);
   }
 }

@@ -63,8 +63,9 @@ public class RestaurantOutDTO {
    * @param isOpen            a flag indicating whether the restaurant is open.
    * @param restaurantImage   the image of the restaurant.
    */
-  public RestaurantOutDTO(Integer restaurantId, String restaurantName, String restaurantAddress, String contactNumber,
-                          LocalDate registrationDate, String description, boolean isOpen, String restaurantImage) {
+  public RestaurantOutDTO(final Integer restaurantId, final String restaurantName,
+                          final String restaurantAddress, final String contactNumber, final LocalDate registrationDate,
+                          final String description, final boolean isOpen, final String restaurantImage) {
     this.restaurantId = restaurantId;
     this.restaurantName = restaurantName;
     this.restaurantAddress = restaurantAddress;
@@ -89,7 +90,7 @@ public class RestaurantOutDTO {
    *
    * @param restaurantId the restaurant ID to set.
    */
-  public void setRestaurantId(Integer restaurantId) {
+  public void setRestaurantId(final Integer restaurantId) {
     this.restaurantId = restaurantId;
   }
 
@@ -107,7 +108,7 @@ public class RestaurantOutDTO {
    *
    * @param restaurantName the restaurant name to set.
    */
-  public void setRestaurantName(String restaurantName) {
+  public void setRestaurantName(final String restaurantName) {
     this.restaurantName = restaurantName;
   }
 
@@ -125,7 +126,7 @@ public class RestaurantOutDTO {
    *
    * @param restaurantAddress the restaurant address to set.
    */
-  public void setRestaurantAddress(String restaurantAddress) {
+  public void setRestaurantAddress(final String restaurantAddress) {
     this.restaurantAddress = restaurantAddress;
   }
 
@@ -143,7 +144,7 @@ public class RestaurantOutDTO {
    *
    * @param contactNumber the contact number to set.
    */
-  public void setContactNumber(String contactNumber) {
+  public void setContactNumber(final String contactNumber) {
     this.contactNumber = contactNumber;
   }
 
@@ -161,7 +162,7 @@ public class RestaurantOutDTO {
    *
    * @param registrationDate the registration date to set.
    */
-  public void setRegistrationDate(LocalDate registrationDate) {
+  public void setRegistrationDate(final LocalDate registrationDate) {
     this.registrationDate = registrationDate;
   }
 
@@ -179,7 +180,7 @@ public class RestaurantOutDTO {
    *
    * @param description the description to set.
    */
-  public void setDescription(String description) {
+  public void setDescription(final String description) {
     this.description = description;
   }
 
@@ -197,7 +198,7 @@ public class RestaurantOutDTO {
    *
    * @param open the open status to set.
    */
-  public void setOpen(boolean open) {
+  public void setOpen(final boolean open) {
     isOpen = open;
   }
 
@@ -215,7 +216,7 @@ public class RestaurantOutDTO {
    *
    * @param restaurantImage the restaurant image to set.
    */
-  public void setRestaurantImage(String restaurantImage) {
+  public void setRestaurantImage(final String restaurantImage) {
     this.restaurantImage = restaurantImage;
   }
 
@@ -226,7 +227,7 @@ public class RestaurantOutDTO {
    * @return {@code true} if this object is equal to the other object, {@code false} otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -234,14 +235,13 @@ public class RestaurantOutDTO {
       return false;
     }
     RestaurantOutDTO that = (RestaurantOutDTO) o;
-    return isOpen == that.isOpen &&
-      Objects.equals(restaurantId, that.restaurantId) &&
-      Objects.equals(restaurantName, that.restaurantName) &&
-      Objects.equals(restaurantAddress, that.restaurantAddress) &&
-      Objects.equals(contactNumber, that.contactNumber) &&
-      Objects.equals(registrationDate, that.registrationDate) &&
-      Objects.equals(description, that.description) &&
-      Objects.equals(restaurantImage, that.restaurantImage);
+    return isOpen == that.isOpen && Objects.equals(restaurantId, that.restaurantId)
+      && Objects.equals(restaurantName, that.restaurantName)
+      && Objects.equals(restaurantAddress, that.restaurantAddress)
+      && Objects.equals(contactNumber, that.contactNumber)
+      && Objects.equals(registrationDate, that.registrationDate)
+      && Objects.equals(description, that.description)
+      && Objects.equals(restaurantImage, that.restaurantImage);
   }
 
   /**
@@ -262,16 +262,16 @@ public class RestaurantOutDTO {
    */
   @Override
   public String toString() {
-    return "RestaurantOutDTO{" +
-      "restaurantId=" + restaurantId +
-      ", restaurantName='" + restaurantName + '\'' +
-      ", restaurantAddress='" + restaurantAddress + '\'' +
-      ", contactNumber='" + contactNumber + '\'' +
-      ", registrationDate=" + registrationDate +
-      ", description='" + description + '\'' +
-      ", isOpen=" + isOpen +
-      ", restaurantImage='" + restaurantImage + '\'' +
-      '}';
+    return "RestaurantOutDTO{"
+      + "restaurantId=" + restaurantId
+      + ", restaurantName='" + restaurantName
+      + '\'' + ", restaurantAddress='" + restaurantAddress
+      + '\'' + ", contactNumber='" + contactNumber
+      + '\'' + ", registrationDate=" + registrationDate
+      + ", description='" + description
+      + '\'' + ", isOpen=" + isOpen
+      + ", restaurantImage='" + restaurantImage
+      + '\'' + '}';
   }
 }
 

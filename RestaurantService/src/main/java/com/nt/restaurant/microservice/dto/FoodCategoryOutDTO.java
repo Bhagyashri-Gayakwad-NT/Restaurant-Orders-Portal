@@ -37,7 +37,7 @@ public class FoodCategoryOutDTO {
    * @param restaurantId     the identifier of the restaurant to which the food category belongs.
    * @param foodCategoryName the name of the food category.
    */
-  public FoodCategoryOutDTO(Integer foodCategoryId, Integer restaurantId, String foodCategoryName) {
+  public FoodCategoryOutDTO(final Integer foodCategoryId, final Integer restaurantId, final String foodCategoryName) {
     this.foodCategoryId = foodCategoryId;
     this.restaurantId = restaurantId;
     this.foodCategoryName = foodCategoryName;
@@ -57,7 +57,7 @@ public class FoodCategoryOutDTO {
    *
    * @param foodCategoryId the food category ID to set.
    */
-  public void setFoodCategoryId(Integer foodCategoryId) {
+  public void setFoodCategoryId(final Integer foodCategoryId) {
     this.foodCategoryId = foodCategoryId;
   }
 
@@ -75,7 +75,7 @@ public class FoodCategoryOutDTO {
    *
    * @param restaurantId the restaurant ID to set.
    */
-  public void setRestaurantId(Integer restaurantId) {
+  public void setRestaurantId(final Integer restaurantId) {
     this.restaurantId = restaurantId;
   }
 
@@ -93,7 +93,7 @@ public class FoodCategoryOutDTO {
    *
    * @param foodCategoryName the food category name to set.
    */
-  public void setFoodCategoryName(String foodCategoryName) {
+  public void setFoodCategoryName(final String foodCategoryName) {
     this.foodCategoryName = foodCategoryName;
   }
 
@@ -104,7 +104,7 @@ public class FoodCategoryOutDTO {
    * @return {@code true} if this object is equal to the other object, {@code false} otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -112,9 +112,9 @@ public class FoodCategoryOutDTO {
       return false;
     }
     FoodCategoryOutDTO that = (FoodCategoryOutDTO) o;
-    return Objects.equals(foodCategoryId, that.foodCategoryId) &&
-      Objects.equals(restaurantId, that.restaurantId) &&
-      Objects.equals(foodCategoryName, that.foodCategoryName);
+    return Objects.equals(foodCategoryId, that.foodCategoryId)
+      && Objects.equals(restaurantId, that.restaurantId)
+      && Objects.equals(foodCategoryName, that.foodCategoryName);
   }
 
   /**
@@ -134,10 +134,10 @@ public class FoodCategoryOutDTO {
    */
   @Override
   public String toString() {
-    return "FoodCategoryOutDTO{" +
-      "foodCategoryId=" + foodCategoryId +
-      ", restaurantId=" + restaurantId +
-      ", foodCategoryName='" + foodCategoryName + '\'' +
-      '}';
+    return "FoodCategoryOutDTO{"
+      + "foodCategoryId=" + foodCategoryId
+      + ", restaurantId=" + restaurantId
+      + ", foodCategoryName='" + foodCategoryName + '\''
+      + '}';
   }
 }

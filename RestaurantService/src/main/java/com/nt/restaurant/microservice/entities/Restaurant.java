@@ -17,24 +17,52 @@ import java.util.Objects;
 @Entity
 public class Restaurant {
 
+  /**
+   * Unique identifier for the restaurant. This ID is automatically generated
+   * when a new restaurant is created.
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer restaurantId;
 
+  /**
+   * The ID of the user who owns the restaurant.
+   */
   private Integer userId;
 
+  /**
+   * The name of the restaurant.
+   */
   private String restaurantName;
 
+  /**
+   * The address of the restaurant.
+   */
   private String restaurantAddress;
 
+  /**
+   * The contact number of the restaurant.
+   */
   private String contactNumber;
 
+  /**
+   * The date the restaurant was registered.
+   */
   private LocalDate registrationDate;
 
+  /**
+   * The description of the restaurant.
+   */
   private String description;
 
+  /**
+   * Whether the restaurant is currently open.
+   */
   private boolean isOpen;
 
+  /**
+   * The image of the restaurant stored as byte array.
+   */
   @Lob
   private byte[] restaurantImage;
 
@@ -57,8 +85,10 @@ public class Restaurant {
    * @param isOpen            whether the restaurant is currently open
    * @param restaurantImage   the image of the restaurant stored as byte array
    */
-  public Restaurant(Integer restaurantId, Integer userId, String restaurantName, String restaurantAddress, String contactNumber,
-                    LocalDate registrationDate, String description, boolean isOpen, byte[] restaurantImage) {
+  public Restaurant(final Integer restaurantId, final Integer userId, final String restaurantName,
+                    final String restaurantAddress, final String contactNumber,
+                    final LocalDate registrationDate, final String description,
+                    final boolean isOpen, final byte[] restaurantImage) {
     this.restaurantId = restaurantId;
     this.userId = userId;
     this.restaurantName = restaurantName;
@@ -70,6 +100,7 @@ public class Restaurant {
     this.restaurantImage = restaurantImage;
   }
 
+  // Getter and Setter methods with Javadoc comments
   /**
    * Gets the unique ID of the restaurant.
    *
@@ -84,7 +115,7 @@ public class Restaurant {
    *
    * @param restaurantId the restaurant ID to set
    */
-  public void setRestaurantId(Integer restaurantId) {
+  public void setRestaurantId(final Integer restaurantId) {
     this.restaurantId = restaurantId;
   }
 
@@ -102,7 +133,7 @@ public class Restaurant {
    *
    * @param userId the user ID to set
    */
-  public void setUserId(Integer userId) {
+  public void setUserId(final Integer userId) {
     this.userId = userId;
   }
 
@@ -120,7 +151,7 @@ public class Restaurant {
    *
    * @param restaurantName the restaurant name to set
    */
-  public void setRestaurantName(String restaurantName) {
+  public void setRestaurantName(final String restaurantName) {
     this.restaurantName = restaurantName;
   }
 
@@ -138,7 +169,7 @@ public class Restaurant {
    *
    * @param restaurantAddress the restaurant address to set
    */
-  public void setRestaurantAddress(String restaurantAddress) {
+  public void setRestaurantAddress(final String restaurantAddress) {
     this.restaurantAddress = restaurantAddress;
   }
 
@@ -156,7 +187,7 @@ public class Restaurant {
    *
    * @param contactNumber the contact number to set
    */
-  public void setContactNumber(String contactNumber) {
+  public void setContactNumber(final String contactNumber) {
     this.contactNumber = contactNumber;
   }
 
@@ -174,7 +205,7 @@ public class Restaurant {
    *
    * @param registrationDate the registration date to set
    */
-  public void setRegistrationDate(LocalDate registrationDate) {
+  public void setRegistrationDate(final LocalDate registrationDate) {
     this.registrationDate = registrationDate;
   }
 
@@ -192,7 +223,7 @@ public class Restaurant {
    *
    * @param description the description to set
    */
-  public void setDescription(String description) {
+  public void setDescription(final String description) {
     this.description = description;
   }
 
@@ -210,7 +241,7 @@ public class Restaurant {
    *
    * @param open true if the restaurant is open, false otherwise
    */
-  public void setOpen(boolean open) {
+  public void setOpen(final boolean open) {
     isOpen = open;
   }
 
@@ -228,25 +259,45 @@ public class Restaurant {
    *
    * @param restaurantImage the restaurant image to set
    */
-  public void setRestaurantImage(byte[] restaurantImage) {
+  public void setRestaurantImage(final byte[] restaurantImage) {
     this.restaurantImage = restaurantImage;
   }
+
+  /**
+   * Generates the hash code for this Restaurant object.
+   *
+   * @return the hash code of this object
+   */  @Override
+  public int hashCode() {
+    return Objects.hash(restaurantId, userId, restaurantName, restaurantAddress,
+      contactNumber, registrationDate, description, isOpen,
+      Arrays.hashCode(restaurantImage));
+  }
+
   /**
    * Checks if this Restaurant object is equal to another object.
    *
    * @param o the object to compare with
    * @return true if the objects are equal, false otherwise
    */
-
-  /**
-   * Generates the hash code for this Restaurant object.
-   *
-   * @return the hash code of this object
-   */
   @Override
-  public int hashCode() {
-    return Objects.hash(restaurantId, userId, restaurantName, restaurantAddress, contactNumber, registrationDate, description, isOpen,
-      Arrays.hashCode(restaurantImage));
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Restaurant)) {
+      return false;
+    }
+    Restaurant that = (Restaurant) o;
+    return isOpen == that.isOpen
+      && Objects.equals(restaurantId, that.restaurantId)
+      && Objects.equals(userId, that.userId)
+      && Objects.equals(restaurantName, that.restaurantName)
+      && Objects.equals(restaurantAddress, that.restaurantAddress)
+      && Objects.equals(contactNumber, that.contactNumber)
+      && Objects.equals(registrationDate, that.registrationDate)
+      && Objects.equals(description, that.description)
+      && Objects.deepEquals(restaurantImage, that.restaurantImage);
   }
 
   /**
@@ -256,34 +307,16 @@ public class Restaurant {
    */
   @Override
   public String toString() {
-    return "Restaurant{" +
-      "restaurantId=" + restaurantId +
-      ", userId=" + userId +
-      ", restaurantName='" + restaurantName + '\'' +
-      ", restaurantAddress='" + restaurantAddress + '\'' +
-      ", contactNumber='" + contactNumber + '\'' +
-      ", registrationDate=" + registrationDate +
-      ", description='" + description + '\'' +
-      ", isOpen=" + isOpen +
-      ", restaurantImage=" + Arrays.toString(restaurantImage) +
-      '}';
-  }
-  /**
-   * Returns a string representation of this restaurant.
-   *
-   * @return a string representing the restaurant.
-   */
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true; }
-    if (!(o instanceof Restaurant)) {
-      return false; }
-    Restaurant that = (Restaurant) o;
-    return isOpen == that.isOpen && Objects.equals(restaurantId, that.restaurantId) &&
-      Objects.equals(userId, that.userId) && Objects.equals(restaurantName, that.restaurantName) &&
-      Objects.equals(restaurantAddress, that.restaurantAddress) &&
-      Objects.equals(contactNumber, that.contactNumber) && Objects.equals(registrationDate, that.registrationDate) &&
-      Objects.equals(description, that.description) && Objects.deepEquals(restaurantImage, that.restaurantImage);
+    return "Restaurant{"
+      + "restaurantId=" + restaurantId
+      + ", userId=" + userId
+      + ", restaurantName='" + restaurantName
+      + '\'' + ", restaurantAddress='" + restaurantAddress
+      + '\'' + ", contactNumber='" + contactNumber
+      + '\'' + ", registrationDate=" + registrationDate
+      + ", description='" + description
+      + '\'' + ", isOpen=" + isOpen
+      + ", restaurantImage=" + Arrays.toString(restaurantImage)
+      + '}';
   }
 }

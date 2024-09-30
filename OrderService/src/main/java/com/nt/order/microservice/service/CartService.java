@@ -52,7 +52,7 @@ public interface CartService {
   /**
    * Updates the quantity of an item in the cart.
    *
-   * @param cartId        the ID of the cart item to be updated
+   * @param cartId         the ID of the cart item to be updated
    * @param quantityChange the amount by which the item quantity is to be changed
    * @return {@link CommonResponse} indicating the result of the quantity update
    */

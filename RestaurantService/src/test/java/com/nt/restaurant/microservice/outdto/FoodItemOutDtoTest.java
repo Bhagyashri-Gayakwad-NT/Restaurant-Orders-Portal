@@ -46,9 +46,9 @@ class FoodItemOutDTOTest {
       "foodItemId=1" +
       ", categoryId=2" +
       ", restaurantId=3" +
-      ", FoodItemName='Test Food'" +
+      ", foodItemName='Test Food'" +
       ", description='Test Description'" +
-      ", Price=10.0" +
+      ", price=10.0" +
       ", isAvailable=true" +
       ", foodItemImage=" + Arrays.toString(image) +
       '}';
@@ -63,18 +63,18 @@ class FoodItemOutDTOTest {
     dto.setFoodItemId(1);
     dto.setCategoryId(2);
     dto.setRestaurantId(3);
-    dto.setFoodItemName("Test Food");
+    dto.setfoodItemName("Test Food");
     dto.setDescription("Test Description");
-    dto.setPrice(10.0);
+    dto.setprice(10.0);
     dto.setAvailable(true);
     dto.setFoodItemImage(image);
 
     assertEquals(1, dto.getFoodItemId());
     assertEquals(2, dto.getCategoryId());
     assertEquals(3, dto.getRestaurantId());
-    assertEquals("Test Food", dto.getFoodItemName());
+    assertEquals("Test Food", dto.getfoodItemName());
     assertEquals("Test Description", dto.getDescription());
-    assertEquals(10.0, dto.getPrice());
+    assertEquals(10.0, dto.getprice());
     assertTrue(dto.isAvailable());
     assertArrayEquals(image, dto.getFoodItemImage());
   }

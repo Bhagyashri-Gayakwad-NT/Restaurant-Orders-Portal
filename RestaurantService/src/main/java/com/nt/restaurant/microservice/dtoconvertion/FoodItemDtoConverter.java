@@ -1,8 +1,8 @@
 package com.nt.restaurant.microservice.dtoconvertion;
 
-import com.nt.restaurant.microservice.entities.FoodItem;
 import com.nt.restaurant.microservice.dto.FoodItemInDTO;
 import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
+import com.nt.restaurant.microservice.entities.FoodItem;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ public class FoodItemDtoConverter {
    * @param foodItemInDTO the DTO containing food item input data.
    * @return the {@link FoodItem} entity populated with input data.
    */
-  public static FoodItem inDtoToEntity(FoodItemInDTO foodItemInDTO) {
+  public static FoodItem inDtoToEntity(final FoodItemInDTO foodItemInDTO) {
     FoodItem foodItem = new FoodItem();
     foodItem.setCategoryId(foodItemInDTO.getFoodCategoryId());
     foodItem.setRestaurantId(foodItemInDTO.getRestaurantId());
@@ -42,7 +42,7 @@ public class FoodItemDtoConverter {
    * @param foodItem the entity representing the food item.
    * @return a {@link FoodItemOutDTO} populated with food item data.
    */
-  public static FoodItemOutDTO entityToOutDTO(FoodItem foodItem) {
+  public static FoodItemOutDTO entityToOutDTO(final FoodItem foodItem) {
     return new FoodItemOutDTO(
       foodItem.getFoodItemId(),
       foodItem.getCategoryId(),

@@ -51,7 +51,7 @@ public class AddressOutDTO {
    *
    * @param id the address ID to set
    */
-  public void setId(Integer id) {
+  public void setId(final Integer id) {
     this.id = id;
   }
 
@@ -69,7 +69,7 @@ public class AddressOutDTO {
    *
    * @param street the street name to set
    */
-  public void setStreet(String street) {
+  public void setStreet(final String street) {
     this.street = street;
   }
 
@@ -87,7 +87,7 @@ public class AddressOutDTO {
    *
    * @param city the city name to set
    */
-  public void setCity(String city) {
+  public void setCity(final String city) {
     this.city = city;
   }
 
@@ -105,7 +105,7 @@ public class AddressOutDTO {
    *
    * @param state the state name to set
    */
-  public void setState(String state) {
+  public void setState(final String state) {
     this.state = state;
   }
 
@@ -123,7 +123,7 @@ public class AddressOutDTO {
    *
    * @param country the country name to set
    */
-  public void setCountry(String country) {
+  public void setCountry(final String country) {
     this.country = country;
   }
 
@@ -141,7 +141,7 @@ public class AddressOutDTO {
    *
    * @param pinCode the postal pin code to set
    */
-  public void setPinCode(String pinCode) {
+  public void setPinCode(final String pinCode) {
     this.pinCode = pinCode;
   }
 }

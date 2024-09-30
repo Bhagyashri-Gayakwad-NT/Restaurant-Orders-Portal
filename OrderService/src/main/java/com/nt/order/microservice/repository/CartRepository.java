@@ -24,7 +24,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
   /**
    * Retrieves a list of cart items associated with a specific user and restaurant.
    *
-   * @param userId the ID of the user whose cart items are to be retrieved
+   * @param userId       the ID of the user whose cart items are to be retrieved
    * @param restaurantId the ID of the restaurant whose cart items are to be retrieved
    * @return a list of cart items for the given user and restaurant
    */

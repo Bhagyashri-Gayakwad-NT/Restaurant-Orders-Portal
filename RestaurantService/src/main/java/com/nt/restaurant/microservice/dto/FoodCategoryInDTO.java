@@ -26,7 +26,8 @@ public class FoodCategoryInDTO {
    */
   @NotBlank(message = "Food category name cannot be blank")
   @Size(max = 100, message = "Food category name cannot exceed 100 characters")
-  @Pattern(regexp = "^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$", message = "Category name must contain at least two alphabets")
+  @Pattern(regexp = "^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$", message = "Category name must contain at least"
+    + " two alphabets and cannot include numbers")
   private String foodCategoryName;
 
   /**
@@ -41,7 +42,7 @@ public class FoodCategoryInDTO {
    * @param restaurantId     the ID of the restaurant
    * @param foodCategoryName the name of the food category
    */
-  public FoodCategoryInDTO(Integer restaurantId, String foodCategoryName) {
+  public FoodCategoryInDTO(final Integer restaurantId, final String foodCategoryName) {
     this.restaurantId = restaurantId;
     this.foodCategoryName = foodCategoryName;
   }
@@ -60,7 +61,7 @@ public class FoodCategoryInDTO {
    *
    * @param restaurantId the new restaurant ID
    */
-  public void setRestaurantId(Integer restaurantId) {
+  public void setRestaurantId(final Integer restaurantId) {
     this.restaurantId = restaurantId;
   }
 
@@ -78,7 +79,7 @@ public class FoodCategoryInDTO {
    *
    * @param foodCategoryName the new food category name
    */
-  public void setFoodCategoryName(String foodCategoryName) {
+  public void setFoodCategoryName(final String foodCategoryName) {
     this.foodCategoryName = foodCategoryName;
   }
 
@@ -89,7 +90,7 @@ public class FoodCategoryInDTO {
    * @return {@code true} if both objects are equal, otherwise {@code false}
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -117,9 +118,14 @@ public class FoodCategoryInDTO {
    */
   @Override
   public String toString() {
-    return "FoodCategoryInDTO{" +
-      "restaurantId=" + restaurantId +
-      ", foodCategoryName='" + foodCategoryName + '\'' +
+    return "FoodCategoryInDTO{"
+      +
+      "restaurantId="
+      + restaurantId
+      +
+      ", foodCategoryName='"
+      + foodCategoryName + '\''
+      +
       '}';
   }
 }

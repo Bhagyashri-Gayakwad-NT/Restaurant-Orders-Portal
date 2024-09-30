@@ -28,7 +28,7 @@ public class FoodItemOutDTO {
   /**
    * The name of the food item.
    */
-  private String FoodItemName;
+  private String foodItemName;
 
   /**
    * A description of the food item.
@@ -38,7 +38,7 @@ public class FoodItemOutDTO {
   /**
    * The price of the food item.
    */
-  private Double Price;
+  private Double price;
 
   /**
    * A flag indicating whether the food item is available.
@@ -69,14 +69,14 @@ public class FoodItemOutDTO {
    * @param isAvailable   a flag indicating whether the food item is available.
    * @param foodItemImage the image of the food item stored as a byte array.
    */
-  public FoodItemOutDTO(Integer foodItemId, Integer categoryId, Integer restaurantId, String foodItemName,
-                        String description, Double price, boolean isAvailable, byte[] foodItemImage) {
+  public FoodItemOutDTO(final Integer foodItemId, final Integer categoryId, final Integer restaurantId, final String foodItemName,
+                        final String description, final Double price, final boolean isAvailable, final byte[] foodItemImage) {
     this.foodItemId = foodItemId;
     this.categoryId = categoryId;
     this.restaurantId = restaurantId;
-    this.FoodItemName = foodItemName;
+    this.foodItemName = foodItemName;
     this.description = description;
-    this.Price = price;
+    this.price = price;
     this.isAvailable = isAvailable;
     this.foodItemImage = foodItemImage;
   }
@@ -95,7 +95,7 @@ public class FoodItemOutDTO {
    *
    * @param foodItemId the food item ID to set.
    */
-  public void setFoodItemId(Integer foodItemId) {
+  public void setFoodItemId(final Integer foodItemId) {
     this.foodItemId = foodItemId;
   }
 
@@ -113,7 +113,7 @@ public class FoodItemOutDTO {
    *
    * @param categoryId the category ID to set.
    */
-  public void setCategoryId(Integer categoryId) {
+  public void setCategoryId(final Integer categoryId) {
     this.categoryId = categoryId;
   }
 
@@ -131,7 +131,7 @@ public class FoodItemOutDTO {
    *
    * @param restaurantId the restaurant ID to set.
    */
-  public void setRestaurantId(Integer restaurantId) {
+  public void setRestaurantId(final Integer restaurantId) {
     this.restaurantId = restaurantId;
   }
 
@@ -140,8 +140,8 @@ public class FoodItemOutDTO {
    *
    * @return the food item name.
    */
-  public String getFoodItemName() {
-    return FoodItemName;
+  public String getfoodItemName() {
+    return foodItemName;
   }
 
   /**
@@ -149,8 +149,8 @@ public class FoodItemOutDTO {
    *
    * @param foodItemName the food item name to set.
    */
-  public void setFoodItemName(String foodItemName) {
-    this.FoodItemName = foodItemName;
+  public void setfoodItemName(final String foodItemName) {
+    this.foodItemName = foodItemName;
   }
 
   /**
@@ -167,7 +167,7 @@ public class FoodItemOutDTO {
    *
    * @param description the description to set.
    */
-  public void setDescription(String description) {
+  public void setDescription(final String description) {
     this.description = description;
   }
 
@@ -176,8 +176,8 @@ public class FoodItemOutDTO {
    *
    * @return the price.
    */
-  public Double getPrice() {
-    return Price;
+  public Double getprice() {
+    return price;
   }
 
   /**
@@ -185,8 +185,8 @@ public class FoodItemOutDTO {
    *
    * @param price the price to set.
    */
-  public void setPrice(Double price) {
-    this.Price = price;
+  public void setprice(final Double price) {
+    this.price = price;
   }
 
   /**
@@ -203,7 +203,7 @@ public class FoodItemOutDTO {
    *
    * @param available the availability status to set.
    */
-  public void setAvailable(boolean available) {
+  public void setAvailable(final boolean available) {
     this.isAvailable = available;
   }
 
@@ -221,7 +221,7 @@ public class FoodItemOutDTO {
    *
    * @param foodItemImage the food item image to set.
    */
-  public void setFoodItemImage(byte[] foodItemImage) {
+  public void setFoodItemImage(final byte[] foodItemImage) {
     this.foodItemImage = foodItemImage;
   }
 
@@ -232,7 +232,7 @@ public class FoodItemOutDTO {
    * @return {@code true} if this object is equal to the other object, {@code false} otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
       return true;
     }
@@ -240,13 +240,15 @@ public class FoodItemOutDTO {
       return false;
     }
     FoodItemOutDTO that = (FoodItemOutDTO) o;
-    return isAvailable == that.isAvailable &&
-      Objects.equals(foodItemId, that.foodItemId) &&
-      Objects.equals(categoryId, that.categoryId) &&
-      Objects.equals(restaurantId, that.restaurantId) &&
-      Objects.equals(FoodItemName, that.FoodItemName) &&
-      Objects.equals(description, that.description) &&
-      Objects.equals(Price, that.Price) &&
+    return isAvailable == that.isAvailable
+      && Objects.equals(foodItemId, that.foodItemId)
+      && Objects.equals(categoryId, that.categoryId)
+      && Objects.equals(restaurantId, that.restaurantId)
+      && Objects.equals(foodItemName, that.foodItemName)
+      && Objects.equals(description, that.description)
+      && Objects.equals(price, that.price)
+      &&
+
       Arrays.equals(foodItemImage, that.foodItemImage);
   }
 
@@ -257,8 +259,8 @@ public class FoodItemOutDTO {
    */
   @Override
   public int hashCode() {
-    return Objects.hash(foodItemId, categoryId, restaurantId, FoodItemName, description, Price, isAvailable) +
-      Arrays.hashCode(foodItemImage);
+    return Objects.hash(foodItemId, categoryId, restaurantId, foodItemName, description, price, isAvailable)
+      + Arrays.hashCode(foodItemImage);
   }
 
   /**
@@ -268,15 +270,16 @@ public class FoodItemOutDTO {
    */
   @Override
   public String toString() {
-    return "FoodItemOutDTO{" +
-      "foodItemId=" + foodItemId +
-      ", categoryId=" + categoryId +
-      ", restaurantId=" + restaurantId +
-      ", FoodItemName='" + FoodItemName + '\'' +
-      ", description='" + description + '\'' +
-      ", Price=" + Price +
-      ", isAvailable=" + isAvailable +
-      ", foodItemImage=" + Arrays.toString(foodItemImage) +
-      '}';
+    return "FoodItemOutDTO{"
+      + "foodItemId=" + foodItemId
+      + ", categoryId=" + categoryId
+      + ", restaurantId=" + restaurantId
+      + ", foodItemName='" + foodItemName
+      + '\'' + ", description='" + description
+      + '\'' + ", price=" + price
+      + ", isAvailable=" + isAvailable
+      + ", foodItemImage="
+      + Arrays.toString(foodItemImage)
+      + '}';
   }
 }

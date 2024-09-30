@@ -1,6 +1,7 @@
 package com.nt.user.microservice.contoller;
 
 import com.nt.user.microservice.dto.AmountInDTO;
+import com.nt.user.microservice.dto.EmailRequestDTO;
 import com.nt.user.microservice.dto.LogInDTO;
 import com.nt.user.microservice.dto.LoginOutDTO;
 import com.nt.user.microservice.dto.UserInDTO;
@@ -8,7 +9,6 @@ import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
 import com.nt.user.microservice.service.UserService;
 import com.nt.user.microservice.service.WalletBalanceService;
-import com.nt.user.microservice.util.Constants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -34,11 +33,12 @@ import javax.validation.Valid;
 @CrossOrigin
 @RequestMapping("/users")
 public class UserController {
+
   /**
-   * Logger for the UserController class, used for logging important information
+   * LOGGER for the UserController class, used for logging important information
    * such as requests, success, and error messages during execution.
    */
-  private static final Logger logger = LogManager.getLogger(UserController.class);
+  private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
   /**
    * Service layer responsible for handling user-related operations.
@@ -48,20 +48,19 @@ public class UserController {
    * related to user operations and interacts with the underlying data layer to perform these tasks.
    * </p>
    */
-  private final UserService userService;
-
   @Autowired
-  private WalletBalanceService walletBalanceService;
-
+  private  UserService userService;
 
   /**
-   * Constructor for UserController, initializes the UserService.
-   *
-   * @param userService the service layer that handles user-related operations
+   * Service layer responsible for managing user wallet balance operations.
+   * <p>
+   * The {@link WalletBalanceService} is injected via the constructor and provides methods for
+   * retrieving and updating the wallet balance of users. It encapsulates the business logic
+   * related to wallet operations and interacts with the underlying data layer to perform these tasks.
+   * </p>
    */
-  public UserController(UserService userService) {
-    this.userService = userService;
-  }
+  @Autowired
+  private WalletBalanceService walletBalanceService;
 
   /**
    * Registers a new user.
@@ -70,10 +69,10 @@ public class UserController {
    * @return a response entity with a success message if registration is successful.
    */
   @PostMapping("/register")
-  public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody UserInDTO userInDTO) {
-    logger.info("Registering user with email: {}", userInDTO.getEmail());
+  public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody final UserInDTO userInDTO) {
+    LOGGER.info("Registering user with email: {}", userInDTO.getEmail());
     UserResponse userResponse = userService.registerUser(userInDTO);
-    logger.info("User registered successfully: {}", userInDTO.getEmail());
+    LOGGER.info("User registered successfully: {}", userInDTO.getEmail());
     return new ResponseEntity<UserResponse>(userResponse, HttpStatus.CREATED);
   }
 
@@ -84,10 +83,10 @@ public class UserController {
    * @return a response entity with user details if login is successful.
    */
   @PostMapping("/login")
-  public ResponseEntity<LoginOutDTO> loginUser(@Valid @RequestBody LogInDTO loginDTO) {
-    logger.info("Attempting to login user with email: {}", loginDTO.getEmail());
+  public ResponseEntity<LoginOutDTO> loginUser(@Valid @RequestBody final LogInDTO loginDTO) {
+    LOGGER.info("Attempting to login user with email: {}", loginDTO.getEmail());
     LoginOutDTO userOutDTO = userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword());
-    logger.info("User logged in successfully: {}", loginDTO.getEmail());
+    LOGGER.info("User logged in successfully: {}", loginDTO.getEmail());
     return ResponseEntity.ok(userOutDTO);
   }
 
@@ -98,10 +97,10 @@ public class UserController {
    * @return a response entity with the user's profile details.
    */
   @GetMapping("/profile/{id}")
-  public ResponseEntity<UserOutDTO> getUserProfile(@PathVariable Integer id) {
-    logger.info("Fetching profile for user with ID: {}", id);
+  public ResponseEntity<UserOutDTO> getUserProfile(@PathVariable final Integer id) {
+    LOGGER.info("Fetching profile for user with ID: {}", id);
     UserOutDTO userOutDTO = userService.getUserProfile(id);
-    logger.info("Profile fetched successfully for user ID: {}", id);
+    LOGGER.info("Profile fetched successfully for user ID: {}", id);
     return new ResponseEntity<UserOutDTO>(userOutDTO, HttpStatus.OK);
   }
 
@@ -113,10 +112,11 @@ public class UserController {
    * @return a response entity with a success message if the update is successful.
    */
   @PutMapping("/update/{id}")
-  public ResponseEntity<UserResponse> updateUserProfile(@Valid @PathVariable Integer id, @RequestBody UserInDTO userInDTO) {
-    logger.info("Updating profile for user with ID: {}", id);
+  public ResponseEntity<UserResponse> updateUserProfile(@Valid @PathVariable final Integer id,
+                                                        @RequestBody final UserInDTO userInDTO) {
+    LOGGER.info("Updating profile for user with ID: {}", id);
     UserResponse result = userService.updateUserProfile(id, userInDTO);
-    logger.info("Profile updated successfully for user ID: {}", id);
+    LOGGER.info("Profile updated successfully for user ID: {}", id);
     return new ResponseEntity<UserResponse>(result, HttpStatus.OK);
   }
 
@@ -127,18 +127,25 @@ public class UserController {
    * @return a response entity with a success message if the deletion is successful.
    */
   @DeleteMapping("/delete/{id}")
-  public ResponseEntity<UserResponse> deleteUser(@PathVariable Integer id) {
-    logger.info("Request received to delete user with ID: {}", id);
+  public ResponseEntity<UserResponse> deleteUser(@PathVariable final Integer id) {
+    LOGGER.info("Request received to delete user with ID: {}", id);
     UserResponse userResponse = userService.deleteUser(id);
-    logger.info("User deleted successfully with ID: {}", id);
+    LOGGER.info("User deleted successfully with ID: {}", id);
     return new ResponseEntity<UserResponse>(userResponse, HttpStatus.OK);
   }
 
+  /**
+   * Adds money to the user's wallet.
+   *
+   * @param userId the ID of the user whose wallet will be updated.
+   * @param amountInDto the amount to be added to the user's wallet, encapsulated in an {@link AmountInDTO} object.
+   * @return a response entity containing the updated user information after adding the money.
+   */
   @PutMapping("/addMoney/{userId}")
-  public ResponseEntity<UserOutDTO> addMoney(@PathVariable Integer userId, @RequestBody AmountInDTO amountInDto) {
-    logger.info("Adding {} to wallet for user ID: {}", amountInDto.getBalance(), userId);
+  public ResponseEntity<UserOutDTO> addMoney(@PathVariable final Integer userId, @RequestBody final AmountInDTO amountInDto) {
+    LOGGER.info("Adding {} to wallet for user ID: {}", amountInDto.getBalance(), userId);
     UserOutDTO userResponse = walletBalanceService.addMoney(userId, amountInDto.getBalance());
-    return new ResponseEntity<>(userResponse, HttpStatus.OK);
+    return new ResponseEntity<UserOutDTO>(userResponse, HttpStatus.OK);
   }
   /**
    * Updates the wallet balance for a user.
@@ -152,23 +159,24 @@ public class UserController {
    * @return a {@link ResponseEntity} containing the updated {@link UserOutDTO} with the new wallet balance and HTTP status 200.
    */
   @PutMapping("/walletBalance/{id}")
-  public ResponseEntity<UserOutDTO> updateWalletBalance(@PathVariable Integer id, @RequestBody AmountInDTO amountInDTO) {
+  public ResponseEntity<UserOutDTO> updateWalletBalance(@PathVariable final Integer id,
+                                                        @RequestBody final AmountInDTO amountInDTO) {
     UserOutDTO userResponse = walletBalanceService.updateWalletBalance(id, amountInDTO.getBalance());
-    return new ResponseEntity<>(userResponse, HttpStatus.OK);
+    return new ResponseEntity<UserOutDTO>(userResponse, HttpStatus.OK);
   }
 
   /**
    * Sends an email with the specified text and subject.
    *
-   * @param text the body of the email to be sent
-   * @param subject the subject of the email
-   * @return ResponseEntity containing a success message and HTTP status OK
+   * <p>This method processes a POST request to send an email using the provided {@code EmailRequestDTO}.
+   * If successful, it returns a success message and an HTTP status of {@code 200 OK}.</p>
+   *
+   * @param emailInDTO the email details (subject, recipients, body)
+   * @return a {@code ResponseEntity<UserResponse>} with a success message and HTTP status OK
    */
   @PostMapping("/send")
-  public ResponseEntity<UserResponse> sendEmail(@RequestParam String text, @RequestParam String subject) {
-    userService.sendMail(text, subject);
-    UserResponse response = new UserResponse();
-    response.setSuccessMessage(Constants.EMAIL_SENT_SUCCESSFULLY);
-    return new ResponseEntity<>(response, HttpStatus.OK);
+  public ResponseEntity<UserResponse> sendEmail(@Valid @RequestBody final EmailRequestDTO emailInDTO) {
+    UserResponse response = userService.sendMail(emailInDTO);
+    return new ResponseEntity<UserResponse>(response, HttpStatus.OK);
   }
 }

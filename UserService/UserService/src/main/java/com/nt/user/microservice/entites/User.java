@@ -75,7 +75,7 @@ public class User {
    *
    * @param id the user's ID to set.
    */
-  public void setId(Integer id) {
+  public void setId(final Integer id) {
     this.id = id;
   }
 
@@ -93,7 +93,7 @@ public class User {
    *
    * @param firstName the user's first name to set.
    */
-  public void setFirstName(String firstName) {
+  public void setFirstName(final String firstName) {
     this.firstName = firstName;
   }
 
@@ -111,7 +111,7 @@ public class User {
    *
    * @param lastName the user's last name to set.
    */
-  public void setLastName(String lastName) {
+  public void setLastName(final String lastName) {
     this.lastName = lastName;
   }
 
@@ -129,7 +129,7 @@ public class User {
    *
    * @param email the user's email to set.
    */
-  public void setEmail(String email) {
+  public void setEmail(final String email) {
     this.email = email;
   }
 
@@ -148,7 +148,7 @@ public class User {
    *
    * @param password the user's password to set.
    */
-  public void setPassword(String password) {
+  public void setPassword(final String password) {
     this.password = password;
   }
 
@@ -166,7 +166,7 @@ public class User {
    *
    * @param phoneNo the user's phone number to set.
    */
-  public void setPhoneNo(String phoneNo) {
+  public void setPhoneNo(final String phoneNo) {
     this.phoneNo = phoneNo;
   }
 
@@ -184,7 +184,7 @@ public class User {
    *
    * @param role the user's role to set.
    */
-  public void setRole(Role role) {
+  public void setRole(final Role role) {
     this.role = role;
   }
 
@@ -196,19 +196,21 @@ public class User {
    * @return true if the given object represents a User equivalent to this user, false otherwise.
    */
   @Override
-  public boolean equals(Object o) {
+  public boolean equals(final Object o) {
     if (this == o) {
-      return true; }
+      return true;
+    }
     if (o == null || getClass() != o.getClass()) {
-      return false; }
+      return false;
+    }
     User user = (User) o;
-    return Objects.equals(id, user.id) &&
-      Objects.equals(firstName, user.firstName) &&
-      Objects.equals(lastName, user.lastName) &&
-      Objects.equals(email, user.email) &&
-      Objects.equals(password, user.password) &&
-      Objects.equals(phoneNo, user.phoneNo) &&
-      role == user.role;
+    return Objects.equals(id, user.id)
+      && Objects.equals(firstName, user.firstName)
+      && Objects.equals(lastName, user.lastName)
+      && Objects.equals(email, user.email)
+      && Objects.equals(password, user.password)
+      && Objects.equals(phoneNo, user.phoneNo)
+      && role == user.role;
   }
 
   /**
@@ -229,14 +231,14 @@ public class User {
    */
   @Override
   public String toString() {
-    return "User{" +
-      "id=" + id +
-      ", firstName='" + firstName + '\'' +
-      ", lastName='" + lastName + '\'' +
-      ", email='" + email + '\'' +
-      ", password='" + password + '\'' +
-      ", phoneNo='" + phoneNo + '\'' +
-      ", role=" + role +
-      '}';
+    return "User{"
+      + "id=" + id
+      + ", firstName='" + firstName
+      + '\'' + ", lastName='" + lastName
+      + '\'' + ", email='" + email
+      + '\'' + ", password='" + password
+      + '\'' + ", phoneNo='" + phoneNo
+      + '\'' + ", role=" + role
+      + '}';
   }
 }

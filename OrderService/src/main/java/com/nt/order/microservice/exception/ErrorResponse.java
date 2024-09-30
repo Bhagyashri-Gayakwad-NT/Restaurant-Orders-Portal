@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class  ErrorResponse {
+public class ErrorResponse {
 
   /**
    * The HTTP status code associated with the error.
@@ -30,7 +30,7 @@ public class  ErrorResponse {
    * @param status  the HTTP status code
    * @param message the error message
    */
-  public ErrorResponse(int status, String message) {
+  public ErrorResponse(final int status, final String message) {
     this.status = status;
     this.message = message;
     this.errors = new HashMap<>();
@@ -44,7 +44,7 @@ public class  ErrorResponse {
    * @param message the error message
    * @param errors  a map containing validation errors (optional)
    */
-  public ErrorResponse(int status, String message, Map<String, String> errors) {
+  public ErrorResponse(final int status, final String message, final Map<String, String> errors) {
     this.status = status;
     this.message = message;
     this.errors = errors != null ? errors : new HashMap<>();
@@ -71,7 +71,7 @@ public class  ErrorResponse {
    *
    * @param status the status code to set
    */
-  public void setStatus(int status) {
+  public void setStatus(final int status) {
     this.status = status;
   }
 
@@ -89,7 +89,7 @@ public class  ErrorResponse {
    *
    * @param message the error message to set
    */
-  public void setMessage(String message) {
+  public void setMessage(final String message) {
     this.message = message;
   }
 
@@ -108,7 +108,7 @@ public class  ErrorResponse {
    *
    * @param errors the map of validation errors to set
    */
-  public void setErrors(Map<String, String> errors) {
+  public void setErrors(final Map<String, String> errors) {
     this.errors = errors != null ? errors : new HashMap<>();
   }
 }

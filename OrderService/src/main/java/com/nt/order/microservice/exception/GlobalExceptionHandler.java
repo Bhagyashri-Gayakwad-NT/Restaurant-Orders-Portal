@@ -28,12 +28,12 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with error details
    */
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
+  public ResponseEntity<ErrorResponse> handleValidationExceptions(final MethodArgumentNotValidException ex) {
     Map<String, String> errors = new HashMap<>();
 
     for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-      String fieldName = error.getField().contains("[") ? error.getField().substring(error.getField().indexOf("]") + 2) :
-        error.getField();
+      String fieldName = error.getField().contains("[") ? error.getField().substring(error.getField().indexOf("]") + 2)
+        : error.getField();
       errors.put(fieldName, error.getDefaultMessage());
     }
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Validation failed", errors);
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with error details
    */
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-  public ResponseEntity<ErrorResponse> handleMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+  public ResponseEntity<ErrorResponse> handleMethodNotSupportedException(final HttpRequestMethodNotSupportedException ex) {
     String errorMessage = Constants.METHODE_NOT_ALLOWED;
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), errorMessage);
     return new ResponseEntity<>(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);
@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with error details
    */
   @ExceptionHandler(InvalidRequestException.class)
-  public ResponseEntity<ErrorResponse> handleInvalidRequestException(InvalidRequestException ex) {
+  public ResponseEntity<ErrorResponse> handleInvalidRequestException(final InvalidRequestException ex) {
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
   }
@@ -72,7 +72,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with error details
    */
   @ExceptionHandler(ResourceNotFoundException.class)
-  public ResponseEntity<ErrorResponse> handleUserNotFoundException(ResourceNotFoundException ex) {
+  public ResponseEntity<ErrorResponse> handleUserNotFoundException(final ResourceNotFoundException ex) {
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
   }
@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with error details
    */
   @ExceptionHandler(UnauthorizedException.class)
-  public ResponseEntity<ErrorResponse> handleUnauthorizedException(UnauthorizedException ex) {
+  public ResponseEntity<ErrorResponse> handleUnauthorizedException(final UnauthorizedException ex) {
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());
     return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
   }
@@ -96,7 +96,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with error details
    */
   @ExceptionHandler(ResourceAlreadyExistException.class)
-  public ResponseEntity<ErrorResponse> handleAlreadyExistException(ResourceAlreadyExistException ex) {
+  public ResponseEntity<ErrorResponse> handleAlreadyExistException(final ResourceAlreadyExistException ex) {
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());
     return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
   }
@@ -108,7 +108,7 @@ public class GlobalExceptionHandler {
    * @return ResponseEntity with error details
    */
   @ExceptionHandler(InsufficientBalanceException.class)
-  public ResponseEntity<ErrorResponse> handleInsufficientBalanceException(InsufficientBalanceException ex) {
+  public ResponseEntity<ErrorResponse> handleInsufficientBalanceException(final InsufficientBalanceException ex) {
     String errorMessage = Constants.INSUFFICIENT_BALANCE;
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), errorMessage);
     return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
@@ -117,12 +117,13 @@ public class GlobalExceptionHandler {
   /**
    * Handles exceptions related to unreadable HTTP messages.
    *
-   * @param ex the HTTP message not readable exception
+   * @param ex      the HTTP message not readable exception
    * @param request the web request
    * @return ResponseEntity with error details
    */
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<Object> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
+  public ResponseEntity<Object> handleHttpMessageNotReadableException(
+    final HttpMessageNotReadableException ex, final WebRequest request) {
     Map<String, Object> body = new HashMap<>();
     body.put("status", HttpStatus.BAD_REQUEST.value());
     body.put("error", "Invalid request body");

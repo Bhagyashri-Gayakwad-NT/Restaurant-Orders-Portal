@@ -1,15 +1,15 @@
 package com.nt.restaurant.microservice.serviceimpl;
 
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.FoodItemInDTO;
+import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
+import com.nt.restaurant.microservice.dto.FoodItemUpdateInDTO;
 import com.nt.restaurant.microservice.dtoconvertion.FoodItemDtoConverter;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.FoodItem;
 import com.nt.restaurant.microservice.entities.Restaurant;
 import com.nt.restaurant.microservice.exception.ResourceAlreadyExistException;
 import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
-import com.nt.restaurant.microservice.dto.FoodItemInDTO;
-import com.nt.restaurant.microservice.dto.FoodItemUpdateInDTO;
-import com.nt.restaurant.microservice.dto.CommonResponse;
-import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
 import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
 import com.nt.restaurant.microservice.repository.FoodItemRepository;
 import com.nt.restaurant.microservice.repository.RestaurantRepository;
@@ -36,7 +36,7 @@ public class FoodItemServiceImpl implements FoodItemService {
   /**
    * Logger instance for logging events within the service.
    */
-  private static final Logger logger = LogManager.getLogger(FoodItemServiceImpl.class);
+  private static final Logger LOGGER = LogManager.getLogger(FoodItemServiceImpl.class);
 
   /**
    * Repository for accessing food categories in the database.
@@ -66,55 +66,56 @@ public class FoodItemServiceImpl implements FoodItemService {
    */
   @Override
   public CommonResponse addFoodItem(final FoodItemInDTO foodItemInDTO, final MultipartFile image) {
-    logger.info("Attempting to add food item: {}", foodItemInDTO.getFoodItemName());
-    logger.debug("Fetching restaurant with ID: {}", foodItemInDTO.getRestaurantId());
+    LOGGER.info("Attempting to add food item: {}", foodItemInDTO.getFoodItemName());
+    LOGGER.debug("Fetching restaurant with ID: {}", foodItemInDTO.getRestaurantId());
     Optional<Restaurant> restaurant = restaurantRepository.findById(foodItemInDTO.getRestaurantId());
-    logger.debug("Fetching food category with ID: {}", foodItemInDTO.getFoodCategoryId());
+    LOGGER.debug("Fetching food category with ID: {}", foodItemInDTO.getFoodCategoryId());
     Optional<FoodCategory> existingCategory = foodCategoryRepository.findById(foodItemInDTO.getFoodCategoryId());
-    logger.debug("Checking if food item '{}' already exists in restaurant with ID: {}",
+    LOGGER.debug("Checking if food item '{}' already exists in restaurant with ID: {}",
       foodItemInDTO.getFoodItemName(), foodItemInDTO.getRestaurantId());
     Optional<FoodItem> existingFoodItem = foodItemRepository.findByFoodItemNameAndRestaurantId(
       foodItemInDTO.getFoodItemName().toUpperCase(),
       foodItemInDTO.getRestaurantId()
     );
     if (!restaurant.isPresent()) {
-      logger.error("Restaurant not found for ID: {}", foodItemInDTO.getRestaurantId());
+      LOGGER.error("Restaurant not found for ID: {}", foodItemInDTO.getRestaurantId());
       throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);
     }
     if (!existingCategory.isPresent()) {
-      logger.error("Food category not found for ID: {}", foodItemInDTO.getFoodCategoryId());
+      LOGGER.error("Food category not found for ID: {}", foodItemInDTO.getFoodCategoryId());
       throw new ResourceNotFoundException(Constants.FOOD_CATEGORY_NOT_FOUND);
     }
     if (existingFoodItem.isPresent()) {
-      logger.warn("Food item '{}' already exists in restaurant ID: {}",
+      LOGGER.warn("Food item '{}' already exists in restaurant ID: {}",
         foodItemInDTO.getFoodItemName(), foodItemInDTO.getRestaurantId());
       throw new ResourceAlreadyExistException(Constants.FOOD_ITEM_ALREADY_PRESENT);
     }
-    logger.debug("Converting FoodItemInDTO to FoodItem entity");
+    LOGGER.debug("Converting FoodItemInDTO to FoodItem entity");
     FoodItem foodItem = FoodItemDtoConverter.inDtoToEntity(foodItemInDTO);
     try {
       if (Objects.nonNull(image) && !image.isEmpty()) {
-        logger.debug("Processing image for food item: {}", foodItemInDTO.getFoodItemName());
+        LOGGER.debug("Processing image for food item: {}", foodItemInDTO.getFoodItemName());
         String contentType = image.getContentType();
         if (Objects.isNull(contentType) || !(contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
-          logger.error("Invalid image type: {}. Only JPG and PNG are allowed.", contentType);
+          LOGGER.error("Invalid image type: {}. Only JPG and PNG are allowed.", contentType);
           throw new ResourceNotFoundException(Constants.INVALID_FILE_TYPE);
         }
         foodItem.setFoodItemImage(image.getBytes());
-        logger.debug("Image processed successfully for food item: {}", foodItemInDTO.getFoodItemName());
+        LOGGER.debug("Image processed successfully for food item: {}", foodItemInDTO.getFoodItemName());
       } else {
-        logger.warn("No image provided for food item: {}", foodItemInDTO.getFoodItemName());
+        LOGGER.warn("No image provided for food item: {}", foodItemInDTO.getFoodItemName());
       }
     } catch (Exception e) {
-      logger.error("Error occurred while processing image for food item '{}': {}", foodItemInDTO.getFoodItemName(), e.getMessage());
+      LOGGER.error("Error occurred while processing image for food item '{}': {}",
+        foodItemInDTO.getFoodItemName(), e.getMessage());
       throw new RuntimeException("Image processing failed", e);
     }
-    logger.debug("Saving food item to the database");
+    LOGGER.debug("Saving food item to the database");
     FoodItem savedFoodItem = foodItemRepository.save(foodItem);
-    logger.info("Successfully added food item '{}' for restaurant ID: {}", savedFoodItem.getFoodItemName(),
+    LOGGER.info("Successfully added food item '{}' for restaurant ID: {}", savedFoodItem.getFoodItemName(),
       savedFoodItem.getRestaurantId());
     FoodItemDtoConverter.entityToOutDTO(savedFoodItem);
-    logger.debug("Returning success response for adding food item '{}'", savedFoodItem.getFoodItemName());
+    LOGGER.debug("Returning success response for adding food item '{}'", savedFoodItem.getFoodItemName());
     return new CommonResponse(Constants.FOOD_ITEM_ADDED_SUCCESS);
   }
 
@@ -127,10 +128,10 @@ public class FoodItemServiceImpl implements FoodItemService {
    */
   @Override
   public List<FoodItemOutDTO> getFoodItemsByCategory(final Integer categoryId) {
-    logger.info("Fetching food items for category ID: {}", categoryId);
+    LOGGER.info("Fetching food items for category ID: {}", categoryId);
     List<FoodItem> foodItems = foodItemRepository.findByCategoryId(categoryId);
     if (foodItems.isEmpty()) {
-      logger.error("No food items found for category ID: {}", categoryId);
+      LOGGER.error("No food items found for category ID: {}", categoryId);
       throw new ResourceNotFoundException(Constants.NO_FOOD_ITEM_PRESENT);
     }
     List<FoodItemOutDTO> foodItemOutDTOList = new ArrayList<>();
@@ -138,7 +139,7 @@ public class FoodItemServiceImpl implements FoodItemService {
       FoodItemOutDTO foodItemOutDTO = FoodItemDtoConverter.entityToOutDTO(foodItem);
       foodItemOutDTOList.add(foodItemOutDTO);
     }
-    logger.info("Found {} food items for category ID: {}", foodItemOutDTOList.size(), categoryId);
+    LOGGER.info("Found {} food items for category ID: {}", foodItemOutDTOList.size(), categoryId);
     return foodItemOutDTOList;
   }
 
@@ -151,10 +152,10 @@ public class FoodItemServiceImpl implements FoodItemService {
    */
   @Override
   public List<FoodItemOutDTO> getFoodItemsByRestaurant(final Integer restaurantId) {
-    logger.info("Fetching food items for restaurant ID: {}", restaurantId);
+    LOGGER.info("Fetching food items for restaurant ID: {}", restaurantId);
     List<FoodItem> foodItems = foodItemRepository.findByRestaurantId(restaurantId);
     if (foodItems.isEmpty()) {
-      logger.error("No food items found for restaurant ID: {}", restaurantId);
+      LOGGER.error("No food items found for restaurant ID: {}", restaurantId);
       throw new ResourceNotFoundException(Constants.NO_FOOD_ITEM_PRESENT);
     }
     List<FoodItemOutDTO> foodItemOutDTOList = new ArrayList<>();
@@ -162,7 +163,7 @@ public class FoodItemServiceImpl implements FoodItemService {
       FoodItemOutDTO foodItemOutDTO = FoodItemDtoConverter.entityToOutDTO(foodItem);
       foodItemOutDTOList.add(foodItemOutDTO);
     }
-    logger.info("Found {} food items for restaurant ID: {}", foodItemOutDTOList.size(), restaurantId);
+    LOGGER.info("Found {} food items for restaurant ID: {}", foodItemOutDTOList.size(), restaurantId);
     return foodItemOutDTOList;
   }
 
@@ -176,16 +177,16 @@ public class FoodItemServiceImpl implements FoodItemService {
    */
   @Override
   public CommonResponse updateFoodItemByFoodItemId(final Integer foodItemId, final FoodItemUpdateInDTO foodItemUpdateInDTO) {
-    logger.info("Attempting to update food item with ID: {}", foodItemId);
+    LOGGER.info("Attempting to update food item with ID: {}", foodItemId);
     FoodItem existingFoodItem = findFoodItemById(foodItemId);
     try {
       updateFoodItemRequest(foodItemUpdateInDTO, existingFoodItem);
     } catch (IOException e) {
-      logger.error("Error processing food item image for ID: {}", foodItemId, e);
+      LOGGER.error("Error processing food item image for ID: {}", foodItemId, e);
       throw new RuntimeException(Constants.ERROR_PROCESSING_FOOD_ITEM_IMAGE, e);
     }
     FoodItem updatedFoodItem = foodItemRepository.save(existingFoodItem);
-    logger.info("Successfully updated food item with ID: {}", foodItemId);
+    LOGGER.info("Successfully updated food item with ID: {}", foodItemId);
     convertFoodItemToFoodItemResponse(updatedFoodItem);
     return new CommonResponse(Constants.FOOD_ITEM_UPDATED_SUCCESS);
   }
@@ -197,13 +198,14 @@ public class FoodItemServiceImpl implements FoodItemService {
    * @param existingFoodItem The existing food item entity to be updated.
    * @throws IOException If an error occurs while processing the food item image.
    */
-  private void updateFoodItemRequest(final FoodItemUpdateInDTO foodItemInDTO, final FoodItem existingFoodItem) throws IOException {
+  private void updateFoodItemRequest(final FoodItemUpdateInDTO foodItemInDTO,
+                                     final FoodItem existingFoodItem) throws IOException {
     existingFoodItem.setFoodItemName(foodItemInDTO.getFoodItemName().toUpperCase());
     existingFoodItem.setDescription(foodItemInDTO.getDescription());
     existingFoodItem.setPrice(foodItemInDTO.getPrice());
 
     if (Objects.nonNull(foodItemInDTO.getFoodItemImage()) && !foodItemInDTO.getFoodItemImage().isEmpty()) {
-      logger.info("Updating food item image for food item: {}", existingFoodItem.getFoodItemName());
+      LOGGER.info("Updating food item image for food item: {}", existingFoodItem.getFoodItemName());
       existingFoodItem.setFoodItemImage(foodItemInDTO.getFoodItemImage().getBytes());
     }
   }
@@ -226,7 +228,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    */
   @Override
   public byte[] getFoodItemImage(final Integer id) {
-    logger.info("Fetching food item image for ID: {}", id);
+    LOGGER.info("Fetching food item image for ID: {}", id);
 
     FoodItem foodItem = findFoodItemById(id);
     return foodItem.getFoodItemImage();
@@ -240,7 +242,7 @@ public class FoodItemServiceImpl implements FoodItemService {
    * @throws ResourceNotFoundException If no food item is found with the specified ID.
    */
   public FoodItem findFoodItemById(final Integer id) {
-    logger.info("Looking for food item with ID: {}", id);
+    LOGGER.info("Looking for food item with ID: {}", id);
 
     return foodItemRepository.findById(id)
       .orElseThrow(() -> new ResourceNotFoundException(Constants.NO_FOOD_ITEM_PRESENT));
