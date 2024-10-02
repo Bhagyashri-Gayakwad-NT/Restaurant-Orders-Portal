@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderInDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.dtos</a> &gt; <span class="el_source">OrderInDTO.java</span></div><h1>OrderInDTO.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.dtos;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Data Transfer Object for Order Input.
+ * This class encapsulates the information required to place an order.
+ */
+public class OrderInDTO {
+
+  /**
+   * The ID of the user placing the order.
+   * This field is required and cannot be null.
+   */
+  @NotNull(message = &quot;User ID cannot be null&quot;)
+  private Integer userId;
+
+  /**
+   * The ID of the restaurant where the order is placed.
+   * This field is required and cannot be null.
+   */
+  @NotNull(message = &quot;Restaurant ID cannot be null&quot;)
+  private Integer restaurantId;
+
+  /**
+   * The ID of the delivery address for the order.
+   * This field is required and cannot be null.
+   */
+  @NotNull(message = &quot;Delivery Address ID cannot be null&quot;)
+  private Integer addressId;
+
+  /**
+   * The list of cart items included in the order.
+   * This field is required and cannot be empty.
+   */
+  @NotEmpty(message = &quot;Cart items cannot be empty&quot;)
+  private List&lt;CartItemDTO&gt; cartItems;
+
+  /**
+   * Default constructor.
+   */
+<span class="fc" id="L45">  public OrderInDTO() {</span>
+<span class="fc" id="L46">  }</span>
+
+  /**
+   * Parameterized constructor to create an OrderInDTO with specified details.
+   *
+   * @param userId       the ID of the user placing the order
+   * @param restaurantId the ID of the restaurant
+   * @param addressId    the ID of the delivery address
+   * @param cartItems    the list of cart items included in the order
+   */
+  public OrderInDTO(final Integer userId, final Integer restaurantId,
+<span class="fc" id="L57">                    final Integer addressId, final List&lt;CartItemDTO&gt; cartItems) {</span>
+<span class="fc" id="L58">    this.userId = userId;</span>
+<span class="fc" id="L59">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L60">    this.addressId = addressId;</span>
+<span class="fc" id="L61">    this.cartItems = cartItems;</span>
+<span class="fc" id="L62">  }</span>
+
+  /**
+   * Retrieves the user ID.
+   *
+   * @return the user ID
+   */
+  public Integer getUserId() {
+<span class="fc" id="L70">    return userId;</span>
+  }
+
+  /**
+   * Sets the user ID.
+   *
+   * @param userId the user ID to set
+   */
+  public void setUserId(final Integer userId) {
+<span class="fc" id="L79">    this.userId = userId;</span>
+<span class="fc" id="L80">  }</span>
+
+  /**
+   * Retrieves the restaurant ID.
+   *
+   * @return the restaurant ID
+   */
+  public Integer getRestaurantId() {
+<span class="fc" id="L88">    return restaurantId;</span>
+  }
+
+  /**
+   * Sets the restaurant ID.
+   *
+   * @param restaurantId the restaurant ID to set
+   */
+  public void setRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L97">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L98">  }</span>
+
+  /**
+   * Retrieves the address ID.
+   *
+   * @return the address ID
+   */
+  public Integer getAddressId() {
+<span class="fc" id="L106">    return addressId;</span>
+  }
+
+  /**
+   * Sets the address ID.
+   *
+   * @param addressId the address ID to set
+   */
+  public void setAddressId(final Integer addressId) {
+<span class="fc" id="L115">    this.addressId = addressId;</span>
+<span class="fc" id="L116">  }</span>
+
+  /**
+   * Retrieves the list of cart items.
+   *
+   * @return the list of cart items
+   */
+  public List&lt;CartItemDTO&gt; getCartItems() {
+<span class="fc" id="L124">    return cartItems;</span>
+  }
+
+  /**
+   * Sets the list of cart items.
+   *
+   * @param cartItems the list of cart items to set
+   */
+  public void setCartItems(final List&lt;CartItemDTO&gt; cartItems) {
+<span class="fc" id="L133">    this.cartItems = cartItems;</span>
+<span class="fc" id="L134">  }</span>
+
+  /**
+   * Indicates whether some other object is &quot;equal to&quot; this one.
+   * Two OrderInDTO objects are considered equal if they have the same userId,
+   * restaurantId, addressId, and cartItems.
+   *
+   * @param o the reference object with which to compare
+   * @return true if this object is the same as the obj argument; false otherwise
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L147">      return true;</span>
+    }
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">    if (!(o instanceof OrderInDTO)) {</span>
+<span class="nc" id="L150">      return false;</span>
+    }
+<span class="fc" id="L152">    OrderInDTO that = (OrderInDTO) o;</span>
+<span class="pc bpc" id="L153" title="2 of 4 branches missed.">    return Objects.equals(userId, that.userId) &amp;&amp; Objects.equals(restaurantId, that.restaurantId)</span>
+<span class="pc bpc" id="L154" title="2 of 4 branches missed.">      &amp;&amp; Objects.equals(addressId, that.addressId) &amp;&amp; Objects.equals(cartItems, that.cartItems);</span>
+  }
+
+  /**
+   * Returns a hash code value for the object.
+   * The hash code is computed based on the userId, restaurantId, addressId,
+   * and cartItems fields.
+   *
+   * @return a hash code value for this object
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L166">    return Objects.hash(userId, restaurantId, addressId, cartItems);</span>
+  }
+
+  /**
+   * Returns a string representation of the object.
+   * The string representation includes the userId, restaurantId, addressId,
+   * and cartItems.
+   *
+   * @return a string representation of the object
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L178">    return &quot;OrderInDTO{&quot;</span>
+      + &quot;userId=&quot; + userId
+      + &quot;, restaurantId=&quot; + restaurantId
+      + &quot;, addressId=&quot; + addressId
+      + &quot;, cartItems=&quot; + cartItems
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

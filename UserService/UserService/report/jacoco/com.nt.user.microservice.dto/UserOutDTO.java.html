@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserOutDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.dto</a> &gt; <span class="el_source">UserOutDTO.java</span></div><h1>UserOutDTO.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.dto;
+
+import java.util.Objects;
+
+/**
+ * UserOutDTO is a Data Transfer Object used to send user information as a response from the server.
+ * It includes user details such as ID, name, email, phone number, role, and wallet balance.
+ */
+<span class="fc" id="L9">public class UserOutDTO {</span>
+
+  /**
+   * The unique identifier for the user.
+   */
+  private Integer id;
+
+  /**
+   * The first name of the user.
+   */
+  private String firstName;
+
+  /**
+   * The last name of the user.
+   */
+  private String lastName;
+
+  /**
+   * The email address of the user.
+   */
+  private String email;
+
+  /**
+   * The phone number of the user.
+   */
+  private String phoneNo;
+
+  /**
+   * The role of the user, e.g., &quot;user&quot; or &quot;restaurant_owner&quot;.
+   */
+  private String role;
+
+  /**
+   * The current wallet balance of the user.
+   */
+  private Double walletBalance;
+
+  /**
+   * Retrieves the unique identifier for the user.
+   *
+   * @return the user's ID as an Integer.
+   */
+  public Integer getId() {
+<span class="fc" id="L52">    return id;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the user.
+   *
+   * @param id the user's ID.
+   */
+  public void setId(final Integer id) {
+<span class="fc" id="L61">    this.id = id;</span>
+<span class="fc" id="L62">  }</span>
+
+  /**
+   * Retrieves the first name of the user.
+   *
+   * @return the user's first name as a String.
+   */
+  public String getFirstName() {
+<span class="fc" id="L70">    return firstName;</span>
+  }
+
+  /**
+   * Sets the first name of the user.
+   *
+   * @param firstName the user's first name.
+   */
+  public void setFirstName(final String firstName) {
+<span class="fc" id="L79">    this.firstName = firstName;</span>
+<span class="fc" id="L80">  }</span>
+
+  /**
+   * Retrieves the last name of the user.
+   *
+   * @return the user's last name as a String.
+   */
+  public String getLastName() {
+<span class="fc" id="L88">    return lastName;</span>
+  }
+
+  /**
+   * Sets the last name of the user.
+   *
+   * @param lastName the user's last name.
+   */
+  public void setLastName(final String lastName) {
+<span class="fc" id="L97">    this.lastName = lastName;</span>
+<span class="fc" id="L98">  }</span>
+
+  /**
+   * Retrieves the email address of the user.
+   *
+   * @return the user's email as a String.
+   */
+  public String getEmail() {
+<span class="fc" id="L106">    return email;</span>
+  }
+
+  /**
+   * Sets the email address of the user.
+   *
+   * @param email the user's email address.
+   */
+  public void setEmail(final String email) {
+<span class="fc" id="L115">    this.email = email;</span>
+<span class="fc" id="L116">  }</span>
+
+  /**
+   * Retrieves the phone number of the user.
+   *
+   * @return the user's phone number as a String.
+   */
+  public String getPhoneNo() {
+<span class="fc" id="L124">    return phoneNo;</span>
+  }
+
+  /**
+   * Sets the phone number of the user.
+   *
+   * @param phoneNo the user's phone number.
+   */
+  public void setPhoneNo(final String phoneNo) {
+<span class="fc" id="L133">    this.phoneNo = phoneNo;</span>
+<span class="fc" id="L134">  }</span>
+
+  /**
+   * Retrieves the role of the user (e.g., &quot;user&quot; or &quot;restaurant_owner&quot;).
+   *
+   * @return the user's role as a String.
+   */
+  public String getRole() {
+<span class="fc" id="L142">    return role;</span>
+  }
+
+  /**
+   * Sets the role of the user (e.g., &quot;user&quot; or &quot;restaurant_owner&quot;).
+   *
+   * @param role the user's role.
+   */
+  public void setRole(final String role) {
+<span class="fc" id="L151">    this.role = role;</span>
+<span class="fc" id="L152">  }</span>
+
+  /**
+   * Retrieves the current wallet balance of the user.
+   *
+   * @return the user's wallet balance as a Double.
+   */
+  public Double getWalletBalance() {
+<span class="fc" id="L160">    return walletBalance;</span>
+  }
+
+  /**
+   * Sets the wallet balance of the user.
+   *
+   * @param walletBalance the user's wallet balance.
+   */
+  public void setWalletBalance(final Double walletBalance) {
+<span class="fc" id="L169">    this.walletBalance = walletBalance;</span>
+<span class="fc" id="L170">  }</span>
+
+  /**
+   * Indicates whether some other object is &quot;equal to&quot; this one.
+   *
+   * @param o the object to compare with this instance.
+   * @return {@code true} if this object is the same as the object argument; {@code false} otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="fc bfc" id="L180" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L181">      return true;</span>
+    }
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">    if (!(o instanceof UserOutDTO)) {</span>
+<span class="nc" id="L184">      return false;</span>
+    }
+<span class="fc" id="L186">    UserOutDTO that = (UserOutDTO) o;</span>
+<span class="fc bfc" id="L187" title="All 2 branches covered.">    return Objects.equals(id, that.id)</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(firstName, that.firstName)</span>
+<span class="pc bpc" id="L189" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(lastName, that.lastName)</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(email, that.email)</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(phoneNo, that.phoneNo)</span>
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(role, that.role)</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(walletBalance, that.walletBalance);</span>
+  }
+
+  /**
+   * Returns a hash code value for the object.
+   *
+   * @return a hash code value for this object.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L203">    return Objects.hash(id, firstName, lastName, email, phoneNo, role, walletBalance);</span>
+  }
+
+  /**
+   * Returns a string representation of the object.
+   *
+   * @return a string representation of this UserOutDTO.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L213">    return &quot;UserOutDTO{&quot;</span>
+      + &quot;id=&quot; + id
+      + &quot;, firstName='&quot; + firstName
+      + '\'' + &quot;, lastName='&quot; + lastName
+      + '\'' + &quot;, email='&quot; + email
+      + '\'' + &quot;, phoneNo='&quot; + phoneNo
+      + '\'' + &quot;, role='&quot; + role
+      + '\'' + &quot;, walletBalance=&quot; + walletBalance
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

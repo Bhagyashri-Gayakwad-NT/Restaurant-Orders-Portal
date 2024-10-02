@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddressServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.service.impl</a> &gt; <span class="el_source">AddressServiceImpl.java</span></div><h1>AddressServiceImpl.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.service.impl;
+
+import com.nt.user.microservice.entites.Address;
+import com.nt.user.microservice.entites.User;
+import com.nt.user.microservice.exceptions.AddressNotFoundException;
+import com.nt.user.microservice.exceptions.UserNotFoundException;
+import com.nt.user.microservice.indto.AddressInDTO;
+import com.nt.user.microservice.outdto.AddressOutDTO;
+import com.nt.user.microservice.outdto.UserResponse;
+import com.nt.user.microservice.repository.AddressRepository;
+import com.nt.user.microservice.repository.UserRepository;
+import com.nt.user.microservice.service.AddressService;
+import com.nt.user.microservice.util.Constants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Implementation of the AddressService interface that provides functionalities
+ * related to managing user addresses such as adding, retrieving, and deleting addresses.
+ */
+@Service
+<span class="fc" id="L28">public class AddressServiceImpl implements AddressService {</span>
+
+<span class="fc" id="L30">  private static final Logger logger = LogManager.getLogger(AddressServiceImpl.class);</span>
+
+  @Autowired
+  private AddressRepository addressRepository;
+
+  @Autowired
+  private UserRepository userRepository;
+
+  /**
+   * Adds a new address for a user.
+   *
+   * @param addressInDTO the address details to be added.
+   * @return a response indicating the success or failure of the operation.
+   * @throws UserNotFoundException if the user with the specified ID is not found.
+   */
+  @Override
+  public UserResponse addAddress(AddressInDTO addressInDTO) {
+<span class="fc" id="L47">    logger.info(&quot;Adding a new address for userId: {}&quot;, addressInDTO.getUserId());</span>
+
+    // Check if the user exists
+<span class="fc" id="L50">    Optional&lt;User&gt; userOptional = userRepository.findById(addressInDTO.getUserId());</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">    if (!userOptional.isPresent()) {</span>
+<span class="fc" id="L52">      logger.error(&quot;User with ID {} not found&quot;, addressInDTO.getUserId());</span>
+<span class="fc" id="L53">      throw new UserNotFoundException(Constants.USER_NOT_FOUND);</span>
+    }
+
+    // Create and populate the Address entity
+<span class="fc" id="L57">    Address address = new Address();</span>
+<span class="fc" id="L58">    address.setStreet(addressInDTO.getStreet());</span>
+<span class="fc" id="L59">    address.setCity(addressInDTO.getCity());</span>
+<span class="fc" id="L60">    address.setCountry(addressInDTO.getCountry());</span>
+<span class="fc" id="L61">    address.setState(addressInDTO.getState());</span>
+<span class="fc" id="L62">    address.setPinCode(addressInDTO.getPinCode());</span>
+<span class="fc" id="L63">    address.setUserId(addressInDTO.getUserId());</span>
+
+<span class="fc" id="L65">    addressRepository.save(address);</span>
+<span class="fc" id="L66">    logger.info(&quot;Address saved successfully for UserID: {}&quot;, addressInDTO.getUserId());</span>
+
+<span class="fc" id="L68">    UserResponse response = new UserResponse();</span>
+<span class="fc" id="L69">    response.setSuccessMessage(Constants.ADDRESS_ADDED_SUCCESSFULLY);</span>
+<span class="fc" id="L70">    return response;</span>
+  }
+
+  /**
+   * Retrieves all addresses associated with a given user.
+   *
+   * @param userId the ID of the user whose addresses are to be retrieved.
+   * @return a list of AddressOutDTO objects representing the user's addresses.
+   * @throws UserNotFoundException if the user with the specified ID is not found.
+   * @throws AddressNotFoundException if no addresses are found for the specified user.
+   */
+  @Override
+  public List&lt;AddressOutDTO&gt; getUserAddresses(Integer userId) {
+<span class="fc" id="L83">    logger.info(&quot;Fetching addresses for userId: {}&quot;, userId);</span>
+
+<span class="fc" id="L85">    Optional&lt;User&gt; optionalUser = userRepository.findById(userId);</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">    if (!optionalUser.isPresent()) {</span>
+<span class="fc" id="L87">      logger.error(&quot;User with ID {} not found&quot;, userId);</span>
+<span class="fc" id="L88">      throw new UserNotFoundException(Constants.USER_NOT_FOUND);</span>
+    }
+
+<span class="fc" id="L91">    List&lt;Address&gt; addresses = addressRepository.findAllByUserId(userId);</span>
+
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">    if (addresses.isEmpty()) {</span>
+<span class="nc" id="L94">      logger.error(&quot;No addresses found for userId: {}&quot;, userId);</span>
+<span class="nc" id="L95">      throw new AddressNotFoundException(&quot;No addresses found for this user.&quot;);</span>
+    }
+
+<span class="fc" id="L98">    logger.info(&quot;Found {} addresses for userId: {}&quot;, addresses.size(), userId);</span>
+<span class="fc" id="L99">    List&lt;AddressOutDTO&gt; addressOutDTOs = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">    for (Address address : addresses) {</span>
+<span class="fc" id="L101">      AddressOutDTO addressOutDTO = new AddressOutDTO();</span>
+<span class="fc" id="L102">      addressOutDTO.setId(address.getId());</span>
+<span class="fc" id="L103">      addressOutDTO.setStreet(address.getStreet());</span>
+<span class="fc" id="L104">      addressOutDTO.setCity(address.getCity());</span>
+<span class="fc" id="L105">      addressOutDTO.setCountry(address.getCountry());</span>
+<span class="fc" id="L106">      addressOutDTO.setState(address.getState());</span>
+<span class="fc" id="L107">      addressOutDTO.setPinCode(address.getPinCode());</span>
+<span class="fc" id="L108">      addressOutDTOs.add(addressOutDTO);</span>
+<span class="fc" id="L109">    }</span>
+<span class="fc" id="L110">    return addressOutDTOs;</span>
+  }
+
+  /**
+   * Deletes an address by its ID.
+   *
+   * @param id the ID of the address to be deleted.
+   * @throws AddressNotFoundException if the address with the specified ID is not found.
+   */
+  @Override
+  public void deleteAddress(Integer id) {
+<span class="fc" id="L121">    logger.info(&quot;Attempting to delete address with ID: {}&quot;, id);</span>
+
+<span class="fc bfc" id="L123" title="All 2 branches covered.">    if (addressRepository.existsById(id)) {</span>
+<span class="fc" id="L124">      addressRepository.deleteById(id);</span>
+<span class="fc" id="L125">      logger.info(&quot;Address deleted successfully with ID: {}&quot;, id);</span>
+    } else {
+<span class="fc" id="L127">      logger.warn(&quot;Address with ID: {} not found, cannot delete&quot;, id);</span>
+<span class="fc" id="L128">      throw new AddressNotFoundException(&quot;Address not found&quot;);</span>
+    }
+<span class="fc" id="L130">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

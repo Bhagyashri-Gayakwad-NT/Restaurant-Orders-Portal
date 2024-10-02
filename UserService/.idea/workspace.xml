@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="cf9a2c5b-0523-4556-9f10-bfec60f6503d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/FoodCategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/FoodCategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/FoodItemController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/FoodItemController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/RestaurantController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/controller/RestaurantController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/dto/UserOutDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/dto/UserOutDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/InvalidRequestException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/InvalidRequestException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/UnauthorizedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/exception/UnauthorizedException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/serviceimpl/FoodCategoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/serviceimpl/FoodCategoryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/serviceimpl/FoodItemServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/serviceimpl/FoodItemServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/serviceimpl/RestaurantServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/main/java/com/nt/restaurant/microservice/serviceimpl/RestaurantServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/entites/FoodCategoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/entites/FoodCategoryTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/entites/FoodItemTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/entites/FoodItemTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/exception/GlobalExceptionHandlerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/exception/GlobalExceptionHandlerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/indto/FoodCategoryInDtoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/indto/FoodCategoryInDtoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/indto/FoodItemInDtoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/indto/FoodItemInDtoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/indto/FoodItemUpdateInDTOTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/indto/FoodItemUpdateInDTOTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/FoodCategoryOutDtoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/FoodCategoryOutDtoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/FoodItemOutDtoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/FoodItemOutDtoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/UserOutDTOTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/outdto/UserOutDTOTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/FoodCategoryServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/FoodCategoryServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/FoodItemServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/FoodItemServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/RestaurantServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../RestaurantService/src/test/java/com/nt/restaurant/microservice/service/RestaurantServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/contoller/AddressController.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/contoller/AddressController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/contoller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/contoller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/exceptions/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/exceptions/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/exceptions/InvalidRequestException.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/exceptions/InvalidRequestException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/service/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/service/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/service/WalletBalanceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/service/WalletBalanceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/serviceimpl/AddressServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/serviceimpl/AddressServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/serviceimpl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/serviceimpl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/serviceimpl/WalletBalanceServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/nt/user/microservice/serviceimpl/WalletBalanceServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/test/java/com/nt/user/microservice/indto/LogInDTOTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/test/java/com/nt/user/microservice/indto/LogInDTOTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/test/java/com/nt/user/microservice/outdto/UserResponseTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/test/java/com/nt/user/microservice/outdto/UserResponseTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/test/java/com/nt/user/microservice/service/UserServiceImplTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/test/java/com/nt/user/microservice/service/UserServiceImplTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/test/java/com/nt/user/microservice/service/WalletBalanceServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/test/java/com/nt/user/microservice/service/WalletBalanceServiceImplTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2mMuDwfyDff5zmaDY221Ic70Tzm" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Sprint-02&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Restaurant Orders Portal/UserService&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cf9a2c5b-0523-4556-9f10-bfec60f6503d" name="Changes" comment="" />
+      <created>1726898650420</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1726898650420</updated>
+    </task>
+    <servers />
+  </component>
+</project>

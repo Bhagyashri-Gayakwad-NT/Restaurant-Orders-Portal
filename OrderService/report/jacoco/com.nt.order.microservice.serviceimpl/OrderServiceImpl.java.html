@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.serviceimpl</a> &gt; <span class="el_source">OrderServiceImpl.java</span></div><h1>OrderServiceImpl.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.serviceimpl;
+
+import com.nt.order.microservice.dtoconverter.OrderDtoConverter;
+import com.nt.order.microservice.dtos.AddressOutDTO;
+import com.nt.order.microservice.dtos.AmountInDTO;
+import com.nt.order.microservice.dtos.CartItemDTO;
+import com.nt.order.microservice.dtos.CommonResponse;
+import com.nt.order.microservice.dtos.FoodItemOutDTO;
+import com.nt.order.microservice.dtos.OrderInDTO;
+import com.nt.order.microservice.dtos.OrderOutDTO;
+import com.nt.order.microservice.dtos.RestaurantOutDTO;
+import com.nt.order.microservice.dtos.UserOutDTO;
+import com.nt.order.microservice.entities.Order;
+import com.nt.order.microservice.exception.InsufficientBalanceException;
+import com.nt.order.microservice.exception.InvalidRequestException;
+import com.nt.order.microservice.exception.ResourceAlreadyExistException;
+import com.nt.order.microservice.exception.ResourceNotFoundException;
+import com.nt.order.microservice.exception.UnauthorizedException;
+import com.nt.order.microservice.repository.CartRepository;
+import com.nt.order.microservice.repository.OrderRepository;
+import com.nt.order.microservice.service.CartService;
+import com.nt.order.microservice.service.OrderService;
+import com.nt.order.microservice.util.Constants;
+import com.nt.order.microservice.util.OrderStatus;
+import com.nt.order.microservice.util.Role;
+import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+/**
+ * Implementation of the OrderService interface.
+ */
+@Service
+<span class="fc" id="L42">public class OrderServiceImpl implements OrderService {</span>
+
+  /**
+   * Time limit in seconds for order processing.
+   */
+  private static final int TIME_LIMIT_SECONDS = 30;
+
+  /**
+   * Logger for logging information and errors in the OrderServiceImpl class.
+   */
+<span class="fc" id="L52">  private static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class);</span>
+
+  /**
+   * Repository for handling order-related database operations.
+   */
+  @Autowired
+  private OrderRepository orderRepository;
+
+  /**
+   * Service for managing cart operations, such as adding or removing items from the cart.
+   */
+  @Autowired
+  private CartService cartService;
+
+  /**
+   * Client for interacting with the User microservice to fetch user-related data.
+   */
+  @Autowired
+  private UserFClient userFClient;
+
+  /**
+   * Client for interacting with the Restaurant microservice to fetch restaurant-related data.
+   */
+  @Autowired
+  private RestaurantFClient restaurantFClient;
+
+  /**
+   * Client for interacting with the Address microservice to manage address-related operations.
+   */
+  @Autowired
+  private AddressFClient addressFClient;
+
+  /**
+   * Client for interacting with the Food Item microservice to manage food item-related operations.
+   */
+  @Autowired
+  private FoodItemFClient foodItemFClient;
+
+  /**
+   * Repository for handling cart-related database operations.
+   */
+  @Autowired
+  private CartRepository cartRepository;
+
+
+  /**
+   * Places an order for a user.
+   *
+   * @param orderInDTO the order data transfer object containing order details
+   * @return a CommonResponse indicating the result of the operation
+   */
+  @Override
+  @Transactional
+  public CommonResponse placeOrder(final OrderInDTO orderInDTO) {
+<span class="fc" id="L106">    LOGGER.info(&quot;Placing order for userId: {}&quot;, orderInDTO.getUserId());</span>
+<span class="fc" id="L107">    UserOutDTO userOutDto = fetchUserProfile(orderInDTO.getUserId());</span>
+<span class="fc" id="L108">    validateUserRole(userOutDto);</span>
+
+<span class="fc" id="L110">    fetchAndValidateRestaurant(orderInDTO.getRestaurantId());</span>
+
+<span class="fc" id="L112">    validateUserAddress(orderInDTO, userOutDto);</span>
+
+<span class="nc" id="L114">    validateCartItems(orderInDTO);</span>
+
+<span class="nc" id="L116">    Order order = createAndSaveOrder(orderInDTO, userOutDto);</span>
+<span class="nc" id="L117">    clearUserCart(order);</span>
+
+<span class="nc" id="L119">    updateUserWalletBalance(userOutDto, order.getTotalPrice());</span>
+
+<span class="nc" id="L121">    return new CommonResponse(Constants.ORDER_PLACED_SUCCESSFULLY);</span>
+
+  }
+
+  private UserOutDTO fetchUserProfile(final Integer userId) {
+    try {
+<span class="fc" id="L127">      UserOutDTO userOutDto = userFClient.getUserProfile(userId);</span>
+<span class="fc" id="L128">      LOGGER.info(&quot;Fetched user profile for userId: {}&quot;, userId);</span>
+<span class="fc" id="L129">      return userOutDto;</span>
+<span class="fc" id="L130">    } catch (FeignException.NotFound ex) {</span>
+<span class="fc" id="L131">      LOGGER.error(&quot;User not found for userId: {}&quot;, userId);</span>
+<span class="fc" id="L132">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
+    }
+  }
+
+  private void validateUserRole(final UserOutDTO userOutDto) {
+<span class="fc bfc" id="L137" title="All 2 branches covered.">    if (userOutDto.getRole().equals(Role.RESTAURANT_OWNER.name())) {</span>
+<span class="fc" id="L138">      LOGGER.warn(&quot;Restaurant owner trying to place order. userId: {}&quot;, userOutDto.getId());</span>
+<span class="fc" id="L139">      throw new UnauthorizedException(Constants.RESTAURANT_OWNER_ORDER_ERROR);</span>
+    }
+<span class="fc" id="L141">  }</span>
+
+  private void fetchAndValidateRestaurant(final Integer restaurantId) {
+    try {
+<span class="fc" id="L145">      RestaurantOutDTO restaurantOutDTO = restaurantFClient.getRestaurantById(restaurantId);</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">      if (restaurantOutDTO == null) {</span>
+<span class="nc" id="L147">        LOGGER.error(&quot;Restaurant not found for restaurantId: {}&quot;, restaurantId);</span>
+<span class="nc" id="L148">        throw new ResourceNotFoundException(Constants.INVALID_RESTAURANT_ID);</span>
+      }
+<span class="fc" id="L150">      LOGGER.info(&quot;Fetched restaurant details for restaurantId: {}&quot;, restaurantId);</span>
+<span class="fc" id="L151">    } catch (FeignException.NotFound ex) {</span>
+<span class="fc" id="L152">      LOGGER.error(&quot;Invalid restaurantId: {}&quot;, restaurantId);</span>
+<span class="fc" id="L153">      throw new ResourceNotFoundException(Constants.INVALID_RESTAURANT_ID);</span>
+<span class="fc" id="L154">    }</span>
+<span class="fc" id="L155">  }</span>
+
+  private void validateUserAddress(final OrderInDTO orderInDTO, final UserOutDTO userOutDto) {
+    List&lt;AddressOutDTO&gt; userAddresses;
+    try {
+<span class="fc" id="L160">      userAddresses = addressFClient.getUserAddresses(orderInDTO.getUserId());</span>
+<span class="fc" id="L161">      LOGGER.info(&quot;Fetched addresses for userId: {}&quot;, orderInDTO.getUserId());</span>
+<span class="nc" id="L162">    } catch (FeignException.NotFound ex) {</span>
+<span class="nc" id="L163">      LOGGER.error(&quot;No addresses found for userId: {}&quot;, orderInDTO.getUserId());</span>
+<span class="nc" id="L164">      throw new ResourceNotFoundException(Constants.ADDRESS_NOT_FOUND);</span>
+<span class="fc" id="L165">    }</span>
+<span class="fc" id="L166">    boolean isAddressValid = userAddresses.stream()</span>
+<span class="fc" id="L167">      .anyMatch(address -&gt; address.getId().equals(orderInDTO.getAddressId()));</span>
+
+<span class="fc bfc" id="L169" title="All 2 branches covered.">    if (!isAddressValid) {</span>
+<span class="fc" id="L170">      LOGGER.error(&quot;Invalid addressId: {} for userId: {}&quot;, orderInDTO.getAddressId(), orderInDTO.getUserId());</span>
+<span class="fc" id="L171">      throw new ResourceNotFoundException(Constants.ADDRESS_NOT_FOUND);</span>
+    }
+<span class="fc" id="L173">  }</span>
+
+  private void validateCartItems(final OrderInDTO orderInDTO) {
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">    for (CartItemDTO cartItem : orderInDTO.getCartItems()) {</span>
+<span class="nc" id="L177">      validateFoodItem(cartItem, orderInDTO.getRestaurantId());</span>
+<span class="nc" id="L178">    }</span>
+<span class="nc" id="L179">  }</span>
+
+  private void validateFoodItem(final CartItemDTO cartItem, final Integer restaurantId) {
+    FoodItemOutDTO foodItemOutDTO;
+    try {
+<span class="fc" id="L184">      foodItemOutDTO = foodItemFClient.getFoodItemById(cartItem.getFoodItemId());</span>
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">      if (foodItemOutDTO == null) {</span>
+<span class="nc" id="L186">        LOGGER.error(&quot;Food item not found for foodItemId: {}&quot;, cartItem.getFoodItemId());</span>
+<span class="nc" id="L187">        throw new ResourceNotFoundException(Constants.INVALID_FOOD_ITEM_ID);</span>
+      }
+<span class="fc" id="L189">      LOGGER.info(&quot;Fetched food item details for foodItemId: {}&quot;, cartItem.getFoodItemId());</span>
+<span class="fc" id="L190">    } catch (Exception ex) {</span>
+<span class="fc" id="L191">      LOGGER.error(&quot;Invalid foodItemId: {}&quot;, cartItem.getFoodItemId());</span>
+<span class="fc" id="L192">      throw new ResourceNotFoundException(Constants.INVALID_FOOD_ITEM_ID);</span>
+<span class="fc" id="L193">    }</span>
+
+    List&lt;FoodItemOutDTO&gt; foodItemsInRestaurant;
+    try {
+<span class="fc" id="L197">      foodItemsInRestaurant = foodItemFClient.getFoodItemsByRestaurant(restaurantId);</span>
+<span class="nc" id="L198">    } catch (Exception ex) {</span>
+<span class="nc" id="L199">      throw new ResourceNotFoundException(Constants.FOODITEM_NOT_FOUND);</span>
+<span class="fc" id="L200">    }</span>
+
+<span class="fc" id="L202">    boolean isFoodItemValid = foodItemsInRestaurant.stream()</span>
+<span class="pc" id="L203">      .anyMatch(foodItem -&gt; foodItem.getFoodItemId().equals(cartItem.getFoodItemId()));</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">    if (!isFoodItemValid) {</span>
+<span class="fc" id="L205">      LOGGER.error(&quot;Food item with id: {} does not belong to restaurantId: {}&quot;,</span>
+<span class="fc" id="L206">        cartItem.getFoodItemId(), restaurantId);</span>
+<span class="fc" id="L207">      throw new ResourceNotFoundException(Constants.FOOD_ITEM_DOES_NOT_BELONG_TO_RESTAURANT);</span>
+    }
+<span class="nc" id="L209">  }</span>
+
+  private Order createAndSaveOrder(final OrderInDTO orderInDTO, final UserOutDTO userOutDto) {
+<span class="nc" id="L212">    Order order = OrderDtoConverter.convertToEntity(orderInDTO);</span>
+<span class="nc" id="L213">    Double totalPrice = calculateTotalPrice(orderInDTO);</span>
+<span class="nc" id="L214">    order.setTotalPrice(totalPrice);</span>
+<span class="nc" id="L215">    order.setOrderStatus(OrderStatus.PLACED);</span>
+<span class="nc" id="L216">    order.setPlacedTiming(LocalDateTime.now());</span>
+
+<span class="nc" id="L218">    Order savedOrder = orderRepository.save(order);</span>
+<span class="nc" id="L219">    LOGGER.info(&quot;Order placed successfully for userId: {}, orderId: {}&quot;, orderInDTO.getUserId(), savedOrder.getOrderId());</span>
+
+<span class="nc" id="L221">    return savedOrder;</span>
+  }
+
+  private void clearUserCart(final Order savedOrder) {
+<span class="nc" id="L225">    cartRepository.deleteByUserId(savedOrder.getUserId());</span>
+<span class="nc" id="L226">    LOGGER.info(&quot;Cleared cart for userId: {}&quot;, savedOrder.getUserId());</span>
+<span class="nc" id="L227">  }</span>
+
+  private void updateUserWalletBalance(final UserOutDTO userOutDto, final Double totalPrice) {
+<span class="nc" id="L230">    AmountInDTO amountInDTO = new AmountInDTO();</span>
+<span class="nc" id="L231">    amountInDTO.setBalance(totalPrice);</span>
+
+    try {
+<span class="nc" id="L234">      userFClient.updateWalletBalance(userOutDto.getId(), amountInDTO);</span>
+<span class="nc" id="L235">      LOGGER.info(&quot;Updated wallet balance for userId: {}&quot;, userOutDto.getId());</span>
+<span class="nc" id="L236">    } catch (Exception e) {</span>
+<span class="nc" id="L237">      LOGGER.error(&quot;Insufficient balance for userId: {}&quot;, userOutDto.getId());</span>
+<span class="nc" id="L238">      throw new InsufficientBalanceException(Constants.INSUFFICIENT_BALANCE);</span>
+<span class="nc" id="L239">    }</span>
+<span class="nc" id="L240">  }</span>
+
+  private Double calculateTotalPrice(final OrderInDTO orderInDTO) {
+<span class="nc" id="L243">    return orderInDTO.getCartItems().stream()</span>
+<span class="nc" id="L244">      .mapToDouble(cart -&gt; cart.getPrice() * cart.getQuantity())</span>
+<span class="nc" id="L245">      .sum();</span>
+  }
+
+  /**
+   * Cancels an order by its ID.
+   *
+   * @param orderId the ID of the order to cancel
+   * @return a CommonResponse indicating the result of the operation
+   */
+  @Transactional
+  @Override
+  public CommonResponse cancelOrder(final Integer orderId) {
+<span class="fc" id="L257">    LOGGER.info(&quot;Cancelling order with orderId: {}&quot;, orderId);</span>
+<span class="fc" id="L258">    Optional&lt;Order&gt; orderOptional = orderRepository.findById(orderId);</span>
+
+<span class="fc bfc" id="L260" title="All 2 branches covered.">    if (!orderOptional.isPresent()) {</span>
+<span class="fc" id="L261">      LOGGER.error(&quot;Order not found with orderId: {}&quot;, orderId);</span>
+<span class="fc" id="L262">      throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);</span>
+    }
+<span class="fc" id="L264">    Order order = orderOptional.get();</span>
+<span class="fc" id="L265">    LocalDateTime currentTime = LocalDateTime.now();</span>
+
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">    if (order.getPlacedTiming().plusSeconds(TIME_LIMIT_SECONDS).isBefore(currentTime)) {</span>
+<span class="nc" id="L268">      LOGGER.error(&quot;Order cancellation time limit exceeded for orderId: {}&quot;, orderId);</span>
+<span class="nc" id="L269">      throw new InvalidRequestException(Constants.ORDER_CANCELLATION_TIME_LIMIT_EXCEEDED);</span>
+    }
+
+<span class="fc" id="L272">    AmountInDTO amountInDTO = new AmountInDTO();</span>
+<span class="fc" id="L273">    amountInDTO.setBalance(order.getTotalPrice());</span>
+
+<span class="fc" id="L275">    userFClient.addMoney(order.getUserId(), amountInDTO);</span>
+<span class="fc" id="L276">    order.setOrderStatus(OrderStatus.CANCELLED);</span>
+<span class="fc" id="L277">    orderRepository.save(order);</span>
+
+<span class="fc" id="L279">    LOGGER.info(&quot;Order cancelled successfully for orderId: {}&quot;, orderId);</span>
+<span class="fc" id="L280">    return new CommonResponse(Constants.ORDER_CANCELLED_SUCCESSFULLY);</span>
+  }
+
+  /**
+   * Marks an order as completed by its ID.
+   *
+   * @param orderId the ID of the order to mark as completed
+   * @param userId  the ID of the user requesting the action
+   * @return a CommonResponse indicating the result of the operation
+   * @throws ResourceNotFoundException     if the order or user is not found
+   * @throws UnauthorizedException         if the user is unauthorized to complete the order
+   * @throws ResourceAlreadyExistException if the order is already marked as completed
+   */
+  @Override
+  public CommonResponse markOrderAsCompleted(final Integer orderId, final Integer userId) {
+<span class="fc" id="L295">    LOGGER.info(&quot;Marking order as completed for orderId: {}&quot;, orderId);</span>
+
+<span class="fc" id="L297">    Optional&lt;Order&gt; optionalOrder = orderRepository.findById(orderId);</span>
+
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">    if (!optionalOrder.isPresent()) {</span>
+<span class="nc" id="L300">      LOGGER.error(&quot;Order not found with orderId: {}&quot;, orderId);</span>
+<span class="nc" id="L301">      throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);</span>
+    }
+    UserOutDTO userOutDto;
+    try {
+<span class="fc" id="L305">      userOutDto = userFClient.getUserProfile(userId);</span>
+<span class="fc" id="L306">      LOGGER.info(&quot;Fetched user profile for userId: {}&quot;, userId);</span>
+<span class="nc" id="L307">    } catch (Exception e) {</span>
+<span class="nc" id="L308">      LOGGER.error(&quot;User not found with userId: {}&quot;, userId);</span>
+<span class="nc" id="L309">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
+<span class="fc" id="L310">    }</span>
+<span class="fc" id="L311">    Order order = optionalOrder.get();</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">    if (userOutDto.getRole().equals(Role.USER.name())) {</span>
+<span class="fc" id="L313">      LOGGER.warn(&quot;Unauthorized user trying to mark order as completed. userId: {}&quot;, userId);</span>
+<span class="fc" id="L314">      throw new UnauthorizedException(Constants.UNAUTHORIZED_USER);</span>
+    }
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">    if (order.getOrderStatus() == OrderStatus.COMPLETED) {</span>
+<span class="nc" id="L317">      LOGGER.warn(&quot;Order already marked as completed. orderId: {}&quot;, orderId);</span>
+<span class="nc" id="L318">      throw new ResourceAlreadyExistException(Constants.ALREADY_COMPLETED);</span>
+    }
+<span class="fc" id="L320">    order.setOrderStatus(OrderStatus.COMPLETED);</span>
+<span class="fc" id="L321">    orderRepository.save(order);</span>
+
+<span class="fc" id="L323">    LOGGER.info(&quot;Order marked as completed successfully for orderId: {}&quot;, orderId);</span>
+<span class="fc" id="L324">    return new CommonResponse(Constants.ORDER_COMPLETED_SUCCESSFULLY);</span>
+  }
+
+  /**
+   * Fetches all orders for a specific user by their ID.
+   *
+   * @param userId the ID of the user whose orders to fetch
+   * @return a list of OrderOutDTO representing the user's orders
+   * @throws ResourceNotFoundException if the user is not found
+   * @throws UnauthorizedException     if the user is unauthorized to view orders
+   */
+  @Override
+  public List&lt;OrderOutDTO&gt; getOrdersByUserId(final Integer userId) {
+<span class="fc" id="L337">    LOGGER.info(&quot;Fetching orders for userId: {}&quot;, userId);</span>
+
+    UserOutDTO userOutDto;
+    try {
+<span class="fc" id="L341">      userOutDto = userFClient.getUserProfile(userId);</span>
+<span class="fc" id="L342">      LOGGER.info(&quot;Fetched user profile for userId: {}&quot;, userId);</span>
+<span class="fc" id="L343">    } catch (FeignException e) {</span>
+<span class="fc" id="L344">      LOGGER.error(&quot;User not found for userId: {}&quot;, userId);</span>
+<span class="fc" id="L345">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
+<span class="fc" id="L346">    }</span>
+
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">    if (userOutDto.getRole().equals(Role.RESTAURANT_OWNER.name())) {</span>
+<span class="nc" id="L349">      LOGGER.warn(&quot;Unauthorized access by restaurant owner. userId: {}&quot;, userId);</span>
+<span class="nc" id="L350">      throw new UnauthorizedException(Constants.RESTAURANT_OWNER);</span>
+    }
+
+<span class="fc" id="L353">    List&lt;Order&gt; orders = orderRepository.findByUserId(userId);</span>
+
+<span class="fc" id="L355">    return orders.stream()</span>
+<span class="fc" id="L356">      .map(OrderDtoConverter::convertToOutDto)</span>
+<span class="fc" id="L357">      .collect(Collectors.toList());</span>
+  }
+
+  /**
+   * Fetches all orders for a specific restaurant by its ID.
+   *
+   * @param restaurantId the ID of the restaurant whose orders to fetch
+   * @return a list of OrderOutDTO representing the restaurant's orders
+   * @throws ResourceNotFoundException if the restaurant is not found
+   */
+  @Override
+  public List&lt;OrderOutDTO&gt; getOrdersByRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L369">    LOGGER.info(&quot;Fetching orders for restaurantId: {}&quot;, restaurantId);</span>
+
+    try {
+<span class="fc" id="L372">      restaurantFClient.getRestaurantById(restaurantId);</span>
+<span class="fc" id="L373">      LOGGER.info(&quot;Fetched restaurant details for restaurantId: {}&quot;, restaurantId);</span>
+<span class="nc" id="L374">    } catch (Exception e) {</span>
+<span class="nc" id="L375">      LOGGER.error(&quot;Restaurant not found for restaurantId: {}&quot;, restaurantId);</span>
+<span class="nc" id="L376">      throw new ResourceNotFoundException(Constants.INVALID_RESTAURANT_ID);</span>
+<span class="fc" id="L377">    }</span>
+
+<span class="fc" id="L379">    List&lt;Order&gt; orders = orderRepository.findByRestaurantId(restaurantId);</span>
+
+<span class="fc" id="L381">    return orders.stream()</span>
+<span class="fc" id="L382">      .map(OrderDtoConverter::convertToOutDto)</span>
+<span class="fc" id="L383">      .collect(Collectors.toList());</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

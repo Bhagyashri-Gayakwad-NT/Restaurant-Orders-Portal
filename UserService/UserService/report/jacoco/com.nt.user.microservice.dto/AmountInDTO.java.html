@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AmountInDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.dto</a> &gt; <span class="el_source">AmountInDTO.java</span></div><h1>AmountInDTO.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.dto;
+
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
+
+/**
+ * Data Transfer Object (DTO) for representing the amount to be deducted from the wallet balance.
+ * &lt;p&gt;
+ * This class is used to encapsulate the balance amount in incoming HTTP requests when updating the wallet balance.
+ * &lt;/p&gt;
+ */
+public class AmountInDTO {
+
+  /**
+   * The amount to be deducted from the user's wallet balance.
+   */
+  @NotNull(message = &quot;Balance cannot be null&quot;)
+  private Double balance;
+
+  /**
+   * Default constructor for {@link AmountInDTO}.
+   * Initializes the object without setting any balance.
+   */
+<span class="fc" id="L24">  public AmountInDTO() {</span>
+<span class="fc" id="L25">  }</span>
+
+  /**
+   * Constructor for {@link AmountInDTO} that sets the balance.
+   *
+   * @param balance the amount to be deducted from the wallet.
+   */
+<span class="fc" id="L32">  public AmountInDTO(final Double balance) {</span>
+<span class="fc" id="L33">    this.balance = balance;</span>
+<span class="fc" id="L34">  }</span>
+
+  /**
+   * Retrieves the balance to be deducted.
+   *
+   * @return the balance amount.
+   */
+  public Double getBalance() {
+<span class="fc" id="L42">    return balance;</span>
+  }
+
+  /**
+   * Sets the balance to be deducted.
+   *
+   * @param balance the amount to set.
+   */
+  public void setBalance(final Double balance) {
+<span class="fc" id="L51">    this.balance = balance;</span>
+<span class="fc" id="L52">  }</span>
+
+  /**
+   * Compares this AmountInDTO object to the specified object for equality.
+   * Two AmountInDTO objects are considered equal if they have the same value
+   * for the balance field.
+   *
+   * @param o the object to compare this AmountInDTO against
+   * @return true if the specified object is equal to this AmountInDTO; false otherwise
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L65">      return true;</span>
+    }
+<span class="fc bfc" id="L67" title="All 2 branches covered.">    if (!(o instanceof AmountInDTO)) {</span>
+<span class="fc" id="L68">      return false;</span>
+    }
+<span class="fc" id="L70">    AmountInDTO that = (AmountInDTO) o;</span>
+<span class="fc" id="L71">    return Objects.equals(balance, that.balance);</span>
+  }
+
+  /**
+   * Returns a hash code value for this AmountInDTO object.
+   * The hash code is computed based on the value of the balance field.
+   *
+   * @return a hash code value for this AmountInDTO object
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L82">    return Objects.hashCode(balance);</span>
+  }
+
+  /**
+   * Returns a string representation of this AmountInDTO object.
+   * The string includes the class name and the value of the balance field.
+   *
+   * @return a string representation of this AmountInDTO object
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L93">    return &quot;AmountInDTO{&quot;</span>
+      + &quot;balance=&quot; + balance
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
