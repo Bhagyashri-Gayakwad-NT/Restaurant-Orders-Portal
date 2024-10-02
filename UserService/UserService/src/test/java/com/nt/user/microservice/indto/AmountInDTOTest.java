@@ -4,7 +4,7 @@ import com.nt.user.microservice.dto.AmountInDTO;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class AmountInDTOTest {
+class AmountInDTOTests {
 
   @Test
   void testNoArgsConstructor() {

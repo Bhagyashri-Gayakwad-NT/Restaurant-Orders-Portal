@@ -203,5 +203,14 @@ public class Constants {
    * </p>
    */
   public static final String EMPTY_CONTENT_ERROR = "No content was provided in the request body or the format is invalid";
+
+  /**
+   * Error message indicating that the wallet was not found for a specific user.
+   * <p>
+   * This constant is used when attempting to retrieve a wallet balance for a user, and no corresponding wallet is found.
+   * </p>
+   */
+  public static final String WALLET_NOT_FOUND = "Wallet not found for this user";
+
 }
 

@@ -72,10 +72,10 @@ public class WalletBalanceServiceImpl implements WalletBalanceService {
     LOGGER.info("Updating wallet balance for user ID: {}", userId);
 
     User user = userRepository.findById(userId)
-      .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+      .orElseThrow(() -> new ResourceNotFoundException(Constants.USER_NOT_FOUND));
     WalletBalance walletBalance = walletBalanceRepository.findByUserId(userId);
     if (walletBalance == null) {
-      throw new ResourceNotFoundException("Wallet not found for user ID: " + userId);
+      throw new ResourceNotFoundException(Constants.WALLET_NOT_FOUND);
     }
 
     Double currentBalance = walletBalance.getBalance();
@@ -115,11 +115,11 @@ public class WalletBalanceServiceImpl implements WalletBalanceService {
   @Override
   public UserOutDTO addMoney(final Integer userId, final Double amount) {
     User user = userRepository.findById(userId)
-      .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+      .orElseThrow(() -> new ResourceNotFoundException(Constants.USER_NOT_FOUND));
 
     WalletBalance walletBalance = walletBalanceRepository.findByUserId(userId);
     if (walletBalance == null) {
-      throw new ResourceNotFoundException("Wallet not found for user ID: " + userId);
+      throw new ResourceNotFoundException(Constants.WALLET_NOT_FOUND);
     }
 
     Double currentBalance = walletBalance.getBalance();

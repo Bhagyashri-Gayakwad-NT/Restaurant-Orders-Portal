@@ -1,163 +1,181 @@
 package com.nt.user.microservice.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nt.user.microservice.contoller.UserController;
-import com.nt.user.microservice.dto.LogInDTO;
-import com.nt.user.microservice.dto.LoginOutDTO;
-import com.nt.user.microservice.dto.UserInDTO;
-import com.nt.user.microservice.dto.UserOutDTO;
-import com.nt.user.microservice.dto.UserResponse;
+import com.nt.user.microservice.dto.*;
 import com.nt.user.microservice.service.UserService;
-import com.nt.user.microservice.util.Constants;
-import com.nt.user.microservice.util.Role;
+import com.nt.user.microservice.service.WalletBalanceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UserControllerTests {
 
-  @InjectMocks
-  private UserController userController;
+  private MockMvc mockMvc;
 
   @Mock
   private UserService userService;
 
+  @Mock
+  private WalletBalanceService walletBalanceService;
+
+  @InjectMocks
+  private UserController userController;
+
+  private ObjectMapper objectMapper;
+
   @BeforeEach
-  void setUp() {
+  void setup() {
     MockitoAnnotations.openMocks(this);
+    mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+    objectMapper = new ObjectMapper();
   }
 
   @Test
-  void testRegisterUser_Success() {
+  void registerUserTest() throws Exception {
     UserInDTO userInDTO = new UserInDTO();
     userInDTO.setEmail("test@nucleusteq.com");
-    userInDTO.setPassword("password1");
-    userInDTO.setFirstName("FirstName");
-    userInDTO.setLastName("LastName");
+    userInDTO.setFirstName("TestFirst");
+    userInDTO.setLastName("TestLast");
+    userInDTO.setPassword("password123");
     userInDTO.setPhoneNo("9876543210");
-    userInDTO.setRole(String.valueOf(Role.USER));
+    userInDTO.setRole("USER");
 
     UserResponse userResponse = new UserResponse();
-    userResponse.setSuccessMessage(Constants.USER_REGISTERED_SUCCESSFULLY);
+    userResponse.setSuccessMessage("User registered successfully");
 
     when(userService.registerUser(userInDTO)).thenReturn(userResponse);
 
-    ResponseEntity<UserResponse> responseEntity = userController.registerUser(userInDTO);
-
-    assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-    assertEquals(userResponse, responseEntity.getBody());
+    mockMvc.perform(post("/users/register")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(userInDTO)))
+      .andExpect(status().isCreated())
+      .andExpect(jsonPath("$.successMessage").value("User registered successfully"));
   }
 
   @Test
-  void testRegisterUser_Exception() {
-    UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setEmail("test@nucleusteq.com");
-
-    when(userService.registerUser(userInDTO)).thenThrow(new RuntimeException("Error"));
-
-    RuntimeException exception = assertThrows(RuntimeException.class, () -> userController.registerUser(userInDTO));
-    assertEquals("Error", exception.getMessage());
-  }
-
-  @Test
-  void testLoginUser_Success() {
-    LogInDTO loginDTO = new LogInDTO();
-    loginDTO.setEmail("test@nucleusteq.com");
-    loginDTO.setPassword("password1");
+  void loginUserTest() throws Exception {
+    LogInDTO logInDTO = new LogInDTO();
+    logInDTO.setEmail("test@nucleusteq.com");
+    logInDTO.setPassword("password123");
 
     LoginOutDTO loginOutDTO = new LoginOutDTO();
-    loginOutDTO.setRole("USER");
-    when(userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword())).thenReturn(loginOutDTO);
 
-    ResponseEntity<LoginOutDTO> responseEntity = userController.loginUser(loginDTO);
+    when(userService.loginUser(logInDTO.getEmail(), logInDTO.getPassword())).thenReturn(loginOutDTO);
 
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(loginOutDTO, responseEntity.getBody());
+    mockMvc.perform(post("/users/login")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(logInDTO)))
+      .andExpect(status().isOk());
   }
 
   @Test
-  void testLoginUser_Exception() {
-    LogInDTO loginDTO = new LogInDTO();
-    loginDTO.setEmail("test@nucleusteq.com");
-    loginDTO.setPassword("password1");
-
-    when(userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword())).thenThrow(new RuntimeException("Error"));
-
-    RuntimeException exception = assertThrows(RuntimeException.class, () -> userController.loginUser(loginDTO));
-    assertEquals("Error", exception.getMessage());
-  }
-
-  @Test
-  void testGetUserProfile_Success() {
-    Integer userId = 1;
-
+  void getUserProfileTest() throws Exception {
     UserOutDTO userOutDTO = new UserOutDTO();
-    userOutDTO.setId(userId);
-    userOutDTO.setFirstName("FirstName");
-    userOutDTO.setLastName("LastName");
+    userOutDTO.setId(1);
     userOutDTO.setEmail("test@nucleusteq.com");
-    userOutDTO.setPhoneNo("9876543210");
-    userOutDTO.setRole("USER");
-    userOutDTO.setWalletBalance(100.0);
 
-    when(userService.getUserProfile(userId)).thenReturn(userOutDTO);
+    when(userService.getUserProfile(1)).thenReturn(userOutDTO);
 
-    ResponseEntity<UserOutDTO> responseEntity = userController.getUserProfile(userId);
-
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(userOutDTO, responseEntity.getBody());
+    mockMvc.perform(get("/users/profile/1")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.email").value("test@nucleusteq.com"));
   }
 
   @Test
-  void testGetUserProfile_UserNotFound() {
-    Integer userId = 1;
-
-    when(userService.getUserProfile(userId)).thenThrow(new RuntimeException("User not found"));
-
-    RuntimeException exception = assertThrows(RuntimeException.class, () -> userController.getUserProfile(userId));
-    assertEquals("User not found", exception.getMessage());
-  }
-
-  @Test
-  void testUpdateUserProfile_UserNotFound() {
-    Integer userId = 1;
+  void updateUserProfileTest() throws Exception {
     UserInDTO userInDTO = new UserInDTO();
-
-    when(userService.updateUserProfile(userId, userInDTO)).thenThrow(new RuntimeException("User not found"));
-
-    RuntimeException exception = assertThrows(RuntimeException.class, () -> userController.updateUserProfile(userId, userInDTO));
-    assertEquals("User not found", exception.getMessage());
-  }
-
-  @Test
-  void testDeleteUser_Success() {
-    Integer userId = 1;
+    userInDTO.setFirstName("TestFirst");
+    userInDTO.setLastName("TestLast");
+    userInDTO.setEmail("test@nucleusteq.com");
 
     UserResponse userResponse = new UserResponse();
-    userResponse.setSuccessMessage(Constants.USER_DELETED_SUCCESSFULLY);
+    userResponse.setSuccessMessage("User profile updated successfully");
 
-    when(userService.deleteUser(userId)).thenReturn(userResponse);
+    when(userService.updateUserProfile(1, userInDTO)).thenReturn(userResponse);
 
-    ResponseEntity<UserResponse> responseEntity = userController.deleteUser(userId);
-
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(userResponse, responseEntity.getBody());
+    mockMvc.perform(put("/users/update/1")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(userInDTO)))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.successMessage").value("User profile updated successfully"));
   }
 
   @Test
-  void testDeleteUser_UserNotFound() {
-    Integer userId = 1;
+  void deleteUserTest() throws Exception {
+    UserResponse userResponse = new UserResponse();
+    userResponse.setSuccessMessage("User deleted successfully");
 
-    when(userService.deleteUser(userId)).thenThrow(new RuntimeException("User not found"));
+    when(userService.deleteUser(1)).thenReturn(userResponse);
 
-    RuntimeException exception = assertThrows(RuntimeException.class, () -> userController.deleteUser(userId));
-    assertEquals("User not found", exception.getMessage());
+    mockMvc.perform(delete("/users/delete/1")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.successMessage").value("User deleted successfully"));
+  }
+
+  @Test
+  void addMoneyTest() throws Exception {
+    AmountInDTO amountInDTO = new AmountInDTO();
+    amountInDTO.setBalance(500.0);
+
+    UserOutDTO userOutDTO = new UserOutDTO();
+    userOutDTO.setId(1);
+    userOutDTO.setWalletBalance(1500.0);
+
+    when(walletBalanceService.addMoney(1, 500.0)).thenReturn(userOutDTO);
+
+    mockMvc.perform(put("/users/addMoney/1")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(amountInDTO)))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.walletBalance").value(1500.0));
+  }
+
+  @Test
+  void updateWalletBalanceTest() throws Exception {
+    AmountInDTO amountInDTO = new AmountInDTO();
+    amountInDTO.setBalance(100.0);
+
+    UserOutDTO userOutDTO = new UserOutDTO();
+    userOutDTO.setId(1);
+    userOutDTO.setWalletBalance(900.0);
+
+    when(walletBalanceService.updateWalletBalance(1, 100.0)).thenReturn(userOutDTO);
+
+    mockMvc.perform(put("/users/walletBalance/1")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(amountInDTO)))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.walletBalance").value(900.0));
+  }
+
+  @Test
+  void sendEmailTest() throws Exception {
+    EmailRequestDTO emailRequestDTO = new EmailRequestDTO();
+    emailRequestDTO.setSubject("Test Email");
+    emailRequestDTO.setText("This is a test email.");
+
+    UserResponse userResponse = new UserResponse();
+    userResponse.setSuccessMessage("Email sent successfully");
+
+    when(userService.sendMail(emailRequestDTO)).thenReturn(userResponse);
+
+    mockMvc.perform(post("/users/send")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(emailRequestDTO)))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.successMessage").value("Email sent successfully"));
   }
 }

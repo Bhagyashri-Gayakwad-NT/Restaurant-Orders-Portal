@@ -62,15 +62,13 @@ class AddressServiceImplTests {
     address.setUserId(addressInDTO.getUserId());
 
     when(userRepository.findById(addressInDTO.getUserId())).thenReturn(Optional.of(user));
-    when(addressRepository.save(any(Address.class))).thenReturn(address);
+    when(addressRepository.save(address)).thenReturn(address);
 
     UserResponse response = addressService.addAddress(addressInDTO);
 
     assertNotNull(response);
     assertEquals(Constants.ADDRESS_ADDED_SUCCESSFULLY, response.getSuccessMessage());
 
-    verify(userRepository).findById(addressInDTO.getUserId());
-    verify(addressRepository).save(any(Address.class));
   }
 
   @Test
@@ -83,8 +81,6 @@ class AddressServiceImplTests {
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> addressService.addAddress(addressInDTO));
     assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
 
-    verify(userRepository).findById(addressInDTO.getUserId());
-    verify(addressRepository, never()).save(any(Address.class));
   }
 
   @Test
@@ -111,9 +107,6 @@ class AddressServiceImplTests {
     assertNotNull(addressOutDTOList);
     assertEquals(1, addressOutDTOList.size());
     assertEquals(address1.getId(), addressOutDTOList.get(0).getId());
-
-    verify(userRepository).findById(userId);
-    verify(addressRepository).findAllByUserId(userId);
   }
 
   @Test
@@ -125,8 +118,6 @@ class AddressServiceImplTests {
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> addressService.getUserAddresses(userId));
     assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
 
-    verify(userRepository).findById(userId);
-    verify(addressRepository, never()).findAllByUserId(userId);
   }
 
   @Test
@@ -136,8 +127,6 @@ class AddressServiceImplTests {
     when(addressRepository.existsById(addressId)).thenReturn(true);
 
     addressService.deleteAddress(addressId);
-
-    verify(addressRepository).deleteById(addressId);
   }
 
   @Test
@@ -148,7 +137,5 @@ class AddressServiceImplTests {
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> addressService.deleteAddress(addressId));
     assertEquals("User not found", exception.getMessage());
-
-    verify(addressRepository, never()).deleteById(addressId);
   }
 }

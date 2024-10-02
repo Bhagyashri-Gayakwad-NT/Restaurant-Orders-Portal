@@ -19,17 +19,14 @@ class WalletBalanceTests {
 
   @Test
   void testGettersAndSetters() {
-    // Test ID
     Integer id = 1;
     walletBalance1.setId(id);
     assertEquals(id, walletBalance1.getId());
 
-    // Test UserId
     Integer userId = 101;
     walletBalance1.setUserId(userId);
     assertEquals(userId, walletBalance1.getUserId());
 
-    // Test Balance
     Double balance = 500.0;
     walletBalance1.setBalance(balance);
     assertEquals(balance, walletBalance1.getBalance());

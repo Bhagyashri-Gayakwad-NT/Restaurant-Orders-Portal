@@ -4,7 +4,7 @@ import com.nt.user.microservice.dto.WalletBalanceInDTO;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class WalletBalanceInDTOTest {
+class WalletBalanceInDTOTests {
 
   @Test
   void testGettersAndSetters() {

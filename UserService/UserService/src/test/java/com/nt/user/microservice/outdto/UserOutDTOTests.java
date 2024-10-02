@@ -4,7 +4,7 @@ import com.nt.user.microservice.dto.UserOutDTO;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UserOutDTOTest {
+class UserOutDTOTests {
 
   @Test
   void testGettersAndSetters() {

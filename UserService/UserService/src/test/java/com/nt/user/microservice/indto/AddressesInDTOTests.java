@@ -10,7 +10,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AddressesInDTOTest {
+class AddressesInDTOTests {
 
   private AddressInDTO addressInDTO;
   private Validator validator;

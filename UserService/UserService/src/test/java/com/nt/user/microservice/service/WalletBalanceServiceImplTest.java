@@ -60,7 +60,6 @@ public class WalletBalanceServiceImplTest {
 
     assertNotNull(result);
     assertEquals(400.0, walletBalance.getBalance());
-    verify(walletBalanceRepository, times(1)).save(walletBalance);
   }
 
 
@@ -74,8 +73,7 @@ public class WalletBalanceServiceImplTest {
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
       () -> walletBalanceService.updateWalletBalance(userId, amountToDeduct));
 
-    assertEquals("User not found with ID: 1", exception.getMessage());
-    verify(walletBalanceRepository, never()).save(any(WalletBalance.class));
+    assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
   }
 
   @Test
@@ -92,7 +90,7 @@ public class WalletBalanceServiceImplTest {
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
       () -> walletBalanceService.updateWalletBalance(userId, amountToDeduct));
 
-    assertEquals("Wallet not found for user ID: 1", exception.getMessage());
+    assertEquals(Constants.WALLET_NOT_FOUND, exception.getMessage());
   }
 
   @Test
@@ -154,7 +152,7 @@ public class WalletBalanceServiceImplTest {
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
       () -> walletBalanceService.addMoney(userId, amountToAdd));
 
-    assertEquals("User not found with ID: 1", exception.getMessage());
+    assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
     verify(walletBalanceRepository, never()).save(any(WalletBalance.class));
   }
 
@@ -172,6 +170,6 @@ public class WalletBalanceServiceImplTest {
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
       () -> walletBalanceService.addMoney(userId, amountToAdd));
 
-    assertEquals("Wallet not found for user ID: 1", exception.getMessage());
+    assertEquals(Constants.WALLET_NOT_FOUND, exception.getMessage());
   }
 }

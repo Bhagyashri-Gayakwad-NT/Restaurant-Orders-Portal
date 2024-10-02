@@ -225,7 +225,7 @@ public class UserServiceImpl implements UserService {
 
     User user = userRepository.findById(id)
       .orElseThrow(() -> {
-        LOGGER.error("User not found with ID: {}", id);
+        LOGGER.error(Constants.USER_NOT_FOUND);
         return new ResourceNotFoundException(Constants.USER_NOT_FOUND);
       });
 

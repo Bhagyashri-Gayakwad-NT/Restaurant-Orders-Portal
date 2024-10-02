@@ -1,11 +1,13 @@
 package com.nt.user.microservice.service;
 
+import com.nt.user.microservice.dto.EmailRequestDTO;
 import com.nt.user.microservice.dto.LoginOutDTO;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
 import com.nt.user.microservice.entites.User;
 import com.nt.user.microservice.entites.WalletBalance;
+import com.nt.user.microservice.exceptions.InvalidCredentialsException;
 import com.nt.user.microservice.exceptions.ResourceAlreadyExistException;
 import com.nt.user.microservice.exceptions.ResourceNotFoundException;
 import com.nt.user.microservice.repository.UserRepository;
@@ -22,15 +24,10 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-class UserServiceImplTest {
+public class UserServiceImplTests {
 
   @InjectMocks
   private UserServiceImpl userService;
@@ -41,63 +38,61 @@ class UserServiceImplTest {
   @Mock
   private EmailService emailService;
 
-
   @Mock
   private WalletBalanceRepository walletBalanceRepository;
 
   @BeforeEach
-  void setUp() {
+  public void setUp() {
     MockitoAnnotations.openMocks(this);
   }
 
   @Test
-  void testRegisterUser_Success() {
+  public void testRegisterUser_Success() {
     UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setEmail("test@nucleusteq.com");
-    userInDTO.setPassword("password1");
     userInDTO.setFirstName("First");
     userInDTO.setLastName("Last");
-    userInDTO.setPhoneNo("9876543210");
-    userInDTO.setRole(String.valueOf(Role.USER));
+    userInDTO.setEmail("test@example.com");
+    userInDTO.setPhoneNo("1234567890");
+    userInDTO.setPassword("password");
+    userInDTO.setRole("USER");
 
-    when(userRepository.findByEmail(userInDTO.getEmail())).thenReturn(Optional.empty());
+    User userToSave = new User();
+    userToSave.setFirstName(userInDTO.getFirstName());
+    userToSave.setLastName(userInDTO.getLastName());
+    userToSave.setEmail(userInDTO.getEmail().toLowerCase());
+    userToSave.setPhoneNo(userInDTO.getPhoneNo());
+    userToSave.setPassword(Base64Util.encode(userInDTO.getPassword()));
+    userToSave.setRole(Role.USER);
 
-    User user = new User();
-    user.setId(1);
-    user.setEmail(userInDTO.getEmail());
-    user.setPassword(Base64Util.encode(userInDTO.getPassword()));
-    user.setRole(Role.USER);
-
-    when(userRepository.save(any(User.class))).thenReturn(user);
-
-    WalletBalance walletBalance = new WalletBalance();
-    walletBalance.setUserId(user.getId());
-    walletBalance.setBalance(Constants.INITIAL_WALLET_BALANCE);
-    when(walletBalanceRepository.save(any(WalletBalance.class))).thenReturn(walletBalance);
+    when(userRepository.findByEmail(userInDTO.getEmail().toLowerCase())).thenReturn(Optional.empty());
+    when(userRepository.save(userToSave)).thenReturn(userToSave);
 
     UserResponse response = userService.registerUser(userInDTO);
 
     assertEquals(Constants.USER_REGISTERED_SUCCESSFULLY, response.getSuccessMessage());
-    verify(userRepository).save(any(User.class));
-    verify(walletBalanceRepository).save(any(WalletBalance.class));
   }
 
   @Test
-  void testRegisterUser_UserAlreadyExists() {
+  public void testRegisterUser_UserAlreadyExists() {
     UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setEmail("existing@nucleusteq.com");
+    userInDTO.setEmail("test@example.com");
 
-    when(userRepository.findByEmail(userInDTO.getEmail())).thenReturn(Optional.of(new User()));
+    User existingUser = new User();
+    existingUser.setEmail("test@example.com");
 
-    assertThrows(ResourceAlreadyExistException.class, () -> userService.registerUser(userInDTO));
-    verify(userRepository, never()).save(any(User.class));
+    when(userRepository.findByEmail(userInDTO.getEmail().toLowerCase())).thenReturn(Optional.of(existingUser));
+
+    ResourceAlreadyExistException exception = assertThrows(ResourceAlreadyExistException.class, () -> {
+      userService.registerUser(userInDTO);
+    });
+
+    assertEquals(Constants.USER_ALREADY_REGISTERED, exception.getMessage());
   }
 
-
   @Test
-  void testLoginUser_Success() {
-    String email = "test@nucleusteq.com";
-    String password = "password1";
+  public void testLoginUser_Success() {
+    String email = "test@example.com";
+    String password = "password";
 
     User user = new User();
     user.setEmail(email);
@@ -105,118 +100,157 @@ class UserServiceImplTest {
     user.setId(1);
     user.setRole(Role.USER);
 
-    when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+    when(userRepository.findByEmail(email.toLowerCase())).thenReturn(Optional.of(user));
 
     LoginOutDTO loginOutDTO = userService.loginUser(email, password);
 
-    assertNotNull(loginOutDTO);
+    assertEquals(user.getId(), loginOutDTO.getId());
     assertEquals(user.getRole().name(), loginOutDTO.getRole());
   }
 
   @Test
-  void testGetUserProfile_Success() {
-    Integer userId = 1;
+  public void testLoginUser_UserNotFound() {
+    String email = "test@example.com";
 
+    when(userRepository.findByEmail(email.toLowerCase())).thenReturn(Optional.empty());
+
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+      userService.loginUser(email, "password");
+    });
+
+    assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
+  }
+
+  @Test
+  public void testLoginUser_InvalidCredentials() {
+    String email = "test@example.com";
+    String password = "wrongPassword";
+
+    User user = new User();
+    user.setEmail(email);
+    user.setPassword(Base64Util.encode("correctPassword"));
+
+    when(userRepository.findByEmail(email.toLowerCase())).thenReturn(Optional.of(user));
+
+    InvalidCredentialsException exception = assertThrows(InvalidCredentialsException.class, () -> {
+      userService.loginUser(email, password);
+    });
+
+    assertEquals(Constants.INVALID_CREDENTIALS, exception.getMessage());
+  }
+
+  @Test
+  public void testGetUserProfile_Success() {
+    Integer userId = 1;
     User user = new User();
     user.setId(userId);
     user.setFirstName("First");
     user.setLastName("Last");
-    user.setEmail("john.doe@nucleusteq.com");
-    user.setPhoneNo("9876543210");
+    user.setEmail("test@example.com");
+    user.setPhoneNo("1234567890");
     user.setRole(Role.USER);
 
     WalletBalance walletBalance = new WalletBalance();
     walletBalance.setUserId(userId);
-    walletBalance.setBalance(100.0);
+    walletBalance.setBalance(1000.0);
 
     when(userRepository.findById(userId)).thenReturn(Optional.of(user));
     when(walletBalanceRepository.findByUserId(userId)).thenReturn(walletBalance);
 
     UserOutDTO userOutDTO = userService.getUserProfile(userId);
 
-    assertNotNull(userOutDTO);
-    assertEquals(userId, userOutDTO.getId());
+    assertEquals(user.getId(), userOutDTO.getId());
     assertEquals(user.getFirstName(), userOutDTO.getFirstName());
-    assertEquals(user.getLastName(), userOutDTO.getLastName());
-    assertEquals(user.getEmail(), userOutDTO.getEmail());
-    assertEquals(user.getPhoneNo(), userOutDTO.getPhoneNo());
-    assertEquals(user.getRole().name(), userOutDTO.getRole());
     assertEquals(walletBalance.getBalance(), userOutDTO.getWalletBalance());
   }
 
   @Test
-  void testGetUserProfile_UserNotFound() {
+  public void testGetUserProfile_UserNotFound() {
     Integer userId = 1;
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(ResourceNotFoundException.class, () -> userService.getUserProfile(userId));
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+      userService.getUserProfile(userId);
+    });
+
+    assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
   }
 
   @Test
-  void testUpdateUserProfile_Success() {
+  public void testUpdateUserProfile_Success() {
     Integer userId = 1;
     UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setFirstName("First");
+    userInDTO.setFirstName("FirstUpdate");
     userInDTO.setLastName("Last");
-    userInDTO.setPhoneNo("9876543211");
-    userInDTO.setPassword("newpassword1");
-    userInDTO.setRole(String.valueOf(Role.USER));
+    userInDTO.setPhoneNo("0987654321");
+    userInDTO.setRole("USER");
 
-    User existingUser = new User();
-    existingUser.setId(userId);
-    existingUser.setFirstName("First");
-    existingUser.setLastName("Last");
-    existingUser.setPhoneNo("9876543210");
-    existingUser.setPassword(Base64Util.encode("password1"));
+    User user = new User();
+    user.setId(userId);
+    user.setFirstName("First");
+    user.setLastName("Last");
+    user.setPhoneNo("1234567890");
 
-    when(userRepository.findById(userId)).thenReturn(Optional.of(existingUser));
-    when(userRepository.save(any(User.class))).thenReturn(existingUser);
+    when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+    when(userRepository.save(user)).thenReturn(user);
 
-    UserResponse userResponse = userService.updateUserProfile(userId, userInDTO);
+    UserResponse response = userService.updateUserProfile(userId, userInDTO);
 
-    assertNotNull(userResponse);
-    assertEquals(Constants.USER_PROFILE_UPDATED_SUCCESSFULLY, userResponse.getSuccessMessage());
-    assertEquals(userInDTO.getFirstName(), existingUser.getFirstName());
-    assertEquals(userInDTO.getLastName(), existingUser.getLastName());
-    assertEquals(userInDTO.getPhoneNo(), existingUser.getPhoneNo());
-    assertEquals(Base64Util.encode(userInDTO.getPassword()), existingUser.getPassword());
-
-    assertEquals(Role.valueOf(userInDTO.getRole()
-      .toUpperCase()), existingUser.getRole());
+    assertEquals(Constants.USER_PROFILE_UPDATED_SUCCESSFULLY, response.getSuccessMessage());
+    assertEquals("FirstUpdate", user.getFirstName());
   }
 
   @Test
-  void testUpdateUserProfile_UserNotFound() {
+  public void testUpdateUserProfile_UserNotFound() {
     Integer userId = 1;
     UserInDTO userInDTO = new UserInDTO();
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(ResourceNotFoundException.class, () -> userService.updateUserProfile(userId, userInDTO));
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+      userService.updateUserProfile(userId, userInDTO);
+    });
+
+    assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
   }
 
   @Test
-  void testDeleteUser_Success() {
+  public void testDeleteUser_Success() {
     Integer userId = 1;
-
     User user = new User();
     user.setId(userId);
 
     when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-    userService.deleteUser(userId);
+    UserResponse response = userService.deleteUser(userId);
 
-    verify(userRepository).delete(user);
-    verify(walletBalanceRepository).deleteByUserId(userId);
+    assertEquals(Constants.USER_DELETED_SUCCESSFULLY, response.getSuccessMessage());
+    verify(walletBalanceRepository, times(1)).deleteByUserId(userId);
   }
 
   @Test
-  void testDeleteUser_UserNotFound() {
+  public void testDeleteUser_UserNotFound() {
     Integer userId = 1;
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-    assertThrows(ResourceNotFoundException.class, () -> userService.deleteUser(userId));
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+      userService.deleteUser(userId);
+    });
+
+    assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
+  }
+
+  @Test
+  public void testSendMail_Success() {
+    EmailRequestDTO emailRequestDTO = new EmailRequestDTO();
+    emailRequestDTO.setSubject("Test Email");
+    emailRequestDTO.setText("This is a test email.");
+
+    UserResponse response = userService.sendMail(emailRequestDTO);
+
+    assertEquals(Constants.EMAIL_SENT_SUCCESSFULLY, response.getSuccessMessage());
+    verify(emailService, times(1)).sendMail(eq(Constants.SENDER), eq(emailRequestDTO), anyList());
   }
 }

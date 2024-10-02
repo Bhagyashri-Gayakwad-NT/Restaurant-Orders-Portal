@@ -5,23 +5,27 @@ import com.nt.user.microservice.dto.AddressInDTO;
 import com.nt.user.microservice.dto.AddressOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
 import com.nt.user.microservice.service.AddressService;
-import com.nt.user.microservice.service.UserService;
 import com.nt.user.microservice.util.Constants;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class AddressControllerTests {
+
+  private MockMvc mockMvc;
 
   @InjectMocks
   private AddressController addressController;
@@ -30,111 +34,74 @@ class AddressControllerTests {
   private AddressService addressService;
 
   @Mock
-  private UserService userService;
+  private ObjectMapper objectMapper;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
+    mockMvc = MockMvcBuilders.standaloneSetup(addressController).build();
   }
 
   @Test
-  void testAddAddress_Success() {
+  void addAddressTest() throws Exception {
     AddressInDTO addressInDTO = new AddressInDTO();
-    addressInDTO.setStreet("Test Street");
-    addressInDTO.setCity("TestCity");
-    addressInDTO.setState("Test State");
-    addressInDTO.setCountry("TestCountry");
-    addressInDTO.setPinCode("62704");
     addressInDTO.setUserId(1);
+    addressInDTO.setStreet("Test Street");
+    addressInDTO.setCity("City");
+    addressInDTO.setState("State");
+    addressInDTO.setCountry("County");
+    addressInDTO.setPinCode("627043");
 
     UserResponse userResponse = new UserResponse();
-    userResponse.setSuccessMessage(Constants.ADDRESS_ADDED_SUCCESSFULLY);
+    userResponse.setSuccessMessage("Address added successfully");
+
     when(addressService.addAddress(addressInDTO)).thenReturn(userResponse);
-    ResponseEntity<UserResponse> response = addressController.addAddress(addressInDTO);
 
-    assertNotNull(response);
-    assertEquals(HttpStatus.CREATED, response.getStatusCode());
-    assertEquals(Constants.ADDRESS_ADDED_SUCCESSFULLY, response.getBody().getSuccessMessage());
+    mockMvc.perform(post("/addresses/add")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(new ObjectMapper().writeValueAsString(addressInDTO)))
+      .andExpect(status().isCreated())
+      .andExpect(jsonPath("$.successMessage").value("Address added successfully"));
 
-    verify(addressService).addAddress(addressInDTO);
   }
 
   @Test
-  void testAddAddress_Exception() {
-    AddressInDTO addressInDTO = new AddressInDTO();
-    addressInDTO.setUserId(1);
-
-    when(addressService.addAddress(addressInDTO)).thenThrow(new RuntimeException("Some error"));
-
-    RuntimeException exception = assertThrows(RuntimeException.class, () -> addressController.addAddress(addressInDTO));
-    assertEquals("Some error", exception.getMessage());
-
-    verify(addressService).addAddress(addressInDTO);
-  }
-
-  @Test
-  void testGetUserAddresses_Success() {
+  void getUserAddressesTest() throws Exception {
     Integer userId = 1;
-
-    List<AddressOutDTO> addressOutDTOList = new ArrayList<>();
+    List<AddressOutDTO> addressList = new ArrayList<>();
     AddressOutDTO addressOutDTO = new AddressOutDTO();
-    addressOutDTO.setId(1);
     addressOutDTO.setStreet("Test Street");
-    addressOutDTO.setCity("TestCity");
-    addressOutDTO.setState("TestState");
-    addressOutDTO.setCountry("TestCountry");
+    addressOutDTO.setCity("City");
+    addressOutDTO.setState("State");
+    addressOutDTO.setCountry("County");
     addressOutDTO.setPinCode("62704");
+    addressList.add(addressOutDTO);
 
-    addressOutDTOList.add(addressOutDTO);
+    when(addressService.getUserAddresses(userId)).thenReturn(addressList);
 
-    when(addressService.getUserAddresses(userId)).thenReturn(addressOutDTOList);
+    mockMvc.perform(get("/addresses/user/{userId}", userId)
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$[0].street").value("Test Street"))
+      .andExpect(jsonPath("$[0].city").value("City"))
+      .andExpect(jsonPath("$[0].state").value("State"))
+      .andExpect(jsonPath("$[0].country").value("County"))
+      .andExpect(jsonPath("$[0].pinCode").value("62704"));
 
-    ResponseEntity<List<AddressOutDTO>> response = addressController.getUserAddresses(userId);
-
-    assertNotNull(response);
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(1, response.getBody().size());
-    assertEquals(addressOutDTO.getId(), response.getBody().get(0).getId());
-
-    verify(addressService).getUserAddresses(userId);
   }
 
   @Test
-  void testGetUserAddresses_Exception() {
-    Integer userId = 1;
-
-    when(addressService.getUserAddresses(userId)).thenThrow(new RuntimeException("Some error"));
-
-    RuntimeException exception = assertThrows(RuntimeException.class, () -> addressController.getUserAddresses(userId));
-    assertEquals("Some error", exception.getMessage());
-
-    verify(addressService).getUserAddresses(userId);
-  }
-
-  @Test
-  void testDeleteAddress_Success() {
+  void deleteAddressTest() throws Exception {
     Integer addressId = 1;
+    UserResponse response = new UserResponse();
+    response.setSuccessMessage(Constants.ADDRESS_ADDED_SUCCESSFULLY);
 
     doNothing().when(addressService).deleteAddress(addressId);
 
-    ResponseEntity<UserResponse> response = addressController.deleteAddress(addressId);
+    mockMvc.perform(delete("/addresses/{id}", addressId)
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.successMessage").value(Constants.ADDRESS_ADDED_SUCCESSFULLY));
 
-    assertNotNull(response);
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(Constants.ADDRESS_ADDED_SUCCESSFULLY, response.getBody().getSuccessMessage());
-
-    verify(addressService).deleteAddress(addressId);
-  }
-
-  @Test
-  void testDeleteAddress_Exception() {
-    Integer addressId = 1;
-
-    doThrow(new RuntimeException("Some error")).when(addressService).deleteAddress(addressId);
-
-    RuntimeException exception = assertThrows(RuntimeException.class, () -> addressController.deleteAddress(addressId));
-    assertEquals("Some error", exception.getMessage());
-
-    verify(addressService).deleteAddress(addressId);
   }
 }

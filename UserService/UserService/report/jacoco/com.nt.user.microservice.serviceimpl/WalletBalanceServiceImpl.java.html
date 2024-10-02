@@ -72,10 +72,10 @@ import org.springframework.stereotype.Service;
 <span class="fc" id="L72">    LOGGER.info(&quot;Updating wallet balance for user ID: {}&quot;, userId);</span>
 
 <span class="fc" id="L74">    User user = userRepository.findById(userId)</span>
-<span class="fc" id="L75">      .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;User not found with ID: &quot; + userId));</span>
+<span class="fc" id="L75">      .orElseThrow(() -&gt; new ResourceNotFoundException(Constants.USER_NOT_FOUND));</span>
 <span class="fc" id="L76">    WalletBalance walletBalance = walletBalanceRepository.findByUserId(userId);</span>
 <span class="fc bfc" id="L77" title="All 2 branches covered.">    if (walletBalance == null) {</span>
-<span class="fc" id="L78">      throw new ResourceNotFoundException(&quot;Wallet not found for user ID: &quot; + userId);</span>
+<span class="fc" id="L78">      throw new ResourceNotFoundException(Constants.WALLET_NOT_FOUND);</span>
     }
 
 <span class="fc" id="L81">    Double currentBalance = walletBalance.getBalance();</span>
@@ -115,11 +115,11 @@ import org.springframework.stereotype.Service;
   @Override
   public UserOutDTO addMoney(final Integer userId, final Double amount) {
 <span class="fc" id="L117">    User user = userRepository.findById(userId)</span>
-<span class="fc" id="L118">      .orElseThrow(() -&gt; new ResourceNotFoundException(&quot;User not found with ID: &quot; + userId));</span>
+<span class="fc" id="L118">      .orElseThrow(() -&gt; new ResourceNotFoundException(Constants.USER_NOT_FOUND));</span>
 
 <span class="fc" id="L120">    WalletBalance walletBalance = walletBalanceRepository.findByUserId(userId);</span>
 <span class="fc bfc" id="L121" title="All 2 branches covered.">    if (walletBalance == null) {</span>
-<span class="fc" id="L122">      throw new ResourceNotFoundException(&quot;Wallet not found for user ID: &quot; + userId);</span>
+<span class="fc" id="L122">      throw new ResourceNotFoundException(Constants.WALLET_NOT_FOUND);</span>
     }
 
 <span class="fc" id="L125">    Double currentBalance = walletBalance.getBalance();</span>
