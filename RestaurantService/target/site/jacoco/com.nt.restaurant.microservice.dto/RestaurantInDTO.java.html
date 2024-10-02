@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RestaurantInDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.dto</a> &gt; <span class="el_source">RestaurantInDTO.java</span></div><h1>RestaurantInDTO.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.dto;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.Objects;
+
+/**
+ * Data Transfer Object (DTO) for creating or updating a restaurant.
+ * This DTO is used for validating input data for restaurant-related operations.
+ */
+public class RestaurantInDTO {
+
+  /**
+   * The user ID associated with the restaurant.
+   * Must not be null.
+   */
+  @NotNull(message = &quot;User ID cannot be null&quot;)
+  private Integer userId;
+
+  /**
+   * The name of the restaurant.
+   * Must be non-blank and only contain alphabets.
+   */
+  @NotBlank(message = &quot;Restaurant name cannot be blank&quot;)
+  @Pattern(regexp = &quot;^[A-Za-z0-9]{2,}(?:\\s[A-Za-z0-9]+)*$&quot;,
+    message = &quot;Restaurant name must contain at least two alphabets and can include numbers&quot;)
+  private String restaurantName;
+
+  /**
+   * The address of the restaurant.
+   * Must be non-blank and cannot contain leading or trailing spaces.
+   */
+  @NotBlank(message = &quot;Address cannot be blank&quot;)
+  private String restaurantAddress;
+
+  /**
+   * The contact number of the restaurant.
+   * Must be a valid 10-digit number starting with 9, 8, 7, or 6.
+   */
+  @NotBlank(message = &quot;contactNumber cannot be blank&quot;)
+  @Pattern(regexp = &quot;^[9876]\\d{9}$&quot;, message = &quot;Phone number must start with 9, 8, 7, or 6 and contain 10 digits&quot;)
+  private String contactNumber;
+
+  /**
+   * A description of the restaurant.
+   * Must be non-blank and cannot exceed 255 characters.
+   * Cannot contain leading or trailing spaces.
+   */
+  @NotBlank(message = &quot;Description cannot be blank&quot;)
+  @Size(max = 255, message = &quot;Description cannot exceed 255 characters&quot;)
+  private String description;
+
+  /**
+   * An optional image of the restaurant.
+   * This field represents the image as a {@link MultipartFile}.
+   */
+  private MultipartFile restaurantImage;
+
+  /**
+   * Default constructor for creating an empty {@code RestaurantInDTO} instance.
+   */
+<span class="fc" id="L66">  public RestaurantInDTO() {</span>
+<span class="fc" id="L67">  }</span>
+
+  /**
+   * Parameterized constructor for creating a {@code RestaurantInDTO} instance with all fields.
+   *
+   * @param userId            the user ID associated with the restaurant.
+   * @param restaurantName    the name of the restaurant.
+   * @param restaurantAddress the address of the restaurant.
+   * @param contactNumber     the contact number of the restaurant.
+   * @param description       the description of the restaurant.
+   * @param restaurantImage   the image of the restaurant.
+   */
+  public RestaurantInDTO(final Integer userId, final String restaurantName, final String restaurantAddress,
+                         final String contactNumber,
+<span class="fc" id="L81">                         final String description, final MultipartFile restaurantImage) {</span>
+<span class="fc" id="L82">    this.userId = userId;</span>
+<span class="fc" id="L83">    this.restaurantName = restaurantName;</span>
+<span class="fc" id="L84">    this.restaurantAddress = restaurantAddress;</span>
+<span class="fc" id="L85">    this.contactNumber = contactNumber;</span>
+<span class="fc" id="L86">    this.description = description;</span>
+<span class="fc" id="L87">    this.restaurantImage = restaurantImage;</span>
+<span class="fc" id="L88">  }</span>
+
+  /**
+   * Gets the user ID associated with the restaurant.
+   *
+   * @return the user ID.
+   */
+  public Integer getUserId() {
+<span class="fc" id="L96">    return userId;</span>
+  }
+
+  /**
+   * Sets the user ID associated with the restaurant.
+   *
+   * @param userId the user ID to set.
+   */
+  public void setUserId(final Integer userId) {
+<span class="fc" id="L105">    this.userId = userId;</span>
+<span class="fc" id="L106">  }</span>
+
+  /**
+   * Gets the name of the restaurant.
+   *
+   * @return the restaurant name.
+   */
+  public String getRestaurantName() {
+<span class="fc" id="L114">    return restaurantName;</span>
+  }
+
+  /**
+   * Sets the name of the restaurant.
+   *
+   * @param restaurantName the restaurant name to set.
+   */
+  public void setRestaurantName(final String restaurantName) {
+<span class="fc" id="L123">    this.restaurantName = restaurantName;</span>
+<span class="fc" id="L124">  }</span>
+
+  /**
+   * Gets the address of the restaurant.
+   *
+   * @return the restaurant address.
+   */
+  public String getRestaurantAddress() {
+<span class="fc" id="L132">    return restaurantAddress;</span>
+  }
+
+  /**
+   * Sets the address of the restaurant.
+   *
+   * @param restaurantAddress the restaurant address to set.
+   */
+  public void setRestaurantAddress(final String restaurantAddress) {
+<span class="fc" id="L141">    this.restaurantAddress = restaurantAddress;</span>
+<span class="fc" id="L142">  }</span>
+
+  /**
+   * Gets the contact number of the restaurant.
+   *
+   * @return the contact number.
+   */
+  public String getContactNumber() {
+<span class="fc" id="L150">    return contactNumber;</span>
+  }
+
+  /**
+   * Sets the contact number of the restaurant.
+   *
+   * @param contactNumber the contact number to set.
+   */
+  public void setContactNumber(final String contactNumber) {
+<span class="fc" id="L159">    this.contactNumber = contactNumber;</span>
+<span class="fc" id="L160">  }</span>
+
+  /**
+   * Gets the description of the restaurant.
+   *
+   * @return the description.
+   */
+  public String getDescription() {
+<span class="fc" id="L168">    return description;</span>
+  }
+
+  /**
+   * Sets the description of the restaurant.
+   *
+   * @param description the description to set.
+   */
+  public void setDescription(final String description) {
+<span class="fc" id="L177">    this.description = description;</span>
+<span class="fc" id="L178">  }</span>
+
+  /**
+   * Gets the image of the restaurant.
+   *
+   * @return the restaurant image as a {@link MultipartFile}.
+   */
+  public MultipartFile getRestaurantImage() {
+<span class="fc" id="L186">    return restaurantImage;</span>
+  }
+
+  /**
+   * Sets the image of the restaurant.
+   *
+   * @param restaurantImage the restaurant image to set.
+   */
+  public void setRestaurantImage(final MultipartFile restaurantImage) {
+<span class="fc" id="L195">    this.restaurantImage = restaurantImage;</span>
+<span class="fc" id="L196">  }</span>
+
+  /**
+   * Compares this object with another object for equality.
+   *
+   * @param o the other object to compare to.
+   * @return true if both objects are equal, false otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L207">      return true;</span>
+    }
+<span class="pc bpc" id="L209" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L210">      return false;</span>
+    }
+<span class="fc" id="L212">    RestaurantInDTO that = (RestaurantInDTO) o;</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">    return Objects.equals(userId, that.userId)</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantName, that.restaurantName)</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantAddress, that.restaurantAddress)</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(contactNumber, that.contactNumber)</span>
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(description, that.description)</span>
+<span class="pc bpc" id="L218" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantImage, that.restaurantImage);</span>
+  }
+
+  /**
+   * Generates the hash code for this object.
+   *
+   * @return the hash code of this object.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L228">    return Objects.hash(userId, restaurantName, restaurantAddress, contactNumber, description, restaurantImage);</span>
+  }
+
+  /**
+   * Returns a string representation of this object.
+   *
+   * @return a string representing the object.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L238">    return &quot;RestaurantInDto{&quot;</span>
+      + &quot;userId=&quot; + userId
+      + &quot;, restaurantName='&quot; + restaurantName
+      + '\'' + &quot;, restaurantAddress='&quot; + restaurantAddress
+      + '\'' + &quot;, contactNumber='&quot; + contactNumber
+      + '\'' + &quot;, description='&quot; + description
+      + '\'' + &quot;, restaurantImage=&quot; + restaurantImage
+      + '}';
+  }
+}
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

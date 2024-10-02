@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ErrorResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.exception</a> &gt; <span class="el_source">ErrorResponse.java</span></div><h1>ErrorResponse.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.exception;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Represents the structure of an error response for the REST API.
+ * This class is used to encapsulate error information, including the HTTP status code,
+ * a message, and any additional validation errors.
+ */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class ErrorResponse {
+
+  /**
+   * The HTTP status code of the error response.
+   */
+  private int status;
+
+  /**
+   * The message providing more details about the error.
+   */
+  private String message;
+
+  /**
+   * A map containing field-specific validation errors, if any.
+   * The keys represent field names, and the values represent error messages.
+   */
+  private Map&lt;String, String&gt; errors;
+
+  /**
+   * Constructs an ErrorResponse with a given status and message.
+   * Initializes an empty map for validation errors.
+   *
+   * @param status  the HTTP status code of the error
+   * @param message a description of the error
+   */
+<span class="fc" id="L39">  public ErrorResponse(final int status, final String message) {</span>
+<span class="fc" id="L40">    this.status = status;</span>
+<span class="fc" id="L41">    this.message = message;</span>
+<span class="fc" id="L42">    this.errors = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L43">  }</span>
+
+  /**
+   * Constructs an ErrorResponse with a given status, message, and validation errors.
+   *
+   * @param status  the HTTP status code of the error
+   * @param message a description of the error
+   * @param errors  a map of field-specific validation errors
+   */
+<span class="fc" id="L52">  public ErrorResponse(final int status, final String message, final Map&lt;String, String&gt; errors) {</span>
+<span class="fc" id="L53">    this.status = status;</span>
+<span class="fc" id="L54">    this.message = message;</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">    this.errors = errors != null ? errors : new HashMap&lt;&gt;();</span>
+<span class="fc" id="L56">  }</span>
+
+  /**
+   * Default constructor that initializes an empty map for validation errors.
+   */
+<span class="fc" id="L61">  public ErrorResponse() {</span>
+<span class="fc" id="L62">    this.errors = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L63">  }</span>
+
+  /**
+   * Returns the HTTP status code of the error.
+   *
+   * @return the status code
+   */
+  public int getStatus() {
+<span class="fc" id="L71">    return status;</span>
+  }
+
+  /**
+   * Sets the HTTP status code of the error.
+   *
+   * @param status the status code to set
+   */
+  public void setStatus(final int status) {
+<span class="fc" id="L80">    this.status = status;</span>
+<span class="fc" id="L81">  }</span>
+
+  /**
+   * Returns the message describing the error.
+   *
+   * @return the error message
+   */
+  public String getMessage() {
+<span class="fc" id="L89">    return message;</span>
+  }
+
+  /**
+   * Sets the message describing the error.
+   *
+   * @param message the error message to set
+   */
+  public void setMessage(final String message) {
+<span class="fc" id="L98">    this.message = message;</span>
+<span class="fc" id="L99">  }</span>
+
+  /**
+   * Returns the map of field-specific validation errors.
+   *
+   * @return the map of validation errors
+   */
+  public Map&lt;String, String&gt; getErrors() {
+<span class="fc" id="L107">    return errors;</span>
+  }
+
+  /**
+   * Sets the map of field-specific validation errors.
+   *
+   * @param errors the validation errors to set
+   */
+  public void setErrors(final Map&lt;String, String&gt; errors) {
+<span class="fc bfc" id="L116" title="All 2 branches covered.">    this.errors = errors != null ? errors : new HashMap&lt;&gt;();</span>
+<span class="fc" id="L117">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

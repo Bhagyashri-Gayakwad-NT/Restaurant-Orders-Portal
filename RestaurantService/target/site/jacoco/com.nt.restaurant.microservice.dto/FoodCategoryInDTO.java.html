@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FoodCategoryInDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.dto</a> &gt; <span class="el_source">FoodCategoryInDTO.java</span></div><h1>FoodCategoryInDTO.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.dto;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.Objects;
+
+/**
+ * Data Transfer Object (DTO) for input validation of the Food Category entity.
+ * This class is used to capture and validate the input data required to create
+ * or update a food category for a restaurant.
+ */
+public class FoodCategoryInDTO {
+
+  /**
+   * Represents the ID of the restaurant that owns the food category.
+   * This field cannot be null.
+   */
+  @NotNull(message = &quot;Restaurant ID cannot be null&quot;)
+  private Integer restaurantId;
+
+  /**
+   * Represents the name of the food category.
+   * The name cannot be blank, should not exceed 100 characters, and must contain only alphabets.
+   */
+  @NotBlank(message = &quot;Food category name cannot be blank&quot;)
+  @Size(max = 100, message = &quot;Food category name cannot exceed 100 characters&quot;)
+  @Pattern(regexp = &quot;^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$&quot;, message = &quot;Category name must contain at least&quot;
+    + &quot; two alphabets and cannot include numbers&quot;)
+  private String foodCategoryName;
+
+  /**
+   * Default constructor for the {@code FoodCategoryInDTO} class.
+   */
+<span class="fc" id="L36">  public FoodCategoryInDTO() {</span>
+<span class="fc" id="L37">  }</span>
+
+  /**
+   * Parameterized constructor to initialize {@code FoodCategoryInDTO} with restaurant ID and food category name.
+   *
+   * @param restaurantId     the ID of the restaurant
+   * @param foodCategoryName the name of the food category
+   */
+<span class="fc" id="L45">  public FoodCategoryInDTO(final Integer restaurantId, final String foodCategoryName) {</span>
+<span class="fc" id="L46">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L47">    this.foodCategoryName = foodCategoryName;</span>
+<span class="fc" id="L48">  }</span>
+
+  /**
+   * Gets the ID of the restaurant.
+   *
+   * @return the restaurant ID
+   */
+  public Integer getRestaurantId() {
+<span class="fc" id="L56">    return restaurantId;</span>
+  }
+
+  /**
+   * Sets the ID of the restaurant.
+   *
+   * @param restaurantId the new restaurant ID
+   */
+  public void setRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L65">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L66">  }</span>
+
+  /**
+   * Gets the name of the food category.
+   *
+   * @return the food category name
+   */
+  public String getFoodCategoryName() {
+<span class="fc" id="L74">    return foodCategoryName;</span>
+  }
+
+  /**
+   * Sets the name of the food category.
+   *
+   * @param foodCategoryName the new food category name
+   */
+  public void setFoodCategoryName(final String foodCategoryName) {
+<span class="fc" id="L83">    this.foodCategoryName = foodCategoryName;</span>
+<span class="fc" id="L84">  }</span>
+
+  /**
+   * Compares this object with the specified object for equality.
+   *
+   * @param o the object to compare with
+   * @return {@code true} if both objects are equal, otherwise {@code false}
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L95">      return true;</span>
+    }
+<span class="pc bpc" id="L97" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L98">      return false;</span>
+    }
+<span class="fc" id="L100">    FoodCategoryInDTO that = (FoodCategoryInDTO) o;</span>
+<span class="pc bpc" id="L101" title="1 of 4 branches missed.">    return Objects.equals(restaurantId, that.restaurantId) &amp;&amp; Objects.equals(foodCategoryName, that.foodCategoryName);</span>
+  }
+
+  /**
+   * Returns the hash code value for this object.
+   *
+   * @return the hash code value
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L111">    return Objects.hash(restaurantId, foodCategoryName);</span>
+  }
+
+  /**
+   * Returns a string representation of the object.
+   *
+   * @return a string representation of the object
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L121">    return &quot;FoodCategoryInDTO{&quot;</span>
+      +
+      &quot;restaurantId=&quot;
+      + restaurantId
+      +
+      &quot;, foodCategoryName='&quot;
+      + foodCategoryName + '\''
+      +
+      '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

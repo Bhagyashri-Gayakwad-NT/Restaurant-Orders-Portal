@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FoodCategory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.entities</a> &gt; <span class="el_source">FoodCategory.java</span></div><h1>FoodCategory.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.entities;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.util.Objects;
+
+/**
+ * Entity class representing the food category in the restaurant system.
+ * This class is mapped to a table in the database where each record represents a food category.
+ */
+@Entity
+public class FoodCategory {
+
+  /**
+   * The unique identifier for the food category.
+   */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer foodCategoryId;
+
+  /**
+   * The ID of the restaurant this food category belongs to.
+   */
+  private Integer restaurantId;
+
+  /**
+   * The name of the food category.
+   */
+  private String foodCategoryName;
+
+  /**
+   * Default constructor.
+   * Required by JPA for entity creation.
+   */
+<span class="fc" id="L37">  public FoodCategory() {</span>
+<span class="fc" id="L38">  }</span>
+
+  /**
+   * Parameterized constructor for creating a FoodCategory entity.
+   *
+   * @param foodCategoryId   the unique ID of the food category
+   * @param restaurantId     the ID of the associated restaurant
+   * @param foodCategoryName the name of the food category
+   */
+<span class="fc" id="L47">  public FoodCategory(final Integer foodCategoryId, final Integer restaurantId, final String foodCategoryName) {</span>
+<span class="fc" id="L48">    this.foodCategoryId = foodCategoryId;</span>
+<span class="fc" id="L49">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L50">    this.foodCategoryName = foodCategoryName;</span>
+<span class="fc" id="L51">  }</span>
+
+  /**
+   * Parameterized constructor for creating a FoodCategory entity without an ID.
+   * Typically used when creating new categories where the ID is auto-generated.
+   *
+   * @param restaurantId     the ID of the associated restaurant
+   * @param foodCategoryName the name of the food category
+   */
+<span class="fc" id="L60">  public FoodCategory(final Integer restaurantId, final String foodCategoryName) {</span>
+<span class="fc" id="L61">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L62">    this.foodCategoryName = foodCategoryName;</span>
+<span class="fc" id="L63">  }</span>
+
+  // Getters and Setters
+
+  /**
+   * Gets the food category ID.
+   *
+   * @return the unique ID of the food category.
+   */
+  public Integer getFoodCategoryId() {
+<span class="fc" id="L73">    return foodCategoryId;</span>
+  }
+
+  /**
+   * Sets the food category ID.
+   *
+   * @param foodCategoryId the unique ID of the food category.
+   */
+  public void setFoodCategoryId(final Integer foodCategoryId) {
+<span class="fc" id="L82">    this.foodCategoryId = foodCategoryId;</span>
+<span class="fc" id="L83">  }</span>
+
+  /**
+   * Gets the restaurant ID associated with this food category.
+   *
+   * @return the restaurant ID.
+   */
+  public Integer getRestaurantId() {
+<span class="fc" id="L91">    return restaurantId;</span>
+  }
+
+  /**
+   * Sets the restaurant ID associated with this food category.
+   *
+   * @param restaurantId the restaurant ID.
+   */
+  public void setRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L100">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L101">  }</span>
+
+  /**
+   * Gets the name of the food category.
+   *
+   * @return the name of the food category.
+   */
+  public String getFoodCategoryName() {
+<span class="fc" id="L109">    return foodCategoryName;</span>
+  }
+
+  /**
+   * Sets the name of the food category.
+   *
+   * @param foodCategoryName the name of the food category.
+   */
+  public void setFoodCategoryName(final String foodCategoryName) {
+<span class="fc" id="L118">    this.foodCategoryName = foodCategoryName;</span>
+<span class="fc" id="L119">  }</span>
+
+  // Overrides for equality checks and representation
+
+  /**
+   * Compares this food category to another object for equality.
+   *
+   * @param o the object to compare.
+   * @return true if the objects are equal, false otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="fc bfc" id="L131" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L132">      return true;</span>
+    }
+<span class="pc bpc" id="L134" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L135">      return false;</span>
+    }
+<span class="fc" id="L137">    FoodCategory that = (FoodCategory) o;</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">    return Objects.equals(foodCategoryId, that.foodCategoryId)</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantId, that.restaurantId)</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(foodCategoryName, that.foodCategoryName);</span>
+  }
+
+  /**
+   * Returns a hash code for this food category.
+   *
+   * @return a hash code based on the fields of the food category.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L150">    return Objects.hash(foodCategoryId, restaurantId, foodCategoryName);</span>
+  }
+
+  /**
+   * Returns a string representation of this food category.
+   *
+   * @return a string representing the food category.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L160">    return &quot;FoodCategory{&quot;</span>
+      + &quot;foodCategoryId=&quot; + foodCategoryId
+      + &quot;, restaurantId=&quot; + restaurantId
+      + &quot;, foodCategoryName='&quot; + foodCategoryName
+      + '\'' + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
