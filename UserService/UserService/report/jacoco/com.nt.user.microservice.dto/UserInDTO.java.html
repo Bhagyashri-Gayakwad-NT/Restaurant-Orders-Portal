@@ -65,15 +65,13 @@ import java.util.Objects;
     message = &quot;Role must be either 'USER' or 'RESTAURANT_OWNER'&quot;)
   private String role;
 
-  // Getters and setters
-
   /**
    * Gets the first name of the user.
    *
    * @return the first name of the user.
    */
   public String getFirstName() {
-<span class="fc" id="L76">    return firstName;</span>
+<span class="fc" id="L74">    return firstName;</span>
   }
 
   /**
@@ -82,8 +80,8 @@ import java.util.Objects;
    * @param firstName the first name to set.
    */
   public void setFirstName(final String firstName) {
-<span class="fc" id="L85">    this.firstName = firstName;</span>
-<span class="fc" id="L86">  }</span>
+<span class="fc" id="L83">    this.firstName = firstName;</span>
+<span class="fc" id="L84">  }</span>
 
   /**
    * Gets the last name of the user.
@@ -91,7 +89,7 @@ import java.util.Objects;
    * @return the last name of the user.
    */
   public String getLastName() {
-<span class="fc" id="L94">    return lastName;</span>
+<span class="fc" id="L92">    return lastName;</span>
   }
 
   /**
@@ -100,8 +98,8 @@ import java.util.Objects;
    * @param lastName the last name to set.
    */
   public void setLastName(final String lastName) {
-<span class="fc" id="L103">    this.lastName = lastName;</span>
-<span class="fc" id="L104">  }</span>
+<span class="fc" id="L101">    this.lastName = lastName;</span>
+<span class="fc" id="L102">  }</span>
 
   /**
    * Gets the email address of the user.
@@ -109,7 +107,7 @@ import java.util.Objects;
    * @return the email address of the user.
    */
   public String getEmail() {
-<span class="fc" id="L112">    return email;</span>
+<span class="fc" id="L110">    return email;</span>
   }
 
   /**
@@ -118,8 +116,8 @@ import java.util.Objects;
    * @param email the email address to set.
    */
   public void setEmail(final String email) {
-<span class="fc" id="L121">    this.email = email;</span>
-<span class="fc" id="L122">  }</span>
+<span class="fc" id="L119">    this.email = email;</span>
+<span class="fc" id="L120">  }</span>
 
   /**
    * Gets the password of the user.
@@ -127,7 +125,7 @@ import java.util.Objects;
    * @return the password of the user.
    */
   public String getPassword() {
-<span class="fc" id="L130">    return password;</span>
+<span class="fc" id="L128">    return password;</span>
   }
 
   /**
@@ -136,8 +134,8 @@ import java.util.Objects;
    * @param password the password to set.
    */
   public void setPassword(final String password) {
-<span class="fc" id="L139">    this.password = password;</span>
-<span class="fc" id="L140">  }</span>
+<span class="fc" id="L137">    this.password = password;</span>
+<span class="fc" id="L138">  }</span>
 
   /**
    * Gets the phone number of the user.
@@ -145,7 +143,7 @@ import java.util.Objects;
    * @return the phone number of the user.
    */
   public String getPhoneNo() {
-<span class="fc" id="L148">    return phoneNo;</span>
+<span class="fc" id="L146">    return phoneNo;</span>
   }
 
   /**
@@ -154,8 +152,8 @@ import java.util.Objects;
    * @param phoneNo the phone number to set.
    */
   public void setPhoneNo(final String phoneNo) {
-<span class="fc" id="L157">    this.phoneNo = phoneNo;</span>
-<span class="fc" id="L158">  }</span>
+<span class="fc" id="L155">    this.phoneNo = phoneNo;</span>
+<span class="fc" id="L156">  }</span>
 
   /**
    * Gets the role of the user.
@@ -163,7 +161,7 @@ import java.util.Objects;
    * @return the role of the user.
    */
   public String getRole() {
-<span class="fc" id="L166">    return role;</span>
+<span class="fc" id="L164">    return role;</span>
   }
 
   /**
@@ -172,8 +170,8 @@ import java.util.Objects;
    * @param role the role to set.
    */
   public void setRole(final String role) {
-<span class="fc" id="L175">    this.role = role;</span>
-<span class="fc" id="L176">  }</span>
+<span class="fc" id="L173">    this.role = role;</span>
+<span class="fc" id="L174">  }</span>
 
   /**
    * Checks equality between this object and another object.
@@ -183,19 +181,19 @@ import java.util.Objects;
    */
   @Override
   public boolean equals(final Object o) {
-<span class="fc bfc" id="L186" title="All 2 branches covered.">    if (this == o) {</span>
-<span class="fc" id="L187">      return true;</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L185">      return true;</span>
     }
-<span class="pc bpc" id="L189" title="1 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
-<span class="fc" id="L190">      return false;</span>
+<span class="pc bpc" id="L187" title="1 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L188">      return false;</span>
     }
-<span class="fc" id="L192">    UserInDTO userInDTO = (UserInDTO) o;</span>
-<span class="fc bfc" id="L193" title="All 2 branches covered.">    return Objects.equals(firstName, userInDTO.firstName)</span>
-<span class="fc bfc" id="L194" title="All 2 branches covered.">      &amp;&amp; Objects.equals(lastName, userInDTO.lastName)</span>
-<span class="fc bfc" id="L195" title="All 2 branches covered.">      &amp;&amp; Objects.equals(email, userInDTO.email)</span>
-<span class="fc bfc" id="L196" title="All 2 branches covered.">      &amp;&amp; Objects.equals(password, userInDTO.password)</span>
-<span class="fc bfc" id="L197" title="All 2 branches covered.">      &amp;&amp; Objects.equals(phoneNo, userInDTO.phoneNo)</span>
-<span class="fc bfc" id="L198" title="All 2 branches covered.">      &amp;&amp; Objects.equals(role, userInDTO.role);</span>
+<span class="fc" id="L190">    UserInDTO userInDTO = (UserInDTO) o;</span>
+<span class="fc bfc" id="L191" title="All 2 branches covered.">    return Objects.equals(firstName, userInDTO.firstName)</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">      &amp;&amp; Objects.equals(lastName, userInDTO.lastName)</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">      &amp;&amp; Objects.equals(email, userInDTO.email)</span>
+<span class="fc bfc" id="L194" title="All 2 branches covered.">      &amp;&amp; Objects.equals(password, userInDTO.password)</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">      &amp;&amp; Objects.equals(phoneNo, userInDTO.phoneNo)</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">      &amp;&amp; Objects.equals(role, userInDTO.role);</span>
   }
 
   /**
@@ -205,7 +203,7 @@ import java.util.Objects;
    */
   @Override
   public int hashCode() {
-<span class="fc" id="L208">    return Objects.hash(firstName, lastName, email, password, phoneNo, role);</span>
+<span class="fc" id="L206">    return Objects.hash(firstName, lastName, email, password, phoneNo, role);</span>
   }
 
   /**
@@ -215,7 +213,7 @@ import java.util.Objects;
    */
   @Override
   public String toString() {
-<span class="fc" id="L218">    return &quot;UserInDTO{&quot;</span>
+<span class="fc" id="L216">    return &quot;UserInDTO{&quot;</span>
       + &quot;firstName='&quot; + firstName
       + '\'' + &quot;, lastName='&quot; + lastName
       + '\'' + &quot;, email='&quot; + email

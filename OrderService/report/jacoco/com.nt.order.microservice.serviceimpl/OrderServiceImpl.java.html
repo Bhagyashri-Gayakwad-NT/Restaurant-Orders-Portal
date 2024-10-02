@@ -261,24 +261,23 @@ import java.util.stream.Collectors;
 <span class="fc" id="L261">      LOGGER.error(&quot;Order not found with orderId: {}&quot;, orderId);</span>
 <span class="fc" id="L262">      throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);</span>
     }
+<span class="fc" id="L264">    Order order = orderOptional.get();</span>
+<span class="fc" id="L265">    LocalDateTime currentTime = LocalDateTime.now();</span>
 
-<span class="fc" id="L265">    Order order = orderOptional.get();</span>
-<span class="fc" id="L266">    LocalDateTime currentTime = LocalDateTime.now();</span>
-
-<span class="pc bpc" id="L268" title="1 of 2 branches missed.">    if (order.getPlacedTiming().plusSeconds(TIME_LIMIT_SECONDS).isBefore(currentTime)) {</span>
-<span class="nc" id="L269">      LOGGER.error(&quot;Order cancellation time limit exceeded for orderId: {}&quot;, orderId);</span>
-<span class="nc" id="L270">      throw new InvalidRequestException(Constants.ORDER_CANCELLATION_TIME_LIMIT_EXCEEDED);</span>
+<span class="pc bpc" id="L267" title="1 of 2 branches missed.">    if (order.getPlacedTiming().plusSeconds(TIME_LIMIT_SECONDS).isBefore(currentTime)) {</span>
+<span class="nc" id="L268">      LOGGER.error(&quot;Order cancellation time limit exceeded for orderId: {}&quot;, orderId);</span>
+<span class="nc" id="L269">      throw new InvalidRequestException(Constants.ORDER_CANCELLATION_TIME_LIMIT_EXCEEDED);</span>
     }
 
-<span class="fc" id="L273">    AmountInDTO amountInDTO = new AmountInDTO();</span>
-<span class="fc" id="L274">    amountInDTO.setBalance(order.getTotalPrice());</span>
+<span class="fc" id="L272">    AmountInDTO amountInDTO = new AmountInDTO();</span>
+<span class="fc" id="L273">    amountInDTO.setBalance(order.getTotalPrice());</span>
 
-<span class="fc" id="L276">    userFClient.addMoney(order.getUserId(), amountInDTO);</span>
-<span class="fc" id="L277">    order.setOrderStatus(OrderStatus.CANCELLED);</span>
-<span class="fc" id="L278">    orderRepository.save(order);</span>
+<span class="fc" id="L275">    userFClient.addMoney(order.getUserId(), amountInDTO);</span>
+<span class="fc" id="L276">    order.setOrderStatus(OrderStatus.CANCELLED);</span>
+<span class="fc" id="L277">    orderRepository.save(order);</span>
 
-<span class="fc" id="L280">    LOGGER.info(&quot;Order cancelled successfully for orderId: {}&quot;, orderId);</span>
-<span class="fc" id="L281">    return new CommonResponse(Constants.ORDER_CANCELLED_SUCCESSFULLY);</span>
+<span class="fc" id="L279">    LOGGER.info(&quot;Order cancelled successfully for orderId: {}&quot;, orderId);</span>
+<span class="fc" id="L280">    return new CommonResponse(Constants.ORDER_CANCELLED_SUCCESSFULLY);</span>
   }
 
   /**
@@ -293,41 +292,36 @@ import java.util.stream.Collectors;
    */
   @Override
   public CommonResponse markOrderAsCompleted(final Integer orderId, final Integer userId) {
-<span class="fc" id="L296">    LOGGER.info(&quot;Marking order as completed for orderId: {}&quot;, orderId);</span>
+<span class="fc" id="L295">    LOGGER.info(&quot;Marking order as completed for orderId: {}&quot;, orderId);</span>
 
-<span class="fc" id="L298">    Optional&lt;Order&gt; optionalOrder = orderRepository.findById(orderId);</span>
+<span class="fc" id="L297">    Optional&lt;Order&gt; optionalOrder = orderRepository.findById(orderId);</span>
 
-<span class="pc bpc" id="L300" title="1 of 2 branches missed.">    if (!optionalOrder.isPresent()) {</span>
-<span class="nc" id="L301">      LOGGER.error(&quot;Order not found with orderId: {}&quot;, orderId);</span>
-<span class="nc" id="L302">      throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);</span>
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">    if (!optionalOrder.isPresent()) {</span>
+<span class="nc" id="L300">      LOGGER.error(&quot;Order not found with orderId: {}&quot;, orderId);</span>
+<span class="nc" id="L301">      throw new ResourceNotFoundException(Constants.ORDER_NOT_FOUND);</span>
     }
-
     UserOutDTO userOutDto;
     try {
-<span class="fc" id="L307">      userOutDto = userFClient.getUserProfile(userId);</span>
-<span class="fc" id="L308">      LOGGER.info(&quot;Fetched user profile for userId: {}&quot;, userId);</span>
-<span class="nc" id="L309">    } catch (Exception e) {</span>
-<span class="nc" id="L310">      LOGGER.error(&quot;User not found with userId: {}&quot;, userId);</span>
-<span class="nc" id="L311">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
-<span class="fc" id="L312">    }</span>
-
-<span class="fc" id="L314">    Order order = optionalOrder.get();</span>
-
-<span class="fc bfc" id="L316" title="All 2 branches covered.">    if (userOutDto.getRole().equals(Role.USER.name())) {</span>
-<span class="fc" id="L317">      LOGGER.warn(&quot;Unauthorized user trying to mark order as completed. userId: {}&quot;, userId);</span>
-<span class="fc" id="L318">      throw new UnauthorizedException(Constants.UNAUTHORIZED_USER);</span>
+<span class="fc" id="L305">      userOutDto = userFClient.getUserProfile(userId);</span>
+<span class="fc" id="L306">      LOGGER.info(&quot;Fetched user profile for userId: {}&quot;, userId);</span>
+<span class="nc" id="L307">    } catch (Exception e) {</span>
+<span class="nc" id="L308">      LOGGER.error(&quot;User not found with userId: {}&quot;, userId);</span>
+<span class="nc" id="L309">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
+<span class="fc" id="L310">    }</span>
+<span class="fc" id="L311">    Order order = optionalOrder.get();</span>
+<span class="fc bfc" id="L312" title="All 2 branches covered.">    if (userOutDto.getRole().equals(Role.USER.name())) {</span>
+<span class="fc" id="L313">      LOGGER.warn(&quot;Unauthorized user trying to mark order as completed. userId: {}&quot;, userId);</span>
+<span class="fc" id="L314">      throw new UnauthorizedException(Constants.UNAUTHORIZED_USER);</span>
     }
-
-<span class="pc bpc" id="L321" title="1 of 2 branches missed.">    if (order.getOrderStatus() == OrderStatus.COMPLETED) {</span>
-<span class="nc" id="L322">      LOGGER.warn(&quot;Order already marked as completed. orderId: {}&quot;, orderId);</span>
-<span class="nc" id="L323">      throw new ResourceAlreadyExistException(Constants.ALREADY_COMPLETED);</span>
+<span class="pc bpc" id="L316" title="1 of 2 branches missed.">    if (order.getOrderStatus() == OrderStatus.COMPLETED) {</span>
+<span class="nc" id="L317">      LOGGER.warn(&quot;Order already marked as completed. orderId: {}&quot;, orderId);</span>
+<span class="nc" id="L318">      throw new ResourceAlreadyExistException(Constants.ALREADY_COMPLETED);</span>
     }
+<span class="fc" id="L320">    order.setOrderStatus(OrderStatus.COMPLETED);</span>
+<span class="fc" id="L321">    orderRepository.save(order);</span>
 
-<span class="fc" id="L326">    order.setOrderStatus(OrderStatus.COMPLETED);</span>
-<span class="fc" id="L327">    orderRepository.save(order);</span>
-
-<span class="fc" id="L329">    LOGGER.info(&quot;Order marked as completed successfully for orderId: {}&quot;, orderId);</span>
-<span class="fc" id="L330">    return new CommonResponse(Constants.ORDER_COMPLETED_SUCCESSFULLY);</span>
+<span class="fc" id="L323">    LOGGER.info(&quot;Order marked as completed successfully for orderId: {}&quot;, orderId);</span>
+<span class="fc" id="L324">    return new CommonResponse(Constants.ORDER_COMPLETED_SUCCESSFULLY);</span>
   }
 
   /**
@@ -340,27 +334,27 @@ import java.util.stream.Collectors;
    */
   @Override
   public List&lt;OrderOutDTO&gt; getOrdersByUserId(final Integer userId) {
-<span class="fc" id="L343">    LOGGER.info(&quot;Fetching orders for userId: {}&quot;, userId);</span>
+<span class="fc" id="L337">    LOGGER.info(&quot;Fetching orders for userId: {}&quot;, userId);</span>
 
     UserOutDTO userOutDto;
     try {
-<span class="fc" id="L347">      userOutDto = userFClient.getUserProfile(userId);</span>
-<span class="fc" id="L348">      LOGGER.info(&quot;Fetched user profile for userId: {}&quot;, userId);</span>
-<span class="fc" id="L349">    } catch (FeignException e) {</span>
-<span class="fc" id="L350">      LOGGER.error(&quot;User not found for userId: {}&quot;, userId);</span>
-<span class="fc" id="L351">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
-<span class="fc" id="L352">    }</span>
+<span class="fc" id="L341">      userOutDto = userFClient.getUserProfile(userId);</span>
+<span class="fc" id="L342">      LOGGER.info(&quot;Fetched user profile for userId: {}&quot;, userId);</span>
+<span class="fc" id="L343">    } catch (FeignException e) {</span>
+<span class="fc" id="L344">      LOGGER.error(&quot;User not found for userId: {}&quot;, userId);</span>
+<span class="fc" id="L345">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
+<span class="fc" id="L346">    }</span>
 
-<span class="pc bpc" id="L354" title="1 of 2 branches missed.">    if (userOutDto.getRole().equals(Role.RESTAURANT_OWNER.name())) {</span>
-<span class="nc" id="L355">      LOGGER.warn(&quot;Unauthorized access by restaurant owner. userId: {}&quot;, userId);</span>
-<span class="nc" id="L356">      throw new UnauthorizedException(Constants.RESTAURANT_OWNER);</span>
+<span class="pc bpc" id="L348" title="1 of 2 branches missed.">    if (userOutDto.getRole().equals(Role.RESTAURANT_OWNER.name())) {</span>
+<span class="nc" id="L349">      LOGGER.warn(&quot;Unauthorized access by restaurant owner. userId: {}&quot;, userId);</span>
+<span class="nc" id="L350">      throw new UnauthorizedException(Constants.RESTAURANT_OWNER);</span>
     }
 
-<span class="fc" id="L359">    List&lt;Order&gt; orders = orderRepository.findByUserId(userId);</span>
+<span class="fc" id="L353">    List&lt;Order&gt; orders = orderRepository.findByUserId(userId);</span>
 
-<span class="fc" id="L361">    return orders.stream()</span>
-<span class="fc" id="L362">      .map(OrderDtoConverter::convertToOutDto)</span>
-<span class="fc" id="L363">      .collect(Collectors.toList());</span>
+<span class="fc" id="L355">    return orders.stream()</span>
+<span class="fc" id="L356">      .map(OrderDtoConverter::convertToOutDto)</span>
+<span class="fc" id="L357">      .collect(Collectors.toList());</span>
   }
 
   /**
@@ -372,21 +366,21 @@ import java.util.stream.Collectors;
    */
   @Override
   public List&lt;OrderOutDTO&gt; getOrdersByRestaurantId(final Integer restaurantId) {
-<span class="fc" id="L375">    LOGGER.info(&quot;Fetching orders for restaurantId: {}&quot;, restaurantId);</span>
+<span class="fc" id="L369">    LOGGER.info(&quot;Fetching orders for restaurantId: {}&quot;, restaurantId);</span>
 
     try {
-<span class="fc" id="L378">      restaurantFClient.getRestaurantById(restaurantId);</span>
-<span class="fc" id="L379">      LOGGER.info(&quot;Fetched restaurant details for restaurantId: {}&quot;, restaurantId);</span>
-<span class="nc" id="L380">    } catch (Exception e) {</span>
-<span class="nc" id="L381">      LOGGER.error(&quot;Restaurant not found for restaurantId: {}&quot;, restaurantId);</span>
-<span class="nc" id="L382">      throw new ResourceNotFoundException(Constants.INVALID_RESTAURANT_ID);</span>
-<span class="fc" id="L383">    }</span>
+<span class="fc" id="L372">      restaurantFClient.getRestaurantById(restaurantId);</span>
+<span class="fc" id="L373">      LOGGER.info(&quot;Fetched restaurant details for restaurantId: {}&quot;, restaurantId);</span>
+<span class="nc" id="L374">    } catch (Exception e) {</span>
+<span class="nc" id="L375">      LOGGER.error(&quot;Restaurant not found for restaurantId: {}&quot;, restaurantId);</span>
+<span class="nc" id="L376">      throw new ResourceNotFoundException(Constants.INVALID_RESTAURANT_ID);</span>
+<span class="fc" id="L377">    }</span>
 
-<span class="fc" id="L385">    List&lt;Order&gt; orders = orderRepository.findByRestaurantId(restaurantId);</span>
+<span class="fc" id="L379">    List&lt;Order&gt; orders = orderRepository.findByRestaurantId(restaurantId);</span>
 
-<span class="fc" id="L387">    return orders.stream()</span>
-<span class="fc" id="L388">      .map(OrderDtoConverter::convertToOutDto)</span>
-<span class="fc" id="L389">      .collect(Collectors.toList());</span>
+<span class="fc" id="L381">    return orders.stream()</span>
+<span class="fc" id="L382">      .map(OrderDtoConverter::convertToOutDto)</span>
+<span class="fc" id="L383">      .collect(Collectors.toList());</span>
   }
 
 }

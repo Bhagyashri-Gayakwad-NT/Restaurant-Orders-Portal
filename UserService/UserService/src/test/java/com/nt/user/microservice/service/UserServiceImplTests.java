@@ -107,11 +107,6 @@ class UserServiceImplTest {
 
     when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
 
-   // WalletBalance walletBalance = new WalletBalance();
-//    walletBalance.setBalance(100.0);
-  //  walletBalance.setUserId(user.getId());
-  //  when(walletBalanceRepository.findByUserId(user.getId())).thenReturn(walletBalance);
-
     LoginOutDTO loginOutDTO = userService.loginUser(email, password);
 
     assertNotNull(loginOutDTO);

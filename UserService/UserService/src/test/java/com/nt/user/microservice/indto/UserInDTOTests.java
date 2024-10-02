@@ -12,17 +12,17 @@ public class UserInDTOTests {
     UserInDTO userInDTO = new UserInDTO();
 
     assertNull(userInDTO.getFirstName());
-    String firstName = "John";
+    String firstName = "TestName";
     userInDTO.setFirstName(firstName);
     assertEquals(firstName, userInDTO.getFirstName());
 
     assertNull(userInDTO.getLastName());
-    String lastName = "Doe";
+    String lastName = "TestLast";
     userInDTO.setLastName(lastName);
     assertEquals(lastName, userInDTO.getLastName());
 
     assertNull(userInDTO.getEmail());
-    String email = "john.doe@nucleusteq.com";
+    String email = "test@nucleusteq.com";
     userInDTO.setEmail(email);
     assertEquals(email, userInDTO.getEmail());
 
@@ -46,13 +46,13 @@ public class UserInDTOTests {
   public void testToString() {
     UserInDTO userInDTO = new UserInDTO();
 
-    String firstName = "John";
+    String firstName = "TestName";
     userInDTO.setFirstName(firstName);
 
-    String lastName = "Doe";
+    String lastName = "TestLast";
     userInDTO.setLastName(lastName);
 
-    String email = "john.doe@nucleusteq.com";
+    String email = "test@nucleusteq.com";
     userInDTO.setEmail(email);
 
     String password = "Password123!";
@@ -64,15 +64,15 @@ public class UserInDTOTests {
     String role = "USER";
     userInDTO.setRole(role);
 
-    assertEquals("UserInDTO{firstName='John', lastName='Doe', email='john.doe@nucleusteq.com', " +
+    assertEquals("UserInDTO{firstName='TestName', lastName='TestLast', email='test@nucleusteq.com', " +
       "password='Password123!', phoneNo='9876543210', role='USER'}", userInDTO.toString());
   }
 
   @Test
   public void testEqualsAndHashcode() {
-    String firstName = "John";
-    String lastName = "Doe";
-    String email = "john.doe@nucleusteq.com";
+    String firstName = "TestName";
+    String lastName = "TestLast";
+    String email = "test@nucleusteq.com";
     String password = "Password123!";
     String phoneNo = "9876543210";
     String role = "USER";
