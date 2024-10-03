@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserServiceApplication.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice</a> &gt; <span class="el_source">UserServiceApplication.java</span></div><h1>UserServiceApplication.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+/**
+ * The main class for the User Service microservice application.
+ * &lt;p&gt;
+ * This class serves as the entry point for the Spring Boot application.
+ * It configures the component scanning for the application, ensuring that
+ * all components within the `com.nt.user.microservice` package are detected and registered.
+ * &lt;/p&gt;
+ */
+@SpringBootApplication
+<span class="nc" id="L15">public class UserServiceApplication {</span>
+
+  /**
+   * The main method that serves as the entry point for the Spring Boot application.
+   * It bootstraps the application, starting the embedded web server and initializing
+   * all the Spring components.
+   *
+   * @param args command-line arguments passed to the application
+   */
+  public static void main(final String[] args) {
+<span class="nc" id="L25">    SpringApplication.run(UserServiceApplication.class, args);</span>
+<span class="nc" id="L26">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

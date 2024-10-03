@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddressOutDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.dto</a> &gt; <span class="el_source">AddressOutDTO.java</span></div><h1>AddressOutDTO.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.dto;
+
+import java.util.Objects;
+
+/**
+ * Data Transfer Object (DTO) for transferring address details in API responses.
+ * This class encapsulates information such as street, city, state, country, and pin code.
+ */
+<span class="fc" id="L9">public class AddressOutDTO {</span>
+
+  /**
+   * The unique identifier for the address.
+   */
+  private Integer id;
+
+  /**
+   * The street name of the address.
+   */
+  private String street;
+
+  /**
+   * The city where the address is located.
+   */
+  private String city;
+
+  /**
+   * The state or province where the address is located.
+   */
+  private String state;
+
+  /**
+   * The country where the address is located.
+   */
+  private String country;
+
+  /**
+   * The postal pin code for the address.
+   */
+  private String pinCode;
+
+  /**
+   * Retrieves the unique identifier for the address.
+   *
+   * @return the address ID
+   */
+  public Integer getId() {
+<span class="fc" id="L47">    return id;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the address.
+   *
+   * @param id the address ID to set
+   */
+  public void setId(final Integer id) {
+<span class="fc" id="L56">    this.id = id;</span>
+<span class="fc" id="L57">  }</span>
+
+  /**
+   * Retrieves the street name of the address.
+   *
+   * @return the street name
+   */
+  public String getStreet() {
+<span class="fc" id="L65">    return street;</span>
+  }
+
+  /**
+   * Sets the street name of the address.
+   *
+   * @param street the street name to set
+   */
+  public void setStreet(final String street) {
+<span class="fc" id="L74">    this.street = street;</span>
+<span class="fc" id="L75">  }</span>
+
+  /**
+   * Retrieves the city where the address is located.
+   *
+   * @return the city name
+   */
+  public String getCity() {
+<span class="fc" id="L83">    return city;</span>
+  }
+
+  /**
+   * Sets the city where the address is located.
+   *
+   * @param city the city name to set
+   */
+  public void setCity(final String city) {
+<span class="fc" id="L92">    this.city = city;</span>
+<span class="fc" id="L93">  }</span>
+
+  /**
+   * Retrieves the state or province where the address is located.
+   *
+   * @return the state or province name
+   */
+  public String getState() {
+<span class="fc" id="L101">    return state;</span>
+  }
+
+  /**
+   * Sets the state or province where the address is located.
+   *
+   * @param state the state name to set
+   */
+  public void setState(final String state) {
+<span class="fc" id="L110">    this.state = state;</span>
+<span class="fc" id="L111">  }</span>
+
+  /**
+   * Retrieves the country where the address is located.
+   *
+   * @return the country name
+   */
+  public String getCountry() {
+<span class="fc" id="L119">    return country;</span>
+  }
+
+  /**
+   * Sets the country where the address is located.
+   *
+   * @param country the country name to set
+   */
+  public void setCountry(final String country) {
+<span class="fc" id="L128">    this.country = country;</span>
+<span class="fc" id="L129">  }</span>
+
+  /**
+   * Retrieves the postal pin code for the address.
+   *
+   * @return the postal pin code
+   */
+  public String getPinCode() {
+<span class="fc" id="L137">    return pinCode;</span>
+  }
+
+  /**
+   * Sets the postal pin code for the address.
+   *
+   * @param pinCode the postal pin code to set
+   */
+  public void setPinCode(final String pinCode) {
+<span class="fc" id="L146">    this.pinCode = pinCode;</span>
+<span class="fc" id="L147">  }</span>
+
+  /**
+   * Compares this AddressOutDTO object to the specified object for equality.
+   * Two AddressOutDTO objects are considered equal if they have the same
+   * values for all their fields (id, street, city, state, country, and pinCode).
+   *
+   * @param o the object to compare this AddressOutDTO against
+   * @return true if the specified object is equal to this AddressOutDTO; false otherwise
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L160">      return true;</span>
+    }
+<span class="fc bfc" id="L162" title="All 2 branches covered.">    if (!(o instanceof AddressOutDTO)) {</span>
+<span class="fc" id="L163">      return false;</span>
+    }
+<span class="fc" id="L165">    AddressOutDTO that = (AddressOutDTO) o;</span>
+<span class="pc bpc" id="L166" title="1 of 4 branches missed.">    return Objects.equals(id, that.id) &amp;&amp; Objects.equals(street, that.street)</span>
+<span class="pc bpc" id="L167" title="2 of 4 branches missed.">      &amp;&amp; Objects.equals(city, that.city) &amp;&amp; Objects.equals(state, that.state)</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(country, that.country)</span>
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(pinCode, that.pinCode);</span>
+  }
+
+
+/**
+ * Returns a hash code value for this AddressOutDTO object.
+ * The hash code is computed based on the values of the fields (id, street, city, state, country, and pinCode).
+ *
+ * @return a hash code value for this AddressOutDTO object
+ */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L181">    return Objects.hash(id, street, city, state, country, pinCode);</span>
+  }
+
+  /**
+   * Returns a string representation of this AddressOutDTO object.
+   * The string includes the class name and the values of all fields (id, street, city, state, country, and pinCode).
+   *
+   * @return a string representation of this AddressOutDTO object
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L192">    return &quot;AddressOutDTO{&quot;</span>
+      + &quot;id=&quot; + id
+      + &quot;, street='&quot; + street
+      + '\'' + &quot;, city='&quot; + city
+      + '\'' + &quot;, state='&quot; + state
+      + '\'' + &quot;, country='&quot; + country
+      + '\'' + &quot;, pinCode='&quot; + pinCode
+      + '\'' + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

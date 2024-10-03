@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FoodItemDtoConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.dtoconvertion</a> &gt; <span class="el_source">FoodItemDtoConverter.java</span></div><h1>FoodItemDtoConverter.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.dtoconvertion;
+
+import com.nt.restaurant.microservice.dto.FoodItemInDTO;
+import com.nt.restaurant.microservice.dto.FoodItemOutDTO;
+import com.nt.restaurant.microservice.entities.FoodItem;
+
+import java.io.IOException;
+
+/**
+ * Utility class to convert between {@link FoodItemInDTO} and {@link FoodItem} entities,
+ * and between {@link FoodItem} entities and {@link FoodItemOutDTO}.
+ */
+<span class="nc" id="L13">public class FoodItemDtoConverter {</span>
+
+  /**
+   * Converts a {@link FoodItemInDTO} to a {@link FoodItem} entity.
+   *
+   * @param foodItemInDTO the DTO containing food item input data.
+   * @return the {@link FoodItem} entity populated with input data.
+   */
+  public static FoodItem inDtoToEntity(final FoodItemInDTO foodItemInDTO) {
+<span class="nc" id="L22">    FoodItem foodItem = new FoodItem();</span>
+<span class="nc" id="L23">    foodItem.setCategoryId(foodItemInDTO.getFoodCategoryId());</span>
+<span class="nc" id="L24">    foodItem.setRestaurantId(foodItemInDTO.getRestaurantId());</span>
+<span class="nc" id="L25">    foodItem.setFoodItemName(foodItemInDTO.getFoodItemName().toUpperCase());</span>
+<span class="nc" id="L26">    foodItem.setDescription(foodItemInDTO.getDescription().trim());</span>
+<span class="nc" id="L27">    foodItem.setPrice(foodItemInDTO.getPrice());</span>
+<span class="nc" id="L28">    foodItem.setAvailable(true);</span>
+
+    try {
+<span class="nc" id="L31">      foodItem.setFoodItemImage(foodItemInDTO.getFoodItemImage().getBytes());</span>
+<span class="nc" id="L32">    } catch (IOException e) {</span>
+<span class="nc" id="L33">      e.printStackTrace();</span>
+<span class="nc" id="L34">    }</span>
+
+<span class="nc" id="L36">    return foodItem;</span>
+  }
+
+  /**
+   * Converts a {@link FoodItem} entity to a {@link FoodItemOutDTO}.
+   *
+   * @param foodItem the entity representing the food item.
+   * @return a {@link FoodItemOutDTO} populated with food item data.
+   */
+  public static FoodItemOutDTO entityToOutDTO(final FoodItem foodItem) {
+<span class="fc" id="L46">    return new FoodItemOutDTO(</span>
+<span class="fc" id="L47">      foodItem.getFoodItemId(),</span>
+<span class="fc" id="L48">      foodItem.getCategoryId(),</span>
+<span class="fc" id="L49">      foodItem.getRestaurantId(),</span>
+<span class="fc" id="L50">      foodItem.getFoodItemName(),</span>
+<span class="fc" id="L51">      foodItem.getDescription(),</span>
+<span class="fc" id="L52">      foodItem.getPrice(),</span>
+<span class="fc" id="L53">      foodItem.isAvailable(),</span>
+<span class="fc" id="L54">      foodItem.getFoodItemImage()</span>
+    );
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

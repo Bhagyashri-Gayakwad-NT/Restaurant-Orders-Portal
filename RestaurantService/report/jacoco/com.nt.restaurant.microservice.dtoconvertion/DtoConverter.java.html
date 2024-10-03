@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DtoConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.dtoconvertion</a> &gt; <span class="el_source">DtoConverter.java</span></div><h1>DtoConverter.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.dtoconvertion;
+
+import com.nt.restaurant.microservice.dto.RestaurantInDTO;
+import com.nt.restaurant.microservice.dto.RestaurantOutDTO;
+import com.nt.restaurant.microservice.entities.Restaurant;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Base64;
+import java.util.Objects;
+
+/**
+ * Utility class to convert between DTOs and entities for the Restaurant entity.
+ */
+<span class="nc" id="L15">public class DtoConverter {</span>
+
+  /**
+   * Converts a {@link RestaurantInDTO} to a {@link Restaurant} entity.
+   *
+   * @param restaurantInDTO the DTO containing restaurant input data.
+   * @return the {@link Restaurant} entity populated with input data.
+   */
+  public static Restaurant fromInDTOToEntity(final RestaurantInDTO restaurantInDTO) {
+<span class="nc" id="L24">    Restaurant restaurant = new Restaurant();</span>
+<span class="nc" id="L25">    restaurant.setUserId(restaurantInDTO.getUserId());</span>
+<span class="nc" id="L26">    restaurant.setRestaurantName(restaurantInDTO.getRestaurantName().trim());</span>
+<span class="nc" id="L27">    restaurant.setRestaurantAddress(restaurantInDTO.getRestaurantAddress().trim());</span>
+<span class="nc" id="L28">    restaurant.setContactNumber(restaurantInDTO.getContactNumber());</span>
+<span class="nc" id="L29">    restaurant.setDescription(restaurantInDTO.getDescription());</span>
+<span class="nc" id="L30">    restaurant.setRegistrationDate(LocalDate.now());</span>
+<span class="nc" id="L31">    restaurant.setOpen(true);</span>
+
+    try {
+<span class="nc" id="L34">      byte[] imageBytes = restaurantInDTO.getRestaurantImage().getBytes();</span>
+<span class="nc" id="L35">      restaurant.setRestaurantImage(imageBytes);</span>
+<span class="nc" id="L36">    } catch (IOException e) {</span>
+<span class="nc" id="L37">      e.printStackTrace();</span>
+<span class="nc" id="L38">    }</span>
+
+<span class="nc" id="L40">    return restaurant;</span>
+  }
+
+  /**
+   * Converts a {@link Restaurant} entity to a {@link RestaurantOutDTO}.
+   *
+   * @param restaurant the entity representing the restaurant.
+   * @return a {@link RestaurantOutDTO} populated with restaurant data.
+   */
+  public static RestaurantOutDTO fromEntityToOutDTO(final Restaurant restaurant) {
+<span class="fc" id="L50">    RestaurantOutDTO restaurantOutDTO = new RestaurantOutDTO();</span>
+<span class="fc" id="L51">    restaurantOutDTO.setRestaurantId(restaurant.getRestaurantId());</span>
+<span class="fc" id="L52">    restaurantOutDTO.setRestaurantName(restaurant.getRestaurantName());</span>
+<span class="fc" id="L53">    restaurantOutDTO.setRestaurantAddress(restaurant.getRestaurantAddress());</span>
+<span class="fc" id="L54">    restaurantOutDTO.setContactNumber(restaurant.getContactNumber());</span>
+<span class="fc" id="L55">    restaurantOutDTO.setRegistrationDate(restaurant.getRegistrationDate());</span>
+<span class="fc" id="L56">    restaurantOutDTO.setDescription(restaurant.getDescription());</span>
+<span class="fc" id="L57">    restaurantOutDTO.setOpen(restaurant.isOpen());</span>
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">    if (Objects.nonNull(restaurant.getRestaurantImage())) {</span>
+<span class="fc" id="L60">      String base64Image = Base64.getEncoder().encodeToString(restaurant.getRestaurantImage());</span>
+<span class="fc" id="L61">      restaurantOutDTO.setRestaurantImage(base64Image);</span>
+    }
+
+<span class="fc" id="L64">    return restaurantOutDTO;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

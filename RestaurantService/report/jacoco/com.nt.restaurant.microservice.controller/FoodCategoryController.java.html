@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FoodCategoryController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.controller</a> &gt; <span class="el_source">FoodCategoryController.java</span></div><h1>FoodCategoryController.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.controller;
+
+import com.nt.restaurant.microservice.dto.CommonResponse;
+import com.nt.restaurant.microservice.dto.FoodCategoryInDTO;
+import com.nt.restaurant.microservice.dto.FoodCategoryOutDTO;
+import com.nt.restaurant.microservice.service.FoodCategoryService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.List;
+
+/**
+ * Controller for handling food category-related operations such as adding, fetching, and updating food categories.
+ */
+@RestController
+@CrossOrigin
+@RequestMapping(&quot;/categories&quot;)
+<span class="fc" id="L30">public class FoodCategoryController {</span>
+
+  /**
+   * logger to log important events related to food category operations.
+   */
+<span class="fc" id="L35">  private static final Logger LOGGER = LogManager.getLogger(FoodCategoryController.class);</span>
+
+  /**
+   * Service responsible for handling the business logic related to food categories.
+   * This service is used for operations such as adding, fetching, and updating food categories.
+   * &lt;p&gt;
+   * The {@code foodCategoryService} is injected automatically by Spring's dependency injection mechanism,
+   * ensuring that the controller has access to the appropriate implementation of the {@link FoodCategoryService}.
+   */
+  @Autowired
+  private FoodCategoryService foodCategoryService;
+
+  /**
+   * Adds a new food category based on the provided {@link FoodCategoryInDTO} data.
+   *
+   * @param foodCategoryInDTO the food category details to be added.
+   * @return a response entity with a success message if the food category is added successfully.
+   */
+  @PostMapping(&quot;/addFoodCategory&quot;)
+  public ResponseEntity&lt;CommonResponse&gt; addFoodCategory(@Valid @RequestBody final FoodCategoryInDTO foodCategoryInDTO) {
+<span class="fc" id="L55">    LOGGER.info(&quot;Received request to add food category: {}&quot;, foodCategoryInDTO);</span>
+<span class="fc" id="L56">    CommonResponse response = foodCategoryService.addFoodCategory(foodCategoryInDTO);</span>
+<span class="fc" id="L57">    LOGGER.info(&quot;Successfully added food category with ID: {}&quot;, response.getMessage());</span>
+<span class="fc" id="L58">    return ResponseEntity.ok(response);</span>
+  }
+
+  /**
+   * Retrieves food categories for a specified restaurant by its restaurant ID.
+   *
+   * @param restaurantId the ID of the restaurant whose food categories are to be fetched.
+   * @return a response entity containing the list of food categories for the specified restaurant.
+   */
+  @GetMapping(&quot;/foodCategory/{restaurantId}&quot;)
+  public ResponseEntity&lt;List&lt;FoodCategoryOutDTO&gt;&gt; getFoodCategoryByRestaurantId(
+    @PathVariable(&quot;restaurantId&quot;) final Integer restaurantId) {
+<span class="fc" id="L70">    LOGGER.info(&quot;Fetching food categories for restaurant ID: {}&quot;, restaurantId);</span>
+<span class="fc" id="L71">    List&lt;FoodCategoryOutDTO&gt; foodCategories = foodCategoryService.getFoodCategoryByRestaurantId(restaurantId);</span>
+<span class="fc" id="L72">    LOGGER.info(&quot;Successfully retrieved {} food categories for restaurant ID: {}&quot;, foodCategories.size(), restaurantId);</span>
+<span class="fc" id="L73">    return ResponseEntity.ok(foodCategories);</span>
+  }
+
+  /**
+   * Updates an existing food category based on its ID and the provided {@link FoodCategoryInDTO} data.
+   *
+   * @param id                the ID of the food category to update.
+   * @param foodCategoryInDTO the updated food category details.
+   * @return a response entity with a success message if the food category is updated successfully.
+   */
+  @PutMapping(&quot;/updateFoodCategory/{id}&quot;)
+  public ResponseEntity&lt;CommonResponse&gt; updateFoodCategory(@PathVariable(&quot;id&quot;) final Integer id,
+                                                           @Valid @RequestBody final FoodCategoryInDTO foodCategoryInDTO) {
+<span class="fc" id="L86">    LOGGER.info(&quot;Received request to update food category with ID: {} with details: {}&quot;, id, foodCategoryInDTO);</span>
+<span class="fc" id="L87">    CommonResponse updatedCategory = foodCategoryService.updateFoodCategory(id, foodCategoryInDTO);</span>
+<span class="fc" id="L88">    LOGGER.info(&quot;Successfully updated food category with ID: {}&quot;, id);</span>
+<span class="fc" id="L89">    return new ResponseEntity&lt;CommonResponse&gt;(updatedCategory, HttpStatus.OK);</span>
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

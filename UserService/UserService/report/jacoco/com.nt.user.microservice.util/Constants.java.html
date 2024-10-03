@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Constants.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.util</a> &gt; <span class="el_source">Constants.java</span></div><h1>Constants.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.util;
+
+/**
+ * A utility class containing constant values used throughout the application.
+ * &lt;p&gt;
+ * This class defines various constant values including default settings, success messages,
+ * error messages, and other string literals and numeric values that are used in different parts
+ * of the application to ensure consistency and avoid hard-coding values directly in the code.
+ * &lt;/p&gt;
+ */
+<span class="nc" id="L11">public class Constants {</span>
+
+  /**
+   * The initial wallet balance assigned to a new user upon registration.
+   * &lt;p&gt;
+   * This constant represents the default amount of money that is credited to a new user's wallet
+   * when they are first registered in the system.
+   * &lt;/p&gt;
+   */
+<span class="fc" id="L20">  public static final Double INITIAL_WALLET_BALANCE = 1000.0;</span>
+
+  /**
+   * Message indicating that a user has been successfully registered.
+   * &lt;p&gt;
+   * This constant is used as a response message to indicate that the user registration process
+   * was completed successfully.
+   * &lt;/p&gt;
+   */
+  public static final String USER_REGISTERED_SUCCESSFULLY = &quot;User Registered Successfully&quot;;
+
+  /**
+   * Message indicating that a user was not found in the system.
+   * &lt;p&gt;
+   * This constant is used when an operation cannot be completed because the specified user
+   * does not exist in the database.
+   * &lt;/p&gt;
+   */
+  public static final String USER_NOT_FOUND = &quot;User not found&quot;;
+
+  /**
+   * Message indicating that a user's profile has been successfully updated.
+   * &lt;p&gt;
+   * This constant is used as a response message to signify that the user's profile information
+   * has been successfully modified and saved.
+   * &lt;/p&gt;
+   */
+  public static final String USER_PROFILE_UPDATED_SUCCESSFULLY = &quot;User profile updated successfully&quot;;
+
+  /**
+   * Message indicating that a user has been successfully deleted.
+   * &lt;p&gt;
+   * This constant is used as a confirmation message after a user has been removed from the system
+   * and all associated data has been cleaned up.
+   * &lt;/p&gt;
+   */
+  public static final String USER_DELETED_SUCCESSFULLY = &quot;User deleted successfully&quot;;
+
+  /**
+   * Message indicating that an unexpected error occurred during the user deletion process.
+   * &lt;p&gt;
+   * This constant is used to report errors that are not specifically handled but occur during
+   * the user deletion process.
+   * &lt;/p&gt;
+   */
+  public static final String UNEXPECTED_ERROR_DURING_DELETION = &quot;An unexpected error occurred during deletion&quot;;
+
+  /**
+   * Message indicating that an address has been successfully added.
+   * &lt;p&gt;
+   * This constant is used as a response message when a new address is added to a user's profile.
+   * &lt;/p&gt;
+   */
+  public static final String ADDRESS_ADDED_SUCCESSFULLY = &quot;Address added successfully&quot;;
+
+  /**
+   * Message indicating that an address has been successfully updated.
+   * &lt;p&gt;
+   * This constant is used as a response message when an existing address is modified and saved.
+   * &lt;/p&gt;
+   */
+  public static final String ADDRESS_UPDATED_SUCCESS = &quot;Address updated successfully&quot;;
+
+  /**
+   * Message indicating that there was a failure in adding an address.
+   * &lt;p&gt;
+   * This constant is used when an attempt to add a new address fails, possibly due to validation
+   * errors or system issues.
+   * &lt;/p&gt;
+   */
+  public static final String ADDRESS_ADD_FAILURE = &quot;Failed to add address&quot;;
+
+  /**
+   * Message indicating that a user is already registered with the provided email.
+   * &lt;p&gt;
+   * This constant is used to notify that the registration attempt failed because the email is
+   * already associated with an existing user.
+   * &lt;/p&gt;
+   */
+  public static final String USER_ALREADY_REGISTERED = &quot;User already registered with this email&quot;;
+
+  /**
+   * Message indicating that the provided credentials are invalid.
+   * &lt;p&gt;
+   * This constant is used when a login attempt fails due to incorrect password or other credential
+   * issues.
+   * &lt;/p&gt;
+   */
+  public static final String INVALID_CREDENTIALS = &quot;Invalid password&quot;;
+
+  /**
+   * Message indicating that no addresses were found for the specified user.
+   * &lt;p&gt;
+   * This constant is used when a request to retrieve addresses for a user returns an empty result,
+   * meaning no addresses are associated with the user.
+   * &lt;/p&gt;
+   */
+  public static final String ADDRESS_NOT_FOUND = &quot;No addresses found for this user.&quot;;
+
+  /**
+   * Message indicating insufficient balance in the user's wallet.
+   * &lt;p&gt;
+   * This constant is used when an operation fails due to the user not having enough funds in their wallet.
+   * &lt;/p&gt;
+   */
+  public static final String INSUFFICIENT_BALANCE = &quot;Insufficient balance in wallet.&quot;;
+
+  /**
+   * Message indicating that the HTTP method is not allowed for the requested resource.
+   * &lt;p&gt;
+   * This constant is used when a client attempts to use a method that is not supported by the server for the specific endpoint.
+   * &lt;/p&gt;
+   */
+  public static final String METHOD_NOT_ALLOWED = &quot;Method not allowed&quot;;
+
+  /**
+   * Error message indicating that the subject of an email cannot be null or empty.
+   * &lt;p&gt;
+   * This constant is used in validation scenarios to ensure that the subject field is provided.
+   * &lt;/p&gt;
+   */
+  public static final String SUBJECT_EMPTY_ERROR = &quot;Subject cannot be null or empty.&quot;;
+
+  /**
+   * Error message indicating that the recipient list for an email cannot be null or empty.
+   * &lt;p&gt;
+   * This constant is used in validation scenarios to ensure that at least one recipient is specified.
+   * &lt;/p&gt;
+   */
+  public static final String RECIPIENT_LIST_EMPTY_ERROR = &quot;Recipient list cannot be null or empty.&quot;;
+
+  /**
+   * Error message indicating that the recipient email cannot be null or empty.
+   * &lt;p&gt;
+   * This constant is used in validation scenarios to ensure that the recipient's email address is provided.
+   * &lt;/p&gt;
+   */
+  public static final String RECIPIENT_EMAIL_EMPTY_ERROR = &quot;Recipient email cannot be null or empty: &quot;;
+
+  /**
+   * Error message indicating that the provided email format is invalid.
+   * &lt;p&gt;
+   * This constant is used in validation scenarios to notify users of incorrect email formats.
+   * &lt;/p&gt;
+   */
+  public static final String INVALID_EMAIL_FORMAT_ERROR = &quot;Invalid email format: &quot;;
+
+  /**
+   * Error message indicating that the email body cannot be null or empty.
+   * &lt;p&gt;
+   * This constant is used in validation scenarios to ensure that an email body is provided.
+   * &lt;/p&gt;
+   */
+  public static final String EMAIL_BODY_EMPTY_ERROR = &quot;Email body cannot be null or empty.&quot;;
+
+  /**
+   * Message indicating that the email has been sent successfully.
+   * &lt;p&gt;
+   * This constant is used to provide feedback to users upon successful email transmission.
+   * &lt;/p&gt;
+   */
+  public static final String EMAIL_SENT_SUCCESSFULLY = &quot;Email sent successfully.&quot;;
+
+  /**
+   * The sender's email address used for sending emails.
+   * &lt;p&gt;
+   * This constant defines the email address that will be displayed as the sender when emails are sent.
+   * &lt;/p&gt;
+   */
+  public static final String SENDER = &quot;bhagyashrigayakwad23@gmail.com&quot;;
+
+  /**
+   * Error message indicating that the request body is invalid.
+   * &lt;p&gt;
+   * This constant is used to inform clients when the provided request body does not conform to expected formats.
+   * &lt;/p&gt;
+   */
+  public static final String INVALID_REQUEST_BODY_ERROR = &quot;Invalid request body&quot;;
+
+  /**
+   * Error message indicating that no content was provided in the request body or that the format is invalid.
+   * &lt;p&gt;
+   * This constant is used in scenarios where the request body is either empty or not formatted correctly.
+   * &lt;/p&gt;
+   */
+  public static final String EMPTY_CONTENT_ERROR = &quot;No content was provided in the request body or the format is invalid&quot;;
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

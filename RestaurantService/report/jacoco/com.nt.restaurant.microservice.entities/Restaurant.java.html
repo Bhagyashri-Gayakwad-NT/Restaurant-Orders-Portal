@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Restaurant.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.entities</a> &gt; <span class="el_source">Restaurant.java</span></div><h1>Restaurant.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.entities;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Objects;
+
+/**
+ * Represents a Restaurant entity in the Restaurant microservice.
+ * This class holds the data related to a restaurant including its name,
+ * address, contact information, registration date, and more.
+ */
+@Entity
+public class Restaurant {
+
+  /**
+   * Unique identifier for the restaurant. This ID is automatically generated
+   * when a new restaurant is created.
+   */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer restaurantId;
+
+  /**
+   * The ID of the user who owns the restaurant.
+   */
+  private Integer userId;
+
+  /**
+   * The name of the restaurant.
+   */
+  private String restaurantName;
+
+  /**
+   * The address of the restaurant.
+   */
+  private String restaurantAddress;
+
+  /**
+   * The contact number of the restaurant.
+   */
+  private String contactNumber;
+
+  /**
+   * The date the restaurant was registered.
+   */
+  private LocalDate registrationDate;
+
+  /**
+   * The description of the restaurant.
+   */
+  private String description;
+
+  /**
+   * Whether the restaurant is currently open.
+   */
+  private boolean isOpen;
+
+  /**
+   * The image of the restaurant stored as byte array.
+   */
+  @Lob
+  private byte[] restaurantImage;
+
+  /**
+   * Default constructor for Restaurant.
+   */
+<span class="fc" id="L72">  public Restaurant() {</span>
+<span class="fc" id="L73">  }</span>
+
+  /**
+   * Parameterized constructor for creating a Restaurant object.
+   *
+   * @param restaurantId      the unique ID of the restaurant
+   * @param userId            the ID of the user who owns the restaurant
+   * @param restaurantName    the name of the restaurant
+   * @param restaurantAddress the address of the restaurant
+   * @param contactNumber     the contact number of the restaurant
+   * @param registrationDate  the date the restaurant was registered
+   * @param description       the description of the restaurant
+   * @param isOpen            whether the restaurant is currently open
+   * @param restaurantImage   the image of the restaurant stored as byte array
+   */
+  public Restaurant(final Integer restaurantId, final Integer userId, final String restaurantName,
+                    final String restaurantAddress, final String contactNumber,
+                    final LocalDate registrationDate, final String description,
+<span class="fc" id="L91">                    final boolean isOpen, final byte[] restaurantImage) {</span>
+<span class="fc" id="L92">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L93">    this.userId = userId;</span>
+<span class="fc" id="L94">    this.restaurantName = restaurantName;</span>
+<span class="fc" id="L95">    this.restaurantAddress = restaurantAddress;</span>
+<span class="fc" id="L96">    this.contactNumber = contactNumber;</span>
+<span class="fc" id="L97">    this.registrationDate = registrationDate;</span>
+<span class="fc" id="L98">    this.description = description;</span>
+<span class="fc" id="L99">    this.isOpen = isOpen;</span>
+<span class="fc" id="L100">    this.restaurantImage = restaurantImage;</span>
+<span class="fc" id="L101">  }</span>
+
+  // Getter and Setter methods with Javadoc comments
+  /**
+   * Gets the unique ID of the restaurant.
+   *
+   * @return the restaurant ID
+   */
+  public Integer getRestaurantId() {
+<span class="fc" id="L110">    return restaurantId;</span>
+  }
+
+  /**
+   * Sets the unique ID of the restaurant.
+   *
+   * @param restaurantId the restaurant ID to set
+   */
+  public void setRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L119">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L120">  }</span>
+
+  /**
+   * Gets the user ID of the restaurant owner.
+   *
+   * @return the user ID
+   */
+  public Integer getUserId() {
+<span class="fc" id="L128">    return userId;</span>
+  }
+
+  /**
+   * Sets the user ID of the restaurant owner.
+   *
+   * @param userId the user ID to set
+   */
+  public void setUserId(final Integer userId) {
+<span class="fc" id="L137">    this.userId = userId;</span>
+<span class="fc" id="L138">  }</span>
+
+  /**
+   * Gets the name of the restaurant.
+   *
+   * @return the restaurant name
+   */
+  public String getRestaurantName() {
+<span class="fc" id="L146">    return restaurantName;</span>
+  }
+
+  /**
+   * Sets the name of the restaurant.
+   *
+   * @param restaurantName the restaurant name to set
+   */
+  public void setRestaurantName(final String restaurantName) {
+<span class="fc" id="L155">    this.restaurantName = restaurantName;</span>
+<span class="fc" id="L156">  }</span>
+
+  /**
+   * Gets the address of the restaurant.
+   *
+   * @return the restaurant address
+   */
+  public String getRestaurantAddress() {
+<span class="fc" id="L164">    return restaurantAddress;</span>
+  }
+
+  /**
+   * Sets the address of the restaurant.
+   *
+   * @param restaurantAddress the restaurant address to set
+   */
+  public void setRestaurantAddress(final String restaurantAddress) {
+<span class="fc" id="L173">    this.restaurantAddress = restaurantAddress;</span>
+<span class="fc" id="L174">  }</span>
+
+  /**
+   * Gets the contact number of the restaurant.
+   *
+   * @return the contact number
+   */
+  public String getContactNumber() {
+<span class="fc" id="L182">    return contactNumber;</span>
+  }
+
+  /**
+   * Sets the contact number of the restaurant.
+   *
+   * @param contactNumber the contact number to set
+   */
+  public void setContactNumber(final String contactNumber) {
+<span class="fc" id="L191">    this.contactNumber = contactNumber;</span>
+<span class="fc" id="L192">  }</span>
+
+  /**
+   * Gets the registration date of the restaurant.
+   *
+   * @return the registration date
+   */
+  public LocalDate getRegistrationDate() {
+<span class="fc" id="L200">    return registrationDate;</span>
+  }
+
+  /**
+   * Sets the registration date of the restaurant.
+   *
+   * @param registrationDate the registration date to set
+   */
+  public void setRegistrationDate(final LocalDate registrationDate) {
+<span class="fc" id="L209">    this.registrationDate = registrationDate;</span>
+<span class="fc" id="L210">  }</span>
+
+  /**
+   * Gets the description of the restaurant.
+   *
+   * @return the description of the restaurant
+   */
+  public String getDescription() {
+<span class="fc" id="L218">    return description;</span>
+  }
+
+  /**
+   * Sets the description of the restaurant.
+   *
+   * @param description the description to set
+   */
+  public void setDescription(final String description) {
+<span class="fc" id="L227">    this.description = description;</span>
+<span class="fc" id="L228">  }</span>
+
+  /**
+   * Checks if the restaurant is currently open.
+   *
+   * @return true if the restaurant is open, false otherwise
+   */
+  public boolean isOpen() {
+<span class="fc" id="L236">    return isOpen;</span>
+  }
+
+  /**
+   * Sets whether the restaurant is currently open.
+   *
+   * @param open true if the restaurant is open, false otherwise
+   */
+  public void setOpen(final boolean open) {
+<span class="fc" id="L245">    isOpen = open;</span>
+<span class="fc" id="L246">  }</span>
+
+  /**
+   * Gets the image of the restaurant stored as a byte array.
+   *
+   * @return the restaurant image
+   */
+  public byte[] getRestaurantImage() {
+<span class="fc" id="L254">    return restaurantImage;</span>
+  }
+
+  /**
+   * Sets the image of the restaurant stored as a byte array.
+   *
+   * @param restaurantImage the restaurant image to set
+   */
+  public void setRestaurantImage(final byte[] restaurantImage) {
+<span class="fc" id="L263">    this.restaurantImage = restaurantImage;</span>
+<span class="fc" id="L264">  }</span>
+
+  /**
+   * Generates the hash code for this Restaurant object.
+   *
+   * @return the hash code of this object
+   */  @Override
+  public int hashCode() {
+<span class="fc" id="L272">    return Objects.hash(restaurantId, userId, restaurantName, restaurantAddress,</span>
+<span class="fc" id="L273">      contactNumber, registrationDate, description, isOpen,</span>
+<span class="fc" id="L274">      Arrays.hashCode(restaurantImage));</span>
+  }
+
+  /**
+   * Checks if this Restaurant object is equal to another object.
+   *
+   * @param o the object to compare with
+   * @return true if the objects are equal, false otherwise
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="fc bfc" id="L285" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L286">      return true;</span>
+    }
+<span class="pc bpc" id="L288" title="1 of 2 branches missed.">    if (!(o instanceof Restaurant)) {</span>
+<span class="nc" id="L289">      return false;</span>
+    }
+<span class="fc" id="L291">    Restaurant that = (Restaurant) o;</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">    return isOpen == that.isOpen</span>
+<span class="pc bpc" id="L293" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantId, that.restaurantId)</span>
+<span class="pc bpc" id="L294" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(userId, that.userId)</span>
+<span class="pc bpc" id="L295" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantName, that.restaurantName)</span>
+<span class="pc bpc" id="L296" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantAddress, that.restaurantAddress)</span>
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(contactNumber, that.contactNumber)</span>
+<span class="pc bpc" id="L298" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(registrationDate, that.registrationDate)</span>
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(description, that.description)</span>
+<span class="pc bpc" id="L300" title="1 of 2 branches missed.">      &amp;&amp; Objects.deepEquals(restaurantImage, that.restaurantImage);</span>
+  }
+
+  /**
+   * Returns a string representation of the restaurant object.
+   *
+   * @return a string representation of the restaurant
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L310">    return &quot;Restaurant{&quot;</span>
+      + &quot;restaurantId=&quot; + restaurantId
+      + &quot;, userId=&quot; + userId
+      + &quot;, restaurantName='&quot; + restaurantName
+      + '\'' + &quot;, restaurantAddress='&quot; + restaurantAddress
+      + '\'' + &quot;, contactNumber='&quot; + contactNumber
+      + '\'' + &quot;, registrationDate=&quot; + registrationDate
+      + &quot;, description='&quot; + description
+      + '\'' + &quot;, isOpen=&quot; + isOpen
+<span class="fc" id="L319">      + &quot;, restaurantImage=&quot; + Arrays.toString(restaurantImage)</span>
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

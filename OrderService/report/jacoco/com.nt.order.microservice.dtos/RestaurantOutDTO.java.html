@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RestaurantOutDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.dtos</a> &gt; <span class="el_source">RestaurantOutDTO.java</span></div><h1>RestaurantOutDTO.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.dtos;
+
+import java.time.LocalDate;
+import java.util.Objects;
+
+public class RestaurantOutDTO {
+
+  /**
+   * The unique identifier for the restaurant.
+   */
+  private Integer restaurantId;
+
+  /**
+   * The name of the restaurant.
+   */
+  private String restaurantName;
+
+  /**
+   * The address of the restaurant.
+   */
+  private String restaurantAddress;
+
+  /**
+   * The contact number for the restaurant.
+   */
+  private String contactNumber;
+
+  /**
+   * The registration date of the restaurant.
+   */
+  private LocalDate registrationDate;
+
+  /**
+   * A description of the restaurant.
+   */
+  private String description;
+
+  /**
+   * A flag indicating whether the restaurant is open.
+   */
+  private boolean isOpen;
+
+  /**
+   * The image of the restaurant.
+   */
+  private String restaurantImage;
+
+  /**
+   * Default constructor for creating an empty {@code RestaurantOutDTO} instance.
+   */
+<span class="fc" id="L51">  public RestaurantOutDTO() {</span>
+<span class="fc" id="L52">  }</span>
+
+  /**
+   * Constructor for creating a {@code RestaurantOutDTO} instance with specified values.
+   *
+   * @param restaurantId      the unique identifier for the restaurant.
+   * @param restaurantName    the name of the restaurant.
+   * @param restaurantAddress the address of the restaurant.
+   * @param contactNumber     the contact number for the restaurant.
+   * @param registrationDate  the registration date of the restaurant.
+   * @param description       a description of the restaurant.
+   * @param isOpen            a flag indicating whether the restaurant is open.
+   * @param restaurantImage   the image of the restaurant.
+   */
+  public RestaurantOutDTO(final Integer restaurantId, final String restaurantName,
+                          final String restaurantAddress, final String contactNumber, final LocalDate registrationDate,
+<span class="fc" id="L68">                          final String description, final boolean isOpen, final String restaurantImage) {</span>
+<span class="fc" id="L69">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L70">    this.restaurantName = restaurantName;</span>
+<span class="fc" id="L71">    this.restaurantAddress = restaurantAddress;</span>
+<span class="fc" id="L72">    this.contactNumber = contactNumber;</span>
+<span class="fc" id="L73">    this.registrationDate = registrationDate;</span>
+<span class="fc" id="L74">    this.description = description;</span>
+<span class="fc" id="L75">    this.isOpen = isOpen;</span>
+<span class="fc" id="L76">    this.restaurantImage = restaurantImage;</span>
+<span class="fc" id="L77">  }</span>
+
+  /**
+   * Gets the unique identifier for the restaurant.
+   *
+   * @return the restaurant ID.
+   */
+  public Integer getRestaurantId() {
+<span class="fc" id="L85">    return restaurantId;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the restaurant.
+   *
+   * @param restaurantId the restaurant ID to set.
+   */
+  public void setRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L94">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L95">  }</span>
+
+  /**
+   * Gets the name of the restaurant.
+   *
+   * @return the restaurant name.
+   */
+  public String getRestaurantName() {
+<span class="fc" id="L103">    return restaurantName;</span>
+  }
+
+  /**
+   * Sets the name of the restaurant.
+   *
+   * @param restaurantName the restaurant name to set.
+   */
+  public void setRestaurantName(final String restaurantName) {
+<span class="fc" id="L112">    this.restaurantName = restaurantName;</span>
+<span class="fc" id="L113">  }</span>
+
+  /**
+   * Gets the address of the restaurant.
+   *
+   * @return the restaurant address.
+   */
+  public String getRestaurantAddress() {
+<span class="fc" id="L121">    return restaurantAddress;</span>
+  }
+
+  /**
+   * Sets the address of the restaurant.
+   *
+   * @param restaurantAddress the restaurant address to set.
+   */
+  public void setRestaurantAddress(final String restaurantAddress) {
+<span class="fc" id="L130">    this.restaurantAddress = restaurantAddress;</span>
+<span class="fc" id="L131">  }</span>
+
+  /**
+   * Gets the contact number for the restaurant.
+   *
+   * @return the contact number.
+   */
+  public String getContactNumber() {
+<span class="fc" id="L139">    return contactNumber;</span>
+  }
+
+  /**
+   * Sets the contact number for the restaurant.
+   *
+   * @param contactNumber the contact number to set.
+   */
+  public void setContactNumber(final String contactNumber) {
+<span class="fc" id="L148">    this.contactNumber = contactNumber;</span>
+<span class="fc" id="L149">  }</span>
+
+  /**
+   * Gets the registration date of the restaurant.
+   *
+   * @return the registration date.
+   */
+  public LocalDate getRegistrationDate() {
+<span class="fc" id="L157">    return registrationDate;</span>
+  }
+
+  /**
+   * Sets the registration date of the restaurant.
+   *
+   * @param registrationDate the registration date to set.
+   */
+  public void setRegistrationDate(final LocalDate registrationDate) {
+<span class="fc" id="L166">    this.registrationDate = registrationDate;</span>
+<span class="fc" id="L167">  }</span>
+
+  /**
+   * Gets the description of the restaurant.
+   *
+   * @return the description.
+   */
+  public String getDescription() {
+<span class="fc" id="L175">    return description;</span>
+  }
+
+  /**
+   * Sets the description of the restaurant.
+   *
+   * @param description the description to set.
+   */
+  public void setDescription(final String description) {
+<span class="fc" id="L184">    this.description = description;</span>
+<span class="fc" id="L185">  }</span>
+
+  /**
+   * Checks if the restaurant is open.
+   *
+   * @return {@code true} if the restaurant is open, {@code false} otherwise.
+   */
+  public boolean isOpen() {
+<span class="fc" id="L193">    return isOpen;</span>
+  }
+
+  /**
+   * Sets the open status of the restaurant.
+   *
+   * @param open the open status to set.
+   */
+  public void setOpen(final boolean open) {
+<span class="fc" id="L202">    isOpen = open;</span>
+<span class="fc" id="L203">  }</span>
+
+  /**
+   * Gets the image of the restaurant.
+   *
+   * @return the restaurant image.
+   */
+  public String getRestaurantImage() {
+<span class="fc" id="L211">    return restaurantImage;</span>
+  }
+
+  /**
+   * Sets the image of the restaurant.
+   *
+   * @param restaurantImage the restaurant image to set.
+   */
+  public void setRestaurantImage(final String restaurantImage) {
+<span class="fc" id="L220">    this.restaurantImage = restaurantImage;</span>
+<span class="fc" id="L221">  }</span>
+
+  /**
+   * Compares this {@code RestaurantOutDTO} to another object for equality.
+   *
+   * @param o the object to compare with.
+   * @return {@code true} if this object is equal to the other object, {@code false} otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L232">      return true;</span>
+    }
+<span class="pc bpc" id="L234" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L235">      return false;</span>
+    }
+<span class="fc" id="L237">    RestaurantOutDTO that = (RestaurantOutDTO) o;</span>
+<span class="pc bpc" id="L238" title="2 of 4 branches missed.">    return isOpen == that.isOpen &amp;&amp; Objects.equals(restaurantId, that.restaurantId)</span>
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantName, that.restaurantName)</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantAddress, that.restaurantAddress)</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(contactNumber, that.contactNumber)</span>
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(registrationDate, that.registrationDate)</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(description, that.description)</span>
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantImage, that.restaurantImage);</span>
+  }
+
+  /**
+   * Returns a hash code value for this {@code RestaurantOutDTO}.
+   *
+   * @return the hash code value.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L254">    return Objects.hash(restaurantId, restaurantName, restaurantAddress, contactNumber, registrationDate, description, isOpen,</span>
+      restaurantImage);
+  }
+
+  /**
+   * Returns a string representation of this {@code RestaurantOutDTO}.
+   *
+   * @return a string representation of the object.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L265">    return &quot;RestaurantOutDTO{&quot;</span>
+      + &quot;restaurantId=&quot; + restaurantId
+      + &quot;, restaurantName='&quot; + restaurantName
+      + '\'' + &quot;, restaurantAddress='&quot; + restaurantAddress
+      + '\'' + &quot;, contactNumber='&quot; + contactNumber
+      + '\'' + &quot;, registrationDate=&quot; + registrationDate
+      + &quot;, description='&quot; + description
+      + '\'' + &quot;, isOpen=&quot; + isOpen
+      + &quot;, restaurantImage='&quot; + restaurantImage
+      + '\'' + '}';
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

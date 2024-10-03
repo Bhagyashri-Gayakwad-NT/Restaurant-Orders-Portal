@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderOutDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.dtos</a> &gt; <span class="el_source">OrderOutDTO.java</span></div><h1>OrderOutDTO.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.dtos;
+
+import com.nt.order.microservice.util.OrderStatus;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * Data Transfer Object for Order Output.
+ * This class encapsulates the information about an order that is returned to the client.
+ */
+public class OrderOutDTO {
+
+  /**
+   * The ID of the order.
+   */
+  private Integer orderId;
+
+  /**
+   * The ID of the user who placed the order.
+   */
+  private Integer userId;
+
+  /**
+   * The ID of the restaurant.
+   */
+  private Integer restaurantId;
+
+  /**
+   * The ID of the delivery address.
+   */
+  private Integer addressId;
+
+  /**
+   * The status of the order.
+   */
+  private OrderStatus orderStatus;
+
+  /**
+   * The total price of the order.
+   */
+  private Double totalPrice;
+
+  /**
+   * The list of cart items included in the order.
+   */
+  private List&lt;CartItemDTO&gt; cartItems;
+
+  /**
+   * The time when the order was placed.
+   */
+  private LocalDateTime placedTiming;
+
+
+  /**
+   * Default constructor.
+   */
+<span class="fc" id="L59">  public OrderOutDTO() {</span>
+<span class="fc" id="L60">  }</span>
+
+  /**
+   * Parameterized constructor to create an OrderOutDTO with specified details.
+   *
+   * @param orderId      the ID of the order
+   * @param userId       the ID of the user who placed the order
+   * @param restaurantId the ID of the restaurant
+   * @param addressId    the ID of the delivery address
+   * @param orderStatus  the status of the order
+   * @param totalPrice   the total price of the order
+   * @param cartItems    the list of cart items included in the order
+   * @param placedTiming the time when the order was placed
+   */
+  public OrderOutDTO(final Integer orderId, final Integer userId, final Integer restaurantId,
+                     final Integer addressId, final OrderStatus orderStatus, final Double totalPrice,
+<span class="fc" id="L76">                     final List&lt;CartItemDTO&gt; cartItems, final LocalDateTime placedTiming) {</span>
+<span class="fc" id="L77">    this.orderId = orderId;</span>
+<span class="fc" id="L78">    this.userId = userId;</span>
+<span class="fc" id="L79">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L80">    this.addressId = addressId;</span>
+<span class="fc" id="L81">    this.orderStatus = orderStatus;</span>
+<span class="fc" id="L82">    this.totalPrice = totalPrice;</span>
+<span class="fc" id="L83">    this.cartItems = cartItems;</span>
+<span class="fc" id="L84">    this.placedTiming = placedTiming;</span>
+<span class="fc" id="L85">  }</span>
+
+  /**
+   * Retrieves the order ID.
+   *
+   * @return the order ID
+   */
+  public Integer getOrderId() {
+<span class="fc" id="L93">    return orderId;</span>
+  }
+
+  /**
+   * Sets the order ID.
+   *
+   * @param orderId the order ID to set
+   */
+  public void setOrderId(final Integer orderId) {
+<span class="fc" id="L102">    this.orderId = orderId;</span>
+<span class="fc" id="L103">  }</span>
+
+  /**
+   * Retrieves the user ID.
+   *
+   * @return the user ID
+   */
+  public Integer getUserId() {
+<span class="fc" id="L111">    return userId;</span>
+  }
+
+  /**
+   * Sets the user ID.
+   *
+   * @param userId the user ID to set
+   */
+  public void setUserId(final Integer userId) {
+<span class="fc" id="L120">    this.userId = userId;</span>
+<span class="fc" id="L121">  }</span>
+
+  /**
+   * Retrieves the restaurant ID.
+   *
+   * @return the restaurant ID
+   */
+  public Integer getRestaurantId() {
+<span class="fc" id="L129">    return restaurantId;</span>
+  }
+
+  /**
+   * Sets the restaurant ID.
+   *
+   * @param restaurantId the restaurant ID to set
+   */
+  public void setRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L138">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L139">  }</span>
+
+  /**
+   * Retrieves the address ID.
+   *
+   * @return the address ID
+   */
+  public Integer getAddressId() {
+<span class="fc" id="L147">    return addressId;</span>
+  }
+
+  /**
+   * Sets the address ID.
+   *
+   * @param addressId the address ID to set
+   */
+  public void setAddressId(final Integer addressId) {
+<span class="fc" id="L156">    this.addressId = addressId;</span>
+<span class="fc" id="L157">  }</span>
+
+  /**
+   * Retrieves the order status.
+   *
+   * @return the order status
+   */
+  public OrderStatus getOrderStatus() {
+<span class="fc" id="L165">    return orderStatus;</span>
+  }
+
+  /**
+   * Sets the order status.
+   *
+   * @param orderStatus the order status to set
+   */
+  public void setOrderStatus(final OrderStatus orderStatus) {
+<span class="fc" id="L174">    this.orderStatus = orderStatus;</span>
+<span class="fc" id="L175">  }</span>
+
+  /**
+   * Retrieves the total price of the order.
+   *
+   * @return the total price
+   */
+  public Double getTotalPrice() {
+<span class="fc" id="L183">    return totalPrice;</span>
+  }
+
+  /**
+   * Sets the total price of the order.
+   *
+   * @param totalPrice the total price to set
+   */
+  public void setTotalPrice(final Double totalPrice) {
+<span class="fc" id="L192">    this.totalPrice = totalPrice;</span>
+<span class="fc" id="L193">  }</span>
+
+  /**
+   * Retrieves the list of cart items.
+   *
+   * @return the list of cart items
+   */
+  public List&lt;CartItemDTO&gt; getCartItems() {
+<span class="fc" id="L201">    return cartItems;</span>
+  }
+
+  /**
+   * Sets the list of cart items.
+   *
+   * @param cartItems the list of cart items to set
+   */
+  public void setCartItems(final List&lt;CartItemDTO&gt; cartItems) {
+<span class="fc" id="L210">    this.cartItems = cartItems;</span>
+<span class="fc" id="L211">  }</span>
+
+  /**
+   * Retrieves the time when the order was placed.
+   *
+   * @return the placed timing
+   */
+  public LocalDateTime getPlacedTiming() {
+<span class="fc" id="L219">    return placedTiming;</span>
+  }
+
+  /**
+   * Sets the time when the order was placed.
+   *
+   * @param placedTiming the placed timing to set
+   */
+  public void setPlacedTiming(final LocalDateTime placedTiming) {
+<span class="fc" id="L228">    this.placedTiming = placedTiming;</span>
+<span class="fc" id="L229">  }</span>
+
+  /**
+   * Compares this OrderOutDTO to another object for equality.
+   *
+   * @param o the object to compare
+   * @return true if the objects are equal, false otherwise
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L239" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L240">      return true;</span>
+    }
+<span class="pc bpc" id="L242" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L243">      return false;</span>
+    }
+<span class="fc" id="L245">    OrderOutDTO that = (OrderOutDTO) o;</span>
+<span class="pc bpc" id="L246" title="1 of 4 branches missed.">    return Objects.equals(orderId, that.orderId) &amp;&amp; Objects.equals(userId, that.userId)</span>
+<span class="pc bpc" id="L247" title="3 of 6 branches missed.">      &amp;&amp; Objects.equals(restaurantId, that.restaurantId) &amp;&amp; Objects.equals(addressId, that.addressId)</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">      &amp;&amp; orderStatus == that.orderStatus &amp;&amp; Objects.equals(totalPrice, that.totalPrice)</span>
+<span class="pc bpc" id="L249" title="2 of 4 branches missed.">      &amp;&amp; Objects.equals(cartItems, that.cartItems) &amp;&amp; Objects.equals(placedTiming, that.placedTiming);</span>
+  }
+
+  /**
+   * Returns a hash code value for the object.
+   *
+   * @return the hash code value
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L259">    return Objects.hash(orderId, userId, restaurantId, addressId, orderStatus, totalPrice, cartItems, placedTiming);</span>
+  }
+
+  /**
+   * Returns a string representation of the OrderOutDTO.
+   *
+   * @return a string representation of the OrderOutDTO
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L269">    return &quot;OrderOutDTO{&quot;</span>
+      + &quot;orderId=&quot; + orderId
+      + &quot;, userId=&quot; + userId
+      + &quot;, restaurantId=&quot; + restaurantId
+      + &quot;, addressId=&quot; + addressId
+      + &quot;, orderStatus=&quot; + orderStatus
+      + &quot;, totalPrice=&quot; + totalPrice
+      + &quot;, cartItems=&quot; + cartItems
+      + &quot;, placedTiming=&quot; + placedTiming
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

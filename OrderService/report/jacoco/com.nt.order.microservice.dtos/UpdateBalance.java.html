@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpdateBalance.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.dtos</a> &gt; <span class="el_source">UpdateBalance.java</span></div><h1>UpdateBalance.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.dtos;
+
+import java.util.Objects;
+
+/**
+ * Data Transfer Object for updating the balance of a user.
+ * This class encapsulates the information required to update a user's balance.
+ */
+public class UpdateBalance {
+
+  /**
+   * Unique identifier for the balance update record.
+   */
+  private Integer id;
+
+  /**
+   * ID of the user whose balance is being updated.
+   */
+  private Integer userId;
+
+  /**
+   * New balance amount.
+   */
+  private Double balance;
+
+  /**
+   * Default constructor.
+   */
+<span class="fc" id="L29">  public UpdateBalance() {</span>
+<span class="fc" id="L30">  }</span>
+
+  /**
+   * Parameterized constructor to create an UpdateBalance object with specified details.
+   *
+   * @param id      the unique identifier for the balance update
+   * @param userId  the ID of the user
+   * @param balance the new balance amount
+   */
+<span class="fc" id="L39">  public UpdateBalance(final Integer id, final Integer userId, final Double balance) {</span>
+<span class="fc" id="L40">    this.id = id;</span>
+<span class="fc" id="L41">    this.userId = userId;</span>
+<span class="fc" id="L42">    this.balance = balance;</span>
+<span class="fc" id="L43">  }</span>
+
+  /**
+   * Retrieves the unique identifier for the balance update.
+   *
+   * @return the unique identifier
+   */
+  public Integer getId() {
+<span class="fc" id="L51">    return id;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the balance update.
+   *
+   * @param id the unique identifier to set
+   */
+  public void setId(final Integer id) {
+<span class="fc" id="L60">    this.id = id;</span>
+<span class="fc" id="L61">  }</span>
+
+  /**
+   * Retrieves the user ID.
+   *
+   * @return the user ID
+   */
+  public Integer getUserId() {
+<span class="fc" id="L69">    return userId;</span>
+  }
+
+  /**
+   * Sets the user ID.
+   *
+   * @param userId the user ID to set
+   */
+  public void setUserId(final Integer userId) {
+<span class="fc" id="L78">    this.userId = userId;</span>
+<span class="fc" id="L79">  }</span>
+
+  /**
+   * Retrieves the balance.
+   *
+   * @return the balance
+   */
+  public Double getBalance() {
+<span class="fc" id="L87">    return balance;</span>
+  }
+
+  /**
+   * Sets the balance.
+   *
+   * @param balance the balance to set
+   */
+  public void setBalance(final Double balance) {
+<span class="fc" id="L96">    this.balance = balance;</span>
+<span class="fc" id="L97">  }</span>
+
+
+  /**
+   * Checks if two UpdateBalance objects are equal.
+   *
+   * @param o the object to compare with
+   * @return true if the objects are equal, false otherwise
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="fc bfc" id="L108" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L109">      return true;</span>
+    }
+<span class="fc bfc" id="L111" title="All 2 branches covered.">    if (!(o instanceof UpdateBalance)) {</span>
+<span class="fc" id="L112">      return false;</span>
+    }
+<span class="fc" id="L114">    UpdateBalance that = (UpdateBalance) o;</span>
+<span class="pc bpc" id="L115" title="2 of 4 branches missed.">    return Objects.equals(id, that.id) &amp;&amp; Objects.equals(userId, that.userId)</span>
+<span class="fc bfc" id="L116" title="All 2 branches covered.">      &amp;&amp; Objects.equals(balance, that.balance);</span>
+  }
+
+  /**
+   * Returns a hash code for the UpdateBalance object.
+   *
+   * @return a hash code value for this object
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L126">    return Objects.hash(id, userId, balance);</span>
+  }
+
+  /**
+   * Returns a string representation of the UpdateBalance object.
+   *
+   * @return a string representation of the UpdateBalance
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L136">    return &quot;UpdateBalance{&quot;</span>
+      + &quot;id=&quot; + id
+      + &quot;, userId=&quot; + userId
+      + &quot;, balance=&quot; + balance
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

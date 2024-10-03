@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CartItemDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.dtos</a> &gt; <span class="el_source">CartItemDTO.java</span></div><h1>CartItemDTO.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.dtos;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
+
+/**
+ * Data Transfer Object for Cart Item.
+ * This class represents the details of an item in the cart,
+ * including food item ID, quantity, and price.
+ */
+public class CartItemDTO {
+
+  /**
+   * The ID of the food item.
+   * It cannot be {@code null}.
+   */
+  @NotNull(message = &quot;Food Item ID cannot be null&quot;)
+  private Integer foodItemId;
+
+  /**
+   * The quantity of the food item.
+   * It cannot be {@code null} and must be at least 1.
+   */
+  @NotNull(message = &quot;Quantity cannot be null&quot;)
+  @Min(value = 1, message = &quot;Quantity must be at least 1&quot;)
+  private Integer quantity;
+
+  /**
+   * The price of the food item.
+   * It cannot be {@code null}, must be greater than 0, and should be valid
+   * with up to 10 digits in the integer part and 2 digits in the fractional part.
+   */
+  @NotNull(message = &quot;Price cannot be null&quot;)
+  @DecimalMin(value = &quot;0.0&quot;, inclusive = false, message = &quot;Price must be greater than 0&quot;)
+  @Digits(integer = 10, fraction = 2, message = &quot;Price format is invalid&quot;)
+  private Double price;
+
+  /**
+   * Default constructor.
+   * Creates an empty instance of CartItemDTO.
+   */
+<span class="fc" id="L45">  public CartItemDTO() {</span>
+<span class="fc" id="L46">  }</span>
+
+  /**
+   * Parameterized constructor to create a CartItemDTO with specified values.
+   *
+   * @param foodItemId the ID of the food item
+   * @param quantity   the quantity of the food item
+   * @param price      the price of the food item
+   */
+<span class="fc" id="L55">  public CartItemDTO(final Integer foodItemId, final Integer quantity, final Double price) {</span>
+<span class="fc" id="L56">    this.foodItemId = foodItemId;</span>
+<span class="fc" id="L57">    this.quantity = quantity;</span>
+<span class="fc" id="L58">    this.price = price;</span>
+<span class="fc" id="L59">  }</span>
+
+  /**
+   * Retrieves the food item ID.
+   *
+   * @return the ID of the food item
+   */
+  public Integer getFoodItemId() {
+<span class="fc" id="L67">    return foodItemId;</span>
+  }
+
+  /**
+   * Sets the food item ID.
+   *
+   * @param foodItemId the food item ID to set
+   */
+  public void setFoodItemId(final Integer foodItemId) {
+<span class="fc" id="L76">    this.foodItemId = foodItemId;</span>
+<span class="fc" id="L77">  }</span>
+
+  /**
+   * Retrieves the quantity of the food item.
+   *
+   * @return the quantity of the food item
+   */
+  public Integer getQuantity() {
+<span class="fc" id="L85">    return quantity;</span>
+  }
+
+  /**
+   * Sets the quantity of the food item.
+   *
+   * @param quantity the quantity to set
+   */
+  public void setQuantity(final Integer quantity) {
+<span class="fc" id="L94">    this.quantity = quantity;</span>
+<span class="fc" id="L95">  }</span>
+
+  /**
+   * Retrieves the price of the food item.
+   *
+   * @return the price of the food item
+   */
+  public Double getPrice() {
+<span class="fc" id="L103">    return price;</span>
+  }
+
+  /**
+   * Sets the price of the food item.
+   *
+   * @param price the price to set
+   */
+  public void setPrice(final Double price) {
+<span class="fc" id="L112">    this.price = price;</span>
+<span class="fc" id="L113">  }</span>
+
+  /**
+   * Compares this CartItemDTO to another object for equality.
+   * Two CartItemDTOs are considered equal if their food item ID, quantity,
+   * and price are equal.
+   *
+   * @param o the object to compare this CartItemDTO to
+   * @return {@code true} if the objects are equal, otherwise {@code false}
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L125" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L126">      return true;</span>
+    }
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">    if (!(o instanceof CartItemDTO)) {</span>
+<span class="nc" id="L129">      return false;</span>
+    }
+<span class="fc" id="L131">    CartItemDTO that = (CartItemDTO) o;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">    return Objects.equals(foodItemId, that.foodItemId)</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(quantity, that.quantity)</span>
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(price, that.price);</span>
+  }
+
+  /**
+   * Returns a hash code value for the CartItemDTO.
+   *
+   * @return a hash code value for this object
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L144">    return Objects.hash(foodItemId, quantity, price);</span>
+  }
+
+  /**
+   * Returns a string representation of the CartItemDTO.
+   * This includes the food item ID, quantity, and price.
+   *
+   * @return a string representation of the CartItemDTO
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L155">    return &quot;CartItemDTO{&quot;</span>
+      + &quot;foodItemId=&quot; + foodItemId
+      + &quot;, quantity=&quot; + quantity
+      + &quot;, price=&quot; + price
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

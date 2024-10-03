@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Base64Util.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.util</a> &gt; <span class="el_source">Base64Util.java</span></div><h1>Base64Util.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.util;
+
+import java.util.Base64;
+
+/**
+ * Utility class for encoding and decoding data using Base64.
+ * Provides methods to encode data to Base64 and decode Base64 data back to its original form.
+ */
+<span class="nc" id="L9">public class Base64Util {</span>
+
+  /**
+   * Encodes the provided data into a Base64 encoded string.
+   *
+   * @param data the string to be encoded
+   * @return the Base64 encoded representation of the input string
+   */
+  public static String encode(final String data) {
+<span class="fc" id="L18">    return Base64.getEncoder().encodeToString(data.getBytes());</span>
+  }
+
+  /**
+   * Decodes the provided Base64 encoded string back to its original form.
+   *
+   * @param data the Base64 encoded string to be decoded
+   * @return the decoded string
+   */
+  public static String decode(final String data) {
+<span class="nc" id="L28">    return new String(Base64.getDecoder().decode(data));</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
