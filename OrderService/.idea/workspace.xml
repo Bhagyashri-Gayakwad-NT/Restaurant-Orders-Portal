@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="b55976d2-fd1d-441d-86bc-8ead7f1f7dca" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/report/jacoco/jacoco-sessions.html" beforeDir="false" afterPath="$PROJECT_DIR$/report/jacoco/jacoco-sessions.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/report/jacoco/jacoco.xml" beforeDir="false" afterPath="$PROJECT_DIR$/report/jacoco/jacoco.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/nt/order/microservice/controller/CartControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/nt/order/microservice/controller/CartControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/nt/order/microservice/controller/OrderControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/nt/order/microservice/controller/OrderControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/nt/order/microservice/service/CartServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/nt/order/microservice/service/CartServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/nt/order/microservice/service/OrderServiceImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/nt/order/microservice/service/OrderServiceImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/OrderService-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/OrderService-0.0.1-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/OrderService-0.0.1-SNAPSHOT.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/OrderService-0.0.1-SNAPSHOT.jar.original" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/checkstyle-cachefile" beforeDir="false" afterPath="$PROJECT_DIR$/target/checkstyle-cachefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/jacoco.exec" beforeDir="false" afterPath="$PROJECT_DIR$/target/jacoco.exec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/pmd.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/pmd.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/site/pmd.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/site/pmd.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.controller.CartControllerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.controller.CartControllerTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.controller.OrderControllerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.controller.OrderControllerTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.AddressOutDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.AddressOutDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.AmountInDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.AmountInDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.CartInDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.CartInDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.CartItemDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.CartItemDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.CartOutDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.CartOutDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.CommonResponseTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.CommonResponseTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.FoodItemOutDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.FoodItemOutDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.OrderInDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.OrderInDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.OrderOutDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.OrderOutDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.RestaurantOutDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.RestaurantOutDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.UpdateBalanceTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.UpdateBalanceTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.UserOutDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.dtos.UserOutDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.entities.CartTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.entities.CartTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.entities.OrderTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.entities.OrderTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.service.CartServiceImplTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.service.CartServiceImplTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.service.OrderServiceImplTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-com.nt.order.microservice.service.OrderServiceImplTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.controller.CartControllerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.controller.CartControllerTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.controller.OrderControllerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.controller.OrderControllerTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.AddressOutDTOTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.AddressOutDTOTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.CartInDTOTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.CartInDTOTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.CartItemDTOTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.CartItemDTOTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.CartOutDTOTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.CartOutDTOTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.CommonResponseTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.CommonResponseTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.FoodItemOutDTOTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.FoodItemOutDTOTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.OrderInDTOTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.OrderInDTOTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.OrderOutDTOTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.OrderOutDTOTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.RestaurantOutDTOTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.RestaurantOutDTOTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.UpdateBalanceTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.UpdateBalanceTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.UserOutDTOTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.dtos.UserOutDTOTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.entities.OrderTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.entities.OrderTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.service.CartServiceImplTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.service.CartServiceImplTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.service.OrderServiceImplTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/com.nt.order.microservice.service.OrderServiceImplTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/nt/order/microservice/controller/CartControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/nt/order/microservice/controller/CartControllerTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/nt/order/microservice/controller/OrderControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/nt/order/microservice/controller/OrderControllerTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/nt/order/microservice/service/CartServiceImplTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/nt/order/microservice/service/CartServiceImplTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/nt/order/microservice/service/OrderServiceImplTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/com/nt/order/microservice/service/OrderServiceImplTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/report/jacoco/jacoco-sessions.html" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/report/jacoco/jacoco-sessions.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/report/jacoco/jacoco.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/report/jacoco/jacoco.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/src/main/java/com/nt/user/microservice/serviceimpl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/src/main/java/com/nt/user/microservice/serviceimpl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/src/test/java/com/nt/user/microservice/controller/AddressControllerTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/src/test/java/com/nt/user/microservice/controller/AddressControllerTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/src/test/java/com/nt/user/microservice/controller/UserControllerTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/src/test/java/com/nt/user/microservice/controller/UserControllerTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/UserService-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/UserService-0.0.1-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/UserService-0.0.1-SNAPSHOT.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/UserService-0.0.1-SNAPSHOT.jar.original" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/checkstyle-cachefile" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/checkstyle-cachefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/jacoco.exec" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/jacoco.exec" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/pmd.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/pmd.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.controller.AddressControllerTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.controller.AddressControllerTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.controller.UserControllerTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.controller.UserControllerTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.entities.AddressTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.entities.AddressTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.entities.UserTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.entities.UserTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.entities.WalletBalanceTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.entities.WalletBalanceTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.indto.EmailRequestDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.indto.EmailRequestDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.indto.LogInDTOTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.indto.LogInDTOTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.indto.UserInDTOTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.indto.UserInDTOTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.outdto.AddressOutDTOTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.outdto.AddressOutDTOTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.outdto.ErrorResponseTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.outdto.ErrorResponseTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.outdto.LoginOutDTOTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.outdto.LoginOutDTOTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.outdto.UserResponseTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.outdto.UserResponseTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.service.AddressServiceImplTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.service.AddressServiceImplTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.service.WalletBalanceServiceImplTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/TEST-com.nt.user.microservice.service.WalletBalanceServiceImplTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.controller.AddressControllerTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.controller.AddressControllerTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.controller.UserControllerTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.controller.UserControllerTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.entities.AddressTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.entities.AddressTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.entities.WalletBalanceTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.entities.WalletBalanceTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.indto.EmailRequestDTOTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.indto.EmailRequestDTOTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.indto.LogInDTOTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.indto.LogInDTOTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.outdto.AddressOutDTOTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.outdto.AddressOutDTOTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.outdto.ErrorResponseTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.outdto.ErrorResponseTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.outdto.LoginOutDTOTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.outdto.LoginOutDTOTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.service.AddressServiceImplTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.service.AddressServiceImplTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.service.WalletBalanceServiceImplTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/surefire-reports/com.nt.user.microservice.service.WalletBalanceServiceImplTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/test-classes/com/nt/user/microservice/controller/AddressControllerTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/test-classes/com/nt/user/microservice/controller/AddressControllerTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UserService/UserService/target/test-classes/com/nt/user/microservice/controller/UserControllerTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/../UserService/UserService/target/test-classes/com/nt/user/microservice/controller/UserControllerTests.class" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2kz51OsyJ7TZPWB62khfe9qr3cE" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.OrderServiceApplication.executor": "Run",
+    "Application.com.nt.order.microservice.OrderServiceApplication.executor": "Run",
+    "JUnit.AddressOutDTOTest.executor": "Run",
+    "JUnit.AmountInDTOTest.executor": "Run",
+    "JUnit.CartControllerTest.executor": "Run",
+    "JUnit.CartControllerTest.testAddItemToCart_Success.executor": "Run",
+    "JUnit.CartInDTOTest.executor": "Run",
+    "JUnit.CartItemDTOTest.executor": "Run",
+    "JUnit.CartItemDTOTest.testValidation.executor": "Run",
+    "JUnit.CartOutDTOTest.executor": "Run",
+    "JUnit.CartServiceImplTest.executor": "Run",
+    "JUnit.CartServiceImplTest.testAddItemToCart_FoodItemPriceMismatch.executor": "Run",
+    "JUnit.CartServiceImplTest.testAddItemToCart_Success.executor": "Run",
+    "JUnit.CartServiceImplTest.testGetCartItemsByUserIdAndRestaurantId_Success.executor": "Run",
+    "JUnit.CartServiceImplTest.testPlaceOrder_Success.executor": "Run",
+    "JUnit.CartTest.executor": "Run",
+    "JUnit.CommonResponseTest.executor": "Run",
+    "JUnit.FoodItemOutDTOTest.executor": "Run",
+    "JUnit.OrderControllerTest.executor": "Run",
+    "JUnit.OrderControllerTest.testCancelOrder_Success.executor": "Run",
+    "JUnit.OrderControllerTest.testGetOrdersByRestaurantId_Success.executor": "Run",
+    "JUnit.OrderControllerTest.testMarkOrderAsCompleted_Success.executor": "Run",
+    "JUnit.OrderControllerTest.testPlaceOrder_Success.executor": "Run",
+    "JUnit.OrderInDTOTest.executor": "Run",
+    "JUnit.OrderInDTOTest.testNullAddressId.executor": "Run",
+    "JUnit.OrderInDTOTest.testValidOrderInDTO.executor": "Run",
+    "JUnit.OrderOutDTOTest.executor": "Run",
+    "JUnit.OrderOutDTOTest.testEqualsAndHashCode.executor": "Run",
+    "JUnit.OrderServiceApplicationTests.executor": "Run",
+    "JUnit.OrderServiceImplTest.executor": "Run",
+    "JUnit.OrderServiceImplTest.testGetOrdersByRestaurantId_NoOrdersFound.executor": "Run",
+    "JUnit.OrderServiceImplTest.testGetOrdersByUserId_NoOrdersFound.executor": "Run",
+    "JUnit.OrderServiceImplTest.testGetOrdersByUserId_UserNotFound.executor": "Run",
+    "JUnit.OrderServiceImplTest.testPlaceOrderInvalidUser.executor": "Run",
+    "JUnit.OrderServiceImplTest.testPlaceOrder_FoodItemDoesNotBelongToRestaurant.executor": "Run",
+    "JUnit.OrderServiceImplTest.testPlaceOrder_FoodItemNotFound.executor": "Run",
+    "JUnit.OrderServiceImplTest.testPlaceOrder_InsufficientBalance.executor": "Run",
+    "JUnit.OrderServiceImplTest.testPlaceOrder_InvalidAddress.executor": "Run",
+    "JUnit.OrderServiceImplTest.testPlaceOrder_Success.executor": "Run",
+    "JUnit.OrderServiceImplTest.testPlaceOrder_UserIsRestaurantOwner.executor": "Run",
+    "JUnit.OrderTest.executor": "Run",
+    "JUnit.OrderTest.testEqualsAndHashCode.executor": "Run",
+    "JUnit.RestaurantOutDTOTest.executor": "Run",
+    "JUnit.UpdateBalanceTest.executor": "Run",
+    "JUnit.UserOutDTOTest.executor": "Run",
+    "JUnit.com.nt.order.microservice in OrderService.executor": "Run",
+    "JUnit.controller in OrderService.executor": "Run",
+    "JUnit.dtos in OrderService.executor": "Run",
+    "JUnit.microservice in OrderService.executor": "Run",
+    "JUnit.service in OrderService.executor": "Run",
+    "Maven.OrderService [clean].executor": "Run",
+    "Maven.OrderService [install].executor": "Run",
+    "Maven.OrderService [org.apache.maven.plugins:maven-checkstyle-plugin:3.2.0:check].executor": "Run",
+    "Maven.OrderService [test].executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Sprint-04",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Restaurant Orders Portal/UserService/UserService",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
+  }
+}]]></component>
+  <component name="RunManager" selected="JUnit.OrderServiceImplTest">
+    <configuration name="OrderServiceImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OrderService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nt.order.microservice.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nt.order.microservice.service" />
+      <option name="MAIN_CLASS_NAME" value="com.nt.order.microservice.service.OrderServiceImplTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceImplTest.testPlaceOrderInvalidUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OrderService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nt.order.microservice.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nt.order.microservice.service" />
+      <option name="MAIN_CLASS_NAME" value="com.nt.order.microservice.service.OrderServiceImplTest" />
+      <option name="METHOD_NAME" value="testPlaceOrderInvalidUser" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceImplTest.testPlaceOrder_FoodItemDoesNotBelongToRestaurant" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OrderService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nt.order.microservice.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nt.order.microservice.service" />
+      <option name="MAIN_CLASS_NAME" value="com.nt.order.microservice.service.OrderServiceImplTest" />
+      <option name="METHOD_NAME" value="testPlaceOrder_FoodItemDoesNotBelongToRestaurant" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceImplTest.testPlaceOrder_FoodItemNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OrderService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nt.order.microservice.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nt.order.microservice.service" />
+      <option name="MAIN_CLASS_NAME" value="com.nt.order.microservice.service.OrderServiceImplTest" />
+      <option name="METHOD_NAME" value="testPlaceOrder_FoodItemNotFound" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OrderServiceImplTest.testPlaceOrder_UserIsRestaurantOwner" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="OrderService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nt.order.microservice.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.nt.order.microservice.service" />
+      <option name="MAIN_CLASS_NAME" value="com.nt.order.microservice.service.OrderServiceImplTest" />
+      <option name="METHOD_NAME" value="testPlaceOrder_UserIsRestaurantOwner" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.OrderServiceImplTest" />
+        <item itemvalue="JUnit.OrderServiceImplTest.testPlaceOrder_FoodItemNotFound" />
+        <item itemvalue="JUnit.OrderServiceImplTest.testPlaceOrder_FoodItemDoesNotBelongToRestaurant" />
+        <item itemvalue="JUnit.OrderServiceImplTest.testPlaceOrderInvalidUser" />
+        <item itemvalue="JUnit.OrderServiceImplTest.testPlaceOrder_UserIsRestaurantOwner" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b55976d2-fd1d-441d-86bc-8ead7f1f7dca" name="Changes" comment="" />
+      <created>1724273348467</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1724273348467</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/nt/order/microservice/dtos/CartOutDTO.java</url>
+          <line>187</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
