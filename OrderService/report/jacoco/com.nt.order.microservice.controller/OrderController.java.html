@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.controller</a> &gt; <span class="el_source">OrderController.java</span></div><h1>OrderController.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.controller;
+
+import com.nt.order.microservice.dtos.CommonResponse;
+import com.nt.order.microservice.dtos.OrderInDTO;
+import com.nt.order.microservice.dtos.OrderOutDTO;
+import com.nt.order.microservice.service.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.List;
+
+/**
+ * REST controller for handling order-related operations.
+ */
+@RestController
+@CrossOrigin
+@RequestMapping(&quot;/orders&quot;)
+<span class="fc" id="L30">public class OrderController {</span>
+
+
+  /**
+   * LOGGER for the OrderController class, used to log important information like incoming requests,
+   * processed responses, and any potential issues encountered during order-related operations.
+   * &lt;p&gt;
+   * The {@link Logger} instance is used for debugging, tracking execution flow, and monitoring the
+   * behavior of the application in various environments.
+   * &lt;/p&gt;
+   */
+<span class="fc" id="L41">  private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);  // SLF4J logger</span>
+
+  /**
+   * Service layer responsible for handling order-related operations such as placing, updating,
+   * retrieving, and deleting orders. The {@link OrderService} provides the necessary business logic
+   * to interact with the database and manage the order lifecycle for users.
+   */
+  @Autowired
+  private OrderService orderService;
+
+  /**
+   * Places an order.
+   *
+   * @param orderInDTO The order input data.
+   * @return A response indicating the status of the order placement.
+   */
+  @PostMapping(&quot;/place&quot;)
+  public ResponseEntity&lt;CommonResponse&gt; placeOrder(@Valid @RequestBody final OrderInDTO orderInDTO) {
+<span class="fc" id="L59">    LOGGER.info(&quot;Received request to place order: {}&quot;, orderInDTO);</span>
+<span class="fc" id="L60">    final CommonResponse response = orderService.placeOrder(orderInDTO);</span>
+<span class="fc" id="L61">    LOGGER.info(&quot;Order placed successfully: {}&quot;, response);</span>
+<span class="fc" id="L62">    return new ResponseEntity&lt;&gt;(response, HttpStatus.OK);</span>
+  }
+
+  /**
+   * Cancels an order by order ID.
+   *
+   * @param orderId The ID of the order to be canceled.
+   * @return A response indicating the status of the order cancellation.
+   */
+  @DeleteMapping(&quot;/cancel/{orderId}&quot;)
+  public ResponseEntity&lt;CommonResponse&gt; cancelOrder(@Valid @PathVariable final Integer orderId) {
+<span class="fc" id="L73">    LOGGER.info(&quot;Received request to cancel order with orderId: {}&quot;, orderId);</span>
+<span class="fc" id="L74">    final CommonResponse response = orderService.cancelOrder(orderId);</span>
+<span class="fc" id="L75">    LOGGER.info(&quot;Order cancelled for orderId: {}, response: {}&quot;, orderId, response);</span>
+<span class="fc" id="L76">    return new ResponseEntity&lt;&gt;(response, HttpStatus.OK);</span>
+  }
+
+  /**
+   * Marks an order as completed.
+   *
+   * @param orderId The ID of the order to be marked as completed.
+   * @param userId  The ID of the user completing the order.
+   * @return A response indicating the status of marking the order as completed.
+   */
+  @PostMapping(&quot;/complete/{orderId}/user/{userId}&quot;)
+  public ResponseEntity&lt;CommonResponse&gt; markOrderAsCompleted(@PathVariable final Integer orderId,
+                                                             @PathVariable final Integer userId) {
+<span class="fc" id="L89">    LOGGER.info(&quot;Received request to mark order as completed for orderId: {} and userId: {}&quot;, orderId, userId);</span>
+<span class="fc" id="L90">    final CommonResponse response = orderService.markOrderAsCompleted(orderId, userId);</span>
+<span class="fc" id="L91">    LOGGER.info(&quot;Order marked as completed for orderId: {}, userId: {}, response: {}&quot;, orderId, userId, response);</span>
+<span class="fc" id="L92">    return new ResponseEntity&lt;&gt;(response, HttpStatus.OK);</span>
+  }
+
+  /**
+   * Retrieves all orders placed by a specific user.
+   *
+   * @param userId The ID of the user.
+   * @return A list of orders placed by the user.
+   */
+  @GetMapping(&quot;/user/{userId}&quot;)
+  public ResponseEntity&lt;List&lt;OrderOutDTO&gt;&gt; getOrdersByUserId(@PathVariable final Integer userId) {
+<span class="fc" id="L103">    LOGGER.info(&quot;Fetching orders for userId: {}&quot;, userId);</span>
+<span class="fc" id="L104">    final List&lt;OrderOutDTO&gt; orders = orderService.getOrdersByUserId(userId);</span>
+<span class="fc" id="L105">    LOGGER.info(&quot;Fetched orders for userId: {}: {}&quot;, userId, orders);</span>
+<span class="fc" id="L106">    return new ResponseEntity&lt;&gt;(orders, HttpStatus.OK);</span>
+  }
+
+  /**
+   * Retrieves all orders placed at a specific restaurant.
+   *
+   * @param restaurantId The ID of the restaurant.
+   * @return A list of orders placed at the restaurant.
+   */
+  @GetMapping(&quot;/restaurant/{restaurantId}&quot;)
+  public ResponseEntity&lt;List&lt;OrderOutDTO&gt;&gt; getOrdersByRestaurantId(@PathVariable final Integer restaurantId) {
+<span class="fc" id="L117">    LOGGER.info(&quot;Fetching orders for restaurantId: {}&quot;, restaurantId);</span>
+<span class="fc" id="L118">    final List&lt;OrderOutDTO&gt; orders = orderService.getOrdersByRestaurantId(restaurantId);</span>
+<span class="fc" id="L119">    LOGGER.info(&quot;Fetched orders for restaurantId: {}: {}&quot;, restaurantId, orders);</span>
+<span class="fc" id="L120">    return new ResponseEntity&lt;&gt;(orders, HttpStatus.OK);</span>
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

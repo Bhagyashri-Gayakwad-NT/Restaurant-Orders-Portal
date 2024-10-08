@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.dto</a> &gt; <span class="el_source">UserResponse.java</span></div><h1>UserResponse.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.dto;
+
+import java.util.Objects;
+
+/**
+ * {@code UserResponse} is a simple Data Transfer Object (DTO) that encapsulates
+ * a success message related to user operations.
+ *
+ * &lt;p&gt;
+ * This class is typically used to convey the result of successful operations
+ * such as registration, updating, or deletion of a user. It contains a single
+ * field {@code successMessage}, which stores the message indicating the
+ * outcome of the operation.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * It overrides {@code equals()}, {@code hashCode()}, and {@code toString()}
+ * methods from the {@code Object} class for comparison and string
+ * representation.
+ * &lt;/p&gt;
+ *
+ * &lt;p&gt;
+ * Example usage:
+ * &lt;pre&gt;
+ * UserResponse response = new UserResponse();
+ * response.setSuccessMessage(&quot;User registered successfully&quot;);
+ * &lt;/pre&gt;
+ * &lt;/p&gt;
+ *
+ * @author Sarita Sharma
+ * @version 1.0
+ * @since 2024-09-24
+ */
+<span class="fc" id="L34">public class UserResponse {</span>
+
+  /**
+   * The message that indicates the success of an operation.
+   * It conveys information to the user regarding the outcome of a process.
+   */
+  private String successMessage;
+
+  /**
+   * Retrieves the success message indicating the outcome of the operation.
+   *
+   * @return a string representing the success message.
+   */
+  public String getSuccessMessage() {
+<span class="fc" id="L48">    return successMessage;</span>
+  }
+
+  /**
+   * Sets the success message to indicate the result of a user-related operation.
+   *
+   * @param successMessage the success message to be set, typically denoting
+   *                       the successful completion of a process such as user registration.
+   */
+  public void setSuccessMessage(final String successMessage) {
+<span class="fc" id="L58">    this.successMessage = successMessage;</span>
+<span class="fc" id="L59">  }</span>
+
+  /**
+   * Checks if this {@code UserResponse} is equal to another object.
+   *
+   * @param o the reference object with which to compare.
+   * @return {@code true} if the given object is equal to this {@code UserResponse};
+   *         {@code false} otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L71">      return true;</span>
+    }
+<span class="fc bfc" id="L73" title="All 2 branches covered.">    if (!(o instanceof UserResponse)) {</span>
+<span class="fc" id="L74">      return false;</span>
+    }
+<span class="fc" id="L76">    UserResponse that = (UserResponse) o;</span>
+<span class="fc" id="L77">    return Objects.equals(successMessage, that.successMessage);</span>
+  }
+
+  /**
+   * Returns a hash code value for this {@code UserResponse}.
+   *
+   * @return the hash code value of the success message.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L87">    return Objects.hashCode(successMessage);</span>
+  }
+
+  /**
+   * Returns a string representation of this {@code UserResponse}.
+   *
+   * &lt;p&gt;The string representation includes the class name and the value of
+   * the success message.&lt;/p&gt;
+   *
+   * @return a string representation of the {@code UserResponse}.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L100">    return &quot;UserResponse{&quot;</span>
+      + &quot;successMessage='&quot; + successMessage
+      + '\'' + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

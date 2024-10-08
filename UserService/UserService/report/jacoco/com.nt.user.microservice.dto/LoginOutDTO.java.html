@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoginOutDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.dto</a> &gt; <span class="el_source">LoginOutDTO.java</span></div><h1>LoginOutDTO.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.dto;
+
+import java.util.Objects;
+
+/**
+ * Data Transfer Object (DTO) for representing the login output details.
+ * &lt;p&gt;
+ * This class encapsulates the user's ID and role, which are returned upon successful login.
+ * &lt;/p&gt;
+ */
+<span class="fc" id="L11">public class LoginOutDTO {</span>
+
+  /**
+   * The unique identifier for the user.
+   */
+  private Integer id;
+
+  /**
+   * The role of the user (e.g., USER, ADMIN).
+   */
+  private String role;
+
+  /**
+   * Retrieves the unique identifier for the user.
+   *
+   * @return the user ID.
+   */
+  public Integer getId() {
+<span class="fc" id="L29">    return id;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the user.
+   *
+   * @param id the user ID to set.
+   */
+  public void setId(final Integer id) {
+<span class="fc" id="L38">    this.id = id;</span>
+<span class="fc" id="L39">  }</span>
+
+  /**
+   * Retrieves the role of the user.
+   *
+   * @return the user's role.
+   */
+  public String getRole() {
+<span class="fc" id="L47">    return role;</span>
+  }
+
+  /**
+   * Sets the role of the user.
+   *
+   * @param role the role to set for the user.
+   */
+  public void setRole(final String role) {
+<span class="fc" id="L56">    this.role = role;</span>
+<span class="fc" id="L57">  }</span>
+
+  /**
+   * Compares this {@link LoginOutDTO} instance to another object for equality.
+   * &lt;p&gt;
+   * Two {@link LoginOutDTO} objects are considered equal if their id and role fields are both equal.
+   * &lt;/p&gt;
+   *
+   * @param o the object to compare this {@link LoginOutDTO} against.
+   * @return true if the given object is equal to this {@link LoginOutDTO}; false otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="fc bfc" id="L70" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L71">      return true;</span>
+    }
+<span class="fc bfc" id="L73" title="All 2 branches covered.">    if (!(o instanceof LoginOutDTO)) {</span>
+<span class="fc" id="L74">      return false;</span>
+    }
+<span class="fc" id="L76">    LoginOutDTO that = (LoginOutDTO) o;</span>
+<span class="pc bpc" id="L77" title="1 of 4 branches missed.">    return Objects.equals(id, that.id) &amp;&amp; Objects.equals(role, that.role);</span>
+  }
+
+  /**
+   * Returns a hash code value for this {@link LoginOutDTO} instance.
+   * &lt;p&gt;
+   * The hash code is computed based on the id and role fields.
+   * This is used in hash-based collections like HashMap.
+   * &lt;/p&gt;
+   *
+   * @return a hash code value for this {@link LoginOutDTO}.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L91">    return Objects.hash(id, role);</span>
+  }
+
+  /**
+   * Returns a string representation of this {@link LoginOutDTO} instance.
+   * &lt;p&gt;
+   * The string representation includes the user's ID and role.
+   * &lt;/p&gt;
+   *
+   * @return a string representation of this {@link LoginOutDTO}.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L104">    return &quot;LoginOutDTO{&quot;</span>
+      + &quot;id=&quot; + id
+      + &quot;, role='&quot; + role
+      + '\'' + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

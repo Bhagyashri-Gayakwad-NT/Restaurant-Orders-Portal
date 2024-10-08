@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CartServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.serviceimpl</a> &gt; <span class="el_source">CartServiceImpl.java</span></div><h1>CartServiceImpl.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.serviceimpl;
+
+import com.nt.order.microservice.dtoconverter.CartDtoConverter;
+import com.nt.order.microservice.dtos.CartInDTO;
+import com.nt.order.microservice.dtos.CartOutDTO;
+import com.nt.order.microservice.dtos.CommonResponse;
+import com.nt.order.microservice.dtos.FoodItemOutDTO;
+import com.nt.order.microservice.dtos.RestaurantOutDTO;
+import com.nt.order.microservice.dtos.UserOutDTO;
+import com.nt.order.microservice.entities.Cart;
+import com.nt.order.microservice.exception.InvalidRequestException;
+import com.nt.order.microservice.exception.ResourceNotFoundException;
+import com.nt.order.microservice.exception.UnauthorizedException;
+import com.nt.order.microservice.repository.CartRepository;
+import com.nt.order.microservice.repository.OrderRepository;
+import com.nt.order.microservice.service.CartService;
+import com.nt.order.microservice.util.Constants;
+import com.nt.order.microservice.util.Role;
+import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * Implementation of the CartService interface. This class handles the business logic
+ * for managing shopping cart items, such as adding items, updating quantities, and
+ * removing items from the cart.
+ */
+@Transactional
+@Service
+<span class="fc" id="L39">public class CartServiceImpl implements CartService {</span>
+
+  /** Logger for CartServiceImpl class, used for logging information and errors. */
+<span class="fc" id="L42">  private static final Logger LOGGER = LoggerFactory.getLogger(CartServiceImpl.class);</span>
+
+  /**
+   * Repository for managing Cart entities.
+   */
+  @Autowired
+  private CartRepository cartRepository;
+
+  /**
+   * Repository for managing Order entities.
+   */
+  @Autowired
+  private OrderRepository orderRepository;
+
+  /**
+   * Feign client for interacting with the User service.
+   */
+  @Autowired
+  private UserFClient userFClient;
+
+  /**
+   * Feign client for interacting with the Restaurant service.
+   */
+  @Autowired
+  private RestaurantFClient restaurantFClient;
+
+  /**
+   * Feign client for interacting with the Food Item service.
+   */
+  @Autowired
+  private FoodItemFClient foodItemFClient;
+
+  /**
+   * Adds an item to the cart for a specific user.
+   *
+   * @param cartInDTO the DTO containing the cart input data
+   * @return a response indicating the result of the operation
+   * @throws UnauthorizedException if the user is a restaurant owner
+   * @throws ResourceNotFoundException if the user, restaurant, or food item is not found
+   * @throws InvalidRequestException if the provided price does not match the food item price
+   */
+  @Override
+  @Transactional
+  public CommonResponse addItemToCart(final CartInDTO cartInDTO) {
+<span class="fc" id="L86">    LOGGER.info(&quot;Adding item to cart for userId: {}&quot;, cartInDTO.getUserId());</span>
+
+<span class="fc" id="L88">    UserOutDTO userOutDto = fetchUser(cartInDTO.getUserId());</span>
+<span class="fc" id="L89">    validateUserRole(userOutDto);</span>
+<span class="fc" id="L90">    validateRestaurant(cartInDTO.getRestaurantId());</span>
+    try {
+<span class="fc" id="L92">      validateFoodItemInRestaurant(cartInDTO);</span>
+<span class="fc" id="L93">    } catch (Exception e) {</span>
+<span class="fc" id="L94">      throw new ResourceNotFoundException(Constants.FOODITEM_NOT_FOUND);</span>
+<span class="fc" id="L95">    }</span>
+
+<span class="fc" id="L97">    FoodItemOutDTO foodItemOutDTO = fetchFoodItem(cartInDTO.getFoodItemId());</span>
+<span class="fc" id="L98">    validatePrice(cartInDTO, foodItemOutDTO);</span>
+
+<span class="fc" id="L100">    return processCartUpdate(cartInDTO, foodItemOutDTO);</span>
+  }
+
+  /**
+   * Fetches the user details based on the user ID.
+   *
+   * @param userId the ID of the user to fetch
+   * @return the UserOutDTO object containing user details
+   * @throws ResourceNotFoundException if the user is not found
+   */
+  private UserOutDTO fetchUser(final Integer userId) {
+    try {
+<span class="fc" id="L112">      UserOutDTO userOutDto = userFClient.getUserProfile(userId);</span>
+<span class="fc" id="L113">      LOGGER.info(&quot;User fetched successfully: {}&quot;, userOutDto);</span>
+<span class="fc" id="L114">      return userOutDto;</span>
+<span class="nc" id="L115">    } catch (FeignException.NotFound ex) {</span>
+<span class="nc" id="L116">      LOGGER.error(&quot;User not found for userId: {}&quot;, userId);</span>
+<span class="nc" id="L117">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
+    }
+  }
+
+  /**
+   * Validates the user's role to ensure they are not a restaurant owner.
+   *
+   * @param userOutDto the UserOutDTO object containing user details
+   * @throws UnauthorizedException if the user is a restaurant owner
+   */
+  private void validateUserRole(final UserOutDTO userOutDto) {
+<span class="fc bfc" id="L128" title="All 2 branches covered.">    if (userOutDto.getRole().equals(Role.RESTAURANT_OWNER.name())) {</span>
+<span class="fc" id="L129">      LOGGER.warn(&quot;Restaurant owner attempting to add items to cart, userId: {}&quot;, userOutDto.getId());</span>
+<span class="fc" id="L130">      throw new UnauthorizedException(Constants.RESTAURANT_OWNER_CART_ERROR);</span>
+    }
+<span class="fc" id="L132">  }</span>
+
+  /**
+   * Validates the existence of a restaurant based on the restaurant ID.
+   *
+   * @param restaurantId the ID of the restaurant to validate
+   * @throws ResourceNotFoundException if the restaurant is not found
+   */
+  private void validateRestaurant(final Integer restaurantId) {
+    try {
+<span class="fc" id="L142">      RestaurantOutDTO restaurantOutDTO = restaurantFClient.getRestaurantById(restaurantId);</span>
+<span class="pc bpc" id="L143" title="1 of 2 branches missed.">      if (restaurantOutDTO == null) {</span>
+<span class="nc" id="L144">        LOGGER.error(&quot;Invalid restaurantId: {}&quot;, restaurantId);</span>
+<span class="nc" id="L145">        throw new ResourceNotFoundException(Constants.INVALID_RESTAURANT_ID);</span>
+      }
+<span class="fc" id="L147">      LOGGER.info(&quot;Restaurant found: {}&quot;, restaurantOutDTO);</span>
+<span class="nc" id="L148">    } catch (FeignException.NotFound ex) {</span>
+<span class="nc" id="L149">      LOGGER.error(&quot;Restaurant not found for restaurantId: {}&quot;, restaurantId);</span>
+<span class="nc" id="L150">      throw new ResourceNotFoundException(Constants.INVALID_RESTAURANT_ID);</span>
+<span class="fc" id="L151">    }</span>
+<span class="fc" id="L152">  }</span>
+
+  /**
+   * Validates whether the food item belongs to the specified restaurant.
+   *
+   * @param cartInDTO the DTO containing cart input data
+   * @throws UnauthorizedException if the food item does not belong to the restaurant
+   */
+  private void validateFoodItemInRestaurant(final CartInDTO cartInDTO) {
+<span class="fc" id="L161">    List&lt;FoodItemOutDTO&gt; foodItemsInRestaurant = foodItemFClient.getFoodItemsByRestaurant(cartInDTO.getRestaurantId());</span>
+<span class="fc" id="L162">    boolean isFoodItemValid = foodItemsInRestaurant.stream()</span>
+<span class="fc" id="L163">      .anyMatch(foodItem -&gt; foodItem.getFoodItemId().equals(cartInDTO.getFoodItemId()));</span>
+
+<span class="fc bfc" id="L165" title="All 2 branches covered.">    if (!isFoodItemValid) {</span>
+<span class="fc" id="L166">      LOGGER.error(&quot;Food item with id: {} does not belong to restaurantId: {}&quot;,</span>
+<span class="fc" id="L167">        cartInDTO.getFoodItemId(), cartInDTO.getRestaurantId());</span>
+<span class="fc" id="L168">      throw new UnauthorizedException(Constants.FOOD_ITEM_DOES_NOT_BELONG_TO_RESTAURANT);</span>
+    }
+<span class="fc" id="L170">  }</span>
+
+  /**
+   * Fetches the food item details based on the food item ID.
+   *
+   * @param foodItemId the ID of the food item to fetch
+   * @return the FoodItemOutDTO object containing food item details
+   * @throws ResourceNotFoundException if the food item is not found
+   */
+  private FoodItemOutDTO fetchFoodItem(final Integer foodItemId) {
+    try {
+<span class="fc" id="L181">      FoodItemOutDTO foodItemOutDTO = foodItemFClient.getFoodItemById(foodItemId);</span>
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">      if (foodItemOutDTO == null) {</span>
+<span class="nc" id="L183">        LOGGER.error(&quot;Invalid foodItemId: {}&quot;, foodItemId);</span>
+<span class="nc" id="L184">        throw new ResourceNotFoundException(Constants.INVALID_FOOD_ITEM_ID);</span>
+      }
+<span class="fc" id="L186">      LOGGER.info(&quot;Food item found: {}&quot;, foodItemOutDTO);</span>
+<span class="fc" id="L187">      return foodItemOutDTO;</span>
+<span class="nc" id="L188">    } catch (FeignException.NotFound ex) {</span>
+<span class="nc" id="L189">      LOGGER.error(&quot;Food item not found for foodItemId: {}&quot;, foodItemId);</span>
+<span class="nc" id="L190">      throw new ResourceNotFoundException(Constants.INVALID_FOOD_ITEM_ID);</span>
+    }
+  }
+
+  /**
+   * Validates the price of the food item against the provided price.
+   *
+   * @param cartInDTO the DTO containing cart input data
+   * @param foodItemOutDTO the FoodItemOutDTO object containing food item details
+   * @throws InvalidRequestException if the prices do not match
+   */
+  private void validatePrice(final CartInDTO cartInDTO, final FoodItemOutDTO foodItemOutDTO) {
+<span class="fc bfc" id="L202" title="All 2 branches covered.">    if (foodItemOutDTO.getPrice().compareTo(cartInDTO.getPrice()) != 0) {</span>
+<span class="fc" id="L203">      LOGGER.error(&quot;Price mismatch for foodItemId: {}, expected: {}, provided: {}&quot;,</span>
+<span class="fc" id="L204">        cartInDTO.getFoodItemId(), foodItemOutDTO.getPrice(), cartInDTO.getPrice());</span>
+<span class="fc" id="L205">      throw new InvalidRequestException(Constants.PRICE_MISMATCH);</span>
+    }
+<span class="fc" id="L207">  }</span>
+
+  /**
+   * Processes the cart update by either updating the quantity of an existing item or adding a new item.
+   *
+   * @param cartInDTO the DTO containing cart input data
+   * @param foodItemOutDTO the FoodItemOutDTO object containing food item details
+   * @return a response indicating the result of the operation
+   */
+  private CommonResponse processCartUpdate(final CartInDTO cartInDTO, final FoodItemOutDTO foodItemOutDTO) {
+<span class="fc" id="L217">    List&lt;Cart&gt; existingCartItems = cartRepository.findByUserId(cartInDTO.getUserId());</span>
+<span class="fc" id="L218">    Optional&lt;Cart&gt; existingCart = existingCartItems.stream()</span>
+<span class="pc bnc" id="L219" title="All 2 branches missed.">      .filter(cart -&gt; cart.getFoodItemId().equals(cartInDTO.getFoodItemId())</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        &amp;&amp; cart.getRestaurantId().equals(cartInDTO.getRestaurantId()))</span>
+<span class="fc" id="L221">      .findFirst();</span>
+
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">    if (existingCart.isPresent()) {</span>
+<span class="nc" id="L224">      Cart cart = existingCart.get();</span>
+<span class="nc" id="L225">      cart.setQuantity(cart.getQuantity() + cartInDTO.getQuantity());</span>
+<span class="nc" id="L226">      cart.setPrice(cart.getPrice());</span>
+<span class="nc" id="L227">      cartRepository.save(cart);</span>
+<span class="nc" id="L228">      LOGGER.info(&quot;Item quantity updated for cartId: {}&quot;, cart.getCartId());</span>
+<span class="nc" id="L229">      return new CommonResponse(Constants.ITEM_QUANTITY_UPDATED_SUCCESS);</span>
+    } else {
+<span class="fc" id="L231">      Cart cart = CartDtoConverter.toEntity(cartInDTO);</span>
+<span class="fc" id="L232">      cartRepository.save(cart);</span>
+<span class="fc" id="L233">      LOGGER.info(&quot;Item added to cart for userId: {}&quot;, cartInDTO.getUserId());</span>
+<span class="fc" id="L234">      return new CommonResponse(Constants.ITEM_ADDED_TO_CART_SUCCESS);</span>
+    }
+  }
+
+  /**
+   * Retrieves a cart by its cart ID.
+   *
+   * @param cartId the ID of the cart to retrieve
+   * @return the CartOutDTO object containing the cart details
+   */
+  @Override
+  public CartOutDTO getCartById(final Integer cartId) {
+<span class="fc" id="L246">    LOGGER.info(&quot;Fetching cart by cartId: {}&quot;, cartId);</span>
+<span class="fc" id="L247">    Cart cart = cartRepository.findById(cartId)</span>
+<span class="fc" id="L248">      .orElseThrow(() -&gt; new ResourceNotFoundException(Constants.CART_NOT_FOUND));</span>
+<span class="fc" id="L249">    LOGGER.info(&quot;Cart found: {}&quot;, cart);</span>
+<span class="fc" id="L250">    return CartDtoConverter.toOutDTO(cart);</span>
+  }
+
+  /**
+   * Retrieves all carts for a specific user by user ID.
+   *
+   * @param userId the ID of the user whose carts are to be fetched
+   * @return a list of CartOutDTO objects containing cart details
+   */
+  @Override
+  public List&lt;CartOutDTO&gt; getCartsByUserId(final Integer userId) {
+<span class="nc" id="L261">    LOGGER.info(&quot;Fetching carts for userId: {}&quot;, userId);</span>
+    UserOutDTO userOutDto;
+    try {
+<span class="nc" id="L264">      userOutDto = userFClient.getUserProfile(userId);</span>
+<span class="nc" id="L265">    } catch (Exception e) {</span>
+<span class="nc" id="L266">      LOGGER.error(&quot;User not found for userId: {}&quot;, userId);</span>
+<span class="nc" id="L267">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
+<span class="nc" id="L268">    }</span>
+<span class="nc" id="L269">    List&lt;Cart&gt; carts = cartRepository.findByUserId(userId);</span>
+<span class="nc bnc" id="L270" title="All 2 branches missed.">    if (carts.isEmpty()) {</span>
+<span class="nc" id="L271">      LOGGER.warn(&quot;No carts found for userId: {}&quot;, userId);</span>
+<span class="nc" id="L272">      throw new ResourceNotFoundException(Constants.CART_NOT_FOUND);</span>
+    }
+<span class="nc" id="L274">    List&lt;CartOutDTO&gt; cartOutDTOs = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">    for (Cart cart : carts) {</span>
+<span class="nc" id="L276">      cartOutDTOs.add(CartDtoConverter.toOutDTO(cart));</span>
+<span class="nc" id="L277">    }</span>
+<span class="nc" id="L278">    LOGGER.info(&quot;Carts fetched successfully for userId: {}&quot;, userId);</span>
+<span class="nc" id="L279">    return cartOutDTOs;</span>
+  }
+
+  /**
+   * Retrieves all cart items for a user by user ID and restaurant ID.
+   *
+   * @param userId       the ID of the user
+   * @param restaurantId the ID of the restaurant
+   * @return a list of Cart objects representing the cart items
+   */
+  @Override
+  public List&lt;Cart&gt; getCartItemsByUserIdAndRestaurantId(final Integer userId, final Integer restaurantId) {
+<span class="fc" id="L291">    LOGGER.info(&quot;Fetching cart items for userId: {} and restaurantId: {}&quot;, userId, restaurantId);</span>
+    UserOutDTO userOutDto;
+    try {
+<span class="fc" id="L294">      userOutDto = userFClient.getUserProfile(userId);</span>
+<span class="fc" id="L295">    } catch (Exception e) {</span>
+<span class="fc" id="L296">      LOGGER.error(&quot;User not found for userId: {}&quot;, userId);</span>
+<span class="fc" id="L297">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
+<span class="fc" id="L298">    }</span>
+<span class="fc" id="L299">    List&lt;Cart&gt; carts = cartRepository.findByUserIdAndRestaurantId(userId, restaurantId);</span>
+<span class="fc bfc" id="L300" title="All 2 branches covered.">    if (carts.isEmpty()) {</span>
+<span class="fc" id="L301">      LOGGER.warn(&quot;No cart items found for userId: {} and restaurantId: {}&quot;, userId, restaurantId);</span>
+<span class="fc" id="L302">      throw new ResourceNotFoundException(Constants.CART_NOT_FOUND);</span>
+    }
+<span class="fc" id="L304">    LOGGER.info(&quot;Cart items fetched successfully for userId: {} and restaurantId: {}&quot;, userId, restaurantId);</span>
+<span class="fc" id="L305">    return carts;</span>
+  }
+
+  /**
+   * Updates the quantity of an item in the cart.
+   *
+   * @param cartId         the ID of the cart to update
+   * @param quantityChange the change in quantity to apply
+   * @return a CommonResponse indicating the result of the operation
+   */
+  @Override
+  @Transactional
+  public CommonResponse updateQuantity(final Integer cartId, final Integer quantityChange) {
+<span class="fc" id="L318">    LOGGER.info(&quot;Updating quantity for cartId: {}, quantity change: {}&quot;, cartId, quantityChange);</span>
+<span class="fc" id="L319">    Cart cart = cartRepository.findById(cartId)</span>
+<span class="fc" id="L320">      .orElseThrow(() -&gt; new ResourceNotFoundException(Constants.CART_NOT_FOUND));</span>
+<span class="fc" id="L321">    double unitPrice = cart.getPrice() / cart.getQuantity();</span>
+<span class="fc" id="L322">    int newQuantity = Math.max(0, cart.getQuantity() + quantityChange);</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">    if (newQuantity == 0) {</span>
+<span class="fc" id="L324">      cartRepository.deleteById(cartId);</span>
+<span class="fc" id="L325">      LOGGER.info(&quot;Item removed from cart with cartId: {}&quot;, cartId);</span>
+<span class="fc" id="L326">      throw new InvalidRequestException(Constants.ITEM_REMOVED_SUCCESSFULLY);</span>
+    }
+<span class="fc" id="L328">    double newPrice = unitPrice * newQuantity;</span>
+<span class="fc" id="L329">    BigDecimal roundedPrice = BigDecimal.valueOf(newPrice).setScale(2, RoundingMode.HALF_EVEN);</span>
+<span class="fc" id="L330">    cart.setQuantity(newQuantity);</span>
+<span class="fc" id="L331">    cart.setPrice(roundedPrice.doubleValue());</span>
+<span class="fc" id="L332">    cartRepository.save(cart);</span>
+<span class="fc" id="L333">    LOGGER.info(&quot;Cart updated with new quantity for cartId: {}&quot;, cartId);</span>
+<span class="fc" id="L334">    return new CommonResponse(Constants.ITEM_QUANTITY_UPDATED_SUCCESS);</span>
+  }
+
+  /**
+   * Removes an item from the cart by cart ID.
+   *
+   * @param cartId the ID of the cart item to remove
+   * @return a CommonResponse indicating the result of the operation
+   */
+  @Override
+  @Transactional
+  public CommonResponse removeItemFromCart(final Integer cartId) {
+<span class="fc" id="L346">    LOGGER.info(&quot;Removing item from cart with cartId: {}&quot;, cartId);</span>
+<span class="fc" id="L347">    Optional&lt;Cart&gt; cartOptional = cartRepository.findById(cartId);</span>
+<span class="fc bfc" id="L348" title="All 2 branches covered.">    if (!cartOptional.isPresent()) {</span>
+<span class="fc" id="L349">      LOGGER.warn(&quot;Cart item not found with cartId: {}&quot;, cartId);</span>
+<span class="fc" id="L350">      throw new ResourceNotFoundException(Constants.CART_ITEM_NOT_FOUND);</span>
+    }
+<span class="fc" id="L352">    cartRepository.deleteById(cartId);</span>
+<span class="fc" id="L353">    LOGGER.info(&quot;Cart item removed successfully for cartId: {}&quot;, cartId);</span>
+<span class="fc" id="L354">    return new CommonResponse(Constants.CART_ITEM_REMOVED_SUCCESSFULLY);</span>
+  }
+
+  /**
+   * Clears the cart for a user after placing an order.
+   *
+   * @param userId the ID of the user whose cart is to be cleared
+   * @return a CommonResponse indicating the result of the operation
+   */
+  @Override
+  @Transactional
+  public CommonResponse clearCartAfterPlaceAnOrder(final Integer userId) {
+<span class="fc" id="L366">    LOGGER.info(&quot;Clearing cart after placing an order for userId: {}&quot;, userId);</span>
+<span class="fc" id="L367">    List&lt;Cart&gt; userCart = cartRepository.findByUserId(userId);</span>
+<span class="fc bfc" id="L368" title="All 2 branches covered.">    if (userCart.isEmpty()) {</span>
+<span class="fc" id="L369">      LOGGER.warn(&quot;No cart items found for userId: {}&quot;, userId);</span>
+<span class="fc" id="L370">      throw new ResourceNotFoundException(Constants.CART_NOT_FOUND);</span>
+    }
+<span class="fc" id="L372">    cartRepository.deleteAll(userCart);</span>
+<span class="fc" id="L373">    LOGGER.info(&quot;Cart cleared successfully for userId: {}&quot;, userId);</span>
+<span class="fc" id="L374">    return new CommonResponse(Constants.CART_CLEARED_SUCCESSFULLY);</span>
+  }
+}
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

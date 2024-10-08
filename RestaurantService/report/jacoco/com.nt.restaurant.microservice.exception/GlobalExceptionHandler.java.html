@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.exception</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.exception;
+
+import com.nt.restaurant.microservice.util.Constants;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Global exception handler for handling various types of exceptions throughout the application.
+ * This class centralizes the handling of validation errors, already existing entity errors,
+ * entity not found errors, and other custom exceptions.
+ */
+@ControllerAdvice
+<span class="fc" id="L28">public class GlobalExceptionHandler {</span>
+
+  /**
+   * Handles validation exceptions that occur when method arguments are not valid.
+   * This method processes both {@link MethodArgumentNotValidException} and {@link BindException}.
+   * &lt;p&gt;
+   * It aggregates all validation error messages and returns them in an {@link ErrorResponse} object
+   * with a {@code 400 Bad Request} status.
+   * &lt;/p&gt;
+   *
+   * @param ex the validation exception instance
+   * @return an {@link ErrorResponse} object with the aggregated error details and a {@code 400 Bad Request} status
+   */
+
+  // For validation exceptions (like @Valid)
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleValidationExceptions(final MethodArgumentNotValidException ex) {
+<span class="nc" id="L45">    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
+    // Extract custom validation messages from FieldError
+<span class="nc" id="L47">    ex.getBindingResult().getAllErrors().forEach(error -&gt; {</span>
+<span class="nc" id="L48">      String fieldName = ((FieldError) error).getField();</span>
+<span class="nc" id="L49">      String errorMessage = error.getDefaultMessage();  // This retrieves the message from @Pattern or other annotations</span>
+<span class="nc" id="L50">      errors.put(fieldName, errorMessage);</span>
+<span class="nc" id="L51">    });</span>
+<span class="nc" id="L52">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), &quot;Validation failed&quot;, errors);</span>
+<span class="nc" id="L53">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  /**
+   * Handles binding exceptions that occur during data binding operations.
+   * This method processes {@link BindException} to handle validation errors that occur
+   * when binding request parameters to method parameters.
+   *
+   * &lt;p&gt;
+   * It aggregates validation error messages and returns them in an {@link ErrorResponse} object
+   * with a {@code 400 Bad Request} status.
+   * &lt;/p&gt;
+   *
+   * @param ex the binding exception instance
+   * @return an {@link ResponseEntity} containing an {@link ErrorResponse}
+   * object with the aggregated error details and a {@code 400 Bad Request} status
+   */
+  @ExceptionHandler(BindException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleBindException(final BindException ex) {
+<span class="nc" id="L72">    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
+
+<span class="nc" id="L74">    ex.getBindingResult().getAllErrors().forEach(error -&gt; {</span>
+<span class="nc" id="L75">      String fieldName = ((FieldError) error).getField();</span>
+<span class="nc" id="L76">      String errorMessage = error.getDefaultMessage();</span>
+
+<span class="nc bnc" id="L78" title="All 2 branches missed.">      if (ex.getFieldError(fieldName).getRejectedValue() != null) {</span>
+<span class="nc" id="L79">        String rejectedValue = ex.getFieldError(fieldName).getRejectedValue().toString();</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (fieldName.equals(&quot;foodCategoryId&quot;)) {</span>
+<span class="nc" id="L81">          errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected a numeric value.&quot;, rejectedValue, fieldName);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        } else if (fieldName.equals(&quot;restaurantId&quot;)) {</span>
+<span class="nc" id="L83">          errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected a numeric value.&quot;, rejectedValue, fieldName);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        } else if (fieldName.equals(&quot;userId&quot;)) {</span>
+<span class="nc" id="L85">          errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected an integer value.&quot;, rejectedValue, fieldName);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        } else if (fieldName.equals(&quot;price&quot;)) {</span>
+<span class="nc" id="L87">          errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected a decimal value.&quot;, rejectedValue, fieldName);</span>
+        }
+      }
+<span class="nc" id="L90">      errors.put(fieldName, errorMessage);</span>
+<span class="nc" id="L91">    });</span>
+
+<span class="nc" id="L93">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), &quot;Validation failed&quot;, errors);</span>
+<span class="nc" id="L94">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  /**
+   * Handles exceptions related to method argument type mismatches.
+   * This method processes {@link MethodArgumentTypeMismatchException} to provide
+   * informative error messages when type mismatches occur in method arguments.
+   *
+   * @param ex the exception instance indicating a type mismatch
+   * @return an {@link ResponseEntity} containing an {@link ErrorResponse} object with a {@code 400 Bad Request} status
+   */
+  @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleTypeMismatchException(final MethodArgumentTypeMismatchException ex) {
+<span class="nc" id="L107">    String fieldName = ex.getName();</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">    String requiredType = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : &quot;unknown&quot;;</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">    String providedValue = ex.getValue() != null ? ex.getValue().toString() : &quot;null&quot;;</span>
+<span class="nc" id="L110">    String errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected a value of type %s.&quot;,</span>
+      providedValue, fieldName, requiredType);
+
+<span class="nc" id="L113">    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L114">    errors.put(fieldName, errorMessage);</span>
+
+<span class="nc" id="L116">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), &quot;Validation failed&quot;, errors);</span>
+<span class="nc" id="L117">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+  }
+
+
+  /**
+   * Handles exceptions thrown when trying to create an entity that already exists.
+   * This method catches {@link ResourceAlreadyExistException} and returns an error response.
+   * &lt;p&gt;
+   * It returns an {@link ErrorResponse} with a {@code 409 Conflict} status.
+   * &lt;/p&gt;
+   *
+   * @param ex the exception instance indicating the entity already exists
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} and a {@code 409 Conflict} status
+   */
+  @ExceptionHandler(ResourceAlreadyExistException.class)
+  @ResponseStatus(HttpStatus.CONFLICT)
+  @ResponseBody
+  public ResponseEntity&lt;ErrorResponse&gt; handleResourceAlreadyExistException(final ResourceAlreadyExistException ex) {
+<span class="fc" id="L135">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());</span>
+<span class="fc" id="L136">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.CONFLICT);</span>
+  }
+
+  /**
+   * Handles exceptions related to unauthorized access.
+   * This method processes {@link UnauthorizedException} and returns an error response.
+   *
+   * @param ex the exception instance indicating unauthorized access
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} and a {@code 401 Unauthorized} status
+   */
+  @ExceptionHandler(UnauthorizedException.class)
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ResponseBody
+  public ResponseEntity&lt;ErrorResponse&gt; handleUnauthorizedException(final UnauthorizedException ex) {
+<span class="nc" id="L150">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());</span>
+<span class="nc" id="L151">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.UNAUTHORIZED);</span>
+  }
+
+  /**
+   * Handles exceptions thrown when an entity is not found.
+   * This method catches {@link ResourceNotFoundException} and returns an error response.
+   * &lt;p&gt;
+   * It returns an {@link ErrorResponse} with a {@code 404 Not Found} status.
+   * &lt;/p&gt;
+   *
+   * @param ex the exception instance indicating the entity was not found
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} and a {@code 404 Not Found} status
+   */
+  @ExceptionHandler(ResourceNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ResponseBody
+  public ResponseEntity&lt;ErrorResponse&gt; handleResourceNotFoundException(final ResourceNotFoundException ex) {
+<span class="fc" id="L168">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());</span>
+<span class="fc" id="L169">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.NOT_FOUND);</span>
+  }
+
+  /**
+   * Handles exceptions related to invalid requests, such as image file validation failures.
+   * This method catches {@link InvalidRequestException} and returns an appropriate error response.
+   *
+   * &lt;p&gt;
+   * It generates an {@link ErrorResponse} object and returns it with a {@code 400 Bad Request} HTTP status.
+   * &lt;/p&gt;
+   *
+   * @param ex the exception instance indicating the request is invalid
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 400 Bad Request} status
+   */
+  @ExceptionHandler(InvalidRequestException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ResponseBody
+  public ResponseEntity&lt;ErrorResponse&gt; handleInvalidRequestException(final InvalidRequestException ex) {
+<span class="nc" id="L187">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());</span>
+<span class="nc" id="L188">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  /**
+   * Handles exceptions related to invalid requests, such as image file validation failures.
+   * This method catches {@link InvalidRequestException} and returns an appropriate error response.
+   *
+   * &lt;p&gt;
+   * It generates an {@link ErrorResponse} object and returns it with a {@code 400 Bad Request} HTTP status.
+   * &lt;/p&gt;
+   *
+   * @param ex the exception instance indicating the request is invalid
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 400 Bad Request} status
+   */
+  @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleMediaTypeNotSupportedException(final HttpMediaTypeNotSupportedException ex) {
+<span class="nc" id="L204">    ErrorResponse errorResponse = new ErrorResponse();</span>
+<span class="nc" id="L205">    errorResponse.setStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value());</span>
+<span class="nc" id="L206">    errorResponse.setMessage(&quot;Unsupported Media Type. Please ensure your request's Content-Type is correct.&quot;);</span>
+<span class="nc" id="L207">    errorResponse.getErrors().put(&quot;Content-Type&quot;, &quot;Expected: multipart/form-data&quot;);</span>
+
+<span class="nc" id="L209">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.UNSUPPORTED_MEDIA_TYPE);</span>
+  }
+
+  /**
+   * Handles exceptions related to unsupported media types in requests.
+   * This method catches {@link HttpMediaTypeNotSupportedException} and returns an appropriate error response.
+   *
+   * @param ex the exception instance indicating an unsupported media type
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 415 Unsupported Media Type} status
+   */
+  @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleMethodNotSupportedException(final HttpRequestMethodNotSupportedException ex) {
+<span class="nc" id="L221">    String errorMessage = Constants.METHODE_NOT_ALLOWED;</span>
+<span class="nc" id="L222">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), errorMessage);</span>
+<span class="nc" id="L223">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);</span>
+  }
+
+  /**
+   * Handles any other unhandled exceptions in the application.
+   * This method returns a generic error response for unexpected errors.
+   *
+   * @param ex the exception instance indicating an unexpected error
+   * @param request the web request that resulted in the error
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 500 Internal Server Error} status
+   */
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity&lt;Object&gt; handleHttpMessageNotReadableException(final HttpMessageNotReadableException ex,
+                                                                      final WebRequest request) {
+<span class="nc" id="L237">    Map&lt;String, Object&gt; body = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L238">    body.put(&quot;status&quot;, HttpStatus.BAD_REQUEST.value());</span>
+<span class="nc" id="L239">    body.put(&quot;error&quot;, Constants.INVALID_REQUEST_BODY_ERROR);</span>
+<span class="nc" id="L240">    body.put(&quot;message&quot;, Constants.EMPTY_CONTENT_ERROR);</span>
+<span class="nc" id="L241">    return new ResponseEntity&lt;&gt;(body, HttpStatus.BAD_REQUEST);</span>
+  }
+
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

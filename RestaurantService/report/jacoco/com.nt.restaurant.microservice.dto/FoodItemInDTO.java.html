@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FoodItemInDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.dto</a> &gt; <span class="el_source">FoodItemInDTO.java</span></div><h1>FoodItemInDTO.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.dto;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.Objects;
+
+/**
+ * Data Transfer Object (DTO) for input validation of the Food Item entity.
+ * This class is used to capture and validate the input data required to create
+ * or update a food item for a restaurant.
+ */
+public class FoodItemInDTO {
+
+  /**
+   * Represents the ID of the food category to which the food item belongs.
+   * This field cannot be null.
+   */
+  @NotNull(message = &quot;Food category ID cannot be null&quot;)
+  private Integer foodCategoryId;
+
+  /**
+   * Represents the ID of the restaurant that offers the food item.
+   * This field cannot be null.
+   */
+  @NotNull(message = &quot;Restaurant ID cannot be null&quot;)
+  private Integer restaurantId;
+
+  /**
+   * Represents the name of the food item.
+   * The name cannot be blank, should not exceed 100 characters, and must contain only alphabets.
+   */
+  @NotBlank(message = &quot;Food item name cannot be blank&quot;)
+  @Size(max = 100, message = &quot;Food item name cannot exceed 100 characters&quot;)
+  @Pattern(regexp = &quot;^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$&quot;,
+    message = &quot;Food Item name must contain at least two alphabets&quot;)
+  private String foodItemName;
+
+  /**
+   * Represents the description of the food item.
+   * The description cannot be blank and should not exceed 255 characters.
+   */
+  @NotBlank(message = &quot;Description cannot be blank&quot;)
+  @Size(max = 255, message = &quot;Description cannot exceed 255 characters&quot;)
+  private String description;
+
+  /**
+   * Represents the price of the food item.
+   * The price cannot be null, must be greater than 0, and must have a valid format.
+   */
+  @NotNull(message = &quot;Price cannot be null&quot;)
+  @DecimalMin(value = &quot;0.0&quot;, inclusive = false, message = &quot;Price must be greater than 0&quot;)
+  @Digits(integer = 10, fraction = 2, message = &quot;Price format is invalid&quot;)
+  private Double price;
+
+  /**
+   * Represents the availability status of the food item.
+   * A boolean value indicating whether the food item is available for order.
+   */
+  private boolean isAvailable;
+
+  /**
+   * Represents the image of the food item in a multipart file format.
+   * This field is optional.
+   */
+  private MultipartFile foodItemImage;
+
+  /**
+   * Default constructor for the {@code FoodItemInDTO} class.
+   * Initializes a new instance of the {@code FoodItemInDTO} class with default values.
+   */
+<span class="fc" id="L77">  public FoodItemInDTO() {</span>
+<span class="fc" id="L78">  }</span>
+
+  /**
+   * Parameterized constructor to initialize {@code FoodItemInDTO} with food category ID, restaurant ID,
+   * food item name, description, price, availability, and food item image.
+   *
+   * @param foodCategoryId the ID of the food category
+   * @param restaurantId   the ID of the restaurant
+   * @param foodItemName   the name of the food item
+   * @param description    the description of the food item
+   * @param price          the price of the food item
+   * @param isAvailable    the availability status of the food item
+   * @param foodItemImage  the image of the food item
+   */
+  public FoodItemInDTO(final Integer foodCategoryId, final Integer restaurantId, final String foodItemName,
+                       final String description, final Double price,
+<span class="fc" id="L94">                       final boolean isAvailable, final MultipartFile foodItemImage) {</span>
+<span class="fc" id="L95">    this.foodCategoryId = foodCategoryId;</span>
+<span class="fc" id="L96">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L97">    this.foodItemName = foodItemName;</span>
+<span class="fc" id="L98">    this.description = description;</span>
+<span class="fc" id="L99">    this.price = price;</span>
+<span class="fc" id="L100">    this.isAvailable = isAvailable;</span>
+<span class="fc" id="L101">    this.foodItemImage = foodItemImage;</span>
+<span class="fc" id="L102">  }</span>
+
+  /**
+   * Gets the ID of the food category.
+   *
+   * @return the food category ID
+   */
+  public Integer getFoodCategoryId() {
+<span class="fc" id="L110">    return foodCategoryId;</span>
+  }
+
+  /**
+   * Sets the ID of the food category.
+   *
+   * @param foodCategoryId the new food category ID
+   */
+  public void setFoodCategoryId(final Integer foodCategoryId) {
+<span class="fc" id="L119">    this.foodCategoryId = foodCategoryId;</span>
+<span class="fc" id="L120">  }</span>
+
+  /**
+   * Gets the ID of the restaurant.
+   *
+   * @return the restaurant ID
+   */
+  public Integer getRestaurantId() {
+<span class="fc" id="L128">    return restaurantId;</span>
+  }
+
+  /**
+   * Sets the ID of the restaurant.
+   *
+   * @param restaurantId the new restaurant ID
+   */
+  public void setRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L137">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L138">  }</span>
+
+  /**
+   * Gets the name of the food item.
+   *
+   * @return the food item name
+   */
+  public String getFoodItemName() {
+<span class="fc" id="L146">    return foodItemName;</span>
+  }
+
+  /**
+   * Sets the name of the food item.
+   *
+   * @param foodItemName the new food item name
+   */
+  public void setFoodItemName(final String foodItemName) {
+<span class="fc" id="L155">    this.foodItemName = foodItemName;</span>
+<span class="fc" id="L156">  }</span>
+
+  /**
+   * Gets the description of the food item.
+   *
+   * @return the description
+   */
+  public String getDescription() {
+<span class="fc" id="L164">    return description;</span>
+  }
+
+  /**
+   * Sets the description of the food item.
+   *
+   * @param description the new description
+   */
+  public void setDescription(final String description) {
+<span class="fc" id="L173">    this.description = description;</span>
+<span class="fc" id="L174">  }</span>
+
+  /**
+   * Gets the price of the food item.
+   *
+   * @return the price
+   */
+  public Double getPrice() {
+<span class="fc" id="L182">    return price;</span>
+  }
+
+  /**
+   * Sets the price of the food item.
+   *
+   * @param price the new price
+   */
+  public void setPrice(final Double price) {
+<span class="fc" id="L191">    this.price = price;</span>
+<span class="fc" id="L192">  }</span>
+
+  /**
+   * Gets the availability status of the food item.
+   *
+   * @return {@code true} if the food item is available, otherwise {@code false}
+   */
+  public boolean isAvailable() {
+<span class="fc" id="L200">    return isAvailable;</span>
+  }
+
+  /**
+   * Sets the availability status of the food item.
+   *
+   * @param available the new availability status
+   */
+  public void setAvailable(final boolean available) {
+<span class="fc" id="L209">    isAvailable = available;</span>
+<span class="fc" id="L210">  }</span>
+
+  /**
+   * Gets the food item image.
+   *
+   * @return the food item image
+   */
+  public MultipartFile getFoodItemImage() {
+<span class="fc" id="L218">    return foodItemImage;</span>
+  }
+
+  /**
+   * Sets the food item image.
+   *
+   * @param foodItemImage the new food item image
+   */
+  public void setFoodItemImage(final MultipartFile foodItemImage) {
+<span class="fc" id="L227">    this.foodItemImage = foodItemImage;</span>
+<span class="fc" id="L228">  }</span>
+
+  /**
+   * Compares this object with the specified object for equality.
+   *
+   * @param o the object to compare with
+   * @return {@code true} if both objects are equal, otherwise {@code false}
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L239">      return true;</span>
+    }
+<span class="pc bpc" id="L241" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L242">      return false;</span>
+    }
+<span class="fc" id="L244">    FoodItemInDTO that = (FoodItemInDTO) o;</span>
+<span class="pc bpc" id="L245" title="1 of 4 branches missed.">    return isAvailable == that.isAvailable &amp;&amp; Objects.equals(foodCategoryId, that.foodCategoryId)</span>
+<span class="pc bpc" id="L246" title="2 of 4 branches missed.">      &amp;&amp; Objects.equals(restaurantId, that.restaurantId) &amp;&amp; Objects.equals(foodItemName, that.foodItemName)</span>
+<span class="pc bpc" id="L247" title="2 of 4 branches missed.">      &amp;&amp; Objects.equals(description, that.description) &amp;&amp; Objects.equals(price, that.price)</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(foodItemImage, that.foodItemImage);</span>
+  }
+
+  /**
+   * Returns the hash code value for this object.
+   *
+   * @return the hash code value
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L258">    return Objects.hash(foodCategoryId, restaurantId, foodItemName, description, price, isAvailable, foodItemImage);</span>
+  }
+
+  /**
+   * Returns a string representation of the object.
+   *
+   * @return a string representation of the object
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L268">    return &quot;FoodItemInDTO{&quot;</span>
+      + &quot;foodCategoryId=&quot;
+      + foodCategoryId
+      + &quot;, restaurantId=&quot;
+      + restaurantId
+      + &quot;, foodItemName='&quot;
+      + foodItemName + '\''
+      + &quot;, description='&quot;
+      + description + '\''
+      + &quot;, price=&quot; + price
+      + &quot;, isAvailable=&quot;
+      + isAvailable
+      + &quot;, foodItemImage=&quot;
+      + foodItemImage
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

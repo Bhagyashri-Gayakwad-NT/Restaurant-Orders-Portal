@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmailRequestDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.dto</a> &gt; <span class="el_source">EmailRequestDTO.java</span></div><h1>EmailRequestDTO.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.dto;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.util.Objects;
+
+/**
+ * DTO class for email request with subject and text.
+ * This class includes validations for the subject and text fields.
+ */
+<span class="fc" id="L11">public class EmailRequestDTO {</span>
+
+  /**
+   * The subject of the email.
+   * This field cannot be null or blank, and its length must be between 1 and 100 characters.
+   */
+  @NotBlank(message = &quot;Subject is required.&quot;)
+  @Size(min = 3, max = 100, message = &quot;Subject must be between 3 and 100 characters.&quot;)
+  private String subject;
+
+  /**
+   * The body of the email.
+   * This field cannot be null or blank, and its length must be between 1 and 500 characters.
+   */
+  @NotBlank(message = &quot;Text is required.&quot;)
+  @Size(min = 5, max = 500, message = &quot;Text must be between 5 and 500 characters.&quot;)
+  private String text;
+
+  /**
+   * Gets the subject of the email.
+   *
+   * @return the subject of the email
+   */
+  public String getSubject() {
+<span class="fc" id="L35">    return subject;</span>
+  }
+
+  /**
+   * Sets the subject of the email.
+   *
+   * @param subject the new subject to be set
+   */
+  public void setSubject(final String subject) {
+<span class="fc" id="L44">    this.subject = subject;</span>
+<span class="fc" id="L45">  }</span>
+
+  /**
+   * Gets the body of the email.
+   *
+   * @return the body of the email
+   */
+  public String getText() {
+<span class="fc" id="L53">    return text;</span>
+  }
+
+  /**
+   * Sets the body of the email.
+   *
+   * @param text the new text to be set as the body of the email
+   */
+  public void setText(final String text) {
+<span class="fc" id="L62">    this.text = text;</span>
+<span class="fc" id="L63">  }</span>
+
+  /**
+   * Compares this email request DTO to the specified object.
+   * The result is {@code true} if and only if the argument is not {@code null} and is an
+   * {@code EmailRequestDTO} object that represents the same subject and text as this object.
+   *
+   * @param o the object to compare this {@code EmailRequestDTO} against
+   * @return {@code true} if the given object represents an {@code EmailRequestDTO}
+   * equivalent to this DTO, {@code false} otherwise
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L77">      return true;</span>
+    }
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">    if (!(o instanceof EmailRequestDTO)) {</span>
+<span class="nc" id="L80">      return false;</span>
+    }
+<span class="fc" id="L82">    EmailRequestDTO that = (EmailRequestDTO) o;</span>
+<span class="pc bpc" id="L83" title="1 of 4 branches missed.">    return Objects.equals(subject, that.subject) &amp;&amp; Objects.equals(text, that.text);</span>
+  }
+
+  /**
+   * Returns a hash code for this email request DTO.
+   * The hash code is generated based on the subject and text fields.
+   *
+   * @return a hash code value for this DTO
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L94">    return Objects.hash(subject, text);</span>
+  }
+
+  /**
+   * Returns a string representation of this email request DTO.
+   * The string includes the subject and text fields of the DTO.
+   *
+   * @return a string representation of the object
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L105">    return &quot;EmailRequestDTO{&quot;</span>
+      + &quot;subject='&quot; + subject
+      + '\'' + &quot;, text='&quot; + text
+      + '\'' + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

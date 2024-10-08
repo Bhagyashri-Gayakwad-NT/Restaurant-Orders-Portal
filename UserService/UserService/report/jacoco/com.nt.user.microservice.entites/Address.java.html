@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Address.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.entites</a> &gt; <span class="el_source">Address.java</span></div><h1>Address.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.entites;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.util.Objects;
+
+/**
+ * Represents an address entity for the application.
+ * This entity is mapped to the &quot;address&quot; table in the database.
+ */
+@Entity
+<span class="fc" id="L14">public class Address {</span>
+
+  /**
+   * The unique identifier for the address.
+   */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
+
+  /**
+   * The street address of the user.
+   */
+  private String street;
+
+  /**
+   * The city where the user resides.
+   */
+  private String city;
+
+  /**
+   * The country where the user resides.
+   */
+  private String country;
+
+  /**
+   * The state where the user resides.
+   */
+  private String state;
+
+  /**
+   * The postal code (ZIP or pin code) for the user's address.
+   */
+  private String pinCode;
+
+  /**
+   * The unique identifier for the user associated with this address.
+   */
+  private Integer userId;
+
+  /**
+   * Gets the unique identifier for the address.
+   *
+   * @return the address ID.
+   */
+  public Integer getId() {
+<span class="fc" id="L59">    return id;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the address.
+   *
+   * @param id the address ID to set.
+   */
+  public void setId(final Integer id) {
+<span class="fc" id="L68">    this.id = id;</span>
+<span class="fc" id="L69">  }</span>
+
+  /**
+   * Gets the street address of the user.
+   *
+   * @return the street address.
+   */
+  public String getStreet() {
+<span class="fc" id="L77">    return street;</span>
+  }
+
+  /**
+   * Sets the street address of the user.
+   *
+   * @param street the street address to set.
+   */
+  public void setStreet(final String street) {
+<span class="fc" id="L86">    this.street = street;</span>
+<span class="fc" id="L87">  }</span>
+
+  /**
+   * Gets the city where the user resides.
+   *
+   * @return the city.
+   */
+  public String getCity() {
+<span class="fc" id="L95">    return city;</span>
+  }
+
+  /**
+   * Sets the city where the user resides.
+   *
+   * @param city the city to set.
+   */
+  public void setCity(final String city) {
+<span class="fc" id="L104">    this.city = city;</span>
+<span class="fc" id="L105">  }</span>
+
+  /**
+   * Gets the country where the user resides.
+   *
+   * @return the country.
+   */
+  public String getCountry() {
+<span class="fc" id="L113">    return country;</span>
+  }
+
+  /**
+   * Sets the country where the user resides.
+   *
+   * @param country the country to set.
+   */
+  public void setCountry(final String country) {
+<span class="fc" id="L122">    this.country = country;</span>
+<span class="fc" id="L123">  }</span>
+
+  /**
+   * Gets the state where the user resides.
+   *
+   * @return the state.
+   */
+  public String getState() {
+<span class="fc" id="L131">    return state;</span>
+  }
+
+  /**
+   * Sets the state where the user resides.
+   *
+   * @param state the state to set.
+   */
+  public void setState(final String state) {
+<span class="fc" id="L140">    this.state = state;</span>
+<span class="fc" id="L141">  }</span>
+
+  /**
+   * Gets the postal code (ZIP or pin code) for the user's address.
+   *
+   * @return the postal code.
+   */
+  public String getPinCode() {
+<span class="fc" id="L149">    return pinCode;</span>
+  }
+
+  /**
+   * Sets the postal code (ZIP or pin code) for the user's address.
+   *
+   * @param pinCode the postal code to set.
+   */
+  public void setPinCode(final String pinCode) {
+<span class="fc" id="L158">    this.pinCode = pinCode;</span>
+<span class="fc" id="L159">  }</span>
+
+  /**
+   * Gets the unique identifier for the user associated with this address.
+   *
+   * @return the user ID.
+   */
+  public Integer getUserId() {
+<span class="fc" id="L167">    return userId;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the user associated with this address.
+   *
+   * @param userId the user ID to set.
+   */
+  public void setUserId(final Integer userId) {
+<span class="fc" id="L176">    this.userId = userId;</span>
+<span class="fc" id="L177">  }</span>
+
+  /**
+   * Compares this address to the specified object. The result is true if and only if
+   * the argument is not null and is an Address object that has the same values for all fields.
+   *
+   * @param o the object to compare this address against.
+   * @return true if the given object represents an Address equivalent to this address, false otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L189">      return true;</span>
+    }
+<span class="pc bpc" id="L191" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L192">      return false;</span>
+    }
+<span class="fc" id="L194">    Address address = (Address) o;</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">    return Objects.equals(id, address.id)</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">      &amp;&amp; Objects.equals(street, address.street)</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(city, address.city)</span>
+<span class="pc bpc" id="L198" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(country, address.country)</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(state, address.state)</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(pinCode, address.pinCode)</span>
+<span class="pc bpc" id="L201" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(userId, address.userId);</span>
+  }
+
+  /**
+   * Returns a hash code value for the address. This method is supported for the benefit
+   * of hash tables such as those provided by HashMap.
+   *
+   * @return a hash code value for this address.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L212">    return Objects.hash(id, street, city, country, state, pinCode, userId);</span>
+  }
+
+  /**
+   * Returns a string representation of the address, including the values of all fields.
+   *
+   * @return a string representation of the address.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L222">    return &quot;Address{&quot;</span>
+      + &quot;id=&quot; + id
+      + &quot;, street='&quot; + street
+      + '\'' + &quot;, city='&quot; + city
+      + '\'' + &quot;, country='&quot; + country
+      + '\'' + &quot;, state='&quot; + state
+      + '\'' + &quot;, pinCode='&quot; + pinCode
+      + '\'' + &quot;, userId=&quot; + userId
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

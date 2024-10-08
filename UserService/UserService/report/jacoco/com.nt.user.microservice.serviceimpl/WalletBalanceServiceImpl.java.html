@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WalletBalanceServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.serviceimpl</a> &gt; <span class="el_source">WalletBalanceServiceImpl.java</span></div><h1>WalletBalanceServiceImpl.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.serviceimpl;
+
+import com.nt.user.microservice.dto.UserOutDTO;
+import com.nt.user.microservice.entites.User;
+import com.nt.user.microservice.entites.WalletBalance;
+import com.nt.user.microservice.exceptions.InsufficientBalanceException;
+import com.nt.user.microservice.exceptions.ResourceNotFoundException;
+import com.nt.user.microservice.repository.UserRepository;
+import com.nt.user.microservice.repository.WalletBalanceRepository;
+import com.nt.user.microservice.service.WalletBalanceService;
+import com.nt.user.microservice.util.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Service implementation for managing wallet balance operations.
+ * &lt;p&gt;
+ * This service provides functionality to update the wallet balance of a user.
+ * It handles exceptions for cases such as user or wallet not found and insufficient balance.
+ * &lt;/p&gt;
+ */
+@Service
+<span class="fc" id="L25">public class WalletBalanceServiceImpl implements WalletBalanceService {</span>
+  /**
+   * LOGGER for logging information, warnings, and errors related to wallet balance operations.
+   * &lt;p&gt;
+   * The LOGGER is used to record events and errors that occur during the execution of methods in this class.
+   * This helps in debugging and tracking the application's behavior.
+   * &lt;/p&gt;
+   */
+<span class="fc" id="L33">  private static final Logger LOGGER = LoggerFactory.getLogger(WalletBalanceServiceImpl.class);</span>
+
+  /**
+   * Repository for performing CRUD operations on the WalletBalance entity.
+   * &lt;p&gt;
+   * This repository is used to interact with the database to fetch, save, and update wallet balance records.
+   * It is injected into this service to perform operations related to wallet balances.
+   * &lt;/p&gt;
+   */
+  @Autowired
+  private WalletBalanceRepository walletBalanceRepository;
+
+  /**
+   * Repository for performing CRUD operations on the User entity.
+   * &lt;p&gt;
+   * This repository is used to interact with the database to fetch user details.
+   * It is injected into this service to retrieve user information required for wallet balance updates.
+   * &lt;/p&gt;
+   */
+  @Autowired
+  private UserRepository userRepository;
+
+
+  /**
+   * Updates the wallet balance for a given user.
+   * &lt;p&gt;
+   * This method retrieves the user and their wallet balance, checks if the current balance
+   * is sufficient for the requested amount, and updates the wallet balance accordingly.
+   * If the user or wallet is not found or if there is insufficient balance, appropriate exceptions are thrown.
+   * &lt;/p&gt;
+   *
+   * @param userId the ID of the user whose wallet balance is to be updated
+   * @param amount the amount to be deducted from the wallet balance
+   * @return a {@link UserOutDTO} object containing updated user information and wallet balance
+   * @throws ResourceNotFoundException if the user or wallet is not found
+   * @throws InsufficientBalanceException if the wallet balance is insufficient for the requested amount
+   */
+  @Override
+  public UserOutDTO updateWalletBalance(final Integer userId, final Double amount) {
+<span class="fc" id="L72">    LOGGER.info(&quot;Updating wallet balance for user ID: {}&quot;, userId);</span>
+
+<span class="fc" id="L74">    User user = userRepository.findById(userId)</span>
+<span class="fc" id="L75">      .orElseThrow(() -&gt; new ResourceNotFoundException(Constants.USER_NOT_FOUND));</span>
+<span class="fc" id="L76">    WalletBalance walletBalance = walletBalanceRepository.findByUserId(userId);</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">    if (walletBalance == null) {</span>
+<span class="fc" id="L78">      throw new ResourceNotFoundException(Constants.WALLET_NOT_FOUND);</span>
+    }
+
+<span class="fc" id="L81">    Double currentBalance = walletBalance.getBalance();</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">    if (currentBalance &lt; amount) {</span>
+<span class="fc" id="L83">      LOGGER.error(&quot;Insufficient funds for user ID: {}&quot;, userId);</span>
+<span class="fc" id="L84">      throw new InsufficientBalanceException(Constants.INSUFFICIENT_BALANCE);</span>
+    }
+<span class="fc" id="L86">    walletBalance.setBalance(currentBalance - amount);</span>
+<span class="fc" id="L87">    walletBalanceRepository.save(walletBalance);</span>
+
+<span class="fc" id="L89">    LOGGER.info(&quot;Wallet balance updated successfully for user ID: {}&quot;, userId);</span>
+
+<span class="fc" id="L91">    UserOutDTO userOutDTO = new UserOutDTO();</span>
+<span class="fc" id="L92">    userOutDTO.setId(user.getId());</span>
+<span class="fc" id="L93">    userOutDTO.setFirstName(user.getFirstName());</span>
+<span class="fc" id="L94">    userOutDTO.setLastName(user.getLastName());</span>
+<span class="fc" id="L95">    userOutDTO.setEmail(user.getEmail());</span>
+<span class="fc" id="L96">    userOutDTO.setPhoneNo(user.getPhoneNo());</span>
+<span class="fc" id="L97">    userOutDTO.setWalletBalance(walletBalance.getBalance());</span>
+<span class="fc" id="L98">    userOutDTO.setRole(user.getRole().name());</span>
+<span class="fc" id="L99">    return userOutDTO;</span>
+  }
+
+  /**
+   * Adds money to the wallet balance for a given user.
+   * &lt;p&gt;
+   * This method retrieves the user and their wallet balance, adds the specified amount
+   * to the current balance, and saves the updated wallet balance.
+   * If the user or wallet is not found, an appropriate exception is thrown.
+   * &lt;/p&gt;
+   *
+   * @param userId the ID of the user whose wallet balance is to be updated
+   * @param amount the amount to be added to the wallet balance
+   * @return a {@link UserOutDTO} object containing updated user information and wallet balance
+   * @throws ResourceNotFoundException if the user or wallet is not found
+   */
+  @Override
+  public UserOutDTO addMoney(final Integer userId, final Double amount) {
+<span class="fc" id="L117">    User user = userRepository.findById(userId)</span>
+<span class="fc" id="L118">      .orElseThrow(() -&gt; new ResourceNotFoundException(Constants.USER_NOT_FOUND));</span>
+
+<span class="fc" id="L120">    WalletBalance walletBalance = walletBalanceRepository.findByUserId(userId);</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">    if (walletBalance == null) {</span>
+<span class="fc" id="L122">      throw new ResourceNotFoundException(Constants.WALLET_NOT_FOUND);</span>
+    }
+
+<span class="fc" id="L125">    Double currentBalance = walletBalance.getBalance();</span>
+<span class="fc" id="L126">    walletBalance.setBalance(currentBalance + amount);</span>
+<span class="fc" id="L127">    walletBalanceRepository.save(walletBalance);</span>
+
+<span class="fc" id="L129">    return mapToUserOutDTO(user, walletBalance);</span>
+  }
+
+  /**
+   * Maps a User and WalletBalance to a UserOutDTO.
+   *
+   * @param user the user to be mapped
+   * @param walletBalance the wallet balance to be included in the DTO
+   * @return a {@link UserOutDTO} object containing user information and wallet balance
+   */
+  private UserOutDTO mapToUserOutDTO(final User user, final WalletBalance walletBalance) {
+<span class="fc" id="L140">    UserOutDTO userOutDTO = new UserOutDTO();</span>
+<span class="fc" id="L141">    userOutDTO.setId(user.getId());</span>
+<span class="fc" id="L142">    userOutDTO.setFirstName(user.getFirstName());</span>
+<span class="fc" id="L143">    userOutDTO.setLastName(user.getLastName());</span>
+<span class="fc" id="L144">    userOutDTO.setEmail(user.getEmail());</span>
+<span class="fc" id="L145">    userOutDTO.setPhoneNo(user.getPhoneNo());</span>
+<span class="fc" id="L146">    userOutDTO.setWalletBalance(walletBalance.getBalance());</span>
+<span class="fc" id="L147">    userOutDTO.setRole(user.getRole().name());</span>
+<span class="fc" id="L148">    return userOutDTO;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

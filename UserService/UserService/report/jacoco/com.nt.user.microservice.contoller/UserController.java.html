@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">UserService</a> &gt; <a href="index.source.html" class="el_package">com.nt.user.microservice.contoller</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package com.nt.user.microservice.contoller;
+
+import com.nt.user.microservice.dto.AmountInDTO;
+import com.nt.user.microservice.dto.EmailRequestDTO;
+import com.nt.user.microservice.dto.LogInDTO;
+import com.nt.user.microservice.dto.LoginOutDTO;
+import com.nt.user.microservice.dto.UserInDTO;
+import com.nt.user.microservice.dto.UserOutDTO;
+import com.nt.user.microservice.dto.UserResponse;
+import com.nt.user.microservice.service.UserService;
+import com.nt.user.microservice.service.WalletBalanceService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+
+/**
+ * Controller for managing user-related operations such as registration, login, profile management, and deletion.
+ */
+@RestController
+@CrossOrigin
+@RequestMapping(&quot;/users&quot;)
+<span class="fc" id="L35">public class UserController {</span>
+
+  /**
+   * LOGGER for the UserController class, used for logging important information
+   * such as requests, success, and error messages during execution.
+   */
+<span class="fc" id="L41">  private static final Logger LOGGER = LogManager.getLogger(UserController.class);</span>
+
+  /**
+   * Service layer responsible for handling user-related operations.
+   * &lt;p&gt;
+   * The {@link UserService} is injected via the constructor and provides methods for user
+   * registration, login, profile management, and deletion. It encapsulates the business logic
+   * related to user operations and interacts with the underlying data layer to perform these tasks.
+   * &lt;/p&gt;
+   */
+  @Autowired
+  private  UserService userService;
+
+  /**
+   * Service layer responsible for managing user wallet balance operations.
+   * &lt;p&gt;
+   * The {@link WalletBalanceService} is injected via the constructor and provides methods for
+   * retrieving and updating the wallet balance of users. It encapsulates the business logic
+   * related to wallet operations and interacts with the underlying data layer to perform these tasks.
+   * &lt;/p&gt;
+   */
+  @Autowired
+  private WalletBalanceService walletBalanceService;
+
+  /**
+   * Registers a new user.
+   *
+   * @param userInDTO the user information to register.
+   * @return a response entity with a success message if registration is successful.
+   */
+  @PostMapping(&quot;/register&quot;)
+  public ResponseEntity&lt;UserResponse&gt; registerUser(@Valid @RequestBody final UserInDTO userInDTO) {
+<span class="fc" id="L73">    LOGGER.info(&quot;Registering user with email: {}&quot;, userInDTO.getEmail());</span>
+<span class="fc" id="L74">    UserResponse userResponse = userService.registerUser(userInDTO);</span>
+<span class="fc" id="L75">    LOGGER.info(&quot;User registered successfully: {}&quot;, userInDTO.getEmail());</span>
+<span class="fc" id="L76">    return new ResponseEntity&lt;UserResponse&gt;(userResponse, HttpStatus.CREATED);</span>
+  }
+
+  /**
+   * Logs in a user.
+   *
+   * @param loginDTO the login credentials.
+   * @return a response entity with user details if login is successful.
+   */
+  @PostMapping(&quot;/login&quot;)
+  public ResponseEntity&lt;LoginOutDTO&gt; loginUser(@Valid @RequestBody final LogInDTO loginDTO) {
+<span class="fc" id="L87">    LOGGER.info(&quot;Attempting to login user with email: {}&quot;, loginDTO.getEmail());</span>
+<span class="fc" id="L88">    LoginOutDTO userOutDTO = userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword());</span>
+<span class="fc" id="L89">    LOGGER.info(&quot;User logged in successfully: {}&quot;, loginDTO.getEmail());</span>
+<span class="fc" id="L90">    return ResponseEntity.ok(userOutDTO);</span>
+  }
+
+  /**
+   * Retrieves the profile of a user by ID.
+   *
+   * @param id the ID of the user whose profile is to be fetched.
+   * @return a response entity with the user's profile details.
+   */
+  @GetMapping(&quot;/profile/{id}&quot;)
+  public ResponseEntity&lt;UserOutDTO&gt; getUserProfile(@PathVariable final Integer id) {
+<span class="fc" id="L101">    LOGGER.info(&quot;Fetching profile for user with ID: {}&quot;, id);</span>
+<span class="fc" id="L102">    UserOutDTO userOutDTO = userService.getUserProfile(id);</span>
+<span class="fc" id="L103">    LOGGER.info(&quot;Profile fetched successfully for user ID: {}&quot;, id);</span>
+<span class="fc" id="L104">    return new ResponseEntity&lt;UserOutDTO&gt;(userOutDTO, HttpStatus.OK);</span>
+  }
+
+  /**
+   * Updates the profile of a user by ID.
+   *
+   * @param id the ID of the user to be updated.
+   * @param userInDTO the updated user information.
+   * @return a response entity with a success message if the update is successful.
+   */
+  @PutMapping(&quot;/update/{id}&quot;)
+  public ResponseEntity&lt;UserResponse&gt; updateUserProfile(@Valid @PathVariable final Integer id,
+                                                        @RequestBody final UserInDTO userInDTO) {
+<span class="fc" id="L117">    LOGGER.info(&quot;Updating profile for user with ID: {}&quot;, id);</span>
+<span class="fc" id="L118">    UserResponse result = userService.updateUserProfile(id, userInDTO);</span>
+<span class="fc" id="L119">    LOGGER.info(&quot;Profile updated successfully for user ID: {}&quot;, id);</span>
+<span class="fc" id="L120">    return new ResponseEntity&lt;UserResponse&gt;(result, HttpStatus.OK);</span>
+  }
+
+  /**
+   * Deletes a user by ID.
+   *
+   * @param id the ID of the user to be deleted.
+   * @return a response entity with a success message if the deletion is successful.
+   */
+  @DeleteMapping(&quot;/delete/{id}&quot;)
+  public ResponseEntity&lt;UserResponse&gt; deleteUser(@PathVariable final Integer id) {
+<span class="fc" id="L131">    LOGGER.info(&quot;Request received to delete user with ID: {}&quot;, id);</span>
+<span class="fc" id="L132">    UserResponse userResponse = userService.deleteUser(id);</span>
+<span class="fc" id="L133">    LOGGER.info(&quot;User deleted successfully with ID: {}&quot;, id);</span>
+<span class="fc" id="L134">    return new ResponseEntity&lt;UserResponse&gt;(userResponse, HttpStatus.OK);</span>
+  }
+
+  /**
+   * Adds money to the user's wallet.
+   *
+   * @param userId the ID of the user whose wallet will be updated.
+   * @param amountInDto the amount to be added to the user's wallet, encapsulated in an {@link AmountInDTO} object.
+   * @return a response entity containing the updated user information after adding the money.
+   */
+  @PutMapping(&quot;/addMoney/{userId}&quot;)
+  public ResponseEntity&lt;UserOutDTO&gt; addMoney(@PathVariable final Integer userId, @RequestBody final AmountInDTO amountInDto) {
+<span class="fc" id="L146">    LOGGER.info(&quot;Adding {} to wallet for user ID: {}&quot;, amountInDto.getBalance(), userId);</span>
+<span class="fc" id="L147">    UserOutDTO userResponse = walletBalanceService.addMoney(userId, amountInDto.getBalance());</span>
+<span class="fc" id="L148">    return new ResponseEntity&lt;UserOutDTO&gt;(userResponse, HttpStatus.OK);</span>
+  }
+  /**
+   * Updates the wallet balance for a user.
+   * &lt;p&gt;
+   * This method handles HTTP PUT requests to deduct a specific amount from a user's wallet balance.
+   * The amount to be deducted is provided in the request body.
+   * &lt;/p&gt;
+   *
+   * @param id the ID of the user whose wallet balance will be updated.
+   * @param amountInDTO the amount to be deducted from the user's wallet balance.
+   * @return a {@link ResponseEntity} containing the updated {@link UserOutDTO} with the new wallet balance and HTTP status 200.
+   */
+  @PutMapping(&quot;/walletBalance/{id}&quot;)
+  public ResponseEntity&lt;UserOutDTO&gt; updateWalletBalance(@PathVariable final Integer id,
+                                                        @RequestBody final AmountInDTO amountInDTO) {
+<span class="fc" id="L164">    UserOutDTO userResponse = walletBalanceService.updateWalletBalance(id, amountInDTO.getBalance());</span>
+<span class="fc" id="L165">    return new ResponseEntity&lt;UserOutDTO&gt;(userResponse, HttpStatus.OK);</span>
+  }
+
+  /**
+   * Sends an email with the specified text and subject.
+   *
+   * &lt;p&gt;This method processes a POST request to send an email using the provided {@code EmailRequestDTO}.
+   * If successful, it returns a success message and an HTTP status of {@code 200 OK}.&lt;/p&gt;
+   *
+   * @param emailInDTO the email details (subject, recipients, body)
+   * @return a {@code ResponseEntity&lt;UserResponse&gt;} with a success message and HTTP status OK
+   */
+  @PostMapping(&quot;/send&quot;)
+  public ResponseEntity&lt;UserResponse&gt; sendEmail(@Valid @RequestBody final EmailRequestDTO emailInDTO) {
+<span class="fc" id="L179">    UserResponse response = userService.sendMail(emailInDTO);</span>
+<span class="fc" id="L180">    return new ResponseEntity&lt;UserResponse&gt;(response, HttpStatus.OK);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

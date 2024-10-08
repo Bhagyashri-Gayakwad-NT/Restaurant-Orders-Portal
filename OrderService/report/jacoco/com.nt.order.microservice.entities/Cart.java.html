@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cart.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderService</a> &gt; <a href="index.source.html" class="el_package">com.nt.order.microservice.entities</a> &gt; <span class="el_source">Cart.java</span></div><h1>Cart.java</h1><pre class="source lang-java linenums">package com.nt.order.microservice.entities;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.util.Objects;
+/**
+ * Represents a shopping cart in the system.
+ */
+@Entity
+public class Cart {
+
+  /**
+   * The unique identifier for the cart.
+   */
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer cartId;
+
+  /**
+   * The unique identifier for the user who owns the cart.
+   */
+  private Integer userId;
+
+  /**
+   * The unique identifier for the restaurant associated with the cart.
+   */
+  private Integer restaurantId;
+
+  /**
+   * The unique identifier for the food item in the cart.
+   */
+  private Integer foodItemId;
+
+  /**
+   * The quantity of the food item in the cart.
+   */
+  private Integer quantity;
+
+  /**
+   * The price of the food item.
+   */
+  private Double price;
+
+  /**
+   * Default constructor for Cart.
+   */
+<span class="fc" id="L49">  public Cart() {</span>
+<span class="fc" id="L50">  }</span>
+
+  /**
+   * Constructs a Cart with the specified values.
+   *
+   * @param cartId        the unique identifier for the cart
+   * @param userId       the unique identifier for the user
+   * @param restaurantId  the unique identifier for the restaurant
+   * @param foodItemId    the unique identifier for the food item
+   * @param quantity       the quantity of the food item
+   * @param price         the price of the food item
+   */
+  public Cart(final Integer cartId, final Integer userId, final Integer restaurantId,
+<span class="fc" id="L63">              final Integer foodItemId, final Integer quantity, final Double price) {</span>
+<span class="fc" id="L64">    this.cartId = cartId;</span>
+<span class="fc" id="L65">    this.userId = userId;</span>
+<span class="fc" id="L66">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L67">    this.foodItemId = foodItemId;</span>
+<span class="fc" id="L68">    this.quantity = quantity;</span>
+<span class="fc" id="L69">    this.price = price;</span>
+<span class="fc" id="L70">  }</span>
+
+  /**
+   * Retrieves the unique identifier for the cart.
+   *
+   * @return the cart ID as an Integer.
+   */
+  public Integer getCartId() {
+<span class="fc" id="L78">    return cartId;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the cart.
+   *
+   * @param cartId the cart ID.
+   */
+  public void setCartId(final Integer cartId) {
+<span class="fc" id="L87">    this.cartId = cartId;</span>
+<span class="fc" id="L88">  }</span>
+
+  /**
+   * Retrieves the unique identifier for the user.
+   *
+   * @return the user ID as an Integer.
+   */
+  public Integer getUserId() {
+<span class="fc" id="L96">    return userId;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the user.
+   *
+   * @param userId the user ID.
+   */
+  public void setUserId(final Integer userId) {
+<span class="fc" id="L105">    this.userId = userId;</span>
+<span class="fc" id="L106">  }</span>
+
+  /**
+   * Retrieves the unique identifier for the restaurant.
+   *
+   * @return the restaurant ID as an Integer.
+   */
+  public Integer getRestaurantId() {
+<span class="fc" id="L114">    return restaurantId;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the restaurant.
+   *
+   * @param restaurantId the restaurant ID.
+   */
+  public void setRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L123">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L124">  }</span>
+
+  /**
+   * Retrieves the unique identifier for the food item.
+   *
+   * @return the food item ID as an Integer.
+   */
+  public Integer getFoodItemId() {
+<span class="fc" id="L132">    return foodItemId;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the food item.
+   *
+   * @param foodItemId the food item ID.
+   */
+  public void setFoodItemId(final Integer foodItemId) {
+<span class="fc" id="L141">    this.foodItemId = foodItemId;</span>
+<span class="fc" id="L142">  }</span>
+
+  /**
+   * Retrieves the quantity of the food item in the cart.
+   *
+   * @return the quantity as an Integer.
+   */
+  public Integer getQuantity() {
+<span class="fc" id="L150">    return quantity;</span>
+  }
+
+  /**
+   * Sets the quantity of the food item in the cart.
+   *
+   * @param quantity the quantity.
+   */
+  public void setQuantity(final Integer quantity) {
+<span class="fc" id="L159">    this.quantity = quantity;</span>
+<span class="fc" id="L160">  }</span>
+
+  /**
+   * Retrieves the price of the food item.
+   *
+   * @return the price as a Double.
+   */
+  public Double getPrice() {
+<span class="fc" id="L168">    return price;</span>
+  }
+
+  /**
+   * Sets the price of the food item.
+   *
+   * @param price the price.
+   */
+  public void setPrice(final Double price) {
+<span class="fc" id="L177">    this.price = price;</span>
+<span class="fc" id="L178">  }</span>
+
+  /**
+   * Checks if this cart is equal to another object.
+   *
+   * @param o the object to compare.
+   * @return true if this cart is equal to the given object, false otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="fc bfc" id="L188" title="All 2 branches covered.">    if (this == o) {</span>
+<span class="fc" id="L189">      return true;</span>
+    }
+<span class="pc bpc" id="L191" title="1 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L192">      return false;</span>
+    }
+<span class="fc" id="L194">    Cart cart = (Cart) o;</span>
+<span class="fc bfc" id="L195" title="All 4 branches covered.">    return Objects.equals(cartId, cart.cartId) &amp;&amp; Objects.equals(userId, cart.userId)</span>
+<span class="fc bfc" id="L196" title="All 4 branches covered.">      &amp;&amp; Objects.equals(restaurantId, cart.restaurantId) &amp;&amp; Objects.equals(foodItemId, cart.foodItemId)</span>
+<span class="fc bfc" id="L197" title="All 4 branches covered.">      &amp;&amp; Objects.equals(quantity, cart.quantity) &amp;&amp; Objects.equals(price, cart.price);</span>
+  }
+
+  /**
+   * Returns a hash code value for this cart.
+   *
+   * @return a hash code value for this cart.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L207">    return Objects.hash(cartId, userId, restaurantId, foodItemId, quantity, price);</span>
+  }
+
+  /**
+   * Returns a string representation of this cart.
+   *
+   * @return a string representation of this cart.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L217">    return &quot;Cart{&quot;</span>
+      + &quot;cartId=&quot; + cartId
+      + &quot;, userId=&quot; + userId
+      + &quot;, restaurantId=&quot; + restaurantId
+      + &quot;, foodItemId=&quot; + foodItemId
+      + &quot;, quantity=&quot; + quantity
+      + &quot;, price=&quot; + price
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

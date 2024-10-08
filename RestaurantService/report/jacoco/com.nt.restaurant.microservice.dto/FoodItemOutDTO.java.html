@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FoodItemOutDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">RestaurantService</a> &gt; <a href="index.source.html" class="el_package">com.nt.restaurant.microservice.dto</a> &gt; <span class="el_source">FoodItemOutDTO.java</span></div><h1>FoodItemOutDTO.java</h1><pre class="source lang-java linenums">package com.nt.restaurant.microservice.dto;
+
+import javax.persistence.Lob;
+import java.util.Arrays;
+import java.util.Objects;
+
+/**
+ * Data Transfer Object (DTO) for representing a food item in the output response.
+ * This class is used to send food item details as a response in the application.
+ */
+public class FoodItemOutDTO {
+
+  /**
+   * The unique identifier for the food item.
+   */
+  private Integer foodItemId;
+
+  /**
+   * The identifier of the category to which the food item belongs.
+   */
+  private Integer categoryId;
+
+  /**
+   * The identifier of the restaurant to which the food item belongs.
+   */
+  private Integer restaurantId;
+
+  /**
+   * The name of the food item.
+   */
+  private String foodItemName;
+
+  /**
+   * A description of the food item.
+   */
+  private String description;
+
+  /**
+   * The price of the food item.
+   */
+  private Double price;
+
+  /**
+   * A flag indicating whether the food item is available.
+   */
+  private boolean isAvailable;
+
+  /**
+   * The image of the food item stored as a byte array.
+   */
+  @Lob
+  private byte[] foodItemImage;
+
+  /**
+   * Default constructor for creating an empty {@code FoodItemOutDTO} instance.
+   */
+<span class="fc" id="L57">  public FoodItemOutDTO() {</span>
+<span class="fc" id="L58">  }</span>
+
+  /**
+   * Constructor for creating a {@code FoodItemOutDTO} instance with specified values.
+   *
+   * @param foodItemId    the unique identifier for the food item.
+   * @param categoryId    the identifier of the category to which the food item belongs.
+   * @param restaurantId  the identifier of the restaurant to which the food item belongs.
+   * @param foodItemName  the name of the food item.
+   * @param description   a description of the food item.
+   * @param price         the price of the food item.
+   * @param isAvailable   a flag indicating whether the food item is available.
+   * @param foodItemImage the image of the food item stored as a byte array.
+   */
+  public FoodItemOutDTO(final Integer foodItemId, final Integer categoryId, final Integer restaurantId, final String foodItemName,
+<span class="fc" id="L73">                        final String description, final Double price, final boolean isAvailable, final byte[] foodItemImage) {</span>
+<span class="fc" id="L74">    this.foodItemId = foodItemId;</span>
+<span class="fc" id="L75">    this.categoryId = categoryId;</span>
+<span class="fc" id="L76">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L77">    this.foodItemName = foodItemName;</span>
+<span class="fc" id="L78">    this.description = description;</span>
+<span class="fc" id="L79">    this.price = price;</span>
+<span class="fc" id="L80">    this.isAvailable = isAvailable;</span>
+<span class="fc" id="L81">    this.foodItemImage = foodItemImage;</span>
+<span class="fc" id="L82">  }</span>
+
+  /**
+   * Gets the unique identifier for the food item.
+   *
+   * @return the food item ID.
+   */
+  public Integer getFoodItemId() {
+<span class="fc" id="L90">    return foodItemId;</span>
+  }
+
+  /**
+   * Sets the unique identifier for the food item.
+   *
+   * @param foodItemId the food item ID to set.
+   */
+  public void setFoodItemId(final Integer foodItemId) {
+<span class="fc" id="L99">    this.foodItemId = foodItemId;</span>
+<span class="fc" id="L100">  }</span>
+
+  /**
+   * Gets the identifier of the category to which the food item belongs.
+   *
+   * @return the category ID.
+   */
+  public Integer getCategoryId() {
+<span class="fc" id="L108">    return categoryId;</span>
+  }
+
+  /**
+   * Sets the identifier of the category to which the food item belongs.
+   *
+   * @param categoryId the category ID to set.
+   */
+  public void setCategoryId(final Integer categoryId) {
+<span class="fc" id="L117">    this.categoryId = categoryId;</span>
+<span class="fc" id="L118">  }</span>
+
+  /**
+   * Gets the identifier of the restaurant to which the food item belongs.
+   *
+   * @return the restaurant ID.
+   */
+  public Integer getRestaurantId() {
+<span class="fc" id="L126">    return restaurantId;</span>
+  }
+
+  /**
+   * Sets the identifier of the restaurant to which the food item belongs.
+   *
+   * @param restaurantId the restaurant ID to set.
+   */
+  public void setRestaurantId(final Integer restaurantId) {
+<span class="fc" id="L135">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L136">  }</span>
+
+  /**
+   * Gets the name of the food item.
+   *
+   * @return the food item name.
+   */
+  public String getfoodItemName() {
+<span class="fc" id="L144">    return foodItemName;</span>
+  }
+
+  /**
+   * Sets the name of the food item.
+   *
+   * @param foodItemName the food item name to set.
+   */
+  public void setfoodItemName(final String foodItemName) {
+<span class="fc" id="L153">    this.foodItemName = foodItemName;</span>
+<span class="fc" id="L154">  }</span>
+
+  /**
+   * Gets the description of the food item.
+   *
+   * @return the description.
+   */
+  public String getDescription() {
+<span class="fc" id="L162">    return description;</span>
+  }
+
+  /**
+   * Sets the description of the food item.
+   *
+   * @param description the description to set.
+   */
+  public void setDescription(final String description) {
+<span class="fc" id="L171">    this.description = description;</span>
+<span class="fc" id="L172">  }</span>
+
+  /**
+   * Gets the price of the food item.
+   *
+   * @return the price.
+   */
+  public Double getprice() {
+<span class="fc" id="L180">    return price;</span>
+  }
+
+  /**
+   * Sets the price of the food item.
+   *
+   * @param price the price to set.
+   */
+  public void setprice(final Double price) {
+<span class="fc" id="L189">    this.price = price;</span>
+<span class="fc" id="L190">  }</span>
+
+  /**
+   * Checks if the food item is available.
+   *
+   * @return {@code true} if the food item is available, {@code false} otherwise.
+   */
+  public boolean isAvailable() {
+<span class="fc" id="L198">    return isAvailable;</span>
+  }
+
+  /**
+   * Sets the availability of the food item.
+   *
+   * @param available the availability status to set.
+   */
+  public void setAvailable(final boolean available) {
+<span class="fc" id="L207">    this.isAvailable = available;</span>
+<span class="fc" id="L208">  }</span>
+
+  /**
+   * Gets the image of the food item as a byte array.
+   *
+   * @return the food item image.
+   */
+  public byte[] getFoodItemImage() {
+<span class="fc" id="L216">    return foodItemImage;</span>
+  }
+
+  /**
+   * Sets the image of the food item as a byte array.
+   *
+   * @param foodItemImage the food item image to set.
+   */
+  public void setFoodItemImage(final byte[] foodItemImage) {
+<span class="fc" id="L225">    this.foodItemImage = foodItemImage;</span>
+<span class="fc" id="L226">  }</span>
+
+  /**
+   * Compares this {@code FoodItemOutDTO} to another object for equality.
+   *
+   * @param o the object to compare with.
+   * @return {@code true} if this object is equal to the other object, {@code false} otherwise.
+   */
+  @Override
+  public boolean equals(final Object o) {
+<span class="pc bpc" id="L236" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L237">      return true;</span>
+    }
+<span class="pc bpc" id="L239" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L240">      return false;</span>
+    }
+<span class="fc" id="L242">    FoodItemOutDTO that = (FoodItemOutDTO) o;</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">    return isAvailable == that.isAvailable</span>
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(foodItemId, that.foodItemId)</span>
+<span class="pc bpc" id="L245" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(categoryId, that.categoryId)</span>
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(restaurantId, that.restaurantId)</span>
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(foodItemName, that.foodItemName)</span>
+<span class="pc bpc" id="L248" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(description, that.description)</span>
+<span class="pc bpc" id="L249" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(price, that.price)</span>
+      &amp;&amp;
+
+<span class="pc bpc" id="L252" title="1 of 2 branches missed.">      Arrays.equals(foodItemImage, that.foodItemImage);</span>
+  }
+
+  /**
+   * Returns a hash code value for this {@code FoodItemOutDTO}.
+   *
+   * @return the hash code value.
+   */
+  @Override
+  public int hashCode() {
+<span class="fc" id="L262">    return Objects.hash(foodItemId, categoryId, restaurantId, foodItemName, description, price, isAvailable)</span>
+<span class="fc" id="L263">      + Arrays.hashCode(foodItemImage);</span>
+  }
+
+  /**
+   * Returns a string representation of this {@code FoodItemOutDTO}.
+   *
+   * @return a string representation of the object.
+   */
+  @Override
+  public String toString() {
+<span class="fc" id="L273">    return &quot;FoodItemOutDTO{&quot;</span>
+      + &quot;foodItemId=&quot; + foodItemId
+      + &quot;, categoryId=&quot; + categoryId
+      + &quot;, restaurantId=&quot; + restaurantId
+      + &quot;, foodItemName='&quot; + foodItemName
+      + '\'' + &quot;, description='&quot; + description
+      + '\'' + &quot;, price=&quot; + price
+      + &quot;, isAvailable=&quot; + isAvailable
+      + &quot;, foodItemImage=&quot;
+<span class="fc" id="L282">      + Arrays.toString(foodItemImage)</span>
+      + '}';
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
