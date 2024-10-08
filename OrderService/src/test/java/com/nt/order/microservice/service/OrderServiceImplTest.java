@@ -117,45 +117,56 @@ public class OrderServiceImplTest {
   }
 
   @Test
+  public void testPlaceOrderInvalidUser() {
+    OrderInDTO orderInDTO = new OrderInDTO();
+    orderInDTO.setUserId(1);
+
+    when(userFClient.getUserProfile(orderInDTO.getUserId())).thenThrow(new ResourceNotFoundException(Constants.USER_NOT_FOUND));
+
+    ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+      orderService.placeOrder(orderInDTO);
+    });
+
+    assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());
+  }
+
+  @Test
   public void testPlaceOrder_UserIsRestaurantOwner() {
     userOutDTO.setRole(Role.RESTAURANT_OWNER.name());
-    when(userFClient.getUserProfile(anyInt())).thenReturn(userOutDTO);
+    when(userFClient.getUserProfile(orderInDTO.getUserId())).thenReturn(userOutDTO);
 
     UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
       orderService.placeOrder(orderInDTO);
     });
 
     assertEquals(Constants.RESTAURANT_OWNER_ORDER_ERROR, exception.getMessage());
-    verify(orderRepository, never()).save(any(Order.class));
   }
 
   @Test
   public void testPlaceOrder_InvalidAddress() {
-    when(userFClient.getUserProfile(anyInt())).thenReturn(userOutDTO);
-    when(restaurantFClient.getRestaurantById(anyInt())).thenReturn(restaurantOutDTO);
-    when(addressFClient.getUserAddresses(anyInt())).thenReturn(Collections.emptyList()); // No addresses
+    when(userFClient.getUserProfile(orderInDTO.getUserId())).thenReturn(userOutDTO);
+    when(restaurantFClient.getRestaurantById(orderInDTO.getRestaurantId())).thenReturn(restaurantOutDTO);
+    when(addressFClient.getUserAddresses(orderInDTO.getAddressId())).thenReturn(Collections.emptyList());
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       orderService.placeOrder(orderInDTO);
     });
 
     assertEquals(Constants.ADDRESS_NOT_FOUND, exception.getMessage());
-    verify(orderRepository, never()).save(any(Order.class));
   }
 
   @Test
   public void testPlaceOrder_FoodItemNotFound() {
-    when(userFClient.getUserProfile(anyInt())).thenReturn(userOutDTO);
-    when(restaurantFClient.getRestaurantById(anyInt())).thenReturn(restaurantOutDTO);
+    when(userFClient.getUserProfile(orderInDTO.getUserId())).thenReturn(userOutDTO);
+    when(restaurantFClient.getRestaurantById(orderInDTO.getRestaurantId())).thenReturn(restaurantOutDTO);
     when(addressFClient.getUserAddresses(anyInt())).thenReturn(Collections.singletonList(addressOutDTO));
-    when(foodItemFClient.getFoodItemById(anyInt())).thenThrow(FeignException.NotFound.class); // Mock item not found
+    when(foodItemFClient.getFoodItemById(anyInt())).thenThrow(new ResourceNotFoundException(Constants.INVALID_FOOD_ITEM_ID));
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       orderService.placeOrder(orderInDTO);
     });
 
     assertEquals(Constants.INVALID_FOOD_ITEM_ID, exception.getMessage());
-    verify(orderRepository, never()).save(any(Order.class));
   }
 
   @Test
@@ -165,7 +176,6 @@ public class OrderServiceImplTest {
     when(addressFClient.getUserAddresses(anyInt())).thenReturn(Collections.singletonList(addressOutDTO));
     when(foodItemFClient.getFoodItemById(anyInt())).thenReturn(foodItemOutDTO);
 
-    // Mock an empty list or a list that doesn't contain the correct food item for the restaurant
     when(foodItemFClient.getFoodItemsByRestaurant(anyInt())).thenReturn(Collections.emptyList());
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {

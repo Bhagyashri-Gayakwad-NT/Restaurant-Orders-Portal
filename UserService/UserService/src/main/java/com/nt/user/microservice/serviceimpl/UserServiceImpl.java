@@ -93,13 +93,14 @@ public class UserServiceImpl implements UserService {
     user.setLastName(userInDTO.getLastName().trim());
     user.setEmail(userInDTO.getEmail().toLowerCase());
     user.setPhoneNo(userInDTO.getPhoneNo());
-    user.setPassword(Base64Util.encode(userInDTO.getPassword())); // Ensure password is encoded
+    user.setPassword(Base64Util.encode(userInDTO.getPassword()));
     user.setRole(Role.valueOf(userInDTO.getRole().toUpperCase()));
 
     User savedUser = userRepository.save(user);
     LOGGER.info("User registered successfully with ID: {}", savedUser.getId());
 
-    if (Role.USER.equals(user.getRole())) {
+   // if (Role.USER.equals(user.getRole())) {
+      if (user.getRole().equals(Role.USER)) {
       LOGGER.info("Assigning initial wallet balance for user with ID: {}", savedUser.getId());
 
       WalletBalance walletBalanceEntity = new WalletBalance();

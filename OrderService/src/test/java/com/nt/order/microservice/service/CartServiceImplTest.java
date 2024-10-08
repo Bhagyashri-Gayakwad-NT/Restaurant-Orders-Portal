@@ -65,7 +65,6 @@ public class CartServiceImplTest {
 
   @Test
   public void testAddItemToCart_Success() {
-    // Mock input data
     CartInDTO cartInDTO = new CartInDTO();
     cartInDTO.setUserId(1);
     cartInDTO.setRestaurantId(2);
@@ -73,19 +72,16 @@ public class CartServiceImplTest {
     cartInDTO.setQuantity(1);
     cartInDTO.setPrice(100.0);
 
-    // Mock user profile
     UserOutDTO userOutDTO = new UserOutDTO();
     userOutDTO.setId(1);
     userOutDTO.setRole(Role.USER.name());
 
     when(userFClient.getUserProfile(1)).thenReturn(userOutDTO);
 
-    // Mock restaurant
     RestaurantOutDTO restaurantOutDTO = new RestaurantOutDTO();
     restaurantOutDTO.setRestaurantId(2);
     when(restaurantFClient.getRestaurantById(2)).thenReturn(restaurantOutDTO);
 
-    // Mock food item
     FoodItemOutDTO foodItemOutDTO = new FoodItemOutDTO();
     foodItemOutDTO.setFoodItemId(3);
     foodItemOutDTO.setPrice(100.0);
@@ -94,7 +90,6 @@ public class CartServiceImplTest {
 
     when(cartRepository.findByUserId(1)).thenReturn(Collections.emptyList());
 
-    // Call the method and verify behavior
     CommonResponse response = cartServiceImpl.addItemToCart(cartInDTO);
 
     assertNotNull(response);
@@ -110,14 +105,12 @@ public class CartServiceImplTest {
     cartInDTO.setFoodItemId(3);
     cartInDTO.setQuantity(1);
 
-    // Mock user profile as restaurant owner
     UserOutDTO userOutDTO = new UserOutDTO();
     userOutDTO.setId(1);
     userOutDTO.setRole(Role.RESTAURANT_OWNER.name());
 
     when(userFClient.getUserProfile(1)).thenReturn(userOutDTO);
 
-    // Assert that an exception is thrown
     UnauthorizedException exception = assertThrows(UnauthorizedException.class, () -> {
       cartServiceImpl.addItemToCart(cartInDTO);
     });
@@ -134,25 +127,21 @@ public class CartServiceImplTest {
     cartInDTO.setQuantity(1);
     cartInDTO.setPrice(100.0);
 
-    // Mock user profile
     UserOutDTO userOutDTO = new UserOutDTO();
     userOutDTO.setId(1);
     userOutDTO.setRole(Role.USER.name());
     when(userFClient.getUserProfile(1)).thenReturn(userOutDTO);
 
-    // Mock restaurant
     RestaurantOutDTO restaurantOutDTO = new RestaurantOutDTO();
     restaurantOutDTO.setRestaurantId(2);
     when(restaurantFClient.getRestaurantById(2)).thenReturn(restaurantOutDTO);
 
-    // Mock food items - food item 3 does not belong to restaurant 2
     FoodItemOutDTO foodItemOutDTO = new FoodItemOutDTO();
-    foodItemOutDTO.setFoodItemId(4); // Different ID
+    foodItemOutDTO.setFoodItemId(4);
     foodItemOutDTO.setPrice(100.0);
     when(foodItemFClient.getFoodItemById(3)).thenReturn(foodItemOutDTO);
     when(foodItemFClient.getFoodItemsByRestaurant(2)).thenReturn(Collections.singletonList(foodItemOutDTO));
 
-    // Assert that an exception is thrown
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
       cartServiceImpl.addItemToCart(cartInDTO);
     });
@@ -184,7 +173,6 @@ public class CartServiceImplTest {
     when(foodItemFClient.getFoodItemById(3)).thenReturn(foodItemOutDTO);
     when(foodItemFClient.getFoodItemsByRestaurant(2)).thenReturn(Collections.singletonList(foodItemOutDTO));
 
-    // Assert that an exception is thrown
     InvalidRequestException exception = assertThrows(InvalidRequestException.class, () -> {
       cartServiceImpl.addItemToCart(cartInDTO);
     });
@@ -284,12 +272,10 @@ public class CartServiceImplTest {
 
   @Test
   void testGetCartItemsByUserIdAndRestaurantId_UserNotFound() {
-    // Arrange
     Integer userId = 1;
     Integer restaurantId = 2;
     when(userFClient.getUserProfile(userId)).thenThrow(new RuntimeException("User not found"));
 
-    // Act & Assert
     ResourceNotFoundException thrown = assertThrows(
       ResourceNotFoundException.class,
       () -> cartServiceImpl.getCartItemsByUserIdAndRestaurantId(userId, restaurantId)
@@ -299,14 +285,12 @@ public class CartServiceImplTest {
 
   @Test
   void testGetCartItemsByUserIdAndRestaurantId_NoItemsFound() {
-    // Arrange
     Integer userId = 1;
     Integer restaurantId = 2;
     UserOutDTO userOutDTO = new UserOutDTO();
     when(userFClient.getUserProfile(userId)).thenReturn(userOutDTO);
     when(cartRepository.findByUserIdAndRestaurantId(userId, restaurantId)).thenReturn(Collections.emptyList());
 
-    // Act & Assert
     ResourceNotFoundException thrown = assertThrows(
       ResourceNotFoundException.class,
       () -> cartServiceImpl.getCartItemsByUserIdAndRestaurantId(userId, restaurantId)
@@ -326,10 +310,8 @@ public class CartServiceImplTest {
     when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
     when(cartRepository.save(any(Cart.class))).thenReturn(cart);
 
-    // Act
     CommonResponse response = cartServiceImpl.updateQuantity(cartId, quantityChange);
 
-    // Assert
     assertNotNull(response);
     assertEquals(Constants.ITEM_QUANTITY_UPDATED_SUCCESS, response.getMessage());
     assertEquals(8, cart.getQuantity());
@@ -338,7 +320,6 @@ public class CartServiceImplTest {
 
   @Test
   void testUpdateQuantity_ItemRemoved() {
-    // Arrange
     Integer cartId = 1;
     Integer quantityChange = -5;
     Cart cart = new Cart();
@@ -348,7 +329,6 @@ public class CartServiceImplTest {
     when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
     doNothing().when(cartRepository).deleteById(cartId);
 
-    // Act & Assert
     InvalidRequestException thrown = assertThrows(
       InvalidRequestException.class,
       () -> cartServiceImpl.updateQuantity(cartId, quantityChange)
@@ -358,12 +338,10 @@ public class CartServiceImplTest {
 
   @Test
   void testUpdateQuantity_NotFound() {
-    // Arrange
     Integer cartId = 1;
     Integer quantityChange = 3;
     when(cartRepository.findById(cartId)).thenReturn(Optional.empty());
 
-    // Act & Assert
     ResourceNotFoundException thrown = assertThrows(
       ResourceNotFoundException.class,
       () -> cartServiceImpl.updateQuantity(cartId, quantityChange)

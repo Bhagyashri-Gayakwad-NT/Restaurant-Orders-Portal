@@ -5,6 +5,7 @@ import com.nt.user.microservice.contoller.UserController;
 import com.nt.user.microservice.dto.*;
 import com.nt.user.microservice.service.UserService;
 import com.nt.user.microservice.service.WalletBalanceService;
+import com.nt.user.microservice.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -52,7 +53,7 @@ class UserControllerTests {
     userInDTO.setRole("USER");
 
     UserResponse userResponse = new UserResponse();
-    userResponse.setSuccessMessage("User registered successfully");
+    userResponse.setSuccessMessage(Constants.USER_REGISTERED_SUCCESSFULLY);
 
     when(userService.registerUser(userInDTO)).thenReturn(userResponse);
 
@@ -60,7 +61,7 @@ class UserControllerTests {
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(userInDTO)))
       .andExpect(status().isCreated())
-      .andExpect(jsonPath("$.successMessage").value("User registered successfully"));
+      .andExpect(jsonPath("$.successMessage").value(Constants.USER_REGISTERED_SUCCESSFULLY));
   }
 
   @Test
@@ -101,7 +102,7 @@ class UserControllerTests {
     userInDTO.setEmail("test@nucleusteq.com");
 
     UserResponse userResponse = new UserResponse();
-    userResponse.setSuccessMessage("User profile updated successfully");
+    userResponse.setSuccessMessage(Constants.USER_PROFILE_UPDATED_SUCCESSFULLY);
 
     when(userService.updateUserProfile(1, userInDTO)).thenReturn(userResponse);
 
@@ -109,20 +110,20 @@ class UserControllerTests {
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(userInDTO)))
       .andExpect(status().isOk())
-      .andExpect(jsonPath("$.successMessage").value("User profile updated successfully"));
+      .andExpect(jsonPath("$.successMessage").value(Constants.USER_PROFILE_UPDATED_SUCCESSFULLY));
   }
 
   @Test
   void deleteUserTest() throws Exception {
     UserResponse userResponse = new UserResponse();
-    userResponse.setSuccessMessage("User deleted successfully");
+    userResponse.setSuccessMessage(Constants.USER_DELETED_SUCCESSFULLY);
 
     when(userService.deleteUser(1)).thenReturn(userResponse);
 
     mockMvc.perform(delete("/users/delete/1")
         .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk())
-      .andExpect(jsonPath("$.successMessage").value("User deleted successfully"));
+      .andExpect(jsonPath("$.successMessage").value(Constants.USER_DELETED_SUCCESSFULLY));
   }
 
   @Test
@@ -168,7 +169,7 @@ class UserControllerTests {
     emailRequestDTO.setText("This is a test email.");
 
     UserResponse userResponse = new UserResponse();
-    userResponse.setSuccessMessage("Email sent successfully");
+    userResponse.setSuccessMessage(Constants.EMAIL_SENT_SUCCESSFULLY);
 
     when(userService.sendMail(emailRequestDTO)).thenReturn(userResponse);
 
@@ -176,6 +177,6 @@ class UserControllerTests {
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(emailRequestDTO)))
       .andExpect(status().isOk())
-      .andExpect(jsonPath("$.successMessage").value("Email sent successfully"));
+      .andExpect(jsonPath("$.successMessage").value(Constants.EMAIL_SENT_SUCCESSFULLY));
   }
 }

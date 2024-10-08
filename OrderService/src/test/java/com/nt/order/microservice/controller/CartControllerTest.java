@@ -1,28 +1,34 @@
 package com.nt.order.microservice.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nt.order.microservice.dtos.CartInDTO;
 import com.nt.order.microservice.dtos.CartOutDTO;
 import com.nt.order.microservice.dtos.CommonResponse;
 import com.nt.order.microservice.entities.Cart;
 import com.nt.order.microservice.service.CartService;
-import com.nt.order.microservice.util.Constants;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class CartControllerTest {
+
+  private MockMvc mockMvc;
 
   @Mock
   private CartService cartService;
@@ -30,152 +36,109 @@ public class CartControllerTest {
   @InjectMocks
   private CartController cartController;
 
+  private ObjectMapper objectMapper = new ObjectMapper();
+
+  private CartInDTO cartInDTO;
+  private CartOutDTO cartOutDTO;
+  private CommonResponse commonResponse;
+
   @BeforeEach
   public void setup() {
     MockitoAnnotations.openMocks(this);
+    mockMvc = MockMvcBuilders.standaloneSetup(cartController).build();
+
+    cartInDTO = new CartInDTO();
+    cartInDTO.setUserId(1);
+    cartInDTO.setFoodItemId(100);
+    cartInDTO.setQuantity(2);
+    cartInDTO.setRestaurantId(5);
+    cartInDTO.setPrice(20.2);
+
+    cartOutDTO = new CartOutDTO();
+    cartOutDTO.setCartId(1);
+    cartOutDTO.setUserId(1);
+    cartOutDTO.setFoodItemId(100);
+    cartOutDTO.setQuantity(2);
+
+    commonResponse = new CommonResponse();
+    commonResponse.setMessage("Success");
   }
 
   @Test
-  public void testAddItemToCart_Success() {
-    // Mock input data
-    CartInDTO cartInDTO = new CartInDTO();
-    cartInDTO.setUserId(1);
-    cartInDTO.setRestaurantId(2);
-    cartInDTO.setFoodItemId(3);
-    cartInDTO.setQuantity(1);
-    cartInDTO.setPrice(100.0);
-
-    // Mock service response
-    CommonResponse commonResponse = new CommonResponse(Constants.ITEM_ADDED_TO_CART_SUCCESS);
+  public void testAddItemToCart_Success() throws Exception {
     when(cartService.addItemToCart(cartInDTO)).thenReturn(commonResponse);
 
-    // Call the controller method
-    ResponseEntity<CommonResponse> responseEntity = cartController.addItemToCart(cartInDTO);
-
-    // Assertions
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(commonResponse, responseEntity.getBody());
-    verify(cartService, times(1)).addItemToCart(cartInDTO);
+    mockMvc.perform(post("/cart/add")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(cartInDTO)))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.message").value("Success"));
   }
 
   @Test
-  public void testUpdateCartQuantity_Success() {
-    int cartId = 1;
-    int quantityChange = 2;
+  public void testUpdateCartQuantity_Success() throws Exception {
+    when(cartService.updateQuantity(anyInt(), anyInt())).thenReturn(commonResponse);
 
-    // Mock service response
-    CommonResponse commonResponse = new CommonResponse(Constants.ITEM_QUANTITY_UPDATED_SUCCESS);
-    when(cartService.updateQuantity(cartId, quantityChange)).thenReturn(commonResponse);
-
-    // Call the controller method
-    ResponseEntity<CommonResponse> responseEntity = cartController.updateCartQuantity(cartId, quantityChange);
-
-    // Assertions
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(commonResponse, responseEntity.getBody());
-    verify(cartService, times(1)).updateQuantity(cartId, quantityChange);
+    mockMvc.perform(put("/cart/update/1")
+        .param("quantityChange", "3")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.message").value("Success"));
   }
 
   @Test
-  public void testGetCartById_Success() {
-    int cartId = 1;
+  public void testGetCartById_Success() throws Exception {
+    when(cartService.getCartById(anyInt())).thenReturn(cartOutDTO);
 
-    // Mock service response
-    CartOutDTO cartOutDTO = new CartOutDTO();
-    cartOutDTO.setCartId(cartId);
-    cartOutDTO.setQuantity(2);
-    cartOutDTO.setPrice(100.0);
-
-    when(cartService.getCartById(cartId)).thenReturn(cartOutDTO);
-
-    // Call the controller method
-    ResponseEntity<CartOutDTO> responseEntity = cartController.getCartById(cartId);
-
-    // Assertions
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(cartOutDTO, responseEntity.getBody());
-    verify(cartService, times(1)).getCartById(cartId);
+    mockMvc.perform(get("/cart/1")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.cartId").value(1))
+      .andExpect(jsonPath("$.userId").value(1))
+      .andExpect(jsonPath("$.quantity").value(2));
   }
 
   @Test
-  public void testGetCartsByUserId_Success() {
-    int userId = 1;
+  public void testGetCartsByUserId_Success() throws Exception {
+    List<CartOutDTO> cartList = Arrays.asList(cartOutDTO);
+    when(cartService.getCartsByUserId(anyInt())).thenReturn(cartList);
 
-    // Mock service response
-    CartOutDTO cartOutDTO1 = new CartOutDTO();
-    cartOutDTO1.setCartId(1);
-    cartOutDTO1.setQuantity(1);
-    cartOutDTO1.setPrice(100.0);
-
-    CartOutDTO cartOutDTO2 = new CartOutDTO();
-    cartOutDTO2.setCartId(2);
-    cartOutDTO2.setQuantity(2);
-    cartOutDTO2.setPrice(200.0);
-
-    List<CartOutDTO> carts = Arrays.asList(cartOutDTO1, cartOutDTO2);
-    when(cartService.getCartsByUserId(userId)).thenReturn(carts);
-
-    // Call the controller method
-    ResponseEntity<List<CartOutDTO>> responseEntity = cartController.getCartsByUserId(userId);
-
-    // Assertions
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(carts, responseEntity.getBody());
-    verify(cartService, times(1)).getCartsByUserId(userId);
+    mockMvc.perform(get("/cart/user/1")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.length()").value(1))
+      .andExpect(jsonPath("$[0].cartId").value(1));
   }
 
   @Test
-  public void testGetCartItemsByUserIdAndRestaurantId_Success() {
-    int userId = 1;
-    int restaurantId = 2;
+  public void testGetCartItemsByUserIdAndRestaurantId_Success() throws Exception {
+    List<Cart> carts = Collections.singletonList(new Cart());
+    when(cartService.getCartItemsByUserIdAndRestaurantId(anyInt(), anyInt())).thenReturn(carts);
 
-    // Mock service response
-    Cart cart1 = new Cart(1, 1, 2, 3, 1, 100.0);
-    Cart cart2 = new Cart(2, 1, 2, 4, 2, 200.0);
-    List<Cart> carts = Arrays.asList(cart1, cart2);
-
-    when(cartService.getCartItemsByUserIdAndRestaurantId(userId, restaurantId)).thenReturn(carts);
-
-    // Call the controller method
-    ResponseEntity<List<Cart>> responseEntity = cartController.getCartItemsByUserIdAndRestaurantId(userId, restaurantId);
-
-    // Assertions
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(carts, responseEntity.getBody());
-    verify(cartService, times(1)).getCartItemsByUserIdAndRestaurantId(userId, restaurantId);
+    mockMvc.perform(get("/cart/user/1/restaurant/5")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.length()").value(1));
   }
 
   @Test
-  public void testRemoveItemFromCart_Success() {
-    int cartId = 1;
+  public void testRemoveItemFromCart_Success() throws Exception {
+    when(cartService.removeItemFromCart(anyInt())).thenReturn(commonResponse);
 
-    // Mock service response
-    CommonResponse commonResponse = new CommonResponse(Constants.CART_ITEM_REMOVED_SUCCESSFULLY);
-    when(cartService.removeItemFromCart(cartId)).thenReturn(commonResponse);
-
-    // Call the controller method
-    ResponseEntity<CommonResponse> responseEntity = cartController.removeItemFromCart(cartId);
-
-    // Assertions
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(commonResponse, responseEntity.getBody());
-    verify(cartService, times(1)).removeItemFromCart(cartId);
+    mockMvc.perform(delete("/cart/1")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.message").value("Success"));
   }
 
   @Test
-  public void testClearCartAfterPlaceAnOrder_Success() {
-    int userId = 1;
+  public void testClearCartAfterPlaceAnOrder_Success() throws Exception {
+    when(cartService.clearCartAfterPlaceAnOrder(anyInt())).thenReturn(commonResponse);
 
-    // Mock service response
-    CommonResponse commonResponse = new CommonResponse(Constants.CART_CLEARED_SUCCESSFULLY);
-    when(cartService.clearCartAfterPlaceAnOrder(userId)).thenReturn(commonResponse);
-
-    // Call the controller method
-    ResponseEntity<CommonResponse> responseEntity = cartController.clearCartAfterPlaceAnOrder(userId);
-
-    // Assertions
-    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-    assertEquals(commonResponse, responseEntity.getBody());
-    verify(cartService, times(1)).clearCartAfterPlaceAnOrder(userId);
+    mockMvc.perform(delete("/cart/clear/1")
+        .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.message").value("Success"));
   }
 }

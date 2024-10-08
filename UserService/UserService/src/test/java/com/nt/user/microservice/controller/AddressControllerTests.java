@@ -53,7 +53,7 @@ class AddressControllerTests {
     addressInDTO.setPinCode("627043");
 
     UserResponse userResponse = new UserResponse();
-    userResponse.setSuccessMessage("Address added successfully");
+    userResponse.setSuccessMessage(Constants.ADDRESS_ADDED_SUCCESSFULLY);
 
     when(addressService.addAddress(addressInDTO)).thenReturn(userResponse);
 
@@ -61,7 +61,7 @@ class AddressControllerTests {
         .contentType(MediaType.APPLICATION_JSON)
         .content(new ObjectMapper().writeValueAsString(addressInDTO)))
       .andExpect(status().isCreated())
-      .andExpect(jsonPath("$.successMessage").value("Address added successfully"));
+      .andExpect(jsonPath("$.successMessage").value(Constants.ADDRESS_ADDED_SUCCESSFULLY));
 
   }
 
