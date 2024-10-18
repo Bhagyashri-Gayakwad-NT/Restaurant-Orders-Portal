@@ -63,7 +63,7 @@ class FoodItemOutDTOTest {
     dto.setFoodItemId(1);
     dto.setCategoryId(2);
     dto.setRestaurantId(3);
-    dto.setfoodItemName("Test Food");
+    dto.setFoodItemName("Test Food");
     dto.setDescription("Test Description");
     dto.setprice(10.0);
     dto.setAvailable(true);
@@ -72,7 +72,7 @@ class FoodItemOutDTOTest {
     assertEquals(1, dto.getFoodItemId());
     assertEquals(2, dto.getCategoryId());
     assertEquals(3, dto.getRestaurantId());
-    assertEquals("Test Food", dto.getfoodItemName());
+    assertEquals("Test Food", dto.getFoodItemName());
     assertEquals("Test Description", dto.getDescription());
     assertEquals(10.0, dto.getprice());
     assertTrue(dto.isAvailable());

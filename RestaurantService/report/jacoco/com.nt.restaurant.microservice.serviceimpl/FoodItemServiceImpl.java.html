@@ -8,6 +8,7 @@ import com.nt.restaurant.microservice.dtoconvertion.FoodItemDtoConverter;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.FoodItem;
 import com.nt.restaurant.microservice.entities.Restaurant;
+import com.nt.restaurant.microservice.exception.InvalidRequestException;
 import com.nt.restaurant.microservice.exception.ResourceAlreadyExistException;
 import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
 import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
@@ -31,12 +32,12 @@ import java.util.Optional;
  * Implementation of the FoodItemService interface that provides operations for managing food items.
  */
 @Service
-<span class="fc" id="L34">public class FoodItemServiceImpl implements FoodItemService {</span>
+<span class="fc" id="L35">public class FoodItemServiceImpl implements FoodItemService {</span>
 
   /**
    * Logger instance for logging events within the service.
    */
-<span class="fc" id="L39">  private static final Logger LOGGER = LogManager.getLogger(FoodItemServiceImpl.class);</span>
+<span class="fc" id="L40">  private static final Logger LOGGER = LogManager.getLogger(FoodItemServiceImpl.class);</span>
 
   /**
    * Repository for accessing food categories in the database.
@@ -66,49 +67,48 @@ import java.util.Optional;
    */
   @Override
   public CommonResponse addFoodItem(final FoodItemInDTO foodItemInDTO, final MultipartFile image) {
-<span class="fc" id="L69">    LOGGER.info(&quot;Attempting to add food item: {}&quot;, foodItemInDTO.getFoodItemName());</span>
-<span class="fc" id="L70">    LOGGER.debug(&quot;Fetching restaurant with ID: {}&quot;, foodItemInDTO.getRestaurantId());</span>
-<span class="fc" id="L71">    Optional&lt;Restaurant&gt; restaurant = restaurantRepository.findById(foodItemInDTO.getRestaurantId());</span>
-<span class="fc" id="L72">    LOGGER.debug(&quot;Fetching food category with ID: {}&quot;, foodItemInDTO.getFoodCategoryId());</span>
-<span class="fc" id="L73">    Optional&lt;FoodCategory&gt; existingCategory = foodCategoryRepository.findById(foodItemInDTO.getFoodCategoryId());</span>
-<span class="fc" id="L74">    LOGGER.debug(&quot;Checking if food item '{}' already exists in restaurant with ID: {}&quot;,</span>
-<span class="fc" id="L75">      foodItemInDTO.getFoodItemName(), foodItemInDTO.getRestaurantId());</span>
-<span class="fc" id="L76">    Optional&lt;FoodItem&gt; existingFoodItem = foodItemRepository.findByFoodItemNameAndRestaurantId(</span>
-<span class="fc" id="L77">      foodItemInDTO.getFoodItemName().toUpperCase(),</span>
-<span class="fc" id="L78">      foodItemInDTO.getRestaurantId()</span>
-    );
-<span class="pc bpc" id="L80" title="1 of 2 branches missed.">    if (!restaurant.isPresent()) {</span>
-<span class="nc" id="L81">      LOGGER.error(&quot;Restaurant not found for ID: {}&quot;, foodItemInDTO.getRestaurantId());</span>
-<span class="nc" id="L82">      throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);</span>
+<span class="fc" id="L70">    LOGGER.info(&quot;Attempting to add food item: {}&quot;, foodItemInDTO.getFoodItemName());</span>
+
+<span class="fc" id="L72">    LOGGER.debug(&quot;Fetching restaurant with ID: {}&quot;, foodItemInDTO.getRestaurantId());</span>
+<span class="fc" id="L73">    Optional&lt;Restaurant&gt; restaurant = restaurantRepository.findById(foodItemInDTO.getRestaurantId());</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">    if (!restaurant.isPresent()) {</span>
+<span class="nc" id="L75">      LOGGER.error(&quot;Restaurant not found for ID: {}&quot;, foodItemInDTO.getRestaurantId());</span>
+<span class="nc" id="L76">      throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);</span>
     }
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">    if (!existingCategory.isPresent()) {</span>
-<span class="nc" id="L85">      LOGGER.error(&quot;Food category not found for ID: {}&quot;, foodItemInDTO.getFoodCategoryId());</span>
-<span class="nc" id="L86">      throw new ResourceNotFoundException(Constants.FOOD_CATEGORY_NOT_FOUND);</span>
+
+<span class="fc" id="L79">    LOGGER.debug(&quot;Fetching food category with ID: {}&quot;, foodItemInDTO.getFoodCategoryId());</span>
+<span class="fc" id="L80">    Optional&lt;FoodCategory&gt; existingCategory = foodCategoryRepository.findById(foodItemInDTO.getFoodCategoryId());</span>
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">    if (!existingCategory.isPresent()) {</span>
+<span class="nc" id="L82">      LOGGER.error(&quot;Food category not found for ID: {}&quot;, foodItemInDTO.getFoodCategoryId());</span>
+<span class="nc" id="L83">      throw new ResourceNotFoundException(Constants.FOOD_CATEGORY_NOT_FOUND);</span>
     }
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">    if (existingFoodItem.isPresent()) {</span>
-<span class="fc" id="L89">      LOGGER.warn(&quot;Food item '{}' already exists in restaurant ID: {}&quot;,</span>
-<span class="fc" id="L90">        foodItemInDTO.getFoodItemName(), foodItemInDTO.getRestaurantId());</span>
-<span class="fc" id="L91">      throw new ResourceAlreadyExistException(Constants.FOOD_ITEM_ALREADY_PRESENT);</span>
+
+<span class="fc" id="L86">    LOGGER.debug(&quot;Checking if food item '{}' already exists in restaurant with ID: {}&quot;,</span>
+<span class="fc" id="L87">      foodItemInDTO.getFoodItemName(), foodItemInDTO.getRestaurantId());</span>
+<span class="fc" id="L88">    Optional&lt;FoodItem&gt; existingFoodItem = foodItemRepository.findByFoodItemNameAndRestaurantId(</span>
+<span class="fc" id="L89">      foodItemInDTO.getFoodItemName().toUpperCase(), foodItemInDTO.getRestaurantId());</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">    if (existingFoodItem.isPresent()) {</span>
+<span class="fc" id="L91">      LOGGER.warn(&quot;Food item '{}' already exists in restaurant ID: {}&quot;,</span>
+<span class="fc" id="L92">        foodItemInDTO.getFoodItemName(), foodItemInDTO.getRestaurantId());</span>
+<span class="fc" id="L93">      throw new ResourceAlreadyExistException(Constants.FOOD_ITEM_ALREADY_PRESENT);</span>
     }
-<span class="nc" id="L93">    LOGGER.debug(&quot;Converting FoodItemInDTO to FoodItem entity&quot;);</span>
-<span class="nc" id="L94">    FoodItem foodItem = FoodItemDtoConverter.inDtoToEntity(foodItemInDTO);</span>
+
+<span class="nc" id="L96">    LOGGER.debug(&quot;Converting FoodItemInDTO to FoodItem entity&quot;);</span>
+<span class="nc" id="L97">    FoodItem foodItem = FoodItemDtoConverter.inDtoToEntity(foodItemInDTO);</span>
     try {
-<span class="nc bnc" id="L96" title="All 4 branches missed.">      if (Objects.nonNull(image) &amp;&amp; !image.isEmpty()) {</span>
-<span class="nc" id="L97">        LOGGER.debug(&quot;Processing image for food item: {}&quot;, foodItemInDTO.getFoodItemName());</span>
-<span class="nc" id="L98">        String contentType = image.getContentType();</span>
-<span class="nc bnc" id="L99" title="All 6 branches missed.">        if (Objects.isNull(contentType) || !(contentType.equals(&quot;image/jpeg&quot;) || contentType.equals(&quot;image/png&quot;))) {</span>
-<span class="nc" id="L100">          LOGGER.error(&quot;Invalid image type: {}. Only JPG and PNG are allowed.&quot;, contentType);</span>
-<span class="nc" id="L101">          throw new ResourceNotFoundException(Constants.INVALID_FILE_TYPE);</span>
+<span class="nc bnc" id="L99" title="All 4 branches missed.">      if (Objects.nonNull(image) &amp;&amp; !image.isEmpty()) {</span>
+<span class="nc" id="L100">        LOGGER.debug(&quot;Processing image for food item: {}&quot;, foodItemInDTO.getFoodItemName());</span>
+<span class="nc" id="L101">        String contentType = image.getContentType();</span>
+<span class="nc bnc" id="L102" title="All 6 branches missed.">        if (Objects.isNull(contentType) || !(contentType.equals(&quot;image/jpeg&quot;) || contentType.equals(&quot;image/png&quot;))) {</span>
+<span class="nc" id="L103">          LOGGER.error(&quot;Invalid image type: {}. Only JPG and PNG are allowed.&quot;, contentType);</span>
+<span class="nc" id="L104">          throw new InvalidRequestException(Constants.INVALID_FILE_TYPE);</span>
         }
-<span class="nc" id="L103">        foodItem.setFoodItemImage(image.getBytes());</span>
-<span class="nc" id="L104">        LOGGER.debug(&quot;Image processed successfully for food item: {}&quot;, foodItemInDTO.getFoodItemName());</span>
-<span class="nc" id="L105">      } else {</span>
-<span class="nc" id="L106">        LOGGER.warn(&quot;No image provided for food item: {}&quot;, foodItemInDTO.getFoodItemName());</span>
+<span class="nc" id="L106">        foodItem.setFoodItemImage(image.getBytes());</span>
       }
 <span class="nc" id="L108">    } catch (Exception e) {</span>
 <span class="nc" id="L109">      LOGGER.error(&quot;Error occurred while processing image for food item '{}': {}&quot;,</span>
 <span class="nc" id="L110">        foodItemInDTO.getFoodItemName(), e.getMessage());</span>
-<span class="nc" id="L111">      throw new RuntimeException(&quot;Image processing failed&quot;, e);</span>
+<span class="nc" id="L111">      throw new RuntimeException(Constants.ERROR_PROCESSING_FOOD_ITEM_IMAGE, e);</span>
 <span class="nc" id="L112">    }</span>
 <span class="nc" id="L113">    LOGGER.debug(&quot;Saving food item to the database&quot;);</span>
 <span class="nc" id="L114">    FoodItem savedFoodItem = foodItemRepository.save(foodItem);</span>
@@ -187,7 +187,7 @@ import java.util.Optional;
 <span class="fc" id="L187">    }</span>
 <span class="fc" id="L188">    FoodItem updatedFoodItem = foodItemRepository.save(existingFoodItem);</span>
 <span class="fc" id="L189">    LOGGER.info(&quot;Successfully updated food item with ID: {}&quot;, foodItemId);</span>
-<span class="fc" id="L190">    convertFoodItemToFoodItemResponse(updatedFoodItem);</span>
+<span class="fc" id="L190">    FoodItemDtoConverter.entityToOutDTO(updatedFoodItem);</span>
 <span class="fc" id="L191">    return new CommonResponse(Constants.FOOD_ITEM_UPDATED_SUCCESS);</span>
   }
 
@@ -211,16 +211,6 @@ import java.util.Optional;
 <span class="fc" id="L211">  }</span>
 
   /**
-   * Converts a food item entity to its corresponding output DTO.
-   *
-   * @param foodItem The food item entity to be converted.
-   * @return The output DTO containing the food item details.
-   */
-  private FoodItemOutDTO convertFoodItemToFoodItemResponse(final FoodItem foodItem) {
-<span class="fc" id="L220">    return FoodItemDtoConverter.entityToOutDTO(foodItem);</span>
-  }
-
-  /**
    * Retrieves the image of a food item by its ID.
    *
    * @param id The ID of the food item whose image is to be retrieved.
@@ -228,10 +218,10 @@ import java.util.Optional;
    */
   @Override
   public byte[] getFoodItemImage(final Integer id) {
-<span class="fc" id="L231">    LOGGER.info(&quot;Fetching food item image for ID: {}&quot;, id);</span>
+<span class="fc" id="L221">    LOGGER.info(&quot;Fetching food item image for ID: {}&quot;, id);</span>
 
-<span class="fc" id="L233">    FoodItem foodItem = findFoodItemById(id);</span>
-<span class="fc" id="L234">    return foodItem.getFoodItemImage();</span>
+<span class="fc" id="L223">    FoodItem foodItem = findFoodItemById(id);</span>
+<span class="fc" id="L224">    return foodItem.getFoodItemImage();</span>
   }
 
   /**
@@ -242,10 +232,10 @@ import java.util.Optional;
    * @throws ResourceNotFoundException If no food item is found with the specified ID.
    */
   public FoodItem findFoodItemById(final Integer id) {
-<span class="fc" id="L245">    LOGGER.info(&quot;Looking for food item with ID: {}&quot;, id);</span>
+<span class="fc" id="L235">    LOGGER.info(&quot;Looking for food item with ID: {}&quot;, id);</span>
 
-<span class="fc" id="L247">    return foodItemRepository.findById(id)</span>
-<span class="fc" id="L248">      .orElseThrow(() -&gt; new ResourceNotFoundException(Constants.NO_FOOD_ITEM_PRESENT));</span>
+<span class="fc" id="L237">    return foodItemRepository.findById(id)</span>
+<span class="fc" id="L238">      .orElseThrow(() -&gt; new ResourceNotFoundException(Constants.NO_FOOD_ITEM_PRESENT));</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

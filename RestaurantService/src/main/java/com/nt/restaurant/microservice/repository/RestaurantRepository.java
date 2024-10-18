@@ -36,5 +36,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Integer>
    * @param normalizedRestaurantName the name of the restaurant to check for existence.
    * @return true if a restaurant with the specified name exists, false otherwise.
    */
-  boolean existsByRestaurantNameIgnoreCase(String normalizedRestaurantName);
+  boolean existsByRestaurantName(String normalizedRestaurantName);
 }
+

@@ -96,19 +96,21 @@ class UserControllerTests {
 
   @Test
   void updateUserProfileTest() throws Exception {
-    UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setFirstName("TestFirst");
-    userInDTO.setLastName("TestLast");
-    userInDTO.setEmail("test@nucleusteq.com");
+    ProfileUpdateDTO profileUpdateDTO = new ProfileUpdateDTO();
+    profileUpdateDTO.setFirstName("TestFirst");
+    profileUpdateDTO.setLastName("TestLast");
+    profileUpdateDTO.setEmail("test@nucleusteq.com");
+    profileUpdateDTO.setPhoneNo("8987654321");
+    profileUpdateDTO.setPassword("ValidPassword123");
 
     UserResponse userResponse = new UserResponse();
     userResponse.setSuccessMessage(Constants.USER_PROFILE_UPDATED_SUCCESSFULLY);
 
-    when(userService.updateUserProfile(1, userInDTO)).thenReturn(userResponse);
+    when(userService.updateUserProfile(1, profileUpdateDTO)).thenReturn(userResponse);
 
     mockMvc.perform(put("/users/update/1")
         .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(userInDTO)))
+        .content(objectMapper.writeValueAsString(profileUpdateDTO)))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.successMessage").value(Constants.USER_PROFILE_UPDATED_SUCCESSFULLY));
   }

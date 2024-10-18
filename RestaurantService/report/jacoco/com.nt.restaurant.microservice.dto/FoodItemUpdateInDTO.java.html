@@ -43,7 +43,8 @@ public class FoodItemUpdateInDTO {
    */
   @NotBlank(message = &quot;Food item name cannot be blank&quot;)
   @Size(max = 100, message = &quot;Food item name cannot exceed 100 characters&quot;)
-  @Pattern(regexp = &quot;^[A-Za-z]+(?:\\s[A-Za-z]+)*$&quot;, message = &quot;Food Item name must contain only alphabets&quot;)
+  @Pattern(regexp = &quot;^[A-Za-z]+(?:\\s[A-Za-z]+)*$&quot;, message = &quot;Food Item name must contain &quot;
+    + &quot;only alphabets and cannot include numbers&quot;)
   private String foodItemName;
 
   /**
@@ -73,8 +74,8 @@ public class FoodItemUpdateInDTO {
   /**
    * Default constructor for creating an empty {@code FoodItemUpdateInDTO} instance.
    */
-<span class="fc" id="L76">  public FoodItemUpdateInDTO() {</span>
-<span class="fc" id="L77">  }</span>
+<span class="fc" id="L77">  public FoodItemUpdateInDTO() {</span>
+<span class="fc" id="L78">  }</span>
 
   /**
    * Parameterized constructor for creating an instance of {@code FoodItemUpdateInDTO} with all fields.
@@ -85,12 +86,12 @@ public class FoodItemUpdateInDTO {
    * @param foodItemImage the image of the food item (optional).
    */
   public FoodItemUpdateInDTO(final String foodItemName, final String description,
-<span class="fc" id="L88">                             final Double price, final MultipartFile foodItemImage) {</span>
-<span class="fc" id="L89">    this.foodItemName = foodItemName;</span>
-<span class="fc" id="L90">    this.description = description;</span>
-<span class="fc" id="L91">    this.price = price;</span>
-<span class="fc" id="L92">    this.foodItemImage = foodItemImage;</span>
-<span class="fc" id="L93">  }</span>
+<span class="fc" id="L89">                             final Double price, final MultipartFile foodItemImage) {</span>
+<span class="fc" id="L90">    this.foodItemName = foodItemName;</span>
+<span class="fc" id="L91">    this.description = description;</span>
+<span class="fc" id="L92">    this.price = price;</span>
+<span class="fc" id="L93">    this.foodItemImage = foodItemImage;</span>
+<span class="fc" id="L94">  }</span>
 
   /**
    * Gets the name of the food item.
@@ -98,7 +99,7 @@ public class FoodItemUpdateInDTO {
    * @return the name of the food item.
    */
   public String getFoodItemName() {
-<span class="fc" id="L101">    return foodItemName;</span>
+<span class="fc" id="L102">    return foodItemName;</span>
   }
 
   /**
@@ -107,8 +108,8 @@ public class FoodItemUpdateInDTO {
    * @param foodItemName the name of the food item to set.
    */
   public void setFoodItemName(final String foodItemName) {
-<span class="fc" id="L110">    this.foodItemName = foodItemName;</span>
-<span class="fc" id="L111">  }</span>
+<span class="fc" id="L111">    this.foodItemName = foodItemName;</span>
+<span class="fc" id="L112">  }</span>
 
   /**
    * Gets the description of the food item.
@@ -116,7 +117,7 @@ public class FoodItemUpdateInDTO {
    * @return the description of the food item.
    */
   public String getDescription() {
-<span class="fc" id="L119">    return description;</span>
+<span class="fc" id="L120">    return description;</span>
   }
 
   /**
@@ -125,8 +126,8 @@ public class FoodItemUpdateInDTO {
    * @param description the description of the food item to set.
    */
   public void setDescription(final String description) {
-<span class="fc" id="L128">    this.description = description;</span>
-<span class="fc" id="L129">  }</span>
+<span class="fc" id="L129">    this.description = description;</span>
+<span class="fc" id="L130">  }</span>
 
   /**
    * Gets the price of the food item.
@@ -134,7 +135,7 @@ public class FoodItemUpdateInDTO {
    * @return the price of the food item.
    */
   public Double getPrice() {
-<span class="fc" id="L137">    return price;</span>
+<span class="fc" id="L138">    return price;</span>
   }
 
   /**
@@ -143,8 +144,8 @@ public class FoodItemUpdateInDTO {
    * @param price the price of the food item to set.
    */
   public void setPrice(final Double price) {
-<span class="fc" id="L146">    this.price = price;</span>
-<span class="fc" id="L147">  }</span>
+<span class="fc" id="L147">    this.price = price;</span>
+<span class="fc" id="L148">  }</span>
 
   /**
    * Gets the image of the food item.
@@ -152,7 +153,7 @@ public class FoodItemUpdateInDTO {
    * @return the image of the food item as a {@link MultipartFile}.
    */
   public MultipartFile getFoodItemImage() {
-<span class="fc" id="L155">    return foodItemImage;</span>
+<span class="fc" id="L156">    return foodItemImage;</span>
   }
 
   /**
@@ -161,8 +162,8 @@ public class FoodItemUpdateInDTO {
    * @param foodItemImage the image of the food item to set.
    */
   public void setFoodItemImage(final MultipartFile foodItemImage) {
-<span class="fc" id="L164">    this.foodItemImage = foodItemImage;</span>
-<span class="fc" id="L165">  }</span>
+<span class="fc" id="L165">    this.foodItemImage = foodItemImage;</span>
+<span class="fc" id="L166">  }</span>
 
   /**
    * Compares this object to another object for equality.
@@ -172,17 +173,17 @@ public class FoodItemUpdateInDTO {
    */
   @Override
   public boolean equals(final Object o) {
-<span class="pc bpc" id="L175" title="1 of 2 branches missed.">    if (this == o) {</span>
-<span class="nc" id="L176">      return true;</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L177">      return true;</span>
     }
-<span class="fc bfc" id="L178" title="All 4 branches covered.">    if (o == null || getClass() != o.getClass()) {</span>
-<span class="fc" id="L179">      return false;</span>
+<span class="fc bfc" id="L179" title="All 4 branches covered.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L180">      return false;</span>
     }
-<span class="fc" id="L181">    FoodItemUpdateInDTO that = (FoodItemUpdateInDTO) o;</span>
-<span class="pc bpc" id="L182" title="1 of 2 branches missed.">    return Objects.equals(foodItemName, that.foodItemName)</span>
-<span class="pc bpc" id="L183" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(description, that.description)</span>
-<span class="fc bfc" id="L184" title="All 2 branches covered.">      &amp;&amp; Objects.equals(price, that.price)</span>
-<span class="pc bpc" id="L185" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(foodItemImage, that.foodItemImage);</span>
+<span class="fc" id="L182">    FoodItemUpdateInDTO that = (FoodItemUpdateInDTO) o;</span>
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">    return Objects.equals(foodItemName, that.foodItemName)</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(description, that.description)</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">      &amp;&amp; Objects.equals(price, that.price)</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">      &amp;&amp; Objects.equals(foodItemImage, that.foodItemImage);</span>
   }
 
   /**
@@ -192,7 +193,7 @@ public class FoodItemUpdateInDTO {
    */
   @Override
   public int hashCode() {
-<span class="fc" id="L195">    return Objects.hash(foodItemName, description, price, foodItemImage);</span>
+<span class="fc" id="L196">    return Objects.hash(foodItemName, description, price, foodItemImage);</span>
   }
 
   /**
@@ -202,7 +203,7 @@ public class FoodItemUpdateInDTO {
    */
   @Override
   public String toString() {
-<span class="fc" id="L205">    return &quot;FoodItemUpdateInDTO{&quot;</span>
+<span class="fc" id="L206">    return &quot;FoodItemUpdateInDTO{&quot;</span>
       + &quot;foodItemName='&quot; + foodItemName
       + '\'' + &quot;, description='&quot; + description
       + '\'' + &quot;, price=&quot; + price

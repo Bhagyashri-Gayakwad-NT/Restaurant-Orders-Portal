@@ -39,14 +39,12 @@ public class GlobalExceptionHandler {
    * @return an {@link ErrorResponse} object with the aggregated error details and a {@code 400 Bad Request} status
    */
 
-  // For validation exceptions (like @Valid)
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<ErrorResponse> handleValidationExceptions(final MethodArgumentNotValidException ex) {
     Map<String, String> errors = new HashMap<>();
-    // Extract custom validation messages from FieldError
     ex.getBindingResult().getAllErrors().forEach(error -> {
       String fieldName = ((FieldError) error).getField();
-      String errorMessage = error.getDefaultMessage();  // This retrieves the message from @Pattern or other annotations
+      String errorMessage = error.getDefaultMessage();
       errors.put(fieldName, errorMessage);
     });
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Validation failed", errors);
@@ -189,15 +187,11 @@ public class GlobalExceptionHandler {
   }
 
   /**
-   * Handles exceptions related to invalid requests, such as image file validation failures.
-   * This method catches {@link InvalidRequestException} and returns an appropriate error response.
+   * Handles exceptions related to unsupported media types in requests.
+   * This method catches {@link HttpMediaTypeNotSupportedException} and returns an appropriate error response.
    *
-   * <p>
-   * It generates an {@link ErrorResponse} object and returns it with a {@code 400 Bad Request} HTTP status.
-   * </p>
-   *
-   * @param ex the exception instance indicating the request is invalid
-   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 400 Bad Request} status
+   * @param ex the exception instance indicating an unsupported media type
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 415 Unsupported Media Type} status
    */
   @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
   public ResponseEntity<ErrorResponse> handleMediaTypeNotSupportedException(final HttpMediaTypeNotSupportedException ex) {
@@ -210,14 +204,15 @@ public class GlobalExceptionHandler {
   }
 
   /**
-   * Handles exceptions related to unsupported media types in requests.
-   * This method catches {@link HttpMediaTypeNotSupportedException} and returns an appropriate error response.
+   * Handles exceptions related to unsupported HTTP methods in requests.
+   * This method catches {@link HttpRequestMethodNotSupportedException} and returns an appropriate error response.
    *
-   * @param ex the exception instance indicating an unsupported media type
-   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 415 Unsupported Media Type} status
+   * @param ex the exception instance indicating an unsupported HTTP method
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 405 Method Not Allowed} status
    */
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-  public ResponseEntity<ErrorResponse> handleMethodNotSupportedException(final HttpRequestMethodNotSupportedException ex) {
+  public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(
+    final HttpRequestMethodNotSupportedException ex) {
     String errorMessage = Constants.METHODE_NOT_ALLOWED;
     ErrorResponse errorResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), errorMessage);
     return new ResponseEntity<>(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);

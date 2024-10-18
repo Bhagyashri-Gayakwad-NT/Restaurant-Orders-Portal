@@ -8,6 +8,7 @@ import com.nt.restaurant.microservice.dtoconvertion.FoodItemDtoConverter;
 import com.nt.restaurant.microservice.entities.FoodCategory;
 import com.nt.restaurant.microservice.entities.FoodItem;
 import com.nt.restaurant.microservice.entities.Restaurant;
+import com.nt.restaurant.microservice.exception.InvalidRequestException;
 import com.nt.restaurant.microservice.exception.ResourceAlreadyExistException;
 import com.nt.restaurant.microservice.exception.ResourceNotFoundException;
 import com.nt.restaurant.microservice.repository.FoodCategoryRepository;
@@ -67,29 +68,31 @@ public class FoodItemServiceImpl implements FoodItemService {
   @Override
   public CommonResponse addFoodItem(final FoodItemInDTO foodItemInDTO, final MultipartFile image) {
     LOGGER.info("Attempting to add food item: {}", foodItemInDTO.getFoodItemName());
+
     LOGGER.debug("Fetching restaurant with ID: {}", foodItemInDTO.getRestaurantId());
     Optional<Restaurant> restaurant = restaurantRepository.findById(foodItemInDTO.getRestaurantId());
-    LOGGER.debug("Fetching food category with ID: {}", foodItemInDTO.getFoodCategoryId());
-    Optional<FoodCategory> existingCategory = foodCategoryRepository.findById(foodItemInDTO.getFoodCategoryId());
-    LOGGER.debug("Checking if food item '{}' already exists in restaurant with ID: {}",
-      foodItemInDTO.getFoodItemName(), foodItemInDTO.getRestaurantId());
-    Optional<FoodItem> existingFoodItem = foodItemRepository.findByFoodItemNameAndRestaurantId(
-      foodItemInDTO.getFoodItemName().toUpperCase(),
-      foodItemInDTO.getRestaurantId()
-    );
     if (!restaurant.isPresent()) {
       LOGGER.error("Restaurant not found for ID: {}", foodItemInDTO.getRestaurantId());
       throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);
     }
+
+    LOGGER.debug("Fetching food category with ID: {}", foodItemInDTO.getFoodCategoryId());
+    Optional<FoodCategory> existingCategory = foodCategoryRepository.findById(foodItemInDTO.getFoodCategoryId());
     if (!existingCategory.isPresent()) {
       LOGGER.error("Food category not found for ID: {}", foodItemInDTO.getFoodCategoryId());
       throw new ResourceNotFoundException(Constants.FOOD_CATEGORY_NOT_FOUND);
     }
+
+    LOGGER.debug("Checking if food item '{}' already exists in restaurant with ID: {}",
+      foodItemInDTO.getFoodItemName(), foodItemInDTO.getRestaurantId());
+    Optional<FoodItem> existingFoodItem = foodItemRepository.findByFoodItemNameAndRestaurantId(
+      foodItemInDTO.getFoodItemName().toUpperCase(), foodItemInDTO.getRestaurantId());
     if (existingFoodItem.isPresent()) {
       LOGGER.warn("Food item '{}' already exists in restaurant ID: {}",
         foodItemInDTO.getFoodItemName(), foodItemInDTO.getRestaurantId());
       throw new ResourceAlreadyExistException(Constants.FOOD_ITEM_ALREADY_PRESENT);
     }
+
     LOGGER.debug("Converting FoodItemInDTO to FoodItem entity");
     FoodItem foodItem = FoodItemDtoConverter.inDtoToEntity(foodItemInDTO);
     try {
@@ -98,17 +101,14 @@ public class FoodItemServiceImpl implements FoodItemService {
         String contentType = image.getContentType();
         if (Objects.isNull(contentType) || !(contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
           LOGGER.error("Invalid image type: {}. Only JPG and PNG are allowed.", contentType);
-          throw new ResourceNotFoundException(Constants.INVALID_FILE_TYPE);
+          throw new InvalidRequestException(Constants.INVALID_FILE_TYPE);
         }
         foodItem.setFoodItemImage(image.getBytes());
-        LOGGER.debug("Image processed successfully for food item: {}", foodItemInDTO.getFoodItemName());
-      } else {
-        LOGGER.warn("No image provided for food item: {}", foodItemInDTO.getFoodItemName());
       }
     } catch (Exception e) {
       LOGGER.error("Error occurred while processing image for food item '{}': {}",
         foodItemInDTO.getFoodItemName(), e.getMessage());
-      throw new RuntimeException("Image processing failed", e);
+      throw new RuntimeException(Constants.ERROR_PROCESSING_FOOD_ITEM_IMAGE, e);
     }
     LOGGER.debug("Saving food item to the database");
     FoodItem savedFoodItem = foodItemRepository.save(foodItem);
@@ -187,7 +187,7 @@ public class FoodItemServiceImpl implements FoodItemService {
     }
     FoodItem updatedFoodItem = foodItemRepository.save(existingFoodItem);
     LOGGER.info("Successfully updated food item with ID: {}", foodItemId);
-    convertFoodItemToFoodItemResponse(updatedFoodItem);
+    FoodItemDtoConverter.entityToOutDTO(updatedFoodItem);
     return new CommonResponse(Constants.FOOD_ITEM_UPDATED_SUCCESS);
   }
 
@@ -208,16 +208,6 @@ public class FoodItemServiceImpl implements FoodItemService {
       LOGGER.info("Updating food item image for food item: {}", existingFoodItem.getFoodItemName());
       existingFoodItem.setFoodItemImage(foodItemInDTO.getFoodItemImage().getBytes());
     }
-  }
-
-  /**
-   * Converts a food item entity to its corresponding output DTO.
-   *
-   * @param foodItem The food item entity to be converted.
-   * @return The output DTO containing the food item details.
-   */
-  private FoodItemOutDTO convertFoodItemToFoodItemResponse(final FoodItem foodItem) {
-    return FoodItemDtoConverter.entityToOutDTO(foodItem);
   }
 
   /**

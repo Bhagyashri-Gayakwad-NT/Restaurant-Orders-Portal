@@ -113,7 +113,7 @@ public class OrderServiceImplTest {
     addressOutDTO.setId(3);
 
     foodItemOutDTO = new FoodItemOutDTO();
-    foodItemOutDTO.setFoodItemId(1);  // Mocking a valid food item ID
+    foodItemOutDTO.setFoodItemId(1);
   }
 
   @Test

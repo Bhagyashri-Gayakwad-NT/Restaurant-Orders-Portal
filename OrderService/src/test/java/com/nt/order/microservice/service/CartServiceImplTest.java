@@ -246,7 +246,6 @@ public class CartServiceImplTest {
 
   @Test
   void testGetCartItemsByUserIdAndRestaurantId_Success() {
-    // Arrange
     Integer userId = 1;
     Integer restaurantId = 2;
     UserOutDTO userOutDTO = new UserOutDTO();
@@ -300,7 +299,6 @@ public class CartServiceImplTest {
 
   @Test
   void testUpdateQuantity_Success() {
-    // Arrange
     Integer cartId = 1;
     Integer quantityChange = 3;
     Cart cart = new Cart();
@@ -328,12 +326,9 @@ public class CartServiceImplTest {
     cart.setPrice(50.0);
     when(cartRepository.findById(cartId)).thenReturn(Optional.of(cart));
     doNothing().when(cartRepository).deleteById(cartId);
+    CommonResponse response = cartServiceImpl.updateQuantity(cartId, quantityChange);
 
-    InvalidRequestException thrown = assertThrows(
-      InvalidRequestException.class,
-      () -> cartServiceImpl.updateQuantity(cartId, quantityChange)
-    );
-    assertEquals(Constants.ITEM_REMOVED_SUCCESSFULLY, thrown.getMessage());
+    assertEquals(Constants.ITEM_REMOVED_SUCCESSFULLY, response.getMessage());
   }
 
   @Test

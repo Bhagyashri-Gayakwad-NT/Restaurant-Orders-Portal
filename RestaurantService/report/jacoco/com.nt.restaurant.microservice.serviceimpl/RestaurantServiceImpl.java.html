@@ -13,6 +13,7 @@ import com.nt.restaurant.microservice.repository.RestaurantRepository;
 import com.nt.restaurant.microservice.service.RestaurantService;
 import com.nt.restaurant.microservice.util.Constants;
 import com.nt.restaurant.microservice.util.Role;
+import feign.FeignException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,12 @@ import java.util.Optional;
  * Implementation of the RestaurantService interface that provides operations for managing restaurants.
  */
 @Service
-<span class="fc" id="L32">public class RestaurantServiceImpl implements RestaurantService {</span>
+<span class="fc" id="L33">public class RestaurantServiceImpl implements RestaurantService {</span>
 
   /**
    * Logger for the RestaurantServiceImpl class.
    */
-<span class="fc" id="L37">  private static final Logger LOGGER = LogManager.getLogger(RestaurantServiceImpl.class);</span>
+<span class="fc" id="L38">  private static final Logger LOGGER = LogManager.getLogger(RestaurantServiceImpl.class);</span>
 
   /**
    * Autowired RestaurantRepository to perform CRUD operations on Restaurant entities.
@@ -58,53 +59,71 @@ import java.util.Optional;
    */
   @Override
   public CommonResponse addRestaurant(final RestaurantInDTO restaurantInDTO, final MultipartFile image) {
-<span class="fc" id="L61">    LOGGER.info(&quot;Attempting to add restaurant with details: {}&quot;, restaurantInDTO);</span>
-    UserOutDTO userOutDto;
-    try {
-<span class="fc" id="L64">      LOGGER.debug(&quot;Fetching user profile for userId: {}&quot;, restaurantInDTO.getUserId());</span>
-<span class="fc" id="L65">      userOutDto = userFClient.getUserProfile(restaurantInDTO.getUserId());</span>
-<span class="fc" id="L66">      LOGGER.debug(&quot;User profile fetched successfully: {}&quot;, userOutDto);</span>
-<span class="fc" id="L67">    } catch (Exception e) {</span>
-<span class="fc" id="L68">      LOGGER.error(&quot;User with ID {} not found: {}&quot;, restaurantInDTO.getUserId(), e.getMessage());</span>
-<span class="fc" id="L69">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
-<span class="fc" id="L70">    }</span>
-<span class="fc bfc" id="L71" title="All 2 branches covered.">    if (userOutDto.getRole().equals(Role.USER.name())) {</span>
-<span class="fc" id="L72">      LOGGER.warn(&quot;User with ID {} is not a restaurant owner&quot;, restaurantInDTO.getUserId());</span>
-<span class="fc" id="L73">      throw new UnauthorizedException(Constants.USER_NOT_RESTAURANT_OWNER);</span>
+<span class="fc" id="L62">    LOGGER.info(&quot;Attempting to add restaurant with details: {}&quot;, restaurantInDTO);</span>
+<span class="fc" id="L63">    UserOutDTO userOutDto = fetchUserProfile(restaurantInDTO.getUserId());</span>
+
+<span class="fc bfc" id="L65" title="All 2 branches covered.">    if (userOutDto.getRole().equals(Role.USER.name())) {</span>
+<span class="fc" id="L66">      LOGGER.error(&quot;User with ID {} is not a restaurant owner&quot;, restaurantInDTO.getUserId());</span>
+<span class="fc" id="L67">      throw new UnauthorizedException(Constants.USER_NOT_RESTAURANT_OWNER);</span>
     }
-<span class="fc" id="L75">    String normalizedRestaurantName = restaurantInDTO.getRestaurantName().trim().toLowerCase();</span>
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">    if (restaurantRepository.existsByRestaurantNameIgnoreCase(normalizedRestaurantName)) {</span>
-<span class="fc" id="L77">      LOGGER.error(&quot;Restaurant name {} already exists&quot;, restaurantInDTO.getRestaurantName());</span>
-<span class="fc" id="L78">      throw new InvalidRequestException(Constants.RESTAURANT_NAME_EXISTS);</span>
+<span class="fc" id="L69">    String normalizedRestaurantName = restaurantInDTO.getRestaurantName().trim().toLowerCase();</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">    if (restaurantRepository.existsByRestaurantName(normalizedRestaurantName)) {</span>
+<span class="nc" id="L71">      LOGGER.error(&quot;Restaurant name {} already exists&quot;, restaurantInDTO.getRestaurantName());</span>
+<span class="nc" id="L72">      throw new InvalidRequestException(Constants.RESTAURANT_NAME_EXISTS);</span>
     }
-<span class="nc" id="L80">    LOGGER.debug(&quot;Converting RestaurantInDTO to Restaurant entity&quot;);</span>
-<span class="nc" id="L81">    Restaurant restaurant = DtoConverter.fromInDTOToEntity(restaurantInDTO);</span>
-<span class="nc" id="L82">    restaurant.setRestaurantName(normalizedRestaurantName);</span>
-    try {
-<span class="nc bnc" id="L84" title="All 4 branches missed.">      if (Objects.nonNull(image) &amp;&amp; !image.isEmpty()) {</span>
-<span class="nc" id="L85">        LOGGER.debug(&quot;Processing image for restaurant: {}&quot;, restaurantInDTO.getRestaurantName());</span>
-<span class="nc" id="L86">        String contentType = image.getContentType();</span>
-<span class="nc bnc" id="L87" title="All 6 branches missed.">        if (Objects.isNull(contentType) || !(contentType.equals(&quot;image/jpeg&quot;) || contentType.equals(&quot;image/png&quot;))) {</span>
-<span class="nc" id="L88">          LOGGER.error(&quot;Invalid image type: {}. Only JPG and PNG are allowed.&quot;, contentType);</span>
-<span class="nc" id="L89">          throw new ResourceNotFoundException(Constants.INVALID_FILE_TYPE);</span>
-        }
-<span class="nc" id="L91">        restaurant.setRestaurantImage(image.getBytes());</span>
-<span class="nc" id="L92">        LOGGER.debug(&quot;Image processed and added successfully for restaurant: {}&quot;, restaurantInDTO.getRestaurantName());</span>
-<span class="nc" id="L93">      } else {</span>
-<span class="nc" id="L94">        LOGGER.warn(&quot;No image provided for restaurant: {}&quot;, restaurantInDTO.getRestaurantName());</span>
-      }
-<span class="nc" id="L96">    } catch (Exception e) {</span>
-<span class="nc" id="L97">      LOGGER.error(&quot;Error occurred while processing image file for restaurant: {}&quot;, e.getMessage());</span>
-<span class="nc" id="L98">      e.printStackTrace();</span>
-<span class="nc" id="L99">      throw new RuntimeException(&quot;Image processing failed&quot;);</span>
-<span class="nc" id="L100">    }</span>
-<span class="nc" id="L101">    LOGGER.debug(&quot;Saving restaurant entity to the database&quot;);</span>
-<span class="nc" id="L102">    Restaurant savedRestaurant = restaurantRepository.save(restaurant);</span>
-<span class="nc" id="L103">    LOGGER.info(&quot;Successfully added restaurant with ID: {}&quot;, savedRestaurant.getRestaurantId());</span>
-<span class="nc" id="L104">    DtoConverter.fromEntityToOutDTO(savedRestaurant);</span>
-<span class="nc" id="L105">    LOGGER.debug(&quot;Returning success response after adding restaurant&quot;);</span>
-<span class="nc" id="L106">    return new CommonResponse(Constants.RESTAURANT_ADDED_SUCCESS);</span>
+<span class="fc" id="L74">    LOGGER.debug(&quot;Converting RestaurantInDTO to Restaurant entity&quot;);</span>
+<span class="fc" id="L75">    Restaurant restaurant = DtoConverter.fromInDTOToEntity(restaurantInDTO);</span>
+<span class="fc" id="L76">    restaurant.setRestaurantName(normalizedRestaurantName);</span>
+<span class="pc bpc" id="L77" title="2 of 4 branches missed.">    if (Objects.nonNull(image) &amp;&amp; !image.isEmpty()) {</span>
+<span class="fc" id="L78">      processRestaurantImage(image, restaurant);</span>
+    }
+<span class="fc" id="L80">    LOGGER.debug(&quot;Saving restaurant entity to the database&quot;);</span>
+<span class="fc" id="L81">    Restaurant savedRestaurant = restaurantRepository.save(restaurant);</span>
+<span class="fc" id="L82">    LOGGER.info(&quot;Successfully added restaurant with ID: {}&quot;, savedRestaurant.getRestaurantId());</span>
+<span class="fc" id="L83">    DtoConverter.fromEntityToOutDTO(savedRestaurant);</span>
+<span class="fc" id="L84">    LOGGER.debug(&quot;Returning success response after adding restaurant&quot;);</span>
+<span class="fc" id="L85">    return new CommonResponse(Constants.RESTAURANT_ADDED_SUCCESS);</span>
   }
+
+  /**
+   * Fetches the user details based on the user ID.
+   *
+   * @param userId the ID of the user to fetch
+   * @return the UserOutDTO object containing user details
+   * @throws ResourceNotFoundException if the user is not found
+   */
+  private UserOutDTO fetchUserProfile(final Integer userId) {
+    try {
+<span class="fc" id="L97">      LOGGER.debug(&quot;Fetching user profile for userId: {}&quot;, userId);</span>
+<span class="fc" id="L98">      return userFClient.getUserProfile(userId);</span>
+<span class="fc" id="L99">    } catch (FeignException e) {</span>
+<span class="fc" id="L100">      LOGGER.error(&quot;User with ID {} not found: {}&quot;, userId, e.getMessage());</span>
+<span class="fc" id="L101">      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);</span>
+    }
+  }
+
+  /**
+   * Validates and processes the restaurant image.
+   *
+   * @param image the MultipartFile containing the image to process
+   * @param restaurant the Restaurant entity to associate the image with
+   * @throws InvalidRequestException if the image is not in JPG or PNG format
+   * @throws RuntimeException if an error occurs while processing the image
+   */
+  private void processRestaurantImage(final MultipartFile image, final Restaurant restaurant) {
+<span class="fc" id="L114">    String contentType = image.getContentType();</span>
+<span class="pc bpc" id="L115" title="4 of 6 branches missed.">    if (Objects.isNull(contentType) || !(contentType.equals(&quot;image/jpeg&quot;) || contentType.equals(&quot;image/png&quot;))) {</span>
+<span class="nc" id="L116">      LOGGER.error(&quot;Invalid image type: {}. Only JPG and PNG are allowed.&quot;, contentType);</span>
+<span class="nc" id="L117">      throw new InvalidRequestException(Constants.INVALID_FILE_TYPE);</span>
+    }
+    try {
+<span class="fc" id="L120">      restaurant.setRestaurantImage(image.getBytes());</span>
+<span class="fc" id="L121">      LOGGER.debug(&quot;Image processed successfully for restaurant: {}&quot;, restaurant.getRestaurantName());</span>
+<span class="nc" id="L122">    } catch (Exception e) {</span>
+<span class="nc" id="L123">      LOGGER.error(&quot;Error occurred while processing image for restaurant: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L124">      throw new RuntimeException(Constants.ERROR_PROCESSING_FOOD_ITEM_IMAGE);</span>
+<span class="fc" id="L125">    }</span>
+<span class="fc" id="L126">  }</span>
 
   /**
    * Retrieves a restaurant by its ID.
@@ -115,18 +134,18 @@ import java.util.Optional;
    */
   @Override
   public RestaurantOutDTO getRestaurantById(final Integer restaurantId) {
-<span class="fc" id="L118">    LOGGER.info(&quot;Fetching restaurant with ID: {}&quot;, restaurantId);</span>
+<span class="fc" id="L137">    LOGGER.info(&quot;Fetching restaurant with ID: {}&quot;, restaurantId);</span>
 
-<span class="fc" id="L120">    Optional&lt;Restaurant&gt; restaurantOptional = restaurantRepository.findById(restaurantId);</span>
-<span class="fc bfc" id="L121" title="All 2 branches covered.">    if (restaurantOptional.isPresent()) {</span>
-<span class="fc" id="L122">      Restaurant restaurant = restaurantOptional.get();</span>
-<span class="fc" id="L123">      RestaurantOutDTO restaurantOutDTO = DtoConverter.fromEntityToOutDTO(restaurant);</span>
+<span class="fc" id="L139">    Optional&lt;Restaurant&gt; restaurantOptional = restaurantRepository.findById(restaurantId);</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">    if (restaurantOptional.isPresent()) {</span>
+<span class="fc" id="L141">      Restaurant restaurant = restaurantOptional.get();</span>
+<span class="fc" id="L142">      RestaurantOutDTO restaurantOutDTO = DtoConverter.fromEntityToOutDTO(restaurant);</span>
 
-<span class="fc" id="L125">      LOGGER.info(&quot;Successfully retrieved restaurant with ID: {}&quot;, restaurantId);</span>
-<span class="fc" id="L126">      return restaurantOutDTO;</span>
+<span class="fc" id="L144">      LOGGER.info(&quot;Successfully retrieved restaurant with ID: {}&quot;, restaurantId);</span>
+<span class="fc" id="L145">      return restaurantOutDTO;</span>
     } else {
-<span class="fc" id="L128">      LOGGER.error(&quot;Restaurant not found with ID: {}&quot;, restaurantId);</span>
-<span class="fc" id="L129">      throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);</span>
+<span class="fc" id="L147">      LOGGER.error(&quot;Restaurant not found with ID: {}&quot;, restaurantId);</span>
+<span class="fc" id="L148">      throw new ResourceNotFoundException(Constants.RESTAURANT_NOT_FOUND);</span>
     }
   }
 
@@ -138,17 +157,17 @@ import java.util.Optional;
    */
   @Override
   public List&lt;RestaurantOutDTO&gt; getRestaurantsByUserId(final Integer userId) {
-<span class="fc" id="L141">    LOGGER.info(&quot;Fetching restaurants for user ID: {}&quot;, userId);</span>
-<span class="fc" id="L142">    List&lt;Restaurant&gt; restaurants = restaurantRepository.findByUserId(userId);</span>
-<span class="fc" id="L143">    List&lt;RestaurantOutDTO&gt; restaurantOutDTOList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L160">    LOGGER.info(&quot;Fetching restaurants for user ID: {}&quot;, userId);</span>
+<span class="fc" id="L161">    List&lt;Restaurant&gt; restaurants = restaurantRepository.findByUserId(userId);</span>
+<span class="fc" id="L162">    List&lt;RestaurantOutDTO&gt; restaurantOutDTOList = new ArrayList&lt;&gt;();</span>
 
-<span class="fc bfc" id="L145" title="All 2 branches covered.">    for (Restaurant restaurant : restaurants) {</span>
-<span class="fc" id="L146">      RestaurantOutDTO restaurantOutDTO = DtoConverter.fromEntityToOutDTO(restaurant);</span>
-<span class="fc" id="L147">      restaurantOutDTOList.add(restaurantOutDTO);</span>
-<span class="fc" id="L148">    }</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">    for (Restaurant restaurant : restaurants) {</span>
+<span class="fc" id="L165">      RestaurantOutDTO restaurantOutDTO = DtoConverter.fromEntityToOutDTO(restaurant);</span>
+<span class="fc" id="L166">      restaurantOutDTOList.add(restaurantOutDTO);</span>
+<span class="fc" id="L167">    }</span>
 
-<span class="fc" id="L150">    LOGGER.info(&quot;Successfully retrieved {} restaurants for user ID: {}&quot;, restaurantOutDTOList.size(), userId);</span>
-<span class="fc" id="L151">    return restaurantOutDTOList;</span>
+<span class="fc" id="L169">    LOGGER.info(&quot;Successfully retrieved {} restaurants for user ID: {}&quot;, restaurantOutDTOList.size(), userId);</span>
+<span class="fc" id="L170">    return restaurantOutDTOList;</span>
   }
 
   /**
@@ -159,12 +178,12 @@ import java.util.Optional;
    */
   @Override
   public byte[] getRestaurantImage(final Integer id) {
-<span class="fc" id="L162">    LOGGER.info(&quot;Fetching image for restaurant with ID: {}&quot;, id);</span>
-<span class="fc" id="L163">    RestaurantOutDTO restaurant = getRestaurantById(id);</span>
-<span class="fc" id="L164">    String base64Image = restaurant.getRestaurantImage();</span>
-<span class="fc" id="L165">    byte[] imageData = Base64.getDecoder().decode(base64Image);</span>
-<span class="fc" id="L166">    LOGGER.info(&quot;Image byte length for restaurant with ID {}: {}&quot;, id, imageData.length);</span>
-<span class="fc" id="L167">    return imageData;</span>
+<span class="fc" id="L181">    LOGGER.info(&quot;Fetching image for restaurant with ID: {}&quot;, id);</span>
+<span class="fc" id="L182">    RestaurantOutDTO restaurant = getRestaurantById(id);</span>
+<span class="fc" id="L183">    String base64Image = restaurant.getRestaurantImage();</span>
+<span class="fc" id="L184">    byte[] imageData = Base64.getDecoder().decode(base64Image);</span>
+<span class="fc" id="L185">    LOGGER.info(&quot;Image byte length for restaurant with ID {}: {}&quot;, id, imageData.length);</span>
+<span class="fc" id="L186">    return imageData;</span>
   }
 
   /**
@@ -174,18 +193,18 @@ import java.util.Optional;
    */
   @Override
   public List&lt;RestaurantOutDTO&gt; getAllRestaurants() {
-<span class="fc" id="L177">    LOGGER.info(&quot;Fetching all restaurants&quot;);</span>
+<span class="fc" id="L196">    LOGGER.info(&quot;Fetching all restaurants&quot;);</span>
 
-<span class="fc" id="L179">    List&lt;Restaurant&gt; restaurants = restaurantRepository.findAll();</span>
-<span class="fc" id="L180">    List&lt;RestaurantOutDTO&gt; restaurantOutDTOs = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L198">    List&lt;Restaurant&gt; restaurants = restaurantRepository.findAll();</span>
+<span class="fc" id="L199">    List&lt;RestaurantOutDTO&gt; restaurantOutDTOs = new ArrayList&lt;&gt;();</span>
 
-<span class="fc bfc" id="L182" title="All 2 branches covered.">    for (Restaurant restaurant : restaurants) {</span>
-<span class="fc" id="L183">      RestaurantOutDTO restaurantOutDTO = DtoConverter.fromEntityToOutDTO(restaurant);</span>
-<span class="fc" id="L184">      restaurantOutDTOs.add(restaurantOutDTO);</span>
-<span class="fc" id="L185">    }</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">    for (Restaurant restaurant : restaurants) {</span>
+<span class="fc" id="L202">      RestaurantOutDTO restaurantOutDTO = DtoConverter.fromEntityToOutDTO(restaurant);</span>
+<span class="fc" id="L203">      restaurantOutDTOs.add(restaurantOutDTO);</span>
+<span class="fc" id="L204">    }</span>
 
-<span class="fc" id="L187">    LOGGER.info(&quot;Successfully retrieved {} restaurants&quot;, restaurantOutDTOs.size());</span>
-<span class="fc" id="L188">    return restaurantOutDTOs;</span>
+<span class="fc" id="L206">    LOGGER.info(&quot;Successfully retrieved {} restaurants&quot;, restaurantOutDTOs.size());</span>
+<span class="fc" id="L207">    return restaurantOutDTOs;</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

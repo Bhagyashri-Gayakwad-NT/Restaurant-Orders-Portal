@@ -2,6 +2,7 @@ package com.nt.user.microservice.service;
 
 import com.nt.user.microservice.dto.EmailRequestDTO;
 import com.nt.user.microservice.dto.LoginOutDTO;
+import com.nt.user.microservice.dto.ProfileUpdateDTO;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
@@ -43,10 +44,10 @@ public interface UserService {
    * Updates the profile of an existing user.
    *
    * @param id the ID of the user whose profile is to be updated
-   * @param userInDTO the data transfer object containing updated user details
+   * @param profileUpdateDTO the data transfer object containing updated user details
    * @return a response containing the status of the update operation
    */
-  UserResponse updateUserProfile(Integer id, UserInDTO userInDTO);
+  UserResponse updateUserProfile(Integer id, ProfileUpdateDTO profileUpdateDTO);
 
   /**
    * Deletes a user from the system.

@@ -26,14 +26,15 @@ public class FoodCategoryInDTO {
    */
   @NotBlank(message = &quot;Food category name cannot be blank&quot;)
   @Size(max = 100, message = &quot;Food category name cannot exceed 100 characters&quot;)
-  @Pattern(regexp = &quot;^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$&quot;, message = &quot;Category name must contain at least two alphabets&quot;)
+  @Pattern(regexp = &quot;^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$&quot;, message = &quot;Category name must contain at least&quot;
+    + &quot; two alphabets and cannot include numbers&quot;)
   private String foodCategoryName;
 
   /**
    * Default constructor for the {@code FoodCategoryInDTO} class.
    */
-<span class="fc" id="L35">  public FoodCategoryInDTO() {</span>
-<span class="fc" id="L36">  }</span>
+<span class="fc" id="L36">  public FoodCategoryInDTO() {</span>
+<span class="fc" id="L37">  }</span>
 
   /**
    * Parameterized constructor to initialize {@code FoodCategoryInDTO} with restaurant ID and food category name.
@@ -41,10 +42,10 @@ public class FoodCategoryInDTO {
    * @param restaurantId     the ID of the restaurant
    * @param foodCategoryName the name of the food category
    */
-<span class="fc" id="L44">  public FoodCategoryInDTO(final Integer restaurantId, final String foodCategoryName) {</span>
-<span class="fc" id="L45">    this.restaurantId = restaurantId;</span>
-<span class="fc" id="L46">    this.foodCategoryName = foodCategoryName;</span>
-<span class="fc" id="L47">  }</span>
+<span class="fc" id="L45">  public FoodCategoryInDTO(final Integer restaurantId, final String foodCategoryName) {</span>
+<span class="fc" id="L46">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L47">    this.foodCategoryName = foodCategoryName;</span>
+<span class="fc" id="L48">  }</span>
 
   /**
    * Gets the ID of the restaurant.
@@ -52,7 +53,7 @@ public class FoodCategoryInDTO {
    * @return the restaurant ID
    */
   public Integer getRestaurantId() {
-<span class="fc" id="L55">    return restaurantId;</span>
+<span class="fc" id="L56">    return restaurantId;</span>
   }
 
   /**
@@ -61,8 +62,8 @@ public class FoodCategoryInDTO {
    * @param restaurantId the new restaurant ID
    */
   public void setRestaurantId(final Integer restaurantId) {
-<span class="fc" id="L64">    this.restaurantId = restaurantId;</span>
-<span class="fc" id="L65">  }</span>
+<span class="fc" id="L65">    this.restaurantId = restaurantId;</span>
+<span class="fc" id="L66">  }</span>
 
   /**
    * Gets the name of the food category.
@@ -70,7 +71,7 @@ public class FoodCategoryInDTO {
    * @return the food category name
    */
   public String getFoodCategoryName() {
-<span class="fc" id="L73">    return foodCategoryName;</span>
+<span class="fc" id="L74">    return foodCategoryName;</span>
   }
 
   /**
@@ -79,8 +80,8 @@ public class FoodCategoryInDTO {
    * @param foodCategoryName the new food category name
    */
   public void setFoodCategoryName(final String foodCategoryName) {
-<span class="fc" id="L82">    this.foodCategoryName = foodCategoryName;</span>
-<span class="fc" id="L83">  }</span>
+<span class="fc" id="L83">    this.foodCategoryName = foodCategoryName;</span>
+<span class="fc" id="L84">  }</span>
 
   /**
    * Compares this object with the specified object for equality.
@@ -90,14 +91,14 @@ public class FoodCategoryInDTO {
    */
   @Override
   public boolean equals(final Object o) {
-<span class="pc bpc" id="L93" title="1 of 2 branches missed.">    if (this == o) {</span>
-<span class="nc" id="L94">      return true;</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L95">      return true;</span>
     }
-<span class="pc bpc" id="L96" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
-<span class="nc" id="L97">      return false;</span>
+<span class="pc bpc" id="L97" title="2 of 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L98">      return false;</span>
     }
-<span class="fc" id="L99">    FoodCategoryInDTO that = (FoodCategoryInDTO) o;</span>
-<span class="pc bpc" id="L100" title="1 of 4 branches missed.">    return Objects.equals(restaurantId, that.restaurantId) &amp;&amp; Objects.equals(foodCategoryName, that.foodCategoryName);</span>
+<span class="fc" id="L100">    FoodCategoryInDTO that = (FoodCategoryInDTO) o;</span>
+<span class="pc bpc" id="L101" title="1 of 4 branches missed.">    return Objects.equals(restaurantId, that.restaurantId) &amp;&amp; Objects.equals(foodCategoryName, that.foodCategoryName);</span>
   }
 
   /**
@@ -107,7 +108,7 @@ public class FoodCategoryInDTO {
    */
   @Override
   public int hashCode() {
-<span class="fc" id="L110">    return Objects.hash(restaurantId, foodCategoryName);</span>
+<span class="fc" id="L111">    return Objects.hash(restaurantId, foodCategoryName);</span>
   }
 
   /**
@@ -117,7 +118,7 @@ public class FoodCategoryInDTO {
    */
   @Override
   public String toString() {
-<span class="fc" id="L120">    return &quot;FoodCategoryInDTO{&quot;</span>
+<span class="fc" id="L121">    return &quot;FoodCategoryInDTO{&quot;</span>
       +
       &quot;restaurantId=&quot;
       + restaurantId

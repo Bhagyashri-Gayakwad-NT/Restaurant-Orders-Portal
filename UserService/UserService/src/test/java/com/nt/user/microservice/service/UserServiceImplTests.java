@@ -2,6 +2,7 @@ package com.nt.user.microservice.service;
 
 import com.nt.user.microservice.dto.EmailRequestDTO;
 import com.nt.user.microservice.dto.LoginOutDTO;
+import com.nt.user.microservice.dto.ProfileUpdateDTO;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
@@ -180,22 +181,25 @@ public class UserServiceImplTests {
   @Test
   public void testUpdateUserProfile_Success() {
     Integer userId = 1;
-    UserInDTO userInDTO = new UserInDTO();
-    userInDTO.setFirstName("FirstUpdate");
-    userInDTO.setLastName("Last");
-    userInDTO.setPhoneNo("0987654321");
-    userInDTO.setRole("USER");
+    ProfileUpdateDTO profileUpdateDTO = new ProfileUpdateDTO();
+    profileUpdateDTO.setFirstName("FirstUpdate");
+    profileUpdateDTO.setLastName("Last");
+    profileUpdateDTO.setEmail("test@nucleusteq.com");
+    profileUpdateDTO.setPassword("UpdatedPassword123");
+    profileUpdateDTO.setPhoneNo("8987654321");
 
     User user = new User();
     user.setId(userId);
     user.setFirstName("First");
     user.setLastName("Last");
+    user.setEmail("test@nucleusteq.com");
+    user.setPassword("ValidPassword123");
     user.setPhoneNo("1234567890");
 
     when(userRepository.findById(userId)).thenReturn(Optional.of(user));
     when(userRepository.save(user)).thenReturn(user);
 
-    UserResponse response = userService.updateUserProfile(userId, userInDTO);
+    UserResponse response = userService.updateUserProfile(userId, profileUpdateDTO);
 
     assertEquals(Constants.USER_PROFILE_UPDATED_SUCCESSFULLY, response.getSuccessMessage());
     assertEquals("FirstUpdate", user.getFirstName());
@@ -204,12 +208,12 @@ public class UserServiceImplTests {
   @Test
   public void testUpdateUserProfile_UserNotFound() {
     Integer userId = 1;
-    UserInDTO userInDTO = new UserInDTO();
+    ProfileUpdateDTO profileUpdateDTO = new ProfileUpdateDTO();
 
     when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
     ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
-      userService.updateUserProfile(userId, userInDTO);
+      userService.updateUserProfile(userId, profileUpdateDTO);
     });
 
     assertEquals(Constants.USER_NOT_FOUND, exception.getMessage());

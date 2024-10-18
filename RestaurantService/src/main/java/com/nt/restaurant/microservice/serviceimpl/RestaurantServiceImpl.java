@@ -60,44 +60,22 @@ public class RestaurantServiceImpl implements RestaurantService {
   @Override
   public CommonResponse addRestaurant(final RestaurantInDTO restaurantInDTO, final MultipartFile image) {
     LOGGER.info("Attempting to add restaurant with details: {}", restaurantInDTO);
-    UserOutDTO userOutDto;
-    try {
-      LOGGER.debug("Fetching user profile for userId: {}", restaurantInDTO.getUserId());
-      userOutDto = userFClient.getUserProfile(restaurantInDTO.getUserId());
-      LOGGER.debug("User profile fetched successfully: {}", userOutDto);
-    } catch (FeignException.NotFound ex) {
-      LOGGER.error("User with ID {} not found: {}", restaurantInDTO.getUserId(), ex.getMessage());
-      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
-    }
+    UserOutDTO userOutDto = fetchUserProfile(restaurantInDTO.getUserId());
+
     if (userOutDto.getRole().equals(Role.USER.name())) {
       LOGGER.error("User with ID {} is not a restaurant owner", restaurantInDTO.getUserId());
       throw new UnauthorizedException(Constants.USER_NOT_RESTAURANT_OWNER);
     }
     String normalizedRestaurantName = restaurantInDTO.getRestaurantName().trim().toLowerCase();
-    if (restaurantRepository.existsByRestaurantNameIgnoreCase(normalizedRestaurantName)) {
+    if (restaurantRepository.existsByRestaurantName(normalizedRestaurantName)) {
       LOGGER.error("Restaurant name {} already exists", restaurantInDTO.getRestaurantName());
       throw new InvalidRequestException(Constants.RESTAURANT_NAME_EXISTS);
     }
     LOGGER.debug("Converting RestaurantInDTO to Restaurant entity");
     Restaurant restaurant = DtoConverter.fromInDTOToEntity(restaurantInDTO);
     restaurant.setRestaurantName(normalizedRestaurantName);
-    try {
-      if (Objects.nonNull(image) && !image.isEmpty()) {
-        LOGGER.debug("Processing image for restaurant: {}", restaurantInDTO.getRestaurantName());
-        String contentType = image.getContentType();
-        if (Objects.isNull(contentType) || !(contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
-          LOGGER.error("Invalid image type: {}. Only JPG and PNG are allowed.", contentType);
-          throw new ResourceNotFoundException(Constants.INVALID_FILE_TYPE);
-        }
-        restaurant.setRestaurantImage(image.getBytes());
-        LOGGER.debug("Image processed and added successfully for restaurant: {}", restaurantInDTO.getRestaurantName());
-      } else {
-        LOGGER.warn("No image provided for restaurant: {}", restaurantInDTO.getRestaurantName());
-      }
-    } catch (Exception e) {
-      LOGGER.error("Error occurred while processing image file for restaurant: {}", e.getMessage());
-      e.printStackTrace();
-      throw new RuntimeException("Image processing failed");
+    if (Objects.nonNull(image) && !image.isEmpty()) {
+      processRestaurantImage(image, restaurant);
     }
     LOGGER.debug("Saving restaurant entity to the database");
     Restaurant savedRestaurant = restaurantRepository.save(restaurant);
@@ -105,6 +83,46 @@ public class RestaurantServiceImpl implements RestaurantService {
     DtoConverter.fromEntityToOutDTO(savedRestaurant);
     LOGGER.debug("Returning success response after adding restaurant");
     return new CommonResponse(Constants.RESTAURANT_ADDED_SUCCESS);
+  }
+
+  /**
+   * Fetches the user details based on the user ID.
+   *
+   * @param userId the ID of the user to fetch
+   * @return the UserOutDTO object containing user details
+   * @throws ResourceNotFoundException if the user is not found
+   */
+  private UserOutDTO fetchUserProfile(final Integer userId) {
+    try {
+      LOGGER.debug("Fetching user profile for userId: {}", userId);
+      return userFClient.getUserProfile(userId);
+    } catch (FeignException e) {
+      LOGGER.error("User with ID {} not found: {}", userId, e.getMessage());
+      throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
+    }
+  }
+
+  /**
+   * Validates and processes the restaurant image.
+   *
+   * @param image the MultipartFile containing the image to process
+   * @param restaurant the Restaurant entity to associate the image with
+   * @throws InvalidRequestException if the image is not in JPG or PNG format
+   * @throws RuntimeException if an error occurs while processing the image
+   */
+  private void processRestaurantImage(final MultipartFile image, final Restaurant restaurant) {
+    String contentType = image.getContentType();
+    if (Objects.isNull(contentType) || !(contentType.equals("image/jpeg") || contentType.equals("image/png"))) {
+      LOGGER.error("Invalid image type: {}. Only JPG and PNG are allowed.", contentType);
+      throw new InvalidRequestException(Constants.INVALID_FILE_TYPE);
+    }
+    try {
+      restaurant.setRestaurantImage(image.getBytes());
+      LOGGER.debug("Image processed successfully for restaurant: {}", restaurant.getRestaurantName());
+    } catch (Exception e) {
+      LOGGER.error("Error occurred while processing image for restaurant: {}", e.getMessage());
+      throw new RuntimeException(Constants.ERROR_PROCESSING_FOOD_ITEM_IMAGE);
+    }
   }
 
   /**

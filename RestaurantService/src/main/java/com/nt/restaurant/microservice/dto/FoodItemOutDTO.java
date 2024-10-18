@@ -140,7 +140,7 @@ public class FoodItemOutDTO {
    *
    * @return the food item name.
    */
-  public String getfoodItemName() {
+  public String getFoodItemName() {
     return foodItemName;
   }
 
@@ -149,7 +149,7 @@ public class FoodItemOutDTO {
    *
    * @param foodItemName the food item name to set.
    */
-  public void setfoodItemName(final String foodItemName) {
+  public void setFoodItemName(final String foodItemName) {
     this.foodItemName = foodItemName;
   }
 

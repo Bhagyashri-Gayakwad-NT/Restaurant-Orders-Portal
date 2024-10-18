@@ -4,6 +4,7 @@ import com.nt.user.microservice.dto.AmountInDTO;
 import com.nt.user.microservice.dto.EmailRequestDTO;
 import com.nt.user.microservice.dto.LogInDTO;
 import com.nt.user.microservice.dto.LoginOutDTO;
+import com.nt.user.microservice.dto.ProfileUpdateDTO;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
@@ -108,14 +109,14 @@ public class UserController {
    * Updates the profile of a user by ID.
    *
    * @param id the ID of the user to be updated.
-   * @param userInDTO the updated user information.
+   * @param profileUpdateDTO the updated user information.
    * @return a response entity with a success message if the update is successful.
    */
   @PutMapping("/update/{id}")
-  public ResponseEntity<UserResponse> updateUserProfile(@Valid @PathVariable final Integer id,
-                                                        @RequestBody final UserInDTO userInDTO) {
+  public ResponseEntity<UserResponse> updateUserProfile(@PathVariable final Integer id,
+                                                        @Valid @RequestBody final ProfileUpdateDTO profileUpdateDTO) {
     LOGGER.info("Updating profile for user with ID: {}", id);
-    UserResponse result = userService.updateUserProfile(id, userInDTO);
+    UserResponse result = userService.updateUserProfile(id, profileUpdateDTO);
     LOGGER.info("Profile updated successfully for user ID: {}", id);
     return new ResponseEntity<UserResponse>(result, HttpStatus.OK);
   }

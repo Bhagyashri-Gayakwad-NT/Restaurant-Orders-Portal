@@ -39,18 +39,16 @@ import java.util.Map;
    * @return an {@link ErrorResponse} object with the aggregated error details and a {@code 400 Bad Request} status
    */
 
-  // For validation exceptions (like @Valid)
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity&lt;ErrorResponse&gt; handleValidationExceptions(final MethodArgumentNotValidException ex) {
-<span class="nc" id="L45">    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
-    // Extract custom validation messages from FieldError
-<span class="nc" id="L47">    ex.getBindingResult().getAllErrors().forEach(error -&gt; {</span>
-<span class="nc" id="L48">      String fieldName = ((FieldError) error).getField();</span>
-<span class="nc" id="L49">      String errorMessage = error.getDefaultMessage();  // This retrieves the message from @Pattern or other annotations</span>
-<span class="nc" id="L50">      errors.put(fieldName, errorMessage);</span>
-<span class="nc" id="L51">    });</span>
-<span class="nc" id="L52">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), &quot;Validation failed&quot;, errors);</span>
-<span class="nc" id="L53">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+<span class="nc" id="L44">    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L45">    ex.getBindingResult().getAllErrors().forEach(error -&gt; {</span>
+<span class="nc" id="L46">      String fieldName = ((FieldError) error).getField();</span>
+<span class="nc" id="L47">      String errorMessage = error.getDefaultMessage();</span>
+<span class="nc" id="L48">      errors.put(fieldName, errorMessage);</span>
+<span class="nc" id="L49">    });</span>
+<span class="nc" id="L50">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), &quot;Validation failed&quot;, errors);</span>
+<span class="nc" id="L51">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
   }
 
   /**
@@ -69,29 +67,29 @@ import java.util.Map;
    */
   @ExceptionHandler(BindException.class)
   public ResponseEntity&lt;ErrorResponse&gt; handleBindException(final BindException ex) {
-<span class="nc" id="L72">    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L70">    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
 
-<span class="nc" id="L74">    ex.getBindingResult().getAllErrors().forEach(error -&gt; {</span>
-<span class="nc" id="L75">      String fieldName = ((FieldError) error).getField();</span>
-<span class="nc" id="L76">      String errorMessage = error.getDefaultMessage();</span>
+<span class="nc" id="L72">    ex.getBindingResult().getAllErrors().forEach(error -&gt; {</span>
+<span class="nc" id="L73">      String fieldName = ((FieldError) error).getField();</span>
+<span class="nc" id="L74">      String errorMessage = error.getDefaultMessage();</span>
 
-<span class="nc bnc" id="L78" title="All 2 branches missed.">      if (ex.getFieldError(fieldName).getRejectedValue() != null) {</span>
-<span class="nc" id="L79">        String rejectedValue = ex.getFieldError(fieldName).getRejectedValue().toString();</span>
-<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (fieldName.equals(&quot;foodCategoryId&quot;)) {</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">      if (ex.getFieldError(fieldName).getRejectedValue() != null) {</span>
+<span class="nc" id="L77">        String rejectedValue = ex.getFieldError(fieldName).getRejectedValue().toString();</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (fieldName.equals(&quot;foodCategoryId&quot;)) {</span>
+<span class="nc" id="L79">          errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected a numeric value.&quot;, rejectedValue, fieldName);</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        } else if (fieldName.equals(&quot;restaurantId&quot;)) {</span>
 <span class="nc" id="L81">          errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected a numeric value.&quot;, rejectedValue, fieldName);</span>
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        } else if (fieldName.equals(&quot;restaurantId&quot;)) {</span>
-<span class="nc" id="L83">          errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected a numeric value.&quot;, rejectedValue, fieldName);</span>
-<span class="nc bnc" id="L84" title="All 2 branches missed.">        } else if (fieldName.equals(&quot;userId&quot;)) {</span>
-<span class="nc" id="L85">          errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected an integer value.&quot;, rejectedValue, fieldName);</span>
-<span class="nc bnc" id="L86" title="All 2 branches missed.">        } else if (fieldName.equals(&quot;price&quot;)) {</span>
-<span class="nc" id="L87">          errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected a decimal value.&quot;, rejectedValue, fieldName);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        } else if (fieldName.equals(&quot;userId&quot;)) {</span>
+<span class="nc" id="L83">          errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected an integer value.&quot;, rejectedValue, fieldName);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        } else if (fieldName.equals(&quot;price&quot;)) {</span>
+<span class="nc" id="L85">          errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected a decimal value.&quot;, rejectedValue, fieldName);</span>
         }
       }
-<span class="nc" id="L90">      errors.put(fieldName, errorMessage);</span>
-<span class="nc" id="L91">    });</span>
+<span class="nc" id="L88">      errors.put(fieldName, errorMessage);</span>
+<span class="nc" id="L89">    });</span>
 
-<span class="nc" id="L93">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), &quot;Validation failed&quot;, errors);</span>
-<span class="nc" id="L94">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+<span class="nc" id="L91">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), &quot;Validation failed&quot;, errors);</span>
+<span class="nc" id="L92">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
   }
 
   /**
@@ -104,17 +102,17 @@ import java.util.Map;
    */
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
   public ResponseEntity&lt;ErrorResponse&gt; handleTypeMismatchException(final MethodArgumentTypeMismatchException ex) {
-<span class="nc" id="L107">    String fieldName = ex.getName();</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">    String requiredType = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : &quot;unknown&quot;;</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">    String providedValue = ex.getValue() != null ? ex.getValue().toString() : &quot;null&quot;;</span>
-<span class="nc" id="L110">    String errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected a value of type %s.&quot;,</span>
+<span class="nc" id="L105">    String fieldName = ex.getName();</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">    String requiredType = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : &quot;unknown&quot;;</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">    String providedValue = ex.getValue() != null ? ex.getValue().toString() : &quot;null&quot;;</span>
+<span class="nc" id="L108">    String errorMessage = String.format(&quot;Invalid value '%s' for field '%s'. Expected a value of type %s.&quot;,</span>
       providedValue, fieldName, requiredType);
 
-<span class="nc" id="L113">    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L114">    errors.put(fieldName, errorMessage);</span>
+<span class="nc" id="L111">    Map&lt;String, String&gt; errors = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L112">    errors.put(fieldName, errorMessage);</span>
 
-<span class="nc" id="L116">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), &quot;Validation failed&quot;, errors);</span>
-<span class="nc" id="L117">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
+<span class="nc" id="L114">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), &quot;Validation failed&quot;, errors);</span>
+<span class="nc" id="L115">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
   }
 
 
@@ -132,8 +130,8 @@ import java.util.Map;
   @ResponseStatus(HttpStatus.CONFLICT)
   @ResponseBody
   public ResponseEntity&lt;ErrorResponse&gt; handleResourceAlreadyExistException(final ResourceAlreadyExistException ex) {
-<span class="fc" id="L135">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());</span>
-<span class="fc" id="L136">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.CONFLICT);</span>
+<span class="fc" id="L133">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT.value(), ex.getMessage());</span>
+<span class="fc" id="L134">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.CONFLICT);</span>
   }
 
   /**
@@ -147,8 +145,8 @@ import java.util.Map;
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
   @ResponseBody
   public ResponseEntity&lt;ErrorResponse&gt; handleUnauthorizedException(final UnauthorizedException ex) {
-<span class="nc" id="L150">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());</span>
-<span class="nc" id="L151">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.UNAUTHORIZED);</span>
+<span class="nc" id="L148">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), ex.getMessage());</span>
+<span class="nc" id="L149">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.UNAUTHORIZED);</span>
   }
 
   /**
@@ -165,8 +163,8 @@ import java.util.Map;
   @ResponseStatus(HttpStatus.NOT_FOUND)
   @ResponseBody
   public ResponseEntity&lt;ErrorResponse&gt; handleResourceNotFoundException(final ResourceNotFoundException ex) {
-<span class="fc" id="L168">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());</span>
-<span class="fc" id="L169">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.NOT_FOUND);</span>
+<span class="fc" id="L166">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());</span>
+<span class="fc" id="L167">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.NOT_FOUND);</span>
   }
 
   /**
@@ -184,29 +182,8 @@ import java.util.Map;
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ResponseBody
   public ResponseEntity&lt;ErrorResponse&gt; handleInvalidRequestException(final InvalidRequestException ex) {
-<span class="nc" id="L187">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());</span>
-<span class="nc" id="L188">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
-  }
-
-  /**
-   * Handles exceptions related to invalid requests, such as image file validation failures.
-   * This method catches {@link InvalidRequestException} and returns an appropriate error response.
-   *
-   * &lt;p&gt;
-   * It generates an {@link ErrorResponse} object and returns it with a {@code 400 Bad Request} HTTP status.
-   * &lt;/p&gt;
-   *
-   * @param ex the exception instance indicating the request is invalid
-   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 400 Bad Request} status
-   */
-  @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-  public ResponseEntity&lt;ErrorResponse&gt; handleMediaTypeNotSupportedException(final HttpMediaTypeNotSupportedException ex) {
-<span class="nc" id="L204">    ErrorResponse errorResponse = new ErrorResponse();</span>
-<span class="nc" id="L205">    errorResponse.setStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value());</span>
-<span class="nc" id="L206">    errorResponse.setMessage(&quot;Unsupported Media Type. Please ensure your request's Content-Type is correct.&quot;);</span>
-<span class="nc" id="L207">    errorResponse.getErrors().put(&quot;Content-Type&quot;, &quot;Expected: multipart/form-data&quot;);</span>
-
-<span class="nc" id="L209">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.UNSUPPORTED_MEDIA_TYPE);</span>
+<span class="nc" id="L185">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.getMessage());</span>
+<span class="nc" id="L186">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.BAD_REQUEST);</span>
   }
 
   /**
@@ -216,11 +193,29 @@ import java.util.Map;
    * @param ex the exception instance indicating an unsupported media type
    * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 415 Unsupported Media Type} status
    */
+  @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+  public ResponseEntity&lt;ErrorResponse&gt; handleMediaTypeNotSupportedException(final HttpMediaTypeNotSupportedException ex) {
+<span class="nc" id="L198">    ErrorResponse errorResponse = new ErrorResponse();</span>
+<span class="nc" id="L199">    errorResponse.setStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value());</span>
+<span class="nc" id="L200">    errorResponse.setMessage(&quot;Unsupported Media Type. Please ensure your request's Content-Type is correct.&quot;);</span>
+<span class="nc" id="L201">    errorResponse.getErrors().put(&quot;Content-Type&quot;, &quot;Expected: multipart/form-data&quot;);</span>
+
+<span class="nc" id="L203">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.UNSUPPORTED_MEDIA_TYPE);</span>
+  }
+
+  /**
+   * Handles exceptions related to unsupported HTTP methods in requests.
+   * This method catches {@link HttpRequestMethodNotSupportedException} and returns an appropriate error response.
+   *
+   * @param ex the exception instance indicating an unsupported HTTP method
+   * @return a {@link ResponseEntity} containing an {@link ErrorResponse} object and a {@code 405 Method Not Allowed} status
+   */
   @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-  public ResponseEntity&lt;ErrorResponse&gt; handleMethodNotSupportedException(final HttpRequestMethodNotSupportedException ex) {
-<span class="nc" id="L221">    String errorMessage = Constants.METHODE_NOT_ALLOWED;</span>
-<span class="nc" id="L222">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), errorMessage);</span>
-<span class="nc" id="L223">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);</span>
+  public ResponseEntity&lt;ErrorResponse&gt; handleHttpRequestMethodNotSupportedException(
+    final HttpRequestMethodNotSupportedException ex) {
+<span class="nc" id="L216">    String errorMessage = Constants.METHODE_NOT_ALLOWED;</span>
+<span class="nc" id="L217">    ErrorResponse errorResponse = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), errorMessage);</span>
+<span class="nc" id="L218">    return new ResponseEntity&lt;&gt;(errorResponse, HttpStatus.METHOD_NOT_ALLOWED);</span>
   }
 
   /**
@@ -234,11 +229,11 @@ import java.util.Map;
   @ExceptionHandler(HttpMessageNotReadableException.class)
   public ResponseEntity&lt;Object&gt; handleHttpMessageNotReadableException(final HttpMessageNotReadableException ex,
                                                                       final WebRequest request) {
-<span class="nc" id="L237">    Map&lt;String, Object&gt; body = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L238">    body.put(&quot;status&quot;, HttpStatus.BAD_REQUEST.value());</span>
-<span class="nc" id="L239">    body.put(&quot;error&quot;, Constants.INVALID_REQUEST_BODY_ERROR);</span>
-<span class="nc" id="L240">    body.put(&quot;message&quot;, Constants.EMPTY_CONTENT_ERROR);</span>
-<span class="nc" id="L241">    return new ResponseEntity&lt;&gt;(body, HttpStatus.BAD_REQUEST);</span>
+<span class="nc" id="L232">    Map&lt;String, Object&gt; body = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L233">    body.put(&quot;status&quot;, HttpStatus.BAD_REQUEST.value());</span>
+<span class="nc" id="L234">    body.put(&quot;error&quot;, Constants.INVALID_REQUEST_BODY_ERROR);</span>
+<span class="nc" id="L235">    body.put(&quot;message&quot;, Constants.EMPTY_CONTENT_ERROR);</span>
+<span class="nc" id="L236">    return new ResponseEntity&lt;&gt;(body, HttpStatus.BAD_REQUEST);</span>
   }
 
 

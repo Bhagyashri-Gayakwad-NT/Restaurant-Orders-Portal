@@ -19,21 +19,21 @@ import java.io.IOException;
    * @return the {@link FoodItem} entity populated with input data.
    */
   public static FoodItem inDtoToEntity(final FoodItemInDTO foodItemInDTO) {
-<span class="nc" id="L22">    FoodItem foodItem = new FoodItem();</span>
-<span class="nc" id="L23">    foodItem.setCategoryId(foodItemInDTO.getFoodCategoryId());</span>
-<span class="nc" id="L24">    foodItem.setRestaurantId(foodItemInDTO.getRestaurantId());</span>
-<span class="nc" id="L25">    foodItem.setFoodItemName(foodItemInDTO.getFoodItemName().toUpperCase());</span>
-<span class="nc" id="L26">    foodItem.setDescription(foodItemInDTO.getDescription().trim());</span>
-<span class="nc" id="L27">    foodItem.setPrice(foodItemInDTO.getPrice());</span>
-<span class="nc" id="L28">    foodItem.setAvailable(true);</span>
+<span class="fc" id="L22">    FoodItem foodItem = new FoodItem();</span>
+<span class="fc" id="L23">    foodItem.setCategoryId(foodItemInDTO.getFoodCategoryId());</span>
+<span class="fc" id="L24">    foodItem.setRestaurantId(foodItemInDTO.getRestaurantId());</span>
+<span class="fc" id="L25">    foodItem.setFoodItemName(foodItemInDTO.getFoodItemName().toUpperCase());</span>
+<span class="fc" id="L26">    foodItem.setDescription(foodItemInDTO.getDescription().trim());</span>
+<span class="fc" id="L27">    foodItem.setPrice(foodItemInDTO.getPrice());</span>
+<span class="fc" id="L28">    foodItem.setAvailable(true);</span>
 
     try {
-<span class="nc" id="L31">      foodItem.setFoodItemImage(foodItemInDTO.getFoodItemImage().getBytes());</span>
+<span class="fc" id="L31">      foodItem.setFoodItemImage(foodItemInDTO.getFoodItemImage().getBytes());</span>
 <span class="nc" id="L32">    } catch (IOException e) {</span>
 <span class="nc" id="L33">      e.printStackTrace();</span>
-<span class="nc" id="L34">    }</span>
+<span class="fc" id="L34">    }</span>
 
-<span class="nc" id="L36">    return foodItem;</span>
+<span class="fc" id="L36">    return foodItem;</span>
   }
 
   /**

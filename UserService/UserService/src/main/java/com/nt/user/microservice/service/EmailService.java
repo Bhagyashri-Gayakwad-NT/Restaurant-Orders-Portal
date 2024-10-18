@@ -50,7 +50,6 @@ public class EmailService {
       helper.setSubject(emailInDTO.getSubject());
       helper.setTo(to.toArray(new String[0]));
       helper.setText(emailInDTO.getText());
-      System.out.println(emailInDTO.getText());
       javaMailSender.send(message);
     } catch (Exception e) {
       e.printStackTrace();

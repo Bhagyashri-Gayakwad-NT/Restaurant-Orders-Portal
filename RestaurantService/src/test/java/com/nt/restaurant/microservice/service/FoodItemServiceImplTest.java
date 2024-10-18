@@ -115,7 +115,7 @@ class FoodItemServiceImplTest {
     // Assert
     assertFalse(foodItemOutDTOList.isEmpty());
     assertEquals(1, foodItemOutDTOList.size());
-    assertEquals("Test FoodItem", foodItemOutDTOList.get(0).getfoodItemName()); // Assuming name is converted to upper case
+    assertEquals("Test FoodItem", foodItemOutDTOList.get(0).getFoodItemName()); // Assuming name is converted to upper case
   }
 
   @Test

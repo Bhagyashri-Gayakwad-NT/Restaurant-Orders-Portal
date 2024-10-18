@@ -1,5 +1,6 @@
 package com.nt.restaurant.microservice.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nt.restaurant.microservice.dto.CommonResponse;
 import com.nt.restaurant.microservice.dto.FoodCategoryInDTO;
 import com.nt.restaurant.microservice.dto.FoodCategoryOutDTO;
@@ -9,94 +10,93 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class FoodCategoryControllerTest {
 
-  @InjectMocks
-  private FoodCategoryController foodCategoryController;
+  private MockMvc mockMvc;
 
   @Mock
   private FoodCategoryService foodCategoryService;
 
+  @InjectMocks
+  private FoodCategoryController foodCategoryController;
+
+  private ObjectMapper objectMapper;
+
   @BeforeEach
-  void setUp() {
+  void setup() {
     MockitoAnnotations.openMocks(this);
+    mockMvc = MockMvcBuilders.standaloneSetup(foodCategoryController).build();
+    objectMapper = new ObjectMapper();
   }
 
   @Test
-  void testAddFoodCategory_Success() {
+  void addFoodCategoryTest() throws Exception {
     FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
-    foodCategoryInDTO.setRestaurantId(1);
     foodCategoryInDTO.setFoodCategoryName("Appetizers");
+    foodCategoryInDTO.setRestaurantId(1);
 
     CommonResponse commonResponse = new CommonResponse();
     commonResponse.setMessage("Food category added successfully");
 
-    when(foodCategoryService.addFoodCategory(any(FoodCategoryInDTO.class))).thenReturn(commonResponse);
+    when(foodCategoryService.addFoodCategory(foodCategoryInDTO)).thenReturn(commonResponse);
 
-
-    ResponseEntity<CommonResponse> response = foodCategoryController.addFoodCategory(foodCategoryInDTO);
-
-
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertNotNull(response.getBody());
-    assertEquals("Food category added successfully", response.getBody().getMessage());
-    verify(foodCategoryService, times(1)).addFoodCategory(any(FoodCategoryInDTO.class));
+    mockMvc.perform(post("/categories/addFoodCategory")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(foodCategoryInDTO)))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.message").value("Food category added successfully"));
   }
 
   @Test
-  void testGetFoodCategoryByRestaurantId_Success() {
-    Integer restaurantId = 1;
+  void getFoodCategoryByRestaurantIdTest() throws Exception {
+    int restaurantId = 1;
+
     FoodCategoryOutDTO foodCategoryOutDTO = new FoodCategoryOutDTO();
     foodCategoryOutDTO.setFoodCategoryId(1);
     foodCategoryOutDTO.setFoodCategoryName("Appetizers");
 
-    List<FoodCategoryOutDTO> foodCategoryList = new ArrayList<>();
-    foodCategoryList.add(foodCategoryOutDTO);
+    List<FoodCategoryOutDTO> foodCategories = Collections.singletonList(foodCategoryOutDTO);
 
-    when(foodCategoryService.getFoodCategoryByRestaurantId(anyInt())).thenReturn(foodCategoryList);
+    when(foodCategoryService.getFoodCategoryByRestaurantId(restaurantId)).thenReturn(foodCategories);
 
-    ResponseEntity<List<FoodCategoryOutDTO>> response = foodCategoryController.getFoodCategoryByRestaurantId(restaurantId);
+    mockMvc.perform(get("/categories/foodCategory/{restaurantId}", restaurantId))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$[0].foodCategoryName").value("Appetizers"));
 
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertNotNull(response.getBody());
-    assertFalse(response.getBody().isEmpty());
-    assertEquals("Appetizers", response.getBody().get(0).getFoodCategoryName());
-    verify(foodCategoryService, times(1)).getFoodCategoryByRestaurantId(anyInt());
   }
 
+
   @Test
-  void testUpdateFoodCategory_Success() {
-    Integer id = 1;
+  void updateFoodCategoryTest() throws Exception {
+    int categoryId = 1;
     FoodCategoryInDTO foodCategoryInDTO = new FoodCategoryInDTO();
+    foodCategoryInDTO.setFoodCategoryName("Main Course");
     foodCategoryInDTO.setRestaurantId(1);
-    foodCategoryInDTO.setFoodCategoryName("Test Category");
 
     CommonResponse commonResponse = new CommonResponse();
     commonResponse.setMessage("Food category updated successfully");
 
-    when(foodCategoryService.updateFoodCategory(anyInt(),
-      any(FoodCategoryInDTO.class))).thenReturn(commonResponse);
+    when(foodCategoryService.updateFoodCategory(categoryId, foodCategoryInDTO)).thenReturn(commonResponse);
 
-    ResponseEntity<CommonResponse> response = foodCategoryController.updateFoodCategory(id, foodCategoryInDTO);
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertNotNull(response.getBody());
-    assertEquals("Food category updated successfully", response.getBody().getMessage());
-    verify(foodCategoryService, times(1)).updateFoodCategory(anyInt(), any(FoodCategoryInDTO.class));
+    mockMvc.perform(put("/categories/updateFoodCategory/{id}", categoryId)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(foodCategoryInDTO)))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.message").value("Food category updated successfully"));
   }
 }
-

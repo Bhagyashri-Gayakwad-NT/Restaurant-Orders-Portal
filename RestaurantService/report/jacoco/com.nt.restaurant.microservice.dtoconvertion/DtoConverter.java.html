@@ -21,23 +21,23 @@ import java.util.Objects;
    * @return the {@link Restaurant} entity populated with input data.
    */
   public static Restaurant fromInDTOToEntity(final RestaurantInDTO restaurantInDTO) {
-<span class="nc" id="L24">    Restaurant restaurant = new Restaurant();</span>
-<span class="nc" id="L25">    restaurant.setUserId(restaurantInDTO.getUserId());</span>
-<span class="nc" id="L26">    restaurant.setRestaurantName(restaurantInDTO.getRestaurantName().trim());</span>
-<span class="nc" id="L27">    restaurant.setRestaurantAddress(restaurantInDTO.getRestaurantAddress().trim());</span>
-<span class="nc" id="L28">    restaurant.setContactNumber(restaurantInDTO.getContactNumber());</span>
-<span class="nc" id="L29">    restaurant.setDescription(restaurantInDTO.getDescription());</span>
-<span class="nc" id="L30">    restaurant.setRegistrationDate(LocalDate.now());</span>
-<span class="nc" id="L31">    restaurant.setOpen(true);</span>
+<span class="fc" id="L24">    Restaurant restaurant = new Restaurant();</span>
+<span class="fc" id="L25">    restaurant.setUserId(restaurantInDTO.getUserId());</span>
+<span class="fc" id="L26">    restaurant.setRestaurantName(restaurantInDTO.getRestaurantName().trim());</span>
+<span class="fc" id="L27">    restaurant.setRestaurantAddress(restaurantInDTO.getRestaurantAddress().trim());</span>
+<span class="fc" id="L28">    restaurant.setContactNumber(restaurantInDTO.getContactNumber());</span>
+<span class="fc" id="L29">    restaurant.setDescription(restaurantInDTO.getDescription());</span>
+<span class="fc" id="L30">    restaurant.setRegistrationDate(LocalDate.now());</span>
+<span class="fc" id="L31">    restaurant.setOpen(true);</span>
 
     try {
-<span class="nc" id="L34">      byte[] imageBytes = restaurantInDTO.getRestaurantImage().getBytes();</span>
-<span class="nc" id="L35">      restaurant.setRestaurantImage(imageBytes);</span>
+<span class="fc" id="L34">      byte[] imageBytes = restaurantInDTO.getRestaurantImage().getBytes();</span>
+<span class="fc" id="L35">      restaurant.setRestaurantImage(imageBytes);</span>
 <span class="nc" id="L36">    } catch (IOException e) {</span>
 <span class="nc" id="L37">      e.printStackTrace();</span>
-<span class="nc" id="L38">    }</span>
+<span class="fc" id="L38">    }</span>
 
-<span class="nc" id="L40">    return restaurant;</span>
+<span class="fc" id="L40">    return restaurant;</span>
   }
 
   /**

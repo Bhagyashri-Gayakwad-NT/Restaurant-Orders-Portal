@@ -64,10 +64,10 @@ import java.util.List;
   public ResponseEntity&lt;CommonResponse&gt; addFoodItem(@Valid @ModelAttribute final FoodItemInDTO foodItemInDTO,
                                                     @RequestParam(&quot;foodItemImage&quot;) final MultipartFile image) {
 
-<span class="nc" id="L67">    LOGGER.info(&quot;Received request to add food item: {}&quot;, foodItemInDTO);</span>
-<span class="nc" id="L68">    CommonResponse response = foodItemService.addFoodItem(foodItemInDTO, image);</span>
-<span class="nc" id="L69">    LOGGER.info(&quot;Successfully added food item with ID: {}&quot;, response.getMessage());</span>
-<span class="nc" id="L70">    return ResponseEntity.status(HttpStatus.CREATED).body(response);</span>
+<span class="fc" id="L67">    LOGGER.info(&quot;Received request to add food item: {}&quot;, foodItemInDTO);</span>
+<span class="fc" id="L68">    CommonResponse response = foodItemService.addFoodItem(foodItemInDTO, image);</span>
+<span class="fc" id="L69">    LOGGER.info(&quot;Successfully added food item with ID: {}&quot;, response.getMessage());</span>
+<span class="fc" id="L70">    return ResponseEntity.status(HttpStatus.CREATED).body(response);</span>
   }
 
   /**
@@ -110,10 +110,10 @@ import java.util.List;
     @PathVariable final Integer foodItemId,
     @Valid @ModelAttribute final FoodItemUpdateInDTO foodItemUpdateInDTO) {
 
-<span class="nc" id="L113">    LOGGER.info(&quot;Received request to update food item with ID: {} with details: {}&quot;, foodItemId, foodItemUpdateInDTO);</span>
-<span class="nc" id="L114">    CommonResponse updatedFoodItem = foodItemService.updateFoodItemByFoodItemId(foodItemId, foodItemUpdateInDTO);</span>
-<span class="nc" id="L115">    LOGGER.info(&quot;Successfully updated food item with ID: {}&quot;, foodItemId);</span>
-<span class="nc" id="L116">    return new ResponseEntity&lt;CommonResponse&gt;(updatedFoodItem, HttpStatus.OK);</span>
+<span class="fc" id="L113">    LOGGER.info(&quot;Received request to update food item with ID: {} with details: {}&quot;, foodItemId, foodItemUpdateInDTO);</span>
+<span class="fc" id="L114">    CommonResponse updatedFoodItem = foodItemService.updateFoodItemByFoodItemId(foodItemId, foodItemUpdateInDTO);</span>
+<span class="fc" id="L115">    LOGGER.info(&quot;Successfully updated food item with ID: {}&quot;, foodItemId);</span>
+<span class="fc" id="L116">    return new ResponseEntity&lt;CommonResponse&gt;(updatedFoodItem, HttpStatus.OK);</span>
   }
 
   /**
@@ -124,10 +124,10 @@ import java.util.List;
    */
   @GetMapping(&quot;/{id}/image&quot;)
   public ResponseEntity&lt;byte[]&gt; getFoodItemImage(@PathVariable final Integer id) {
-<span class="fc" id="L127">    LOGGER.info(&quot;Fetching image for food item with ID: {}&quot;, id);</span>
-<span class="fc" id="L128">    byte[] imageData = foodItemService.getFoodItemImage(id);</span>
-<span class="fc" id="L129">    LOGGER.info(&quot;Successfully retrieved image for food item with ID: {}&quot;, id);</span>
-<span class="fc" id="L130">    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageData);</span>
+<span class="nc" id="L127">    LOGGER.info(&quot;Fetching image for food item with ID: {}&quot;, id);</span>
+<span class="nc" id="L128">    byte[] imageData = foodItemService.getFoodItemImage(id);</span>
+<span class="nc" id="L129">    LOGGER.info(&quot;Successfully retrieved image for food item with ID: {}&quot;, id);</span>
+<span class="nc" id="L130">    return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageData);</span>
   }
 
   /**
@@ -139,10 +139,10 @@ import java.util.List;
   @GetMapping(&quot;/{foodItemId}&quot;)
   public ResponseEntity&lt;FoodItem&gt; getFoodItemById(@PathVariable final Integer foodItemId) {
 
-<span class="nc" id="L142">    LOGGER.info(&quot;Fetching food item details for ID: {}&quot;, foodItemId);</span>
-<span class="nc" id="L143">    FoodItem foodItem = foodItemService.findFoodItemById(foodItemId);</span>
-<span class="nc" id="L144">    LOGGER.info(&quot;Successfully retrieved food item details for ID: {}&quot;, foodItemId);</span>
-<span class="nc" id="L145">    return ResponseEntity.ok(foodItem);</span>
+<span class="fc" id="L142">    LOGGER.info(&quot;Fetching food item details for ID: {}&quot;, foodItemId);</span>
+<span class="fc" id="L143">    FoodItem foodItem = foodItemService.findFoodItemById(foodItemId);</span>
+<span class="fc" id="L144">    LOGGER.info(&quot;Successfully retrieved food item details for ID: {}&quot;, foodItemId);</span>
+<span class="fc" id="L145">    return ResponseEntity.ok(foodItem);</span>
   }
 }
 

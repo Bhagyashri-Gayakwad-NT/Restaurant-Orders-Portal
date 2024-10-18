@@ -2,6 +2,7 @@ package com.nt.user.microservice.serviceimpl;
 
 import com.nt.user.microservice.dto.EmailRequestDTO;
 import com.nt.user.microservice.dto.LoginOutDTO;
+import com.nt.user.microservice.dto.ProfileUpdateDTO;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
@@ -99,8 +100,8 @@ public class UserServiceImpl implements UserService {
     User savedUser = userRepository.save(user);
     LOGGER.info("User registered successfully with ID: {}", savedUser.getId());
 
-   // if (Role.USER.equals(user.getRole())) {
-      if (user.getRole().equals(Role.USER)) {
+    if (Role.USER.equals(user.getRole())) {
+   //   if (user.getRole().equals(Role.USER)) {
       LOGGER.info("Assigning initial wallet balance for user with ID: {}", savedUser.getId());
 
       WalletBalance walletBalanceEntity = new WalletBalance();
@@ -186,11 +187,11 @@ public class UserServiceImpl implements UserService {
    * Updates the profile of an existing user.
    *
    * @param id        the user's ID
-   * @param userInDTO the updated user information
+   * @param profileUpdateDTO the updated user information
    * @return a UserResponse indicating the result of the update
    */
   @Override
-  public UserResponse updateUserProfile(final Integer id, final UserInDTO userInDTO) {
+  public UserResponse updateUserProfile(final Integer id, final ProfileUpdateDTO profileUpdateDTO) {
     LOGGER.info("Updating user profile for ID: {}", id);
 
     User user = userRepository.findById(id)
@@ -199,13 +200,13 @@ public class UserServiceImpl implements UserService {
         return new ResourceNotFoundException(Constants.USER_NOT_FOUND);
       });
 
-    user.setFirstName(userInDTO.getFirstName());
-    user.setLastName(userInDTO.getLastName());
-    user.setPhoneNo(userInDTO.getPhoneNo());
-    if (userInDTO.getPassword() != null && !userInDTO.getPassword().isEmpty()) {
-      user.setPassword(Base64Util.encode(userInDTO.getPassword()));
+    user.setFirstName(profileUpdateDTO.getFirstName().trim());
+    user.setLastName(profileUpdateDTO.getLastName().trim());
+    user.setEmail(profileUpdateDTO.getEmail().toLowerCase());
+    user.setPhoneNo(profileUpdateDTO.getPhoneNo());
+    if (profileUpdateDTO.getPassword() != null && !profileUpdateDTO.getPassword().isEmpty()) {
+      user.setPassword(Base64Util.encode(profileUpdateDTO.getPassword()));
     }
-    user.setRole(Role.valueOf(userInDTO.getRole().toUpperCase()));
 
     userRepository.save(user);
     LOGGER.info("User profile updated successfully for ID: {}", id);

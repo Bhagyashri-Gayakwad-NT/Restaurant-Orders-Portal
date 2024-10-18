@@ -4,6 +4,7 @@ import com.nt.user.microservice.dto.AmountInDTO;
 import com.nt.user.microservice.dto.EmailRequestDTO;
 import com.nt.user.microservice.dto.LogInDTO;
 import com.nt.user.microservice.dto.LoginOutDTO;
+import com.nt.user.microservice.dto.ProfileUpdateDTO;
 import com.nt.user.microservice.dto.UserInDTO;
 import com.nt.user.microservice.dto.UserOutDTO;
 import com.nt.user.microservice.dto.UserResponse;
@@ -32,13 +33,13 @@ import javax.validation.Valid;
 @RestController
 @CrossOrigin
 @RequestMapping(&quot;/users&quot;)
-<span class="fc" id="L35">public class UserController {</span>
+<span class="fc" id="L36">public class UserController {</span>
 
   /**
    * LOGGER for the UserController class, used for logging important information
    * such as requests, success, and error messages during execution.
    */
-<span class="fc" id="L41">  private static final Logger LOGGER = LogManager.getLogger(UserController.class);</span>
+<span class="fc" id="L42">  private static final Logger LOGGER = LogManager.getLogger(UserController.class);</span>
 
   /**
    * Service layer responsible for handling user-related operations.
@@ -70,10 +71,10 @@ import javax.validation.Valid;
    */
   @PostMapping(&quot;/register&quot;)
   public ResponseEntity&lt;UserResponse&gt; registerUser(@Valid @RequestBody final UserInDTO userInDTO) {
-<span class="fc" id="L73">    LOGGER.info(&quot;Registering user with email: {}&quot;, userInDTO.getEmail());</span>
-<span class="fc" id="L74">    UserResponse userResponse = userService.registerUser(userInDTO);</span>
-<span class="fc" id="L75">    LOGGER.info(&quot;User registered successfully: {}&quot;, userInDTO.getEmail());</span>
-<span class="fc" id="L76">    return new ResponseEntity&lt;UserResponse&gt;(userResponse, HttpStatus.CREATED);</span>
+<span class="fc" id="L74">    LOGGER.info(&quot;Registering user with email: {}&quot;, userInDTO.getEmail());</span>
+<span class="fc" id="L75">    UserResponse userResponse = userService.registerUser(userInDTO);</span>
+<span class="fc" id="L76">    LOGGER.info(&quot;User registered successfully: {}&quot;, userInDTO.getEmail());</span>
+<span class="fc" id="L77">    return new ResponseEntity&lt;UserResponse&gt;(userResponse, HttpStatus.CREATED);</span>
   }
 
   /**
@@ -84,10 +85,10 @@ import javax.validation.Valid;
    */
   @PostMapping(&quot;/login&quot;)
   public ResponseEntity&lt;LoginOutDTO&gt; loginUser(@Valid @RequestBody final LogInDTO loginDTO) {
-<span class="fc" id="L87">    LOGGER.info(&quot;Attempting to login user with email: {}&quot;, loginDTO.getEmail());</span>
-<span class="fc" id="L88">    LoginOutDTO userOutDTO = userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword());</span>
-<span class="fc" id="L89">    LOGGER.info(&quot;User logged in successfully: {}&quot;, loginDTO.getEmail());</span>
-<span class="fc" id="L90">    return ResponseEntity.ok(userOutDTO);</span>
+<span class="fc" id="L88">    LOGGER.info(&quot;Attempting to login user with email: {}&quot;, loginDTO.getEmail());</span>
+<span class="fc" id="L89">    LoginOutDTO userOutDTO = userService.loginUser(loginDTO.getEmail(), loginDTO.getPassword());</span>
+<span class="fc" id="L90">    LOGGER.info(&quot;User logged in successfully: {}&quot;, loginDTO.getEmail());</span>
+<span class="fc" id="L91">    return ResponseEntity.ok(userOutDTO);</span>
   }
 
   /**
@@ -98,26 +99,26 @@ import javax.validation.Valid;
    */
   @GetMapping(&quot;/profile/{id}&quot;)
   public ResponseEntity&lt;UserOutDTO&gt; getUserProfile(@PathVariable final Integer id) {
-<span class="fc" id="L101">    LOGGER.info(&quot;Fetching profile for user with ID: {}&quot;, id);</span>
-<span class="fc" id="L102">    UserOutDTO userOutDTO = userService.getUserProfile(id);</span>
-<span class="fc" id="L103">    LOGGER.info(&quot;Profile fetched successfully for user ID: {}&quot;, id);</span>
-<span class="fc" id="L104">    return new ResponseEntity&lt;UserOutDTO&gt;(userOutDTO, HttpStatus.OK);</span>
+<span class="fc" id="L102">    LOGGER.info(&quot;Fetching profile for user with ID: {}&quot;, id);</span>
+<span class="fc" id="L103">    UserOutDTO userOutDTO = userService.getUserProfile(id);</span>
+<span class="fc" id="L104">    LOGGER.info(&quot;Profile fetched successfully for user ID: {}&quot;, id);</span>
+<span class="fc" id="L105">    return new ResponseEntity&lt;UserOutDTO&gt;(userOutDTO, HttpStatus.OK);</span>
   }
 
   /**
    * Updates the profile of a user by ID.
    *
    * @param id the ID of the user to be updated.
-   * @param userInDTO the updated user information.
+   * @param profileUpdateDTO the updated user information.
    * @return a response entity with a success message if the update is successful.
    */
   @PutMapping(&quot;/update/{id}&quot;)
-  public ResponseEntity&lt;UserResponse&gt; updateUserProfile(@Valid @PathVariable final Integer id,
-                                                        @RequestBody final UserInDTO userInDTO) {
-<span class="fc" id="L117">    LOGGER.info(&quot;Updating profile for user with ID: {}&quot;, id);</span>
-<span class="fc" id="L118">    UserResponse result = userService.updateUserProfile(id, userInDTO);</span>
-<span class="fc" id="L119">    LOGGER.info(&quot;Profile updated successfully for user ID: {}&quot;, id);</span>
-<span class="fc" id="L120">    return new ResponseEntity&lt;UserResponse&gt;(result, HttpStatus.OK);</span>
+  public ResponseEntity&lt;UserResponse&gt; updateUserProfile(@PathVariable final Integer id,
+                                                        @Valid @RequestBody final ProfileUpdateDTO profileUpdateDTO) {
+<span class="fc" id="L118">    LOGGER.info(&quot;Updating profile for user with ID: {}&quot;, id);</span>
+<span class="fc" id="L119">    UserResponse result = userService.updateUserProfile(id, profileUpdateDTO);</span>
+<span class="fc" id="L120">    LOGGER.info(&quot;Profile updated successfully for user ID: {}&quot;, id);</span>
+<span class="fc" id="L121">    return new ResponseEntity&lt;UserResponse&gt;(result, HttpStatus.OK);</span>
   }
 
   /**
@@ -128,10 +129,10 @@ import javax.validation.Valid;
    */
   @DeleteMapping(&quot;/delete/{id}&quot;)
   public ResponseEntity&lt;UserResponse&gt; deleteUser(@PathVariable final Integer id) {
-<span class="fc" id="L131">    LOGGER.info(&quot;Request received to delete user with ID: {}&quot;, id);</span>
-<span class="fc" id="L132">    UserResponse userResponse = userService.deleteUser(id);</span>
-<span class="fc" id="L133">    LOGGER.info(&quot;User deleted successfully with ID: {}&quot;, id);</span>
-<span class="fc" id="L134">    return new ResponseEntity&lt;UserResponse&gt;(userResponse, HttpStatus.OK);</span>
+<span class="fc" id="L132">    LOGGER.info(&quot;Request received to delete user with ID: {}&quot;, id);</span>
+<span class="fc" id="L133">    UserResponse userResponse = userService.deleteUser(id);</span>
+<span class="fc" id="L134">    LOGGER.info(&quot;User deleted successfully with ID: {}&quot;, id);</span>
+<span class="fc" id="L135">    return new ResponseEntity&lt;UserResponse&gt;(userResponse, HttpStatus.OK);</span>
   }
 
   /**
@@ -143,9 +144,9 @@ import javax.validation.Valid;
    */
   @PutMapping(&quot;/addMoney/{userId}&quot;)
   public ResponseEntity&lt;UserOutDTO&gt; addMoney(@PathVariable final Integer userId, @RequestBody final AmountInDTO amountInDto) {
-<span class="fc" id="L146">    LOGGER.info(&quot;Adding {} to wallet for user ID: {}&quot;, amountInDto.getBalance(), userId);</span>
-<span class="fc" id="L147">    UserOutDTO userResponse = walletBalanceService.addMoney(userId, amountInDto.getBalance());</span>
-<span class="fc" id="L148">    return new ResponseEntity&lt;UserOutDTO&gt;(userResponse, HttpStatus.OK);</span>
+<span class="fc" id="L147">    LOGGER.info(&quot;Adding {} to wallet for user ID: {}&quot;, amountInDto.getBalance(), userId);</span>
+<span class="fc" id="L148">    UserOutDTO userResponse = walletBalanceService.addMoney(userId, amountInDto.getBalance());</span>
+<span class="fc" id="L149">    return new ResponseEntity&lt;UserOutDTO&gt;(userResponse, HttpStatus.OK);</span>
   }
   /**
    * Updates the wallet balance for a user.
@@ -161,8 +162,8 @@ import javax.validation.Valid;
   @PutMapping(&quot;/walletBalance/{id}&quot;)
   public ResponseEntity&lt;UserOutDTO&gt; updateWalletBalance(@PathVariable final Integer id,
                                                         @RequestBody final AmountInDTO amountInDTO) {
-<span class="fc" id="L164">    UserOutDTO userResponse = walletBalanceService.updateWalletBalance(id, amountInDTO.getBalance());</span>
-<span class="fc" id="L165">    return new ResponseEntity&lt;UserOutDTO&gt;(userResponse, HttpStatus.OK);</span>
+<span class="fc" id="L165">    UserOutDTO userResponse = walletBalanceService.updateWalletBalance(id, amountInDTO.getBalance());</span>
+<span class="fc" id="L166">    return new ResponseEntity&lt;UserOutDTO&gt;(userResponse, HttpStatus.OK);</span>
   }
 
   /**
@@ -176,8 +177,8 @@ import javax.validation.Valid;
    */
   @PostMapping(&quot;/send&quot;)
   public ResponseEntity&lt;UserResponse&gt; sendEmail(@Valid @RequestBody final EmailRequestDTO emailInDTO) {
-<span class="fc" id="L179">    UserResponse response = userService.sendMail(emailInDTO);</span>
-<span class="fc" id="L180">    return new ResponseEntity&lt;UserResponse&gt;(response, HttpStatus.OK);</span>
+<span class="fc" id="L180">    UserResponse response = userService.sendMail(emailInDTO);</span>
+<span class="fc" id="L181">    return new ResponseEntity&lt;UserResponse&gt;(response, HttpStatus.OK);</span>
   }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

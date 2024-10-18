@@ -127,7 +127,7 @@ public class OrderServiceImpl implements OrderService {
       UserOutDTO userOutDto = userFClient.getUserProfile(userId);
       LOGGER.info("Fetched user profile for userId: {}", userId);
       return userOutDto;
-    } catch (FeignException.NotFound ex) {
+    } catch (FeignException ex) {
       LOGGER.error("User not found for userId: {}", userId);
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
@@ -143,10 +143,6 @@ public class OrderServiceImpl implements OrderService {
   private void fetchAndValidateRestaurant(final Integer restaurantId) {
     try {
       RestaurantOutDTO restaurantOutDTO = restaurantFClient.getRestaurantById(restaurantId);
-      if (restaurantOutDTO == null) {
-        LOGGER.error("Restaurant not found for restaurantId: {}", restaurantId);
-        throw new ResourceNotFoundException(Constants.INVALID_RESTAURANT_ID);
-      }
       LOGGER.info("Fetched restaurant details for restaurantId: {}", restaurantId);
     } catch (FeignException.NotFound ex) {
       LOGGER.error("Invalid restaurantId: {}", restaurantId);
@@ -182,10 +178,6 @@ public class OrderServiceImpl implements OrderService {
     FoodItemOutDTO foodItemOutDTO;
     try {
       foodItemOutDTO = foodItemFClient.getFoodItemById(cartItem.getFoodItemId());
-      if (foodItemOutDTO == null) {
-        LOGGER.error("Food item not found for foodItemId: {}", cartItem.getFoodItemId());
-        throw new ResourceNotFoundException(Constants.INVALID_FOOD_ITEM_ID);
-      }
       LOGGER.info("Fetched food item details for foodItemId: {}", cartItem.getFoodItemId());
     } catch (Exception ex) {
       LOGGER.error("Invalid foodItemId: {}", cartItem.getFoodItemId());

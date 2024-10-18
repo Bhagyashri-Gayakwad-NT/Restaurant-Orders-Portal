@@ -26,8 +26,8 @@ public class RestaurantInDTO {
    * Must be non-blank and only contain alphabets.
    */
   @NotBlank(message = &quot;Restaurant name cannot be blank&quot;)
-  @Pattern(regexp = &quot;^[A-Za-z]{2,}(?:\\s[A-Za-z]+)*$&quot;,
-    message = &quot;Restaurant name must contain at least two alphabets&quot;)
+  @Pattern(regexp = &quot;^[A-Za-z0-9]{2,}(?:\\s[A-Za-z0-9]+)*\\s*$&quot;,
+    message = &quot;Restaurant name must contain at least two alphabets and can include numbers&quot;)
   private String restaurantName;
 
   /**

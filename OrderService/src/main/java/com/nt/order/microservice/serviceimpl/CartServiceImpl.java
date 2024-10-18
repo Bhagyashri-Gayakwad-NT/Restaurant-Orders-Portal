@@ -112,7 +112,7 @@ public class CartServiceImpl implements CartService {
       UserOutDTO userOutDto = userFClient.getUserProfile(userId);
       LOGGER.info("User fetched successfully: {}", userOutDto);
       return userOutDto;
-    } catch (FeignException.NotFound ex) {
+    } catch (FeignException ex) {
       LOGGER.error("User not found for userId: {}", userId);
       throw new ResourceNotFoundException(Constants.USER_NOT_FOUND);
     }
@@ -140,10 +140,6 @@ public class CartServiceImpl implements CartService {
   private void validateRestaurant(final Integer restaurantId) {
     try {
       RestaurantOutDTO restaurantOutDTO = restaurantFClient.getRestaurantById(restaurantId);
-      if (restaurantOutDTO == null) {
-        LOGGER.error("Invalid restaurantId: {}", restaurantId);
-        throw new ResourceNotFoundException(Constants.INVALID_RESTAURANT_ID);
-      }
       LOGGER.info("Restaurant found: {}", restaurantOutDTO);
     } catch (FeignException.NotFound ex) {
       LOGGER.error("Restaurant not found for restaurantId: {}", restaurantId);
@@ -179,10 +175,6 @@ public class CartServiceImpl implements CartService {
   private FoodItemOutDTO fetchFoodItem(final Integer foodItemId) {
     try {
       FoodItemOutDTO foodItemOutDTO = foodItemFClient.getFoodItemById(foodItemId);
-      if (foodItemOutDTO == null) {
-        LOGGER.error("Invalid foodItemId: {}", foodItemId);
-        throw new ResourceNotFoundException(Constants.INVALID_FOOD_ITEM_ID);
-      }
       LOGGER.info("Food item found: {}", foodItemOutDTO);
       return foodItemOutDTO;
     } catch (FeignException.NotFound ex) {
@@ -323,7 +315,7 @@ public class CartServiceImpl implements CartService {
     if (newQuantity == 0) {
       cartRepository.deleteById(cartId);
       LOGGER.info("Item removed from cart with cartId: {}", cartId);
-      throw new InvalidRequestException(Constants.ITEM_REMOVED_SUCCESSFULLY);
+      return new CommonResponse(Constants.ITEM_REMOVED_SUCCESSFULLY);
     }
     double newPrice = unitPrice * newQuantity;
     BigDecimal roundedPrice = BigDecimal.valueOf(newPrice).setScale(2, RoundingMode.HALF_EVEN);
